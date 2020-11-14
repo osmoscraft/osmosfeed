@@ -1,0 +1,27 @@
+{
+  "name": "system-zero",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js",
+    "debug": "node --nolazy main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/platojar/system-zero.git"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/platojar/system-zero/issues"
+  },
+  "homepage": "https://github.com/platojar/system-zero#readme",
+  "dependencies": {
+    "axios": "^0.21.0",
+    "htmlparser2": "^5.0.1",
+    "js-yaml": "^3.14.0"
+  }
+}
