@@ -2,12 +2,11 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Launch via npm",
       "type": "node",
       "request": "launch",
-      "cwd": "${workspaceFolder}",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run-script", "debug"]
+      "name": "Debug file with ts-node",
+      "runtimeArgs": ["-r", "ts-node/register"],
+      "args": ["${file}"]
     }
   ]
 }

@@ -1,8 +1,17 @@
 import path from "path";
 import fs from "fs";
 import yaml from "js-yaml";
-import htmlparse2 from "htmlparser2";
+import * as htmlparse2 from "htmlparser2";
 import axios from "axios";
+
+interface ParsedItem {
+  sourceHref: string;
+  sourceTitle: string;
+  title: string;
+  link: string;
+  daysOld: number;
+  publishedOn: string;
+}
 
 async function run() {
   const sourcesText = fs.readFileSync(path.resolve("sources.yaml"), "utf8");
@@ -10,7 +19,7 @@ async function run() {
   /** @type {string[]} */
   const sources = yaml.safeLoad(sourcesText);
 
-  const pagesAsync = sources.map(async (source) => {
+  const pagesAsync: ParsedItem[] = sources.map(async (source) => {
     const response = await axios.get(source.href);
     const xmlString = response.data;
     const feed = htmlparse2.parseFeed(xmlString);
@@ -26,8 +35,8 @@ async function run() {
         sourceTitle: feed.title,
         title,
         link,
-        daysOld: Math.round((now - pubDate?.getTime()) / 1000 / 60 / 60 / 24),
-        publishedOn: pubDate?.toISOString(),
+        daysOld: Math.round((now - pubDate!.getTime()) / 1000 / 60 / 60 / 24),
+        publishedOn: pubDate!.toISOString(),
       };
     });
   });
@@ -35,12 +44,15 @@ async function run() {
   const posts = (await Promise.all(pagesAsync)).flat();
   const recentPosts = posts.filter((post) => post.daysOld < 14);
 
-  const postsByDates = recentPosts.reduce((groupedPosts, post) => {
-    const publishedOnDate = post.publishedOn.split("T")[0];
-    groupedPosts[publishedOnDate] = groupedPosts[publishedOnDate] || [];
-    groupedPosts[publishedOnDate].push(post);
-    return groupedPosts;
-  }, Object.create(null));
+  const postsByDates: Record<string, ParsedItem[]> = recentPosts.reduce(
+    (groupedPosts, post) => {
+      const publishedOnDate = post.publishedOn.split("T")[0];
+      groupedPosts[publishedOnDate] = groupedPosts[publishedOnDate] || [];
+      groupedPosts[publishedOnDate].push(post);
+      return groupedPosts;
+    },
+    Object.create(null)
+  );
 
   const outputHtml = Object.entries(postsByDates)
     .map(
