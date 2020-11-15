@@ -4,6 +4,7 @@ import fs from "fs";
 import * as htmlparse2 from "htmlparser2";
 import yaml from "js-yaml";
 import path from "path";
+import { setCache } from "./lib/cache";
 import { render } from "./lib/render";
 import { replaceHtmlTags } from "./utils/escape-html-tags";
 
@@ -17,7 +18,7 @@ export interface Article {
   title: string;
   description: string;
   link: string;
-  daysOld: number;
+  ageInDays: number;
   publishedOn: string;
 }
 
@@ -43,15 +44,17 @@ async function run() {
       // TODO enhance result with Mercury parser
       // TODO use cache to prevent refetching
 
-      return {
+      const enrichedArticle: Article = {
         sourceHref: source.href,
         sourceTitle: feed.title ?? feed.id ?? "",
         title: title ?? "Untitled",
         description: descriptionPlainText,
         link,
-        daysOld: Math.round((now - pubDate!.getTime()) / 1000 / 60 / 60 / 24),
+        ageInDays: Math.round((now - pubDate!.getTime()) / 1000 / 60 / 60 / 24),
         publishedOn: pubDate!.toISOString(),
       };
+
+      return enrichedArticle;
     });
 
     return article;
@@ -59,8 +62,10 @@ async function run() {
 
   const articles = (await Promise.all(articlesAsyncs)).flat();
   const recentArticles = articles
-    .filter((article) => article.daysOld < 14)
+    .filter((article) => article.ageInDays < 14)
     .sort((b, a) => a.publishedOn.localeCompare(b.publishedOn));
+
+  setCache({ articles: recentArticles });
 
   const html = render({ articles: recentArticles });
   fs.mkdirSync(path.resolve("dist"), { recursive: true });
