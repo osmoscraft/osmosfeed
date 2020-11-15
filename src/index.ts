@@ -4,12 +4,14 @@ import fs from "fs";
 import * as htmlparse2 from "htmlparser2";
 import yaml from "js-yaml";
 import path from "path";
+import { render } from "./lib/render";
+import { replaceHtmlTags } from "./utils/escape-html-tags";
 
 interface SourceDefinition {
   href: string;
 }
 
-interface ParsedItem {
+export interface ParsedItem {
   sourceHref: string;
   sourceTitle: string;
   title: string;
@@ -36,7 +38,7 @@ async function run() {
       const { title, link, pubDate, description } = item;
 
       const descriptionParsed = cheerio.load(description);
-      const descriptionPlainText = safe_tags_replace(descriptionParsed.root().text()).trim().slice(0, 1024);
+      const descriptionPlainText = replaceHtmlTags(descriptionParsed.root().text()).trim().slice(0, 1024);
 
       return {
         sourceHref: source.href,
@@ -57,72 +59,9 @@ async function run() {
     .filter((post) => post.daysOld < 14)
     .sort((b, a) => a.publishedOn.localeCompare(b.publishedOn));
 
-  const postsBySourceByDates: Record<string, Record<string, ParsedItem[]>> = recentPosts.reduce(
-    (groupedPosts, post) => {
-      const publishedOnDate = post.publishedOn.split("T")[0];
-      const sourceTitle = post.sourceTitle;
-      groupedPosts[publishedOnDate] ??= [];
-      groupedPosts[publishedOnDate][sourceTitle] ??= [];
-      groupedPosts[publishedOnDate][sourceTitle].push(post);
-      return groupedPosts;
-    },
-    Object.create(null)
-  );
-
-  const postsHtml = Object.entries(postsBySourceByDates)
-    .map(
-      ([date, postsBySource]) => `
-    <section class="day-container">
-    <h2>${date}</h2>
-    ${Object.entries(postsBySource)
-      .map(
-        ([source, posts]) => `
-        <h3>${source}</h3>
-        <section class="articles-per-source">
-          ${posts
-            .map(
-              (post) => `
-          <article>
-            <div class="title-assembly">
-              <span class="actions">
-                <button data-action="preview">+</button>
-              </span>
-              <a href="${post.link}">
-              ${post.title}
-              </a>
-            </div>
-            <p class="article-details">${post.description}</p>
-          </article>`
-            )
-            .join("\n")}
-        </section>
-        `
-      )
-      .join("\n")}
-    </section>
-          `
-    )
-    .join("\n");
-
-  const template = fs.readFileSync(path.resolve("src/index-template.html"), "utf8");
-  const hydratedTemplate = template.replace("%CONTENT%", postsHtml);
-
+  const html = render({ posts: recentPosts });
   fs.mkdirSync(path.resolve("dist"), { recursive: true });
-  fs.writeFileSync(path.resolve("dist/index.html"), hydratedTemplate);
+  fs.writeFileSync(path.resolve("dist/index.html"), html);
 }
 
 run();
-
-const tagsToReplace = {
-  "&": "&amp;",
-  "<": "&lt;",
-  ">": "&gt;",
-};
-
-function replaceTag(tag) {
-  return tagsToReplace[tag] || tag;
-}
-
-function safe_tags_replace(str) {
-  return str.replace(/[&<>]/g, replaceTag);
-}
