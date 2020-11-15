@@ -16,30 +16,47 @@ async function run() {
     const feed = htmlparse2.parseFeed(xmlString);
 
     const items = feed.items ?? [];
+    const now = Date.now();
 
     return items.map((item) => {
       const { title, link, pubDate } = item;
 
       return {
         sourceHref: source.href,
+        sourceTitle: feed.title,
         title,
         link,
+        daysOld: Math.round((now - pubDate?.getTime()) / 1000 / 60 / 60 / 24),
         publishedOn: pubDate?.toISOString(),
       };
     });
   });
 
-  const results = (await Promise.all(pagesAsync)).flat();
-  console.log(results);
+  const posts = (await Promise.all(pagesAsync)).flat();
+  const recentPosts = posts.filter((post) => post.daysOld < 14);
 
-  const outputHtml = results
+  const postsByDates = recentPosts.reduce((groupedPosts, post) => {
+    const publishedOnDate = post.publishedOn.split("T")[0];
+    groupedPosts[publishedOnDate] = groupedPosts[publishedOnDate] || [];
+    groupedPosts[publishedOnDate].push(post);
+    return groupedPosts;
+  }, Object.create(null));
+
+  const outputHtml = Object.entries(postsByDates)
     .map(
-      (result) =>
-        `<article><a href="${result.link}">${result.title}<a></article>`
+      ([date, posts]) => `
+   <h3>${date}</h3>
+   ${posts
+     .map(
+       (post) => `<article><a href="${post.link}">${post.title}</a></article>`
+     )
+     .join("\n")}
+  `
     )
     .join("\n");
 
-  fs.writeFileSync(path.resolve("output.html"), outputHtml);
+  fs.mkdirSync(path.resolve("dist"), { recursive: true });
+  fs.writeFileSync(path.resolve("dist/index.html"), outputHtml);
 }
 
 run();
