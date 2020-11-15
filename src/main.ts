@@ -17,8 +17,8 @@ async function run() {
   const articles = enrichedSources.map((enrichedSource) => enrichedSource.articles).flat();
 
   const html = render({ articles });
-  fs.mkdirSync(path.resolve("dist"), { recursive: true });
-  fs.writeFileSync(path.resolve("dist/index.html"), html);
+  fs.mkdirSync(path.resolve("public"), { recursive: true });
+  fs.writeFileSync(path.resolve("public/index.html"), html);
 
   await copyAssets();
 }

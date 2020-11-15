@@ -9,8 +9,8 @@ export interface Cache {
 export function setCache(data: Cache) {
   const cacheString = JSON.stringify(data, undefined, 2);
 
-  fs.mkdirSync(path.resolve("dist"), { recursive: true });
-  fs.writeFileSync(path.resolve("dist/cache.json"), cacheString);
+  fs.mkdirSync(path.resolve("public"), { recursive: true });
+  fs.writeFileSync(path.resolve("public/cache.json"), cacheString);
 }
 
 export function getCache(): Cache {
@@ -18,7 +18,7 @@ export function getCache(): Cache {
   // Handle error
   // Handle empty state
   try {
-    const cacheString = fs.readFileSync(path.resolve("dist/cache.json"), "utf-8");
+    const cacheString = fs.readFileSync(path.resolve("public/cache.json"), "utf-8");
 
     console.log(`[cache] cache restored`);
     return JSON.parse(cacheString) as Cache;

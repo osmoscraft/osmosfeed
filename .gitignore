@@ -1,5 +1,3 @@
 node_modules
-
-
-dist/index.html
-dist/cache.json
+bin
+public

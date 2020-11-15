@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { ENTRY_DIR } from "../utils/entry-dir";
 import type { EnrichedArticle } from "./enrich";
 
 export interface RenderProps {
@@ -54,7 +55,7 @@ export function render({ articles }: RenderProps): string {
     )
     .join("\n");
 
-  const template = fs.readFileSync(path.resolve("src/index-template.html"), "utf8");
+  const template = fs.readFileSync(path.resolve(ENTRY_DIR, "index-template.html"), "utf8");
   const hydratedTemplate = template.replace("%CONTENT%", articlesHtml);
 
   return hydratedTemplate;

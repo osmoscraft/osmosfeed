@@ -1,13 +1,16 @@
 {
-  "name": "@plato/cli",
+  "name": "@platojar/cli",
   "version": "0.0.1",
   "description": "",
   "scripts": {
-    "dev": "ts-node src/index.ts",
-    "start": "node bin/index.js",
-    "build": "ncc build src/index.ts -o bin",
+    "dev": "ts-node src/main.ts",
+    "start": "node bin/main.js",
+    "build": "node scripts/build.js",
     "clean": "rm -rf dist/index.html && rm -rf dist/cache.json"
   },
+  "files": [
+    "bin"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/platojar/system-zero.git"
