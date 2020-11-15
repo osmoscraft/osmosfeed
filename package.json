@@ -4,7 +4,8 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "build": "ts-node src/index.ts"
+    "build": "ts-node src/index.ts",
+    "clean": "rm -rf dist/index.html && rm -rf dist/cache.json"
   },
   "repository": {
     "type": "git",

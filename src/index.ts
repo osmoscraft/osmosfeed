@@ -2,15 +2,11 @@ import axios from "axios";
 import cheerio from "cheerio";
 import fs from "fs";
 import * as htmlparse2 from "htmlparser2";
-import yaml from "js-yaml";
 import path from "path";
 import { setCache } from "./lib/cache";
+import { getSources } from "./lib/config";
 import { render } from "./lib/render";
 import { replaceHtmlTags } from "./utils/escape-html-tags";
-
-interface SourceDefinition {
-  href: string;
-}
 
 export interface Article {
   sourceHref: string;
@@ -23,9 +19,7 @@ export interface Article {
 }
 
 async function run() {
-  const sourcesText = fs.readFileSync(path.resolve("sources.yaml"), "utf8");
-
-  const sources = yaml.safeLoad(sourcesText) as SourceDefinition[]; // TODO error checking
+  const sources = getSources();
 
   const articlesAsyncs: Promise<Article[]>[] = sources.map(async (source) => {
     const response = await axios.get(source.href);
