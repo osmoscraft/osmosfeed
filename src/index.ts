@@ -1,13 +1,19 @@
-import path from "path";
-import fs from "fs";
-import yaml from "js-yaml";
-import * as htmlparse2 from "htmlparser2";
 import axios from "axios";
+import fs from "fs";
+import * as htmlparse2 from "htmlparser2";
+import yaml from "js-yaml";
+import path from "path";
+import * as cheerio from "cheerio";
+
+interface SourceDefinition {
+  href: string;
+}
 
 interface ParsedItem {
   sourceHref: string;
   sourceTitle: string;
   title: string;
+  description: string;
   link: string;
   daysOld: number;
   publishedOn: string;
@@ -16,10 +22,9 @@ interface ParsedItem {
 async function run() {
   const sourcesText = fs.readFileSync(path.resolve("sources.yaml"), "utf8");
 
-  /** @type {string[]} */
-  const sources = yaml.safeLoad(sourcesText);
+  const sources: SourceDefinition[] = yaml.safeLoad(sourcesText);
 
-  const pagesAsync: ParsedItem[] = sources.map(async (source) => {
+  const pagesAsync: Promise<ParsedItem[]>[] = sources.map(async (source) => {
     const response = await axios.get(source.href);
     const xmlString = response.data;
     const feed = htmlparse2.parseFeed(xmlString);
@@ -27,48 +32,97 @@ async function run() {
     const items = feed.items ?? [];
     const now = Date.now();
 
-    return items.map((item) => {
-      const { title, link, pubDate } = item;
+    const parsedItem: ParsedItem[] = items.map((item) => {
+      const { title, link, pubDate, description } = item;
+
+      const descriptionParsed = cheerio.load(description);
+      const descriptionPlainText = safe_tags_replace(descriptionParsed.root().text()).trim().slice(0, 1024);
 
       return {
         sourceHref: source.href,
         sourceTitle: feed.title,
         title,
+        description: descriptionPlainText,
         link,
         daysOld: Math.round((now - pubDate!.getTime()) / 1000 / 60 / 60 / 24),
         publishedOn: pubDate!.toISOString(),
       };
     });
+
+    return parsedItem;
   });
 
   const posts = (await Promise.all(pagesAsync)).flat();
-  const recentPosts = posts.filter((post) => post.daysOld < 14);
+  const recentPosts = posts
+    .filter((post) => post.daysOld < 14)
+    .sort((b, a) => a.publishedOn.localeCompare(b.publishedOn));
 
-  const postsByDates: Record<string, ParsedItem[]> = recentPosts.reduce(
+  const postsBySourceByDates: Record<string, Record<string, ParsedItem[]>> = recentPosts.reduce(
     (groupedPosts, post) => {
       const publishedOnDate = post.publishedOn.split("T")[0];
-      groupedPosts[publishedOnDate] = groupedPosts[publishedOnDate] || [];
-      groupedPosts[publishedOnDate].push(post);
+      const sourceTitle = post.sourceTitle;
+      groupedPosts[publishedOnDate] ??= [];
+      groupedPosts[publishedOnDate][sourceTitle] ??= [];
+      groupedPosts[publishedOnDate][sourceTitle].push(post);
       return groupedPosts;
     },
     Object.create(null)
   );
 
-  const outputHtml = Object.entries(postsByDates)
+  const postsHtml = Object.entries(postsBySourceByDates)
     .map(
-      ([date, posts]) => `
-   <h3>${date}</h3>
-   ${posts
-     .map(
-       (post) => `<article><a href="${post.link}">${post.title}</a></article>`
-     )
-     .join("\n")}
-  `
+      ([date, postsBySource]) => `
+    <section class="day-container">
+    <h2>${date}</h2>
+    ${Object.entries(postsBySource)
+      .map(
+        ([source, posts]) => `
+        <h3>${source}</h3>
+        <section class="articles-per-source">
+          ${posts
+            .map(
+              (post) => `
+          <article>
+            <div class="title-assembly">
+              <span class="actions">
+                <button data-action="preview">+</button>
+              </span>
+              <a href="${post.link}">
+              ${post.title}
+              </a>
+            </div>
+            <p class="article-details">${post.description}</p>
+          </article>`
+            )
+            .join("\n")}
+        </section>
+        `
+      )
+      .join("\n")}
+    </section>
+          `
     )
     .join("\n");
 
+  const template = fs.readFileSync(path.resolve("src/index-template.html"), "utf8");
+  const hydratedTemplate = template.replace("%CONTENT%", postsHtml);
+
   fs.mkdirSync(path.resolve("dist"), { recursive: true });
-  fs.writeFileSync(path.resolve("dist/index.html"), outputHtml);
+  fs.writeFileSync(path.resolve("dist/index.html"), hydratedTemplate);
 }
 
 run();
+
+const tagsToReplace = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+};
+
+function replaceTag(tag) {
+  return tagsToReplace[tag] || tag;
+}
+
+function safe_tags_replace(str) {
+  return str.replace(/[&<>]/g, replaceTag);
+}
