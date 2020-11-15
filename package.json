@@ -2,11 +2,9 @@
   "name": "system-zero",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "src/index.ts",
   "scripts": {
-    "dev": "ts-node src/index.ts",
-    "gen": "node bin/index.js",
-    "build": "ncc build src/index.ts -o bin"
+    "build": "ts-node src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -21,7 +19,6 @@
   "homepage": "https://github.com/platojar/system-zero#readme",
   "devDependencies": {
     "@types/node": "^14.14.7",
-    "@vercel/ncc": "^0.25.1",
     "axios": "^0.21.0",
     "htmlparser2": "^5.0.1",
     "js-yaml": "^3.14.0",
