@@ -1,9 +1,9 @@
 import axios from "axios";
+import cheerio from "cheerio";
 import fs from "fs";
 import * as htmlparse2 from "htmlparser2";
 import yaml from "js-yaml";
 import path from "path";
-import * as cheerio from "cheerio";
 
 interface SourceDefinition {
   href: string;
