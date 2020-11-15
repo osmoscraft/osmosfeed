@@ -1,13 +1,13 @@
-const tagsToReplace = {
+const tagsToReplace: Record<string, string> = {
   "&": "&amp;",
   "<": "&lt;",
   ">": "&gt;",
 };
 
-function replaceTag(tag) {
+function replaceTag(tag: string): string {
   return tagsToReplace[tag] || tag;
 }
 
-export function replaceHtmlTags(str) {
-  return str.replace(/[&<>]/g, replaceTag);
+export function replaceHtmlTags(htmlString: string): string {
+  return htmlString.replace(/[&<>]/g, replaceTag);
 }

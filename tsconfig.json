@@ -5,6 +5,9 @@
     "esModuleInterop": true,
     "allowJs": true,
     "module": "commonjs",
+    "strict": true,
+    "importsNotUsedAsValues": "error",
+    "skipDefaultLibCheck": true
   },
   "include": ["src/**/*.ts"]
 }

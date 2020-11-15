@@ -11,7 +11,7 @@ interface SourceDefinition {
   href: string;
 }
 
-export interface ParsedItem {
+export interface Article {
   sourceHref: string;
   sourceTitle: string;
   title: string;
@@ -24,26 +24,29 @@ export interface ParsedItem {
 async function run() {
   const sourcesText = fs.readFileSync(path.resolve("sources.yaml"), "utf8");
 
-  const sources: SourceDefinition[] = yaml.safeLoad(sourcesText);
+  const sources = yaml.safeLoad(sourcesText) as SourceDefinition[]; // TODO error checking
 
-  const pagesAsync: Promise<ParsedItem[]>[] = sources.map(async (source) => {
+  const articlesAsyncs: Promise<Article[]>[] = sources.map(async (source) => {
     const response = await axios.get(source.href);
     const xmlString = response.data;
-    const feed = htmlparse2.parseFeed(xmlString);
+    const feed = htmlparse2.parseFeed(xmlString)!; // TODO error checking
 
     const items = feed.items ?? [];
     const now = Date.now();
 
-    const parsedItem: ParsedItem[] = items.map((item) => {
-      const { title, link, pubDate, description } = item;
+    const article: Article[] = items.map((item) => {
+      const { title, link = "", pubDate, description = "" } = item;
 
       const descriptionParsed = cheerio.load(description);
       const descriptionPlainText = replaceHtmlTags(descriptionParsed.root().text()).trim().slice(0, 1024);
 
+      // TODO enhance result with Mercury parser
+      // TODO use cache to prevent refetching
+
       return {
         sourceHref: source.href,
-        sourceTitle: feed.title,
-        title,
+        sourceTitle: feed.title ?? feed.id ?? "",
+        title: title ?? "Untitled",
         description: descriptionPlainText,
         link,
         daysOld: Math.round((now - pubDate!.getTime()) / 1000 / 60 / 60 / 24),
@@ -51,15 +54,15 @@ async function run() {
       };
     });
 
-    return parsedItem;
+    return article;
   });
 
-  const posts = (await Promise.all(pagesAsync)).flat();
-  const recentPosts = posts
-    .filter((post) => post.daysOld < 14)
+  const articles = (await Promise.all(articlesAsyncs)).flat();
+  const recentArticles = articles
+    .filter((article) => article.daysOld < 14)
     .sort((b, a) => a.publishedOn.localeCompare(b.publishedOn));
 
-  const html = render({ posts: recentPosts });
+  const html = render({ articles: recentArticles });
   fs.mkdirSync(path.resolve("dist"), { recursive: true });
   fs.writeFileSync(path.resolve("dist/index.html"), html);
 }
