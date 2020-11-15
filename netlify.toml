@@ -8,4 +8,4 @@
   publish = "dist/"
 
   # Default build command.
-  command = "node bin/index.js"
+  command = "npm run gen"
