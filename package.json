@@ -1,10 +1,11 @@
 {
-  "name": "system-zero",
-  "version": "1.0.0",
+  "name": "@plato/cli",
+  "version": "0.0.1",
   "description": "",
-  "main": "src/index.ts",
   "scripts": {
-    "build": "ts-node src/index.ts",
+    "dev": "ts-node src/index.ts",
+    "start": "node bin/index.js",
+    "build": "ncc build src/index.ts -o bin",
     "clean": "rm -rf dist/index.html && rm -rf dist/cache.json"
   },
   "repository": {
@@ -20,11 +21,14 @@
   "homepage": "https://github.com/platojar/system-zero#readme",
   "devDependencies": {
     "@types/cheerio": "^0.22.22",
+    "@types/fs-extra": "^9.0.4",
     "@types/htmlparser2": "^3.10.2",
     "@types/js-yaml": "^3.12.5",
     "@types/node": "^14.14.7",
+    "@vercel/ncc": "^0.25.1",
     "axios": "^0.21.0",
     "cheerio": "^1.0.0-rc.3",
+    "fs-extra": "^9.0.1",
     "htmlparser2": "^5.0.1",
     "js-yaml": "^3.14.0",
     "ts-node": "^9.0.0",

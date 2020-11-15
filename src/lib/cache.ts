@@ -20,6 +20,7 @@ export function getCache(): Cache {
   try {
     const cacheString = fs.readFileSync(path.resolve("dist/cache.json"), "utf-8");
 
+    console.log(`[cache] cache restored`);
     return JSON.parse(cacheString) as Cache;
   } catch (err) {
     console.log(`[cache] cache not found`);

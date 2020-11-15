@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { copyAssets } from "./lib/assets";
 import { getCache, setCache } from "./lib/cache";
 import { getSources } from "./lib/config";
 import { enrich, EnrichedSource } from "./lib/enrich";
@@ -18,6 +19,8 @@ async function run() {
   const html = render({ articles });
   fs.mkdirSync(path.resolve("dist"), { recursive: true });
   fs.writeFileSync(path.resolve("dist/index.html"), html);
+
+  await copyAssets();
 }
 
 run();
