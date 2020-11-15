@@ -14,7 +14,10 @@ async function run() {
   const enrichedSources: EnrichedSource[] = await Promise.all(sources.map((source) => enrich(source, cache)));
   setCache({ sources: enrichedSources });
 
-  const articles = enrichedSources.map((enrichedSource) => enrichedSource.articles).flat();
+  const articles = enrichedSources
+    .map((enrichedSource) => enrichedSource.articles)
+    .flat()
+    .sort((a, b) => b.publishedOn.localeCompare(a.publishedOn));
 
   const html = render({ articles });
   fs.mkdirSync(path.resolve("public"), { recursive: true });
