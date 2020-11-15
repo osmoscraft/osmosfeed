@@ -4,8 +4,8 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "start": "node bin/index.js",
     "dev": "ts-node src/index.ts",
+    "gen": "node bin/index.js",
     "build": "ncc build src/index.ts -o bin"
   },
   "repository": {
