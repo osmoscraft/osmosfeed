@@ -1,13 +1,13 @@
-import type { Article } from "..";
 import fs from "fs";
 import path from "path";
+import type { EnrichedArticle } from "./enrich";
 
 export interface RenderProps {
-  articles: Article[];
+  articles: EnrichedArticle[];
 }
 
 export function render({ articles }: RenderProps): string {
-  const articlesBySourceByDates: Record<string, Record<string, Article[]>> = articles.reduce(
+  const articlesBySourceByDates: Record<string, Record<string, EnrichedArticle[]>> = articles.reduce(
     (groupedArticles, article) => {
       const publishedOnDate = article.publishedOn.split("T")[0];
       const sourceTitle = article.sourceTitle;
