@@ -1,9 +1,9 @@
 import fs from "fs";
 import path from "path";
-import type { EnrichedArticle } from "./enrich";
+import type { EnrichedSource } from "./enrich";
 
 export interface Cache {
-  articles: EnrichedArticle[];
+  readonly sources: EnrichedSource[];
 }
 
 export function setCache(data: Cache) {
@@ -22,8 +22,9 @@ export function getCache(): Cache {
 
     return JSON.parse(cacheString) as Cache;
   } catch (err) {
+    console.log(`[cache] cache not found`);
     return {
-      articles: [],
+      sources: [],
     };
   }
 }

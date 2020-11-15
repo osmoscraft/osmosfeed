@@ -10,14 +10,10 @@ async function run() {
 
   const cache = getCache();
 
-  const articlesAsyncs: Promise<EnrichedSource>[] = sources.map(async (source) => {
-    const enrichedSource = await enrich(source, cache);
-    return enrichedSource;
-  });
+  const enrichedSources: EnrichedSource[] = await Promise.all(sources.map((source) => enrich(source, cache)));
+  setCache({ sources: enrichedSources });
 
-  const articles = (await Promise.all(articlesAsyncs)).map((enrichedSource) => enrichedSource.articles).flat();
-
-  setCache({ articles });
+  const articles = enrichedSources.map((enrichedSource) => enrichedSource.articles).flat();
 
   const html = render({ articles });
   fs.mkdirSync(path.resolve("dist"), { recursive: true });

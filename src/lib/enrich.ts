@@ -28,7 +28,7 @@ export async function enrich(source: Source, cache: Cache): Promise<EnrichedSour
   const items = feed.items ?? [];
   const now = Date.now();
 
-  const cachedArticles = cache.articles.filter((articles) => articles.sourceHref === source.href);
+  const cachedArticles = cache.sources.find((cachedSource) => cachedSource.href === source.href)?.articles ?? [];
 
   const recentItems = items.filter((item) => Math.round((now - item.pubDate!.getTime()) / 1000 / 60 / 60 / 24) < 14);
   const newItems = recentItems.filter((item) => cachedArticles.every((article) => article.link !== item.link));
@@ -57,7 +57,11 @@ export async function enrich(source: Source, cache: Cache): Promise<EnrichedSour
 
   const allArticles = [...newArticles, ...cachedArticles];
 
-  console.log(`[enrich] ${newItems.length} new | ${allArticles.length} total | ${source.href}`);
+  console.log(
+    `[enrich] ${newItems.length.toString().padStart(3)} new | ${allArticles.length.toString().padStart(3)} total | ${
+      source.href
+    }`
+  );
 
   return {
     href: source.href,
