@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "ts-node src/main.ts",
     "start": "node bin/main.js",
-    "build": "node scripts/build.js",
+    "build": "npm run clean && node scripts/build.js",
     "clean": "rm -rf bin && rm -rf public"
   },
   "files": [
