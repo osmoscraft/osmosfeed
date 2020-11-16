@@ -34,7 +34,7 @@ export async function enrich(source: Source, cache: Cache): Promise<EnrichedSour
   const newItems = recentItems.filter((item) => cachedArticles.every((article) => article.link !== item.link));
 
   const newArticles: EnrichedArticle[] = newItems.map((item) => {
-    const { title, link = "", pubDate, description = "" } = item;
+    const { title, link = "", pubDate = new Date(), description = "" } = item;
 
     const descriptionParsed = cheerio.load(description);
     const descriptionPlainText = replaceHtmlTags(descriptionParsed.root().text()).trim().slice(0, 1024);
@@ -48,8 +48,8 @@ export async function enrich(source: Source, cache: Cache): Promise<EnrichedSour
       title: title ?? "Untitled",
       description: descriptionPlainText,
       link,
-      ageInDays: Math.round((now - pubDate!.getTime()) / 1000 / 60 / 60 / 24),
-      publishedOn: pubDate!.toISOString(),
+      ageInDays: Math.round((now - pubDate.getTime()) / 1000 / 60 / 60 / 24),
+      publishedOn: pubDate.toISOString(),
     };
 
     return enrichedArticle;
