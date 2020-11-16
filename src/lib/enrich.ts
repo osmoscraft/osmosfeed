@@ -55,7 +55,8 @@ export async function enrich(source: Source, cache: Cache): Promise<EnrichedSour
     return enrichedArticle;
   });
 
-  const allArticles = [...newArticles, ...cachedArticles];
+  const combinedArticles = [...newArticles, ...cachedArticles];
+  const allArticles = combinedArticles.sort((a, b) => b.publishedOn.localeCompare(a.publishedOn));
 
   console.log(
     `[enrich] ${newItems.length.toString().padStart(3)} new | ${allArticles.length.toString().padStart(3)} total | ${
