@@ -2,14 +2,14 @@ import fs from "fs";
 import path from "path";
 import { copyAssets } from "./lib/assets";
 import { getCache, setCache } from "./lib/cache";
-import { getSources } from "./lib/config";
+import { getConfig } from "./lib/config";
 import { enrich, EnrichedSource } from "./lib/enrich";
 import { render } from "./lib/render";
 
 async function run() {
-  const sources = getSources();
+  const { sources, cacheUrl } = getConfig();
 
-  const cache = getCache();
+  const cache = await getCache(cacheUrl);
 
   const enrichedSources: EnrichedSource[] = await Promise.all(sources.map((source) => enrich(source, cache)));
   setCache({ sources: enrichedSources });
