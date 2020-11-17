@@ -24,6 +24,7 @@
   "homepage": "https://github.com/platojar/system-zero#readme",
   "devDependencies": {
     "@types/cheerio": "^0.22.22",
+    "@types/entities": "^1.1.1",
     "@types/fs-extra": "^9.0.4",
     "@types/htmlparser2": "^3.10.2",
     "@types/js-yaml": "^3.12.5",
@@ -31,6 +32,7 @@
     "@vercel/ncc": "^0.25.1",
     "axios": "^0.21.0",
     "cheerio": "^1.0.0-rc.3",
+    "entities": "^2.1.0",
     "fs-extra": "^9.0.1",
     "htmlparser2": "^5.0.1",
     "js-yaml": "^3.14.0",

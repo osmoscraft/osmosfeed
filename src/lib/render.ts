@@ -34,15 +34,15 @@ export function render({ articles }: RenderProps): string {
             .map(
               (article) => `
           <article>
-            <div class="title-assembly">
-              <span class="actions">
-                <button data-action="preview">+</button>
-              </span>
-              <a href="${article.link}">
-              ${article.title}
-              </a>
-            </div>
-            <p class="article-details">${article.description}</p>
+            <details>
+              <summary>${article.title}</summary>
+              <div class="details-content">
+                <p>${article.description}</p>
+                <a href="${article.link}">${
+                article.wordCount ? `${Math.round(article.wordCount / 300)} min read` : ""
+              }</a>
+              </div>
+            </details>
           </article>`
             )
             .join("\n")}

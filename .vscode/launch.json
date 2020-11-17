@@ -6,7 +6,8 @@
       "request": "launch",
       "name": "Debug file with ts-node",
       "runtimeArgs": ["-r", "ts-node/register"],
-      "args": ["${file}"]
+      "args": ["${workspaceFolder}/src/main.ts"]
+      // "args": ["${file}"]
     }
   ]
 }

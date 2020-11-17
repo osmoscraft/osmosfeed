@@ -1,15 +1,17 @@
 body {
   background-color: #ddd;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue",
+    sans-serif;
+}
+
+:not(:focus-visible) {
+  outline: none;
 }
 
 .day-container {
   padding: 8px 8px 12px 8px;
   background: #eee;
   margin-bottom: 16px;
-}
-
-.articles-per-source {
-  padding-left: 8px;
 }
 
 h2 {
@@ -21,47 +23,55 @@ h2 {
 h3 {
   font-size: 12px;
   line-height: 16px;
-  font-weight: 700;
-  margin: 8px 0px 0px;
+  font-weight: 400;
+  margin: 8px 0px 4px;
 }
 
-a {
-  text-decoration: none;
-  color: #333;
+p {
+  margin: 0;
 }
 
-a:hover {
+summary {
+  font-weight: 600;
+}
+
+summary:hover {
   text-decoration: underline;
+  cursor: pointer;
   color: rgb(26, 161, 155);
 }
 
-.title-assembly {
-  display: flex;
-  align-items: center;
+details {
+  --border-color: transparent;
+
+  padding: 2px 4px;
+  font-size: 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+}
+details[open] {
+  --border-color: #888;
+  background-color: white;
+}
+.details-content {
+  display: grid;
+  padding: 8px 16px;
+  gap: 8px;
 }
 
-.actions {
-  margin-right: 4px;
-}
-
-article:not(.expanded) .actions {
-  display: none;
-}
-
-article:hover .actions {
-  display: inline-flex;
-}
-
-article:not(.expanded) .article-details {
-  display: none;
-}
-
-.article-details {
+details a {
+  font-size: 14px;
+  text-decoration: none;
   border: 1px solid #888;
-  padding: 8px;
+  color: #333;
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  justify-self: start;
 }
 
-button {
-  height: 20px;
-  box-sizing: border-box;
+details a:hover {
+  background-color: rgb(26, 161, 155);
+  border-color: rgb(26, 161, 155);
+  color: white;
 }

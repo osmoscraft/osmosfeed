@@ -1,18 +1,20 @@
 import axios from "axios";
 import cheerio from "cheerio";
 import * as htmlparse2 from "htmlparser2";
-import { replaceHtmlTags } from "../utils/escape-html-tags";
+import { htmlToPlainText } from "../utils/escape-html-tags";
 import type { Source } from "./config";
 import type { Cache } from "./cache";
+import { performance } from "perf_hooks";
 
 export interface EnrichedArticle {
+  ageInDays: number;
+  description: string;
+  link: string;
+  publishedOn: string;
   sourceHref: string;
   sourceTitle: string;
   title: string;
-  description: string;
-  link: string;
-  ageInDays: number;
-  publishedOn: string;
+  wordCount: number | null;
 }
 
 export interface EnrichedSource {
@@ -21,6 +23,7 @@ export interface EnrichedSource {
 }
 
 export async function enrich(source: Source, cache: Cache): Promise<EnrichedSource> {
+  const startTime = performance.now();
   const response = await axios.get(source.href);
   const xmlString = response.data;
   const feed = htmlparse2.parseFeed(xmlString)!; // TODO error checking
@@ -33,39 +36,86 @@ export async function enrich(source: Source, cache: Cache): Promise<EnrichedSour
   const recentItems = items.filter((item) => Math.round((now - item.pubDate!.getTime()) / 1000 / 60 / 60 / 24) < 14);
   const newItems = recentItems.filter((item) => cachedArticles.every((article) => article.link !== item.link));
 
-  const newArticles: EnrichedArticle[] = newItems.map((item) => {
-    const { title, link = "", pubDate = new Date(), description = "" } = item;
+  const newArticlesAsync: Promise<EnrichedArticle | null>[] = newItems.map(async (item) => {
+    const { title, link, pubDate = new Date(), description = "" } = item;
 
-    const descriptionParsed = cheerio.load(description);
-    const descriptionPlainText = replaceHtmlTags(descriptionParsed.root().text()).trim().slice(0, 1024);
+    if (!link) return null;
 
-    // TODO enhance result with Mercury parser
-    // TODO use cache to prevent refetching
+    const enrichedItem = await enrichItem(link);
 
     const enrichedArticle: EnrichedArticle = {
+      ageInDays: Math.round((now - pubDate.getTime()) / 1000 / 60 / 60 / 24),
+      description: enrichedItem.description ?? htmlToPlainText(description).slice(0, 512),
+      link,
+      publishedOn: pubDate.toISOString(),
+      wordCount: enrichedItem.wordCount,
       sourceHref: source.href,
       sourceTitle: feed.title ?? feed.id ?? "",
       title: title ?? "Untitled",
-      description: descriptionPlainText,
-      link,
-      ageInDays: Math.round((now - pubDate.getTime()) / 1000 / 60 / 60 / 24),
-      publishedOn: pubDate.toISOString(),
     };
 
     return enrichedArticle;
   });
 
+  const newArticles = (await Promise.all(newArticlesAsync)).filter((article) => article !== null) as EnrichedArticle[];
+
   const combinedArticles = [...newArticles, ...cachedArticles];
   const allArticles = combinedArticles.sort((a, b) => b.publishedOn.localeCompare(a.publishedOn));
 
+  const durationInSeconds = ((performance.now() - startTime) / 1000).toFixed(2);
+
   console.log(
-    `[enrich] ${newItems.length.toString().padStart(3)} new | ${allArticles.length.toString().padStart(3)} total | ${
-      source.href
-    }`
+    `[enrich] ${durationInSeconds.toString().padStart(4)}s | ${newItems.length
+      .toString()
+      .padStart(3)} new | ${allArticles.length.toString().padStart(3)} total | ${source.href}`
   );
 
   return {
     href: source.href,
     articles: allArticles,
   };
+}
+
+export interface EnrichItemResult {
+  description: string | null;
+  wordCount: number | null;
+}
+
+async function enrichItem(link: string) {
+  try {
+    const response = await axios.get(link);
+    const responseHtml = response.data;
+    if (response.status !== 200 || typeof responseHtml !== "string") {
+      throw new Error(`Error download ${link}`);
+    }
+
+    const $ = cheerio.load(responseHtml);
+    const plainText = $.root().text();
+
+    const wordCount = plainText.split(/\s+/).length;
+
+    let description = $(`meta[property="og:description"]`).attr("content") ?? null;
+    if (!description?.length) {
+      description = $(`meta[name="twitter:description"]`).attr("content") ?? null;
+    }
+    if (!description?.length) {
+      description = $(`meta[name="description"]`).attr("content") ?? null;
+    }
+
+    const enrichItemResult: EnrichItemResult = {
+      description,
+      wordCount,
+    };
+
+    return enrichItemResult;
+  } catch (err) {
+    console.error(`[enrich] parse item error ${link}`, err);
+
+    const emptyResult: EnrichItemResult = {
+      description: null,
+      wordCount: null,
+    };
+
+    return emptyResult;
+  }
 }
