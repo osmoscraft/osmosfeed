@@ -1,0 +1,4 @@
+* TODO stamp cache with engine version so we validate compatibibility
+* TODO basic themability: dark, light, with default to system preference
+* TODO run in a separate repo
+* DONE use ncc to compile into a single javascript, run as cli
