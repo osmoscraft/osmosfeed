@@ -1,6 +1,8 @@
 import fs from "fs";
 import path from "path";
 import { ENTRY_DIR } from "../utils/entry-dir";
+import { htmlToText } from "../utils/html-to-text";
+import { sanitizeHtml } from "../utils/sanitize-html";
 import type { EnrichedArticle } from "./enrich";
 
 export interface RenderProps {
@@ -35,10 +37,10 @@ export function render({ articles }: RenderProps): string {
               (article) => `
           <article>
             <details>
-              <summary>${article.title}</summary>
+              <summary>${htmlToText(article.title)}</summary>
               <div class="details-content">
-                <p>${article.description}</p>
-                <a href="${article.link}">${
+                <p>${htmlToText(article.description)}</p>
+                <a href="${sanitizeHtml(article.link)}">${
                 article.wordCount ? `${Math.round(article.wordCount / 300)} min read` : ""
               }</a>
               </div>

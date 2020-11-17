@@ -1,7 +1,7 @@
 import axios from "axios";
 import cheerio from "cheerio";
 import * as htmlparse2 from "htmlparser2";
-import { htmlToPlainText } from "../utils/escape-html-tags";
+import { htmlToText } from "../utils/html-to-text";
 import type { Source } from "./config";
 import type { Cache } from "./cache";
 import { performance } from "perf_hooks";
@@ -45,7 +45,7 @@ export async function enrich(source: Source, cache: Cache): Promise<EnrichedSour
 
     const enrichedArticle: EnrichedArticle = {
       ageInDays: Math.round((now - pubDate.getTime()) / 1000 / 60 / 60 / 24),
-      description: enrichedItem.description ?? htmlToPlainText(description).slice(0, 512),
+      description: enrichedItem.description ?? htmlToText(description).slice(0, 512),
       link,
       publishedOn: pubDate.toISOString(),
       wordCount: enrichedItem.wordCount,
@@ -101,6 +101,7 @@ async function enrichItem(link: string) {
     if (!description?.length) {
       description = $(`meta[name="description"]`).attr("content") ?? null;
     }
+    description = description?.length ? htmlToText(description) : null;
 
     const enrichItemResult: EnrichItemResult = {
       description,

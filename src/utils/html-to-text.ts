@@ -4,7 +4,7 @@
  * rbren + multiple contributors
  * MIT License
  */
-export function htmlToPlainText(htmlString: string): string {
+export function htmlToText(htmlString: string): string {
   // Replace block element with line break
   let str = htmlString.replace(
     /([^\n])<\/?(h|br|p|ul|ol|li|blockquote|section|table|tr|div)(?:.|\n)*?>([^\n])/gm,
