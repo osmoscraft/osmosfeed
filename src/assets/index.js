@@ -5,3 +5,6 @@ document.addEventListener("click", (event) => {
     actionButton.closest("article").classList.toggle("expanded");
   }
 });
+
+const timestamp = document.getElementById("build-timestamp");
+timestamp.innerText = new Date(timestamp.getAttribute("datetime")).toLocaleTimeString();

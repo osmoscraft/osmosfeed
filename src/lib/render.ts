@@ -53,9 +53,13 @@ export function render({ articles }: RenderProps): string {
       )
       .join("\n")}
     </section>
-          `
+    `
     )
-    .join("\n");
+    .join("\n").concat(`
+    <small>
+      <time id="build-timestamp" datetime="${new Date().toISOString()}">${new Date().toISOString()}</time>
+    </small>
+    `);
 
   const template = fs.readFileSync(path.resolve(ENTRY_DIR, "index-template.html"), "utf8");
   const hydratedTemplate = template.replace("%CONTENT%", articlesHtml);
