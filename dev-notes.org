@@ -1,4 +1,7 @@
 * TODO stamp cache with engine version so we validate compatibibility
 * TODO basic themability: dark, light, with default to system preference
 * TODO run in a separate repo
+* TODO automate CI/CD
+  * TODO build on any commit
+  * TODO auto publish on commit with tags
 * DONE use ncc to compile into a single javascript, run as cli
