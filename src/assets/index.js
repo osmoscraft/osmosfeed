@@ -7,4 +7,4 @@ document.addEventListener("click", (event) => {
 });
 
 const timestamp = document.getElementById("build-timestamp");
-timestamp.innerText = new Date(timestamp.getAttribute("datetime")).toLocaleTimeString();
+timestamp.innerText = new Date(timestamp.getAttribute("datetime")).toLocaleString();
