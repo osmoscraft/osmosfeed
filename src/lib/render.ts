@@ -41,7 +41,7 @@ export function render({ articles }: RenderProps): string {
               <div class="details-content">
                 <p>${htmlToText(article.description)}</p>
                 <a href="${sanitizeHtml(article.link)}">${
-                article.wordCount ? `${Math.round(article.wordCount / 300)} min read` : ""
+                article.wordCount ? `Read · ${Math.round(article.wordCount / 300)} min` : ""
               }</a>
               </div>
             </details>

@@ -1,7 +1,31 @@
+:root {
+  /* scheme: "Gruvbox dark, medium"
+  author: "Dawid Kurek (dawikur@gmail.com), morhetz (https://github.com/morhetz/gruvbox)" */
+  --base00: #282828; /* ---- */
+  --base01: #3c3836; /* --- */
+  --base02: #504945; /* -- */
+  --base03: #665c54; /* - */
+  --base04: #bdae93; /* + */
+  --base05: #d5c4a1; /* ++ */
+  --base06: #ebdbb2; /* +++ */
+  --base07: #fbf1c7; /* ++++ */
+  --base08: #fb4934; /* red */
+  --base09: #fe8019; /* orange */
+  --base0A: #fabd2f; /* yellow */
+  --base0B: #b8bb26; /* green */
+  --base0C: #8ec07c; /* aqua/cyan */
+  --base0D: #83a598; /* blue */
+  --base0E: #d3869b; /* purple */
+  --base0F: #d65d0e; /* brown */
+}
+
 body {
-  background-color: #ddd;
+  background-color: var(--base00);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue",
     sans-serif;
+  color: var(--base06);
+  margin: 0;
+  padding: 16px;
 }
 
 :not(:focus-visible) {
@@ -9,22 +33,23 @@ body {
 }
 
 .day-container {
-  padding: 8px 8px 12px 8px;
-  background: #eee;
+  padding: 16px 16px 16px 16px;
+  background: var(--base01);
   margin-bottom: 16px;
 }
 
 h2 {
   font-size: 12px;
   margin: 0;
-  color: #888;
+  color: var(--base0A);
 }
 
 h3 {
+  color: var(--base04);
   font-size: 12px;
   line-height: 16px;
   font-weight: 400;
-  margin: 8px 0px 4px;
+  margin: 12px 0px 4px;
 }
 
 p {
@@ -38,7 +63,7 @@ summary {
 summary:hover {
   text-decoration: underline;
   cursor: pointer;
-  color: rgb(26, 161, 155);
+  color: var(--base0D);
 }
 
 details {
@@ -50,20 +75,19 @@ details {
   border-radius: 4px;
 }
 details[open] {
-  --border-color: #888;
-  background-color: white;
+  background-color: var(--base02);
 }
 .details-content {
   display: grid;
-  padding: 8px 16px;
-  gap: 8px;
+  padding: 12px 16px;
+  gap: 16px;
 }
 
 details a {
   font-size: 14px;
   text-decoration: none;
-  border: 1px solid #888;
-  color: #333;
+  border: 1px solid var(--base04);
+  color: var(--base04);
   display: inline-block;
   padding: 2px 8px;
   border-radius: 4px;
@@ -71,7 +95,7 @@ details a {
 }
 
 details a:hover {
-  background-color: rgb(26, 161, 155);
-  border-color: rgb(26, 161, 155);
-  color: white;
+  background-color: var(--base0D);
+  border-color: var(--base0D);
+  color: var(--base01);
 }
