@@ -1,3 +1,5 @@
+* TODO evict old items from cache
+* TODO rename project to system-one
 * TODO stamp cache with engine version so we validate compatibibility
 * TODO basic themability: dark, light, with default to system preference
 * TODO run in a separate repo
