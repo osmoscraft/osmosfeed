@@ -7,7 +7,6 @@ import type { Cache } from "./cache";
 import { performance } from "perf_hooks";
 
 export interface EnrichedArticle {
-  ageInDays: number;
   description: string;
   link: string;
   publishedOn: string;
@@ -33,8 +32,7 @@ export async function enrich(source: Source, cache: Cache): Promise<EnrichedSour
 
   const cachedArticles = cache.sources.find((cachedSource) => cachedSource.href === source.href)?.articles ?? [];
 
-  const recentItems = items.filter((item) => Math.round((now - item.pubDate!.getTime()) / 1000 / 60 / 60 / 24) < 14);
-  const newItems = recentItems.filter((item) => cachedArticles.every((article) => article.link !== item.link));
+  const newItems = items.filter((item) => cachedArticles.every((article) => article.link !== item.link));
 
   const newArticlesAsync: Promise<EnrichedArticle | null>[] = newItems.map(async (item) => {
     const { title, link, pubDate = new Date(), description = "" } = item;
@@ -44,7 +42,6 @@ export async function enrich(source: Source, cache: Cache): Promise<EnrichedSour
     const enrichedItem = await enrichItem(link);
 
     const enrichedArticle: EnrichedArticle = {
-      ageInDays: Math.round((now - pubDate.getTime()) / 1000 / 60 / 60 / 24),
       description: enrichedItem.description ?? htmlToText(description).slice(0, 512),
       link,
       publishedOn: pubDate.toISOString(),
@@ -60,7 +57,9 @@ export async function enrich(source: Source, cache: Cache): Promise<EnrichedSour
   const newArticles = (await Promise.all(newArticlesAsync)).filter((article) => article !== null) as EnrichedArticle[];
 
   const combinedArticles = [...newArticles, ...cachedArticles];
-  const allArticles = combinedArticles.sort((a, b) => b.publishedOn.localeCompare(a.publishedOn));
+  const allArticles = combinedArticles
+    .filter((item) => Math.round((now - new Date(item.publishedOn).getTime()) / 1000 / 60 / 60 / 24) < 14) // must be within 14 days
+    .sort((a, b) => b.publishedOn.localeCompare(a.publishedOn));
 
   const durationInSeconds = ((performance.now() - startTime) / 1000).toFixed(2);
 
