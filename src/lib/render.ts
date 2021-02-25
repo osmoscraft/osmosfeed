@@ -14,8 +14,8 @@ export function render({ articles }: RenderProps): string {
     (groupedArticles, article) => {
       const publishedOnDate = article.publishedOn.split("T")[0];
       const sourceTitle = article.sourceTitle;
-      groupedArticles[publishedOnDate] ?? (groupedArticles[publishedOnDate] = []);
-      groupedArticles[publishedOnDate][sourceTitle] ?? (groupedArticles[publishedOnDate][sourceTitle] = []);
+      groupedArticles[publishedOnDate] ??= [];
+      groupedArticles[publishedOnDate][sourceTitle] ??= [];
       groupedArticles[publishedOnDate][sourceTitle].push(article);
       return groupedArticles;
     },
