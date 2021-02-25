@@ -19,7 +19,7 @@ export function getConfig() {
   };
 
   const sourcesText = fs.readFileSync(path.resolve("platojar.yaml"), "utf8");
-  const customizedConfig = yaml.safeLoad(sourcesText) as Partial<Config>; // TODO error checking
+  const customizedConfig = yaml.load(sourcesText) as Partial<Config>; // TODO error checking
 
   const config = { ...defaultConfig, ...customizedConfig };
   return config;
