@@ -7,7 +7,8 @@
     "module": "commonjs",
     "strict": true,
     "importsNotUsedAsValues": "error",
-    "skipDefaultLibCheck": true
+    "skipDefaultLibCheck": true,
+    "outDir": "bin",
   },
   "include": ["src/**/*.ts"]
 }
