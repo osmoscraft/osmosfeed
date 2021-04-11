@@ -13,12 +13,8 @@ export interface Config {
 
 const CONFIG_FILENAME = "osmosfeed.yaml";
 
-const DEMO_CONFIG: Config = {
-  sources: [
-    { href: "https://css-tricks.com/feed/" },
-    { href: "https://tympanus.net/codrops/feed/" },
-    { href: "https://www.smashingmagazine.com/feed/" },
-  ],
+const EMPTY_CONFIG: Config = {
+  sources: [],
   cacheUrl: null,
 };
 
@@ -40,8 +36,8 @@ export function getConfig(): Config {
     return config;
   } catch (error) {
     if (error.code === "ENOENT") {
-      console.log(`[config] No config found at ${configPath}. Using demo config.`);
-      return DEMO_CONFIG;
+      console.log(`[config] No config found at ${configPath}`);
+      return EMPTY_CONFIG;
     } else {
       throw error;
     }
