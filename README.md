@@ -10,8 +10,8 @@
 
 ## Turn on GitHub Pages
 
-1. In the repository you just created, navigate to "Settings" tab > "Pages" section.
-2. In "Source" option, select `gh-pages`, click "Save" button. If `gh-pages` doesn't exist, wait for a couple of seconds and refresh the page. It will eventually show up.
+1. In the repository you just created, navigate to **Settings** tab > **Pages** section.
+2. In **Source** option, select `gh-pages`, click "Save" button. If `gh-pages` doesn't exist, wait for a couple of seconds and refresh the page. It will eventually show up.
 3. Your feed is now available at `https://GITHUB_USERNAME.github.io/REPO_NAME/index.html`
 
 ## Customize the feed
