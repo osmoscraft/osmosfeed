@@ -22,21 +22,20 @@
     "url": "https://github.com/platojar/system-zero/issues"
   },
   "homepage": "https://github.com/platojar/system-zero#readme",
-  "devDependencies": {
-    "@types/cheerio": "^0.22.24",
-    "@types/entities": "^1.1.1",
-    "@types/fs-extra": "^9.0.7",
-    "@types/htmlparser2": "^3.10.2",
-    "@types/js-yaml": "^4.0.0",
-    "@types/node": "^14.14.31",
-    "esbuild": "^0.8.51",
+  "dependencies": {
     "axios": "^0.21.1",
-    "cheerio": "^1.0.0-rc.5",
-    "entities": "^2.2.0",
+    "cheerio": "^1.0.0-rc.6",
     "fs-extra": "^9.1.0",
-    "htmlparser2": "^6.0.0",
     "js-yaml": "^4.0.0",
+    "rss-parser": "^3.12.0"
+  },
+  "devDependencies": {
+    "@types/cheerio": "^0.22.28",
+    "@types/fs-extra": "^9.0.10",
+    "@types/js-yaml": "^4.0.0",
+    "@types/node": "^14.14.37",
+    "esbuild": "^0.8.57",
     "ts-node": "^9.1.1",
-    "typescript": "^4.2.2"
+    "typescript": "^4.2.4"
   }
 }

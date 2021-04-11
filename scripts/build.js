@@ -6,7 +6,7 @@ require("esbuild")
     platform: "node",
     entryPoints: ["src/main.ts"],
     bundle: true,
-    target: "node12",
+    target: "node14",
     outfile: "bin/main.js",
   })
   .catch(() => process.exit(1));
