@@ -18,7 +18,7 @@ export function getConfig() {
     cacheUrl: null,
   };
 
-  const sourcesText = fs.readFileSync(path.resolve("platojar.yaml"), "utf8");
+  const sourcesText = fs.readFileSync(path.resolve("osmosfeed.yaml"), "utf8");
   const customizedConfig = yaml.load(sourcesText) as Partial<Config>; // TODO error checking
 
   const config = { ...defaultConfig, ...customizedConfig };
