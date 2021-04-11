@@ -2,7 +2,6 @@
 
 - [Feed](https://osmoscraft.github.io/osmosfeed-demo/) | [Actions](https://github.com/osmoscraft/osmosfeed-demo/actions) | [Source](https://github.com/osmoscraft/osmosfeed-demo)
 
-
 # Get started
 
 ## Create a repository
@@ -17,9 +16,8 @@
 2. In **Source** option, select `gh-pages`, click "Save" button. If `gh-pages` doesn't exist, wait for a couple of seconds and refresh the page. It will eventually show up.  
    ![image](https://user-images.githubusercontent.com/1895289/114324508-3dca8880-9adf-11eb-98c9-0a0779f5fd7a.png)
 
-4. Refresh the page until it shows `Your site is published at https://GITHUB_USERNAME.github.io/REPO_NAME`. This may take up to a minute.  
+3. Refresh the page until it shows `Your site is published at https://GITHUB_USERNAME.github.io/REPO_NAME`. This may take up to a minute.  
    ![image](https://user-images.githubusercontent.com/1895289/114324153-75383580-9add-11eb-81a6-186cb18d0851.png)
-
 
 ## Customize the feed
 
@@ -42,9 +40,9 @@
 
 ## Next steps
 
-- [Customize refresh schedule](./docs/guide-customize-refresh-schedule.md)
-- [Deploy to other hosts](./docs/guide-deploy-to-other-hosts.md)
-- [Developer guide](./docs/guide-development.md)
+- [How to customize refresh schedule](./docs/how-to-customize-refresh-schedule.md)
+- [How to deploy to other hosts](./docs/how-to-deploy-to-other-hosts.md)
+- [Developer guide](./docs/developer-guide.md)
 
 ## FAQ
 

@@ -18,6 +18,6 @@ Currently no CI/CD integration. To publish a new version:
 1. You must have permission to publish to the npm feed.
 2. `npm run build` - this generates the latest binary in `bin` dir.
 3. `npm version patch|minor|major` - updates version
-4. `npm publish`
+4. `npm publish --access public`
 
 The consumer of the builder script may need to update the dependency version to receive the latest builder script.
