@@ -1,4 +1,5 @@
-# Demo
+[demo](https://osmoscraft.github.io/osmosfeed-demo/)
+
 
 # Get started
 
