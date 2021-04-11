@@ -21,7 +21,7 @@
 3. In the sources, update the items to the sources you want to follow. The final file content should look similar to this:
 
    ```yaml
-   cacheUrl: https://GITHUB_USERNAME.github.io/REPO_NAME/cache.json
+   cacheUrl: https://REPLACED_GITHUB_USERNAME.github.io/REPLACED_REPO_NAME/cache.json
    sources:
      - href: https://my-rss-source-1/feed/
      - href: https://my-rss-source-2/rss/
