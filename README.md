@@ -1,4 +1,6 @@
-[demo](https://osmoscraft.github.io/osmosfeed-demo/)
+# Demo
+
+- [Feed](https://osmoscraft.github.io/osmosfeed-demo/) | [Actions](https://github.com/osmoscraft/osmosfeed-demo/actions) | [Source](https://github.com/osmoscraft/osmosfeed-demo)
 
 
 # Get started
