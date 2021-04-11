@@ -38,3 +38,13 @@
 - [Customize refresh schedule](./docs/guide-customize-refresh-schedule)
 - [Deploy to Netlify](./docs/guide-deploy-to-netlify)
 - [Developer guide](./docs/guide-development)
+
+## FAQ
+
+### Can I make the site private so only I can visit it?
+
+It is not possible with GitHub Pages. However, if you move the site to a different hosting service, you should be able to set up authorization on the host level. For example, if you [deploy to Netlify](./docs/guide-deploy-to-netlify), there is paid plan for [password protection](https://docs.netlify.com/visitor-access/password-protection/).
+
+### Do I have to type `index.html` at the end of the URL?
+
+No. But there is a long running issue with GitHub. See [discussion from GitHub Community](https://github.community/t/my-github-page-doesnt-redirect-to-index-html/10367/24) and [some solutions from Stack Overflow](https://stackoverflow.com/questions/45362628/github-pages-site-not-detecting-index-html)
