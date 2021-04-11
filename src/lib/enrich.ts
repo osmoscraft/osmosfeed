@@ -119,7 +119,7 @@ async function enrichItem(link: string, retryLeft = FETCH_RETRY): Promise<Enrich
       try {
         publishedTime = new Date(publishedTimeString);
       } catch (error) {
-        console.log(`[enrish] parse time error ${link}`);
+        console.log(`[enrish] Parse time error ${link}`);
       }
     }
 
@@ -138,7 +138,7 @@ async function enrichItem(link: string, retryLeft = FETCH_RETRY): Promise<Enrich
       console.log(`[enrich] ${retryLeft} retry left.`);
       return enrichItem(link, retryLeft - 1);
     } else {
-      console.log(`[enrich] no retry left. Enrich item failed.`);
+      console.log(`[enrich] No retry left. Enrich item failed.`);
     }
 
     const emptyResult: EnrichItemResult = {
