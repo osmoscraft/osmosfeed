@@ -1,3 +1,7 @@
+# v1.1.1
+
+- Fixed: Item description didn't use the `description` property from feed item.
+
 # v1.1.0
 
 - Added: MIT license

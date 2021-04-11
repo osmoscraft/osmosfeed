@@ -8,7 +8,9 @@ import type { Cache } from "./cache";
 import type { Source } from "./config";
 
 const FETCH_TIMEOUT_MS = 15000; // 15 seconds
-const FETCH_RETRY = 2;
+const FETCH_RETRY = 2; // 2 retries after initial fail
+const MAX_AGE_DAYS = 30;
+const MAX_DESCRIPTION_LENGTH = 512; // characters
 
 export interface EnrichedArticle {
   description: string;
@@ -63,7 +65,7 @@ export async function enrich(source: Source, cache: Cache, retryLeft = FETCH_RET
     if (!link) return null;
 
     const enrichedItem = await enrichItem(link);
-    const description = enrichedItem.description ?? item.contentSnippet ?? "";
+    const description = item.contentSnippet ?? enrichedItem.description ?? "";
     const publishedOn = item.isoDate ?? enrichedItem.publishedTime?.toISOString() ?? new Date().toISOString();
 
     const enrichedArticle: EnrichedArticle = {
@@ -83,7 +85,7 @@ export async function enrich(source: Source, cache: Cache, retryLeft = FETCH_RET
 
   const combinedArticles = [...newArticles, ...cachedArticles];
   const renderedArticles = combinedArticles
-    .filter((item) => Math.round((now - new Date(item.publishedOn).getTime()) / 1000 / 60 / 60 / 24) < 30) // must be within 14 days
+    .filter((item) => Math.round((now - new Date(item.publishedOn).getTime()) / 1000 / 60 / 60 / 24) < MAX_AGE_DAYS)
     .sort((a, b) => b.publishedOn.localeCompare(a.publishedOn));
 
   const durationInSeconds = ((performance.now() - startTime) / 1000).toFixed(2);
@@ -174,7 +176,17 @@ function normalizeFeed(feed: Parser.Output<{}>): Parser.Output<{}> {
       ...item,
       title: item.title?.trim(),
       link: item.link?.trim(),
-      contentSnippet: item.contentSnippet?.trim()?.slice(0, 512),
+      contentSnippet: normalizeContentSnippet(item),
     })),
   };
+}
+
+function normalizeContentSnippet(item: Parser.Item): string | undefined {
+  if (item.content?.trim()) return limitLength(htmlToText(item.content.trim()), MAX_DESCRIPTION_LENGTH);
+  if (item.contentSnippet?.trim()) return limitLength(htmlToText(item.contentSnippet.trim()), MAX_DESCRIPTION_LENGTH);
+  return;
+}
+
+function limitLength(input: string, length: number): string {
+  return input.length > length ? `${input.slice(0, length)}…` : input;
 }
