@@ -35,9 +35,9 @@
 
 ## Next steps
 
-- [Customize refresh schedule](./docs/guide-customize-refresh-schedule)
-- [Deploy to Netlify](./docs/guide-deploy-to-netlify)
-- [Developer guide](./docs/guide-development)
+- [Customize refresh schedule](./docs/guide-customize-refresh-schedule.md)
+- [Deploy to other hosts](./docs/guide-deploy-to-other-hosts.md)
+- [Developer guide](./docs/guide-development.md)
 
 ## FAQ
 
