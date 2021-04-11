@@ -2,8 +2,10 @@
 
 - Added: MIT license
 - Added: `cache.json` is stamped with the version of the builder. This allows future builder with breaking change to ignore incompatible cache.
+- Added: Feed source retry on fetch error (3 times total, 15 seconds timeout).
 - Added: Item enrichment retry on fetch error (3 times total, 15 seconds timeout).
 - Added: Console log for cache restore and update behavior.
+- Added: npx command: `npx osmosfeed`
 - Changed: Improved console log that breaks down rendered item count into "new" and "cached".
 - Fixed: Item enrichment timeout could crash the build.
 

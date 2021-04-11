@@ -8,6 +8,10 @@
     "build": "npm run clean && node scripts/build.js",
     "clean": "rm -rf bin && rm -rf public"
   },
+  "main": "bin/main.js",
+  "bin": {
+    "osmosfeed": "bin/main.js"
+  },
   "files": [
     "bin"
   ],

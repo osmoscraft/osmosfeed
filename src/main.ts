@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import fs from "fs";
 import { performance } from "perf_hooks";
 import path from "path";
@@ -26,11 +28,14 @@ async function run() {
 
   const html = render({ articles });
   fs.mkdirSync(path.resolve("public"), { recursive: true });
-  fs.writeFileSync(path.resolve("public/index.html"), html);
+
+  const indexPath = path.resolve("public/index.html");
+  fs.writeFileSync(indexPath, html);
 
   await copyAssets();
 
   const durationInSeconds = ((performance.now() - startTime) / 1000).toFixed(2);
+  console.log(`[main] Index page updated ${indexPath}`);
   console.log(`[main] Finished build in ${durationInSeconds} seconds`);
 }
 

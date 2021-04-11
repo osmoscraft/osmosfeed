@@ -1,4 +1,4 @@
-import type { AxiosError } from "axios";
+import type { AxiosError, AxiosResponse } from "axios";
 import axios from "axios";
 import cheerio from "cheerio";
 import { performance } from "perf_hooks";
@@ -27,9 +27,24 @@ export interface EnrichedSource {
 
 const parser = new Parser();
 
-export async function enrich(source: Source, cache: Cache): Promise<EnrichedSource> {
+export async function enrich(source: Source, cache: Cache, retryLeft = FETCH_RETRY): Promise<EnrichedSource> {
   const startTime = performance.now();
-  const response = await axios.get(source.href);
+  let response: AxiosResponse;
+  try {
+    response = await axios.get(source.href, { timeout: FETCH_TIMEOUT_MS });
+  } catch (err) {
+    const axiosError = err as AxiosError;
+    console.error(`[enrich] Fetch source error ${source.href}`, axiosError?.code ?? axiosError?.message ?? axiosError);
+
+    if (retryLeft > 0) {
+      console.log(`[enrich] ${retryLeft} retry left.`);
+      return enrich(source, cache, retryLeft - 1);
+    } else {
+      console.log(`[enrich] No retry left. Fetch source failed.`);
+      throw err;
+    }
+  }
+
   const xmlString = response.data;
   const rawFeed = await parser.parseString(xmlString)!; // TODO error checking
   const feed = normalizeFeed(rawFeed);
