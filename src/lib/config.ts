@@ -11,6 +11,8 @@ export interface Config {
   cacheUrl: string | null;
 }
 
+const CONFIG_FILENAME = "osmosfeed.yaml";
+
 export function getConfig() {
   // populate config with default values
   const defaultConfig: Config = {
@@ -18,7 +20,7 @@ export function getConfig() {
     cacheUrl: null,
   };
 
-  const sourcesText = fs.readFileSync(path.resolve("osmosfeed.yaml"), "utf8");
+  const sourcesText = fs.readFileSync(path.resolve(CONFIG_FILENAME), "utf8");
   const customizedConfig = yaml.load(sourcesText) as Partial<Config>; // TODO error checking
 
   const config = { ...defaultConfig, ...customizedConfig };

@@ -8,6 +8,7 @@
     "strict": true,
     "importsNotUsedAsValues": "error",
     "skipDefaultLibCheck": true,
+    "resolveJsonModule": true,
     "outDir": "bin",
   },
   "include": ["src/**/*.ts"]

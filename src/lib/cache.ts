@@ -2,6 +2,7 @@ import type { AxiosError } from "axios";
 import axios from "axios";
 import fs from "fs-extra";
 import path from "path";
+import { cliVersion } from "../utils/version";
 import type { EnrichedSource } from "./enrich";
 
 /**
@@ -11,28 +12,35 @@ const CACHE_PATH = "public/cache.json";
 
 const INITIAL_CACHE: Cache = {
   sources: [],
+  cliVersion,
 };
 
 export interface Cache {
   readonly sources: EnrichedSource[];
+  readonly cliVersion: string;
 }
 
 export function setCache(data: Cache) {
   const cacheString = JSON.stringify(data, undefined, 2);
+  console.log(`[cache] cache updated with cli version ${data.cliVersion}`);
 
   fs.mkdirSync(path.resolve("public"), { recursive: true });
   fs.writeFileSync(path.resolve(CACHE_PATH), cacheString);
 }
 
 export async function getCache(cacheUrl: string | null): Promise<Cache> {
+  let cache: Cache;
   if (!cacheUrl) {
     console.log(`[cache] no cache url provided, will restore local cache`);
     // This is for development. The build server won't have any local cache.
-    return getCacheLocal(CACHE_PATH);
+    cache = await getCacheLocal(CACHE_PATH);
   } else {
     console.log(`[cache] cache url provided, will restore remote cache`);
-    return getCacheRemote(cacheUrl);
+    cache = await getCacheRemote(cacheUrl);
   }
+
+  console.log(`[cache] cache cli version ${cache.cliVersion}`);
+  return cache;
 }
 
 async function getCacheRemote(cacheUrl: string): Promise<Cache> {
@@ -62,7 +70,7 @@ async function getCacheLocal(cachePath: string): Promise<Cache> {
     console.log(`[cache] cache restored from ${cachePath}`);
     return cache;
   } catch (err) {
-    console.log(`[cache] cache not found locally`);
+    console.log(`[cache] cache not found locally, use empty cache.`);
     return INITIAL_CACHE;
   }
 }

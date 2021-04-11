@@ -1,9 +1,11 @@
-# To develop
+# Development
+
+## Local development
 
 Use `npm run dev`. It uses ts-node to spin up the feed builder script. It uses `osmosnote.yaml` in the project root.
 To test remote caching, enable/update the cache url option inside `osmosnote.yaml`
 
-# To publish
+## Publish
 
 Currently no CI/CD integration. To publish a new version:
 

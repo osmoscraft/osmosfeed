@@ -1,3 +1,4 @@
+import type { AxiosError } from "axios";
 import axios from "axios";
 import cheerio from "cheerio";
 import { performance } from "perf_hooks";
@@ -5,6 +6,9 @@ import Parser from "rss-parser";
 import { htmlToText } from "../utils/html-to-text";
 import type { Cache } from "./cache";
 import type { Source } from "./config";
+
+const FETCH_TIMEOUT_MS = 15000; // 15 seconds
+const FETCH_RETRY = 2;
 
 export interface EnrichedArticle {
   description: string;
@@ -63,21 +67,21 @@ export async function enrich(source: Source, cache: Cache): Promise<EnrichedSour
   const newArticles = (await Promise.all(newArticlesAsync)).filter((article) => article !== null) as EnrichedArticle[];
 
   const combinedArticles = [...newArticles, ...cachedArticles];
-  const allArticles = combinedArticles
+  const renderedArticles = combinedArticles
     .filter((item) => Math.round((now - new Date(item.publishedOn).getTime()) / 1000 / 60 / 60 / 24) < 30) // must be within 14 days
     .sort((a, b) => b.publishedOn.localeCompare(a.publishedOn));
 
   const durationInSeconds = ((performance.now() - startTime) / 1000).toFixed(2);
 
   console.log(
-    `[enrich] ${durationInSeconds.toString().padStart(4)}s | ${newItems.length
+    `[enrich] ${durationInSeconds.toString().padStart(4)}s | ${(renderedArticles.length - cachedArticles.length)
       .toString()
-      .padStart(3)} new | ${allArticles.length.toString().padStart(3)} total | ${source.href}`
+      .padStart(3)} new | ${cachedArticles.length.toString().padStart(3)} cached | ${source.href}`
   );
 
   return {
     href: source.href,
-    articles: allArticles,
+    articles: renderedArticles,
   };
 }
 
@@ -87,9 +91,9 @@ export interface EnrichItemResult {
   publishedTime: Date | null;
 }
 
-async function enrichItem(link: string) {
+async function enrichItem(link: string, retryLeft = FETCH_RETRY): Promise<EnrichItemResult> {
   try {
-    const response = await axios.get(link);
+    const response = await axios.get(link, { timeout: FETCH_TIMEOUT_MS });
     const responseHtml = response.data;
     if (response.status !== 200 || typeof responseHtml !== "string") {
       throw new Error(`Error download ${link}`);
@@ -127,7 +131,15 @@ async function enrichItem(link: string) {
 
     return enrichItemResult;
   } catch (err) {
-    console.error(`[enrich] parse item error ${link}`, err);
+    const axiosError = err as AxiosError;
+    console.error(`[enrich] Enrich item error ${link}`, axiosError?.code ?? axiosError?.message ?? axiosError);
+
+    if (retryLeft > 0) {
+      console.log(`[enrich] ${retryLeft} retry left.`);
+      return enrichItem(link, retryLeft - 1);
+    } else {
+      console.log(`[enrich] no retry left. Enrich item failed.`);
+    }
 
     const emptyResult: EnrichItemResult = {
       description: null,
