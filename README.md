@@ -31,7 +31,7 @@
    ```
 
 4. Scroll to the bottom of the page, click "Commit changes" button.
-5. Once the rebuild finishes, your feed will be available at https://YOUR_GITHUB_USERNAME.github.io/REPO_NAME
+5. Once the rebuild finishes, your feed will be available at `https://REPLACED_GITHUB_USERNAME.github.io/REPLACED_REPO_NAME`.
 
 ## Next steps
 
