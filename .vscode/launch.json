@@ -4,7 +4,7 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Debug file with ts-node",
+      "name": "Debug with ts-node",
       "runtimeArgs": ["-r", "ts-node/register"],
       "args": ["${workspaceFolder}/src/main.ts"]
       // "args": ["${file}"]

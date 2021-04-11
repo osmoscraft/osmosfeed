@@ -1,16 +1,13 @@
-# Development
+# Get started
 
-## Local development
+## Create a repository
 
-Use `npm run dev`. It uses ts-node to spin up the feed builder script. It uses `osmosnote.yaml` in the project root.
-To test remote caching, enable/update the cache url option inside `osmosnote.yaml`
+## Customize the feed
 
-## Publish
+## Deploy the feed
 
-Currently no CI/CD integration. To publish a new version:
+## Next steps
 
-1. `npm run build` - this generates the latest binary in `bin` dir.
-2. `npm version patch|minor|major` - updates version
-3. `npm publish`
-
-The consumer of the builder script may need to update the dependency version to receive the latest builder script.
+- [Customize refresh schedule](./docs/guide-customize-refresh-schedule)
+- [Deploy to Netlify](./docs/guide-deploy-to-netlify)
+- [Developer guide](./docs/guide-development)
