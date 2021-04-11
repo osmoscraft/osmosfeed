@@ -1,6 +1,6 @@
 {
   "name": "@platojar/cli",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "",
   "scripts": {
     "dev": "ts-node src/main.ts",
