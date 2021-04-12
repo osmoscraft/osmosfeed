@@ -57,3 +57,7 @@ No. But there is a long running issue with GitHub. See [discussion from GitHub C
 ### How to trigger a manual site update?
 
 You can make some changes to the `osmosfeed.yaml` file to trigger the build action to run. For example, add an empty comment like this `# ` on a new line.
+
+### How to build the site without using cache?
+
+You can comment out the `cacheUrl` property in the `osmosfeed.yaml`.
