@@ -1,16 +1,21 @@
-# Demo
+# osmos::feed
+
+[![image](https://user-images.githubusercontent.com/1895289/114334657-e4268600-9aff-11eb-90c6-184284b90be2.png)](https://osmoscraft.github.io/osmosfeed-demo/)
+
+## Demo
 
 - [Feed](https://osmoscraft.github.io/osmosfeed-demo/) | [Actions](https://github.com/osmoscraft/osmosfeed-demo/actions) | [Source](https://github.com/osmoscraft/osmosfeed-demo)
 
-# Get started
 
-## Create a repository
+## Get started
+
+### Create a repository
 
 1. Open [Create a new repository from osmosfeed-template](https://github.com/osmoscraft/osmosfeed-template/generate).
 2. Set visibility to "Public".
 3. Click "Create repository from template" button.
 
-## Turn on GitHub Pages
+### Turn on GitHub Pages
 
 1. In the repository you just created, navigate to **Settings** tab > **Pages** section.
 2. In **Source** option, select `gh-pages`, click "Save" button. If `gh-pages` doesn't exist, wait for a couple of seconds and refresh the page. It will eventually show up.  
@@ -19,7 +24,7 @@
 3. Refresh the page until it shows `Your site is published at https://GITHUB_USERNAME.github.io/REPO_NAME`. This may take up to a minute.  
    ![image](https://user-images.githubusercontent.com/1895289/114324153-75383580-9add-11eb-81a6-186cb18d0851.png)
 
-## Customize the feed
+### Customize the feed
 
 1. In the repository root, open `osmosfeed.yaml` file, click the "Pencil (Edit this file)" button to edit.
 2. Remove `# ` to uncommend the `cacheUrl` property, replace `GITHUB_USERNAME` with your GitHub username, and replace `REPO_NAME` with your GitHub username.
