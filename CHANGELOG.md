@@ -1,10 +1,6 @@
-# v1.1.3
+# v1.1.4
 
 - Fixed: The output website didn't have favicon.
-
-# v1.1.2
-
-- Fixed: v1.1.1 had incorrect build output.
 
 # v1.1.1
 
