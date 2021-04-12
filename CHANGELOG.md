@@ -1,3 +1,7 @@
+# v1.1.2
+
+- Fixed: v1.1.1 had incorrect build output.
+
 # v1.1.1
 
 - Fixed: Item description didn't use the `description` property from feed item.
