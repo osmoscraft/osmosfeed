@@ -1,3 +1,7 @@
+# v1.1.3
+
+- Added: Favicon
+
 # v1.1.2
 
 - Fixed: v1.1.1 had incorrect build output.
