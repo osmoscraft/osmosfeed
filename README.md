@@ -8,7 +8,6 @@ An in-browser RSS reader running entirely from your GitHub repo.
 
 - [Feed](https://osmoscraft.github.io/osmosfeed-demo/) | [Source](https://github.com/osmoscraft/osmosfeed-demo)
 
-
 ## Get started
 
 ### Create a repository
@@ -30,7 +29,7 @@ An in-browser RSS reader running entirely from your GitHub repo.
 
 1. In the repository root, open `osmosfeed.yaml` file, click the "Pencil (Edit this file)" button to edit.
 2. Remove `# ` to uncommend the `cacheUrl` property, replace `GITHUB_USERNAME` with your GitHub username, and replace `REPO_NAME` with your GitHub username.
-3. In the sources, update the items to the sources you want to follow. The final file content should look similar to this:
+3. In the sources, update the items to the sources you want to follow. The final content of the file should look similar to this:
 
    ```yaml
    cacheUrl: https://REPLACED_GITHUB_USERNAME.github.io/REPLACED_REPO_NAME/cache.json
@@ -45,26 +44,38 @@ An in-browser RSS reader running entirely from your GitHub repo.
 4. Scroll to the bottom of the page, click "Commit changes" button.
 5. Once the rebuild finishes, your feed will be available at `https://REPLACED_GITHUB_USERNAME.github.io/REPLACED_REPO_NAME`.
 
+## How does it work?
+
+- The feed is statically hosted as [GitHub Pages](https://pages.github.com/). The content stays the same until the next build.
+- The feed is rebuilt periodically by [GitHub Actions](https://github.com/features/actions), confitured in [/.github/workflows/update-feed.yaml](https://github.com/osmoscraft/osmosfeed-demo/blob/main/.github/workflows/update-feed.yaml).
+- During a rebuild, [cache from the previous build](https://osmoscraft.github.io/osmosfeed-demo/cache.json) is used, so only new content will be downloaded.
+- The source of the content can be any RSS feed URL, configured in [/osmosfeed.yaml](https://github.com/osmoscraft/osmosfeed-demo/blob/main/osmosfeed.yaml).
+- The content fetching and static site generation is powered by a custom [node.js script](https://github.com/osmoscraft/osmosfeed/blob/master/src/main.ts) optimized for speed.
+
 ## Next steps
 
-- [How to customize refresh schedule](./docs/how-to-customize-refresh-schedule.md)
-- [How to deploy to other hosts](./docs/how-to-deploy-to-other-hosts.md)
-- [Developer guide](./docs/developer-guide.md)
+- [Read the developer guide](./docs/developer-guide.md)
+- [(coming soon) How to customize refresh schedule](./docs/how-to-customize-refresh-schedule.md)
+- [(coming soon) How to deploy to other hosts](./docs/how-to-deploy-to-other-hosts.md)
 
 ## FAQ
 
-### Can I make the site private so only I can visit it?
+### Can I update the content more frequently?
 
-It is not possible with GitHub Pages. However, if you move the site to a different hosting service, you should be able to set up authorization on the host level. For example, if you [deploy to Netlify](./docs/guide-deploy-to-netlify), there is paid plan for [password protection](https://docs.netlify.com/visitor-access/password-protection/).
+Yes, you can make it as frequent as you want. But be aware that there is a [limit](<(https://docs.github.com/en/github/setting-up-and-managing-billing-and-payments-on-github/about-billing-for-github-actions)>) to the free tier of GitHub Actions. My rough estimate shows that even with hourly update, you should still have planty of unused time everyone. You can monitory spending on [Billing & plans page in Account settings](https://github.com/settings/billing).
+
+### Can I make the site private so only I can see it?
+
+It is not possible with GitHub Pages. However, if you move the site to a different hosting service, you should be able to set up authorization on the host level. For example, if you [deploy to Netlify](./docs/guide-deploy-to-netlify), there is a paid plan for [password protection](https://docs.netlify.com/visitor-access/password-protection/).
 
 ### Do I have to type `index.html` at the end of the URL?
 
-No. But there is a long running issue with GitHub. See [discussion from GitHub Community](https://github.community/t/my-github-page-doesnt-redirect-to-index-html/10367/24) and [some solutions from Stack Overflow](https://stackoverflow.com/questions/45362628/github-pages-site-not-detecting-index-html)
+No. But there is a known issue with GitHub. See [discussion from GitHub Community](https://github.community/t/my-github-page-doesnt-redirect-to-index-html/10367/24) and [some solutions from Stack Overflow](https://stackoverflow.com/questions/45362628/github-pages-site-not-detecting-index-html)
 
 ### How to trigger a manual site update?
 
-You can make some changes to the `osmosfeed.yaml` file to trigger the build action to run. For example, add an empty comment like this `# ` on a new line.
+You can make some changes to the `osmosfeed.yaml` file to trigger an update. For example, add an empty comment like this `# ` on a new line.
 
 ### How to build the site without using cache?
 
-You can comment out the `cacheUrl` property in the `osmosfeed.yaml`.
+You can comment out the `cacheUrl` property in the `osmosfeed.yaml`. Note that after the build, cache will still be created, except it won't contain any content from the previous cache.
