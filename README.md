@@ -1,5 +1,7 @@
 # osmos::feed
 
+An in-browser RSS reader built entirely on GitHub.
+
 [![image](https://user-images.githubusercontent.com/1895289/114334657-e4268600-9aff-11eb-90c6-184284b90be2.png)](https://osmoscraft.github.io/osmosfeed-demo/)
 
 ## Demo
