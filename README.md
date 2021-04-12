@@ -6,7 +6,7 @@ An in-browser RSS reader running entirely from your GitHub repo.
 
 ## Demo
 
-- [Feed](https://osmoscraft.github.io/osmosfeed-demo/) | [Actions](https://github.com/osmoscraft/osmosfeed-demo/actions) | [Source](https://github.com/osmoscraft/osmosfeed-demo)
+- [Feed](https://osmoscraft.github.io/osmosfeed-demo/) | [Source](https://github.com/osmoscraft/osmosfeed-demo)
 
 
 ## Get started
