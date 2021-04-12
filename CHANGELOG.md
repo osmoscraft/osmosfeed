@@ -1,6 +1,6 @@
 # v1.1.3
 
-- Added: Favicon
+- Fixed: The output website didn't have favicon.
 
 # v1.1.2
 
