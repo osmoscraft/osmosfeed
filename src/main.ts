@@ -26,7 +26,7 @@ async function run() {
     .flat()
     .sort((a, b) => b.publishedOn.localeCompare(a.publishedOn));
 
-  const html = render({ articles, cache });
+  const html = render({ articles });
   fs.mkdirSync(path.resolve("public"), { recursive: true });
 
   const indexPath = path.resolve("public/index.html");

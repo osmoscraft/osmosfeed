@@ -3,15 +3,14 @@ import path from "path";
 import { ENTRY_DIR } from "../utils/entry-dir";
 import { htmlToText } from "../utils/html-to-text";
 import { sanitizeHtml } from "../utils/sanitize-html";
+import { cliVersion } from "../utils/version";
 import type { EnrichedArticle } from "./enrich";
-import type { Cache } from "./cache";
 
 export interface RenderProps {
   articles: EnrichedArticle[];
-  cache: Cache;
 }
 
-export function render({ articles, cache }: RenderProps): string {
+export function render({ articles }: RenderProps): string {
   const articlesBySourceByDates: Record<string, Record<string, EnrichedArticle[]>> = articles.reduce(
     (groupedArticles, article) => {
       const publishedOnDate = article.publishedOn.split("T")[0];
@@ -60,7 +59,7 @@ export function render({ articles, cache }: RenderProps): string {
     .join("\n").concat(`
     <footer>
       <time id="build-timestamp" datetime="${new Date().toISOString()}">${new Date().toISOString()}</time>
-      <span><a href="https://github.com/osmoscraft/osmosfeed">osmosfeed ${cache.cliVersion}</a></span>
+      <span><a href="https://github.com/osmoscraft/osmosfeed">osmosfeed ${cliVersion}</a></span>
     </footer>
     `);
 

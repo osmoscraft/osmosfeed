@@ -1,4 +1,4 @@
-# v1.2.0
+# v1.2.1
 
 - Added: Display CLI version in footer
 
