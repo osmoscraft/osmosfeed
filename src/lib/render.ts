@@ -60,7 +60,7 @@ export function render({ articles, cache }: RenderProps): string {
     .join("\n").concat(`
     <footer>
       <time id="build-timestamp" datetime="${new Date().toISOString()}">${new Date().toISOString()}</time>
-      <span><a href="https://osmoscraft.org">osmosfeed ${cache.cliVersion}</a></span>
+      <span><a href="https://github.com/osmoscraft/osmosfeed">osmosfeed ${cache.cliVersion}</a></span>
     </footer>
     `);
 
