@@ -1,4 +1,4 @@
-# v1.1.5
+# v1.1.6
 
 - Fixed: The output website didn't have favicon.
 
