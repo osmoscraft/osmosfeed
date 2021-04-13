@@ -4,12 +4,14 @@ import { ENTRY_DIR } from "../utils/entry-dir";
 import { htmlToText } from "../utils/html-to-text";
 import { sanitizeHtml } from "../utils/sanitize-html";
 import type { EnrichedArticle } from "./enrich";
+import type { Cache } from "./cache";
 
 export interface RenderProps {
   articles: EnrichedArticle[];
+  cache: Cache;
 }
 
-export function render({ articles }: RenderProps): string {
+export function render({ articles, cache }: RenderProps): string {
   const articlesBySourceByDates: Record<string, Record<string, EnrichedArticle[]>> = articles.reduce(
     (groupedArticles, article) => {
       const publishedOnDate = article.publishedOn.split("T")[0];
@@ -56,9 +58,10 @@ export function render({ articles }: RenderProps): string {
     `
     )
     .join("\n").concat(`
-    <small>
+    <footer>
       <time id="build-timestamp" datetime="${new Date().toISOString()}">${new Date().toISOString()}</time>
-    </small>
+      <span><a href="https://osmoscraft.org">osmosfeed ${cache.cliVersion}</a></span>
+    </footer>
     `);
 
   const template = fs.readFileSync(path.resolve(ENTRY_DIR, "index-template.html"), "utf8");

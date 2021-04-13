@@ -1,3 +1,7 @@
+# v1.2.0
+
+- Added: Display CLI version in footer
+
 # v1.1.6
 
 - Fixed: The output website didn't have favicon.
