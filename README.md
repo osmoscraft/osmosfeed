@@ -3,9 +3,9 @@
 A web-based RSS reader running entirely from your GitHub repo.
 
 - The feed is statically hosted as [GitHub Pages](https://pages.github.com/). The content stays the same until the next build.
-- The feed is rebuilt periodically by [GitHub Actions](https://github.com/features/actions), confitured in [/.github/workflows/update-feed.yaml](https://github.com/osmoscraft/osmosfeed-demo/blob/main/.github/workflows/update-feed.yaml).
+- The feed is rebuilt periodically by [GitHub Actions](https://github.com/features/actions), confitured in [.github/workflows/update-feed.yaml](https://github.com/osmoscraft/osmosfeed-demo/blob/main/.github/workflows/update-feed.yaml).
 - During a rebuild, [cache from the previous build](https://osmoscraft.github.io/osmosfeed-demo/cache.json) is used, so only new content will be downloaded.
-- The source of the content can be any RSS feed URL, configured in [/osmosfeed.yaml](https://github.com/osmoscraft/osmosfeed-demo/blob/main/osmosfeed.yaml).
+- The source of the content can be any RSS feed URL, configured in [osmosfeed.yaml](https://github.com/osmoscraft/osmosfeed-demo/blob/main/osmosfeed.yaml).
 - The content fetching and static site generation is powered by a custom [node.js script](https://github.com/osmoscraft/osmosfeed/blob/master/src/main.ts) optimized for speed.
 
 [![image](https://user-images.githubusercontent.com/1895289/114334657-e4268600-9aff-11eb-90c6-184284b90be2.png)](https://osmoscraft.github.io/osmosfeed-demo/)
