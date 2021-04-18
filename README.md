@@ -60,7 +60,7 @@ A web-based RSS reader running entirely from your GitHub repo.
 
 ## Contributions
 
-My current focus is to bring the entire [osmos::craft](https://osmoscraft.org) project online. Until then, I have no bandwidth for new feature requests or PRs. However, issues and bug reports are always welcome. I'll keep tracking of issues and address them once I have more time! Thank your for being patient.
+My current focus is to bring the entire [osmos::craft](https://osmoscraft.org) project online. Until then, I have no bandwidth for new feature requests or PRs. However, issues and bug reports are always welcome. I'll keep track of issues and address them once I have more time! Thank your for being patient.
 
 ## FAQ
 
@@ -83,3 +83,8 @@ You can make some changes to the `osmosfeed.yaml` file to trigger an update. For
 ### How to build the site without using cache?
 
 You can comment out the `cacheUrl` property in the `osmosfeed.yaml`. Note that after the build, cache will still be created, except it won't contain any content from the previous cache.
+
+# More tools
+
+osmos::feed is part of the osmos::craft project. If you enjoy this tool, you might also like:
+- [osmos::craft](https://github.com/osmoscraft/osmoscraft): An in-browser bookmark manager optimized for tagging and retrieval speed.
