@@ -1,6 +1,5 @@
 ![image](https://user-images.githubusercontent.com/1895289/115134753-d2dded80-9fc7-11eb-8a54-e42483cd6969.png)
 
-
 # osmos::feed
 
 A web-based RSS reader running entirely from your GitHub repo.
@@ -11,9 +10,9 @@ A web-based RSS reader running entirely from your GitHub repo.
 - The source of the content can be any RSS feed URL, configured in [osmosfeed.yaml](https://github.com/osmoscraft/osmosfeed-demo/blob/main/osmosfeed.yaml).
 - The content fetching and static site generation is powered by a custom [node.js script](https://github.com/osmoscraft/osmosfeed/blob/master/src/main.ts) optimized for speed.
 
-[![image](https://user-images.githubusercontent.com/1895289/114334657-e4268600-9aff-11eb-90c6-184284b90be2.png)](https://osmoscraft.github.io/osmosfeed-demo/)
-
 ## Demo
+
+[![image](https://user-images.githubusercontent.com/1895289/114334657-e4268600-9aff-11eb-90c6-184284b90be2.png)](https://osmoscraft.github.io/osmosfeed-demo/)
 
 - [Open demo](https://osmoscraft.github.io/osmosfeed-demo/) | [View source](https://github.com/osmoscraft/osmosfeed-demo)
 
@@ -52,7 +51,6 @@ A web-based RSS reader running entirely from your GitHub repo.
 
 4. Scroll to the bottom of the page, click "Commit changes" button.
 5. Once the rebuild finishes, your feed will be available at `https://REPLACED_GITHUB_USERNAME.github.io/REPLACED_REPO_NAME`.
-
 
 ## Next steps
 
