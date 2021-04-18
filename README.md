@@ -84,7 +84,7 @@ You can make some changes to the `osmosfeed.yaml` file to trigger an update. For
 
 You can comment out the `cacheUrl` property in the `osmosfeed.yaml`. Note that after the build, cache will still be created, except it won't contain any content from the previous cache.
 
-# More tools
+## Ecosystem
 
-osmos::feed is part of the [osmos::craft](https://osmoscraft.org) project. If you enjoy this tool, you might also like:
+osmos::feed is part of the [osmos::craft](https://osmoscraft.org) ecosystem. If you enjoy this tool, you might also like:
 - [osmos::memo](https://github.com/osmoscraft/osmosmemo): An in-browser bookmark manager optimized for tagging and retrieval speed.
