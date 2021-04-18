@@ -87,4 +87,4 @@ You can comment out the `cacheUrl` property in the `osmosfeed.yaml`. Note that a
 # More tools
 
 osmos::feed is part of the [osmos::craft](https://osmoscraft.org) project. If you enjoy this tool, you might also like:
-- [osmos::craft](https://github.com/osmoscraft/osmoscraft): An in-browser bookmark manager optimized for tagging and retrieval speed.
+- [osmos::memo](https://github.com/osmoscraft/osmosmemo): An in-browser bookmark manager optimized for tagging and retrieval speed.
