@@ -1,3 +1,7 @@
+# v1.2.2
+
+- Changed: favicon changed from "M" to downward arrow symbol.
+
 # v1.2.1
 
 - Added: Display CLI version in footer

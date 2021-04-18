@@ -58,6 +58,10 @@ A web-based RSS reader running entirely from your GitHub repo.
 - [(coming soon) How to customize refresh schedule](./docs/how-to-customize-refresh-schedule.md)
 - [(coming soon) How to deploy to other hosts](./docs/how-to-deploy-to-other-hosts.md)
 
+## Contributions
+
+My current focus is to bring the entire [osmos::craft](https://osmoscraft.org) project online. Until then, I have no bandwidth for new feature requests or PRs. However, issues and bug reports are always welcome. I'll keep tracking of issues and address them once I have more time! Thank your for being patient.
+
 ## FAQ
 
 ### Can I update the content more frequently?
