@@ -1,4 +1,4 @@
-[![image](https://user-images.githubusercontent.com/1895289/115134753-d2dded80-9fc7-11eb-8a54-e42483cd6969.png)](https://osmoscraft.org)
+![image](https://user-images.githubusercontent.com/1895289/115334130-aa80fb00-a14f-11eb-9f9a-e0d2b8a15851.png)
 
 # osmos::feed
 
