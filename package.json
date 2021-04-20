@@ -1,6 +1,6 @@
 {
   "name": "@osmoscraft/osmosfeed",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "",
   "scripts": {
     "dev": "ts-node src/main.ts",
