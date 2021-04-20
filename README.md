@@ -60,7 +60,7 @@ A web-based RSS reader running entirely from your GitHub repo.
 
 ## Contributions
 
-My current focus is to bring the entire [osmos::craft](https://osmoscraft.org) project online. Until then, I have no bandwidth for new feature requests or PRs. However, issues and bug reports are always welcome. I'll keep track of issues and address them once I have more time! Thank your for being patient.
+My current focus is to bring the entire [osmos::craft](https://osmoscraft.org) project online. Until then, I have no bandwidth for new feature requests or PRs. However, issues and bug reports are always welcome. I'll keep track of issues and address them once I have more time. Thank your for being patient.
 
 ## FAQ
 
