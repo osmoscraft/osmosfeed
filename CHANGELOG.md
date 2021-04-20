@@ -1,6 +1,6 @@
-# v1.2.2
+# v1.2.3
 
-- Changed: favicon changed from "M" to downward arrow symbol.
+- Changed: favicon update.
 
 # v1.2.1
 
