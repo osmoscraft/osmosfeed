@@ -88,3 +88,4 @@ My current focus is to bring the entire [osmos::craft](https://osmoscraft.org) p
 
 osmos::feed is part of the [osmos::craft](https://osmoscraft.org) ecosystem. If you enjoy this tool, you might also like:
 - [osmos::memo](https://github.com/osmoscraft/osmosmemo): An in-browser bookmark manager optimized for tagging and retrieval speed.
+- [osmos::note](https://github.com/osmoscraft/osmosnote): A web-based text editor for networked note-taking, self-hostable on any Git repository.
