@@ -1,4 +1,4 @@
-# Config reference for osmosfeed.yaml
+# `osmosfeed.yaml` configuration reference
 
 - `required` properties contain **example** values.
 - `optional` properties contain **default** values.
