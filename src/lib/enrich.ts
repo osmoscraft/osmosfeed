@@ -5,11 +5,11 @@ import { performance } from "perf_hooks";
 import Parser from "rss-parser";
 import { htmlToText } from "../utils/html-to-text";
 import type { Cache } from "./cache";
-import type { Source } from "./config";
+import type { Config, Source } from "./config";
 
 const FETCH_TIMEOUT_MS = 15000; // 15 seconds
 const FETCH_RETRY = 2; // 2 retries after initial fail
-const MAX_AGE_DAYS = 30;
+const MILLISECONDS_PER_DAY = 86400000; // 1000 * 60 * 60 * 24
 const MAX_DESCRIPTION_LENGTH = 512; // characters
 
 export interface EnrichedArticle {
@@ -29,7 +29,19 @@ export interface EnrichedSource {
 
 const parser = new Parser();
 
-export async function enrich(source: Source, cache: Cache, retryLeft = FETCH_RETRY): Promise<EnrichedSource> {
+export interface EnrichInput {
+  source: Source;
+  cache: Cache;
+  config: Config;
+}
+
+export async function enrich(enrichInput: EnrichInput): Promise<EnrichedSource> {
+  return enrichWithRetry(enrichInput, FETCH_RETRY);
+}
+
+export async function enrichWithRetry(enrichInput: EnrichInput, retryLeft = FETCH_RETRY): Promise<EnrichedSource> {
+  const { source, cache, config } = enrichInput;
+
   const startTime = performance.now();
   let response: AxiosResponse;
   try {
@@ -40,7 +52,7 @@ export async function enrich(source: Source, cache: Cache, retryLeft = FETCH_RET
 
     if (retryLeft > 0) {
       console.log(`[enrich] ${retryLeft} retry left.`);
-      return enrich(source, cache, retryLeft - 1);
+      return enrichWithRetry(enrichInput, retryLeft - 1);
     } else {
       console.log(`[enrich] No retry left. Fetch source failed.`);
       throw err;
@@ -85,15 +97,19 @@ export async function enrich(source: Source, cache: Cache, retryLeft = FETCH_RET
 
   const combinedArticles = [...newArticles, ...cachedArticles];
   const renderedArticles = combinedArticles
-    .filter((item) => Math.round((now - new Date(item.publishedOn).getTime()) / 1000 / 60 / 60 / 24) < MAX_AGE_DAYS)
+    .filter(
+      (item) => Math.round((now - new Date(item.publishedOn).getTime()) / MILLISECONDS_PER_DAY) < config.cacheMaxDays
+    )
     .sort((a, b) => b.publishedOn.localeCompare(a.publishedOn));
 
   const durationInSeconds = ((performance.now() - startTime) / 1000).toFixed(2);
 
   console.log(
-    `[enrich] ${durationInSeconds.toString().padStart(4)}s | ${(renderedArticles.length - cachedArticles.length)
+    `[enrich] ${durationInSeconds.toString().padStart(4)}s | ${cachedArticles.length
       .toString()
-      .padStart(3)} new | ${cachedArticles.length.toString().padStart(3)} cached | ${source.href}`
+      .padStart(3)} cached | ${(renderedArticles.length - cachedArticles.length).toString().padStart(3)} new | ${
+      source.href
+    }`
   );
 
   return {

@@ -1,4 +1,7 @@
+# This config is used for local developement
+
 # cacheUrl: https://dailyread.netlify.app/cache.json
+# cacheMaxDays: 30
 sources:
   - href: https://christianheilmann.com/feed/
   - href: https://daverupert.com/atom.xml

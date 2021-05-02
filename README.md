@@ -52,9 +52,10 @@ A web-based RSS reader running entirely from your GitHub repo.
 4. Scroll to the bottom of the page, click "Commit changes" button.
 5. Once the rebuild finishes, your feed will be available at `https://REPLACED_GITHUB_USERNAME.github.io/REPLACED_REPO_NAME`.
 
-## Next steps
+## Guides and references
 
-- [Read the developer guide](./docs/developer-guide.md)
+- [Configuration reference](./docs/osmosfeed-yaml-reference.md)
+- [Developer guide](./docs/developer-guide.md)
 - [(coming soon) How to customize refresh schedule](./docs/how-to-customize-refresh-schedule.md)
 - [(coming soon) How to deploy to other hosts](./docs/how-to-deploy-to-other-hosts.md)
 
@@ -87,5 +88,6 @@ My current focus is to bring the entire [osmos::craft](https://osmoscraft.org) p
 ## Ecosystem
 
 osmos::feed is part of the [osmos::craft](https://osmoscraft.org) ecosystem. If you enjoy this tool, you might also like:
+
 - [osmos::memo](https://github.com/osmoscraft/osmosmemo): An in-browser bookmark manager optimized for tagging and retrieval speed.
 - [osmos::note](https://github.com/osmoscraft/osmosnote): A web-based text editor for networked note-taking, self-hostable on any Git repository.
