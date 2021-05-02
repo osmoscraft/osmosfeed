@@ -14,11 +14,15 @@ async function run() {
   const startTime = performance.now();
   console.log(`[main] Starting build using cli version ${cliVersion}`);
 
-  const { sources, cacheUrl } = getConfig();
+  const config = getConfig();
+  const { sources, cacheUrl } = config;
 
   const cache = await getCache(cacheUrl);
 
-  const enrichedSources: EnrichedSource[] = await Promise.all(sources.map((source) => enrich(source, cache)));
+  const enrichedSources: EnrichedSource[] = await Promise.all(
+    sources.map((source) => enrich({ source, cache, config }))
+  );
+
   setCache({ sources: enrichedSources, cliVersion });
 
   const articles = enrichedSources

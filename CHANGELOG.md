@@ -1,10 +1,17 @@
+# v1.3.0
+
+- Added: Customize cache lifespan with `cacheMaxDays` property in `osmosfeed.yaml`.
+- Added: [Documentation](docs/osmosfeed-yaml-reference.md) for `osmosfeed.yaml`.
+- Fixed: More intuitive logging during build.
+- Chore: Refactored parameter passing for `enrich` step.
+
 # v1.2.3
 
 - Changed: favicon update.
 
 # v1.2.1
 
-- Added: Display CLI version in footer
+- Added: Display CLI version in footer.
 
 # v1.1.6
 

@@ -9,20 +9,17 @@ export interface Source {
 export interface Config {
   sources: Source[];
   cacheUrl: string | null;
+  cacheMaxDays: number;
 }
 
 const CONFIG_FILENAME = "osmosfeed.yaml";
-
-const EMPTY_CONFIG: Config = {
-  sources: [],
-  cacheUrl: null,
-};
 
 export function getConfig(): Config {
   // populate config with default values
   const defaultConfig: Config = {
     sources: [],
     cacheUrl: null,
+    cacheMaxDays: 30,
   };
 
   const configPath = path.resolve(CONFIG_FILENAME);
@@ -37,7 +34,7 @@ export function getConfig(): Config {
   } catch (error) {
     if (error.code === "ENOENT") {
       console.log(`[config] No config found at ${configPath}`);
-      return EMPTY_CONFIG;
+      return defaultConfig;
     } else {
       throw error;
     }
