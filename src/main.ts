@@ -19,9 +19,11 @@ async function run() {
 
   const cache = await getCache(cacheUrl);
 
-  const enrichedSources: EnrichedSource[] = await Promise.all(
-    sources.map((source) => enrich({ source, cache, config }))
-  );
+  const enrichedSources: EnrichedSource[] = (await Promise.all(
+    sources.map((source) => 
+      enrich({ source, cache, config }).catch(err => console.error(err))
+    )
+  )).filter((result) => result);
 
   setCache({ sources: enrichedSources, cliVersion });
 
