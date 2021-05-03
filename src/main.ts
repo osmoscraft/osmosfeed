@@ -23,7 +23,7 @@ async function run() {
     sources.map((source) => 
       enrich({ source, cache, config }).catch(err => console.error(err))
     )
-  )).filter((result) => result);
+  )).filter((result): result is EnrichedSource => result !== undefined);
 
   setCache({ sources: enrichedSources, cliVersion });
 
