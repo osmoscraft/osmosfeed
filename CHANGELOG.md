@@ -1,3 +1,10 @@
+# v1.3.1
+
+- Fixed: Avoid crwalers.
+- Fixed: Error logging from XML parser.
+- Fixed: Typo in docs.
+- Thank you: @dym-sh, @tabokie, @cheese1
+
 # v1.3.0
 
 - Added: Customize cache lifespan with `cacheMaxDays` property in `osmosfeed.yaml`.
