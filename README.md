@@ -64,7 +64,7 @@ A web-based RSS reader running entirely from your GitHub repo.
 - **🐞 Bug reports**: Please [file an issue](https://github.com/osmoscraft/osmosfeed/issues/new?assignees=&labels=&template=bug_report.md&title=)
 - **🙏 Q&A**: Please [start a discussion](https://github.com/osmoscraft/osmosfeed/discussions/categories/q-a) and choose the **Q&A** category.
 - **💡 Idea and feature request**: Please [start a discussion](https://github.com/osmoscraft/osmosfeed/discussions/categories/ideas) and choose the **Idea** category.
-- **🛠 Pull requests**: You are welcome to send documentation enhancement and obvious bug fixes. For larger PR, please start with a discussion.
+- **🛠 PR**: Documentation enhancement and obvious bug fixes are welcome. For larger PR, please start with a discussion.
 - **🌐 Translation**: If you want contribute as a translator, please start with a discussion. I'll create a placeholder doc for you.
 
 ## FAQ
