@@ -1,13 +1,13 @@
 ---
 name: Feature requests and questions
-about: ⛔ STOP. This repo uses [GitHub Discussion](https://github.com/osmoscraft/osmosfeed/discussions) instead
+about: ⛔ Please uses GitHub Discussion instead. Visit: https://github.com/osmoscraft/osmosfeed/discussions
 title: ''
 labels: ''
 assignees: ''
 
 ---
 
-⛔ STOP. This repo uses [GitHub Discussion](https://github.com/osmoscraft/osmosfeed/discussions).
+Hi, sorry there is no easier way to guide you toward GitHub Discussion. Please visit: https://github.com/osmoscraft/osmosfeed/discussions).
 
 1. To submit a feature requests, create a Discussion in the **💡 Idea** category.
 2. To ask a question, create a Discussion in the **🙏 Q&A** category.
