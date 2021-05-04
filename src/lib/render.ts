@@ -41,7 +41,7 @@ export function render({ articles }: RenderProps): string {
               <summary>${htmlToText(article.title)}</summary>
               <div class="details-content">
                 <p>${htmlToText(article.description)}</p>
-                <a href="${sanitizeHtml(article.link)}" target="_blank">${
+                <a href="${sanitizeHtml(article.link)}">${
                 article.wordCount ? `Read · ${Math.round(article.wordCount / 300)} min` : "Read"
               }</a>
               </div>
@@ -59,7 +59,7 @@ export function render({ articles }: RenderProps): string {
     .join("\n").concat(`
     <footer>
       <time id="build-timestamp" datetime="${new Date().toISOString()}">${new Date().toISOString()}</time>
-      <span><a href="https://github.com/osmoscraft/osmosfeed" target="_blank">osmosfeed ${cliVersion}</a></span>
+      <span><a href="https://github.com/osmoscraft/osmosfeed">osmosfeed ${cliVersion}</a></span>
     </footer>
     `);
 
