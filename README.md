@@ -59,9 +59,11 @@ A web-based RSS reader running entirely from your GitHub repo.
 - [(coming soon) How to customize refresh schedule](./docs/how-to-customize-refresh-schedule.md)
 - [(coming soon) How to deploy to other hosts](./docs/how-to-deploy-to-other-hosts.md)
 
-## Contributions
+## To contribute
 
-My current focus is to bring the entire [osmos::craft](https://osmoscraft.org) project online. Until then, I have no bandwidth for new feature requests or PRs. However, issues and bug reports are always welcome. I'll keep track of issues and address them once I have more time. Thank your for being patient.
+- **🐞 Bug reports**: Please [file an issue](https://github.com/osmoscraft/osmosfeed/issues/new?assignees=&labels=&template=bug_report.md&title=)
+- **🙏 Q&A**: Please [start a discussion](https://github.com/osmoscraft/osmosfeed/discussions/categories/q-a) and choose the **Q&A** category.
+- **💡 Idea and feature request**: Please [start a discussion](https://github.com/osmoscraft/osmosfeed/discussions/categories/ideas) and choose the **Idea** category.
 
 ## FAQ
 
