@@ -1,6 +1,6 @@
 ---
 name: Feature requests and questions
-about: ⛔ Please uses GitHub Discussion instead. Visit: https://github.com/osmoscraft/osmosfeed/discussions
+about: ⛔ Please uses GitHub Discussion instead. Visit https://github.com/osmoscraft/osmosfeed/discussions
 title: ''
 labels: ''
 assignees: ''
