@@ -60,7 +60,10 @@ export async function enrichWithRetry(enrichInput: EnrichInput, retryLeft = FETC
   }
 
   const xmlString = response.data;
-  const rawFeed = await parser.parseString(xmlString)!; // TODO error checking
+  const rawFeed = await parser.parseString(xmlString)!.catch(err => {
+    console.error(`[enrich] Parse source failed ${source.href}`);
+    throw err;
+  });
   const feed = normalizeFeed(rawFeed);
   const items = feed.items;
   const now = Date.now();
