@@ -1,6 +1,6 @@
 ---
 name: Feature requests and questions
-about: Suggest an idea for this project, or have your question answered
+about: ⛔ STOP. This repo uses [GitHub Discussion](https://github.com/osmoscraft/osmosfeed/discussions) instead
 title: ''
 labels: ''
 assignees: ''
