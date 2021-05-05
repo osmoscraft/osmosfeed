@@ -1,5 +1,9 @@
 # Customization guide
 
+## Examples
+
+- Default template, gruvbox light theme. [Demo](https://osmoscraft.github.io/osmosfeed-examples/default-gruvbox-light/) | [Source](https://github.com/osmoscraft/osmosfeed-examples/tree/main/examples/default-gruvbox-light)
+
 ## Frontend customization
 
 ### Extend the default template with inline HTML
