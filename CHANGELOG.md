@@ -1,6 +1,6 @@
 # v1.4.0
 
-- Added: Custom CSS and JavaScript via `includes` folder. See documentation and example.
+- Added: Custom CSS and JavaScript via `includes` folder. See [documentation](docs/customization-guide.md).
 
 # v1.3.1
 

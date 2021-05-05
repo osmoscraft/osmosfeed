@@ -4,7 +4,7 @@
 
 ### Extend the default template with inline HTML
 
-You can inject arbitrary content into any one (or more) of the 3 slots in the default template.
+You can inject arbitrary content into 3 predefined slots in the default template.
 
 ```html
 <!DOCTYPE html>
