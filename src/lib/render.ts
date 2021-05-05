@@ -5,12 +5,16 @@ import { htmlToText } from "../utils/html-to-text";
 import { sanitizeHtml } from "../utils/sanitize-html";
 import { cliVersion } from "../utils/version";
 import type { EnrichedArticle } from "./enrich";
+import type { IncludeSnippet } from "./include";
 
 export interface RenderProps {
   articles: EnrichedArticle[];
+  includeSnippets: IncludeSnippet[];
 }
 
-export function render({ articles }: RenderProps): string {
+const CONTENT_SLOT = `<!-- %MAIN_CONTENT% -->`;
+
+export function render({ articles, includeSnippets }: RenderProps): string {
   const articlesBySourceByDates: Record<string, Record<string, EnrichedArticle[]>> = articles.reduce(
     (groupedArticles, article) => {
       const publishedOnDate = article.publishedOn.split("T")[0];
@@ -64,7 +68,11 @@ export function render({ articles }: RenderProps): string {
     `);
 
   const template = fs.readFileSync(path.resolve(ENTRY_DIR, "index-template.html"), "utf8");
-  const hydratedTemplate = template.replace("%CONTENT%", articlesHtml);
+  const hydratedTemplate = template.replace(CONTENT_SLOT, articlesHtml);
+  const customizedTemplate = includeSnippets.reduce(
+    (currentTemplate, snippet) => currentTemplate.replace(snippet.replaceFrom, snippet.replaceTo),
+    hydratedTemplate
+  );
 
-  return hydratedTemplate;
+  return customizedTemplate;
 }

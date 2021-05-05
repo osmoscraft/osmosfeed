@@ -5,6 +5,7 @@
 - `npm run dev`. It uses ts-node to spin up the feed builder script.
   - It will use `osmosnote.yaml` in the project root.
 - To test remote caching, enable/update the cache url option inside `osmosnote.yaml`.
+- To test customization, Rename `includes-test` to `includes`.
 
 ## Debug
 
