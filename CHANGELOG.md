@@ -1,3 +1,7 @@
+# v1.4.0
+
+- Added: Custom CSS and JavaScript via `includes` folder. See documentation and example.
+
 # v1.3.1
 
 - Fixed: Avoid crwalers.

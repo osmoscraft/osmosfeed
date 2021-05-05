@@ -9,6 +9,7 @@ import { getConfig } from "./lib/config";
 import { enrich, EnrichedSource } from "./lib/enrich";
 import { render } from "./lib/render";
 import { cliVersion } from "./utils/version";
+import { include } from "./lib/include";
 
 async function run() {
   const startTime = performance.now();
@@ -25,12 +26,14 @@ async function run() {
 
   setCache({ sources: enrichedSources, cliVersion });
 
+  const { includeSnippets } = await include();
+
   const articles = enrichedSources
     .map((enrichedSource) => enrichedSource.articles)
     .flat()
     .sort((a, b) => b.publishedOn.localeCompare(a.publishedOn));
 
-  const html = render({ articles });
+  const html = render({ articles, includeSnippets });
   fs.mkdirSync(path.resolve("public"), { recursive: true });
 
   const indexPath = path.resolve("public/index.html");
