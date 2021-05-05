@@ -41,6 +41,8 @@ repo-root/
 
 With this technique, you can
 
+- Customize the parameters in the current theme. See `includes/before-head-end.html` file in the [Source](https://github.com/osmoscraft/osmosfeed-examples/tree/main/examples/default-gruvbox-light).
+  - For other themes and inspirations, consider learning [base16](https://github.com/chriskempson/base16) and trying out [this tool](https://terminal.sexy/).
 - Add custom CSS by injecting a `<style>` tag using `before-head-end.html`.
 - Run custom JavaScript by injecting a `<script>` tag using `before-body-end.html`.
 
