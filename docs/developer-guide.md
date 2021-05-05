@@ -20,5 +20,7 @@ Currently no CI/CD integration. To publish a new version:
 2. `npm version patch|minor|major` - updates version.
 3. `npm run build` - this generates the latest binary in `bin` dir.
 4. `npm publish --access public` - push to npm registry.
+5. `git push origin vX.Y.Z` - publish tag to remote.
+6. Add changelog as release notes in [GitHub Releases](https://github.com/osmoscraft/osmosfeed/tags).
 
 The consumer of the builder script may need to update the dependency version to receive the latest builder script.

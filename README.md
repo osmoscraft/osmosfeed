@@ -55,6 +55,7 @@ A web-based RSS reader running entirely from your GitHub repo.
 ## Guides and references
 
 - [Configuration reference](./docs/osmosfeed-yaml-reference.md)
+- [Customization guide](./docs/customization-guide.md)
 - [Developer guide](./docs/developer-guide.md)
 - [(coming soon) How to customize refresh schedule](./docs/how-to-customize-refresh-schedule.md)
 - [(coming soon) How to deploy to other hosts](./docs/how-to-deploy-to-other-hosts.md)
