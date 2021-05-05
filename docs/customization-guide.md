@@ -37,8 +37,8 @@ repo-root/
 
 With this technique, you can
 
-- Add custom CSS by injecting a `<style>` tag from `before-head-end.html`.
-- Run custom JavaScript by injecting a `<script>` tag from `before-body-end.html`.
+- Add custom CSS by injecting a `<style>` tag using `before-head-end.html`.
+- Run custom JavaScript by injecting a `<script>` tag using `before-body-end.html`.
 
 ### Use different HTML template
 
