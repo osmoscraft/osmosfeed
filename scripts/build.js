@@ -12,4 +12,4 @@ require("esbuild")
   .catch(() => process.exit(1));
 
 fs.copySync(path.resolve("src/index-template.html"), path.resolve("bin/index-template.html"));
-fs.copySync(path.resolve("src/assets"), path.resolve("bin/assets"));
+fs.copySync(path.resolve("src/system-static"), path.resolve("bin/system-static"));

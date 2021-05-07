@@ -1,3 +1,9 @@
+# Unreleased
+
+- Added: Copy all files from `static` directory to the root of the site.
+- Changed: Favicon, css, and js assets now existing at site root level.
+- Chore: Excluded testing files from repo.
+
 # v1.4.0
 
 - Added: Basic theme customization. See [documentation](docs/customization-guide.md).
