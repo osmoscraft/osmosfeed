@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
 import fs from "fs";
-import { performance } from "perf_hooks";
 import path from "path";
-import { copyAssets } from "./lib/assets";
+import { performance } from "perf_hooks";
 import { getCache, setCache } from "./lib/cache";
 import { getConfig } from "./lib/config";
+import { copy } from "./lib/copy";
 import { enrich, EnrichedSource } from "./lib/enrich";
+import { include } from "./lib/include";
 import { render } from "./lib/render";
 import { cliVersion } from "./utils/version";
-import { include } from "./lib/include";
 
 async function run() {
   const startTime = performance.now();
@@ -39,7 +39,7 @@ async function run() {
   const indexPath = path.resolve("public/index.html");
   fs.writeFileSync(indexPath, html);
 
-  await copyAssets();
+  await copy();
 
   const durationInSeconds = ((performance.now() - startTime) / 1000).toFixed(2);
   console.log(`[main] Index page updated ${indexPath}`);
