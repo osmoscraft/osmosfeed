@@ -13,6 +13,15 @@ Add any file to the `static` directory. The builder will copy those files to the
 - Configure custom domain with `CNAME`
 - Override the default `favicon.ico` with a custom one.
 
+```
+repo-root/
+├── static/
+│   ├── CNAME
+│   └── favicon.ico
+├── osmosfeed.yaml
+└── package.json
+```
+
 ### Extend the default template with inline HTML
 
 You can inject arbitrary content into 3 predefined slots in the default template.
