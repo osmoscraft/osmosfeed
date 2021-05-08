@@ -1,5 +1,7 @@
 # Unreleased
 
+- Added: Atom feed generator
+- Added: Customizable site title
 - Added: Copy all files from `static` directory to the root of the site.
 - Changed: Favicon, css, and js assets now existing at site root level.
 - Chore: Excluded testing files from repo.

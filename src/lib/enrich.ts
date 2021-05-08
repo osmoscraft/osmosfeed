@@ -5,7 +5,7 @@ import { performance } from "perf_hooks";
 import Parser from "rss-parser";
 import { htmlToText } from "../utils/html-to-text";
 import type { Cache } from "./cache";
-import type { Config, Source } from "./config";
+import type { Config, Source } from "./get-config";
 
 const FETCH_TIMEOUT_MS = 15000; // 15 seconds
 const FETCH_RETRY = 2; // 2 retries after initial fail
@@ -13,6 +13,8 @@ const MILLISECONDS_PER_DAY = 86400000; // 1000 * 60 * 60 * 24
 const MAX_DESCRIPTION_LENGTH = 512; // characters
 
 export interface EnrichedArticle {
+  id: string;
+  author: string;
   description: string;
   link: string;
   publishedOn: string;
@@ -39,7 +41,7 @@ export async function enrich(enrichInput: EnrichInput): Promise<EnrichedSource> 
   return enrichWithRetry(enrichInput, FETCH_RETRY);
 }
 
-export async function enrichWithRetry(enrichInput: EnrichInput, retryLeft = FETCH_RETRY): Promise<EnrichedSource> {
+async function enrichWithRetry(enrichInput: EnrichInput, retryLeft = FETCH_RETRY): Promise<EnrichedSource> {
   const { source, cache, config } = enrichInput;
 
   const startTime = performance.now();
@@ -60,7 +62,7 @@ export async function enrichWithRetry(enrichInput: EnrichInput, retryLeft = FETC
   }
 
   const xmlString = response.data;
-  const rawFeed = await parser.parseString(xmlString)!.catch(err => {
+  const rawFeed = await parser.parseString(xmlString)!.catch((err) => {
     console.error(`[enrich] Parse source failed ${source.href}`);
     throw err;
   });
@@ -82,8 +84,12 @@ export async function enrichWithRetry(enrichInput: EnrichInput, retryLeft = FETC
     const enrichedItem = await enrichItem(link);
     const description = item.contentSnippet ?? enrichedItem.description ?? "";
     const publishedOn = item.isoDate ?? enrichedItem.publishedTime?.toISOString() ?? new Date().toISOString();
+    const id = item.guid ?? link;
+    const author = item.creator ?? feed.title ?? "Unknown author";
 
     const enrichedArticle: EnrichedArticle = {
+      id,
+      author,
       description,
       link,
       publishedOn,
@@ -193,8 +199,10 @@ function normalizeFeed(feed: Parser.Output<{}>): Parser.Output<{}> {
     title: feed.title?.trim(),
     items: feed.items.map((item) => ({
       ...item,
+      guid: item.guid?.trim(),
       title: item.title?.trim(),
       link: item.link?.trim(),
+      creator: item.creator?.trim(),
       contentSnippet: normalizeContentSnippet(item),
     })),
   };
