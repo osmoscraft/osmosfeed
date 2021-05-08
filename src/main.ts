@@ -1,14 +1,16 @@
 #!/usr/bin/env node
 
-import fs from "fs";
+import fs from "fs-extra";
 import path from "path";
 import { performance } from "perf_hooks";
 import { getCache, setCache } from "./lib/cache";
-import { getConfig } from "./lib/config";
-import { copy } from "./lib/copy";
+import { getConfig } from "./lib/get-config";
+import { copyStatic } from "./lib/copy-static";
 import { enrich, EnrichedSource } from "./lib/enrich";
-import { include } from "./lib/include";
-import { render } from "./lib/render";
+import { userSnippets as getUserSnippets } from "./lib/get-user-snippets";
+import { renderFiles } from "./lib/render-files";
+import { renderAtom } from "./lib/render-atom";
+import { renderHtml } from "./lib/render-html";
 import { cliVersion } from "./utils/version";
 
 async function run() {
@@ -26,23 +28,21 @@ async function run() {
 
   setCache({ sources: enrichedSources, cliVersion });
 
-  const { includeSnippets } = await include();
+  const { userSnippets } = await getUserSnippets();
 
   const articles = enrichedSources
     .map((enrichedSource) => enrichedSource.articles)
     .flat()
     .sort((a, b) => b.publishedOn.localeCompare(a.publishedOn));
 
-  const html = render({ articles, includeSnippets });
-  fs.mkdirSync(path.resolve("public"), { recursive: true });
+  const html = renderHtml({ articles, userSnippets, config });
+  const atom = renderAtom({ articles, config });
 
-  const indexPath = path.resolve("public/index.html");
-  fs.writeFileSync(indexPath, html);
+  await renderFiles({ html, atom });
 
-  await copy();
+  await copyStatic();
 
   const durationInSeconds = ((performance.now() - startTime) / 1000).toFixed(2);
-  console.log(`[main] Index page updated ${indexPath}`);
   console.log(`[main] Finished build in ${durationInSeconds} seconds`);
 }
 

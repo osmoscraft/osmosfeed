@@ -4,17 +4,22 @@ import { ENTRY_DIR } from "../utils/entry-dir";
 import { htmlToText } from "../utils/html-to-text";
 import { sanitizeHtml } from "../utils/sanitize-html";
 import { cliVersion } from "../utils/version";
+import type { Config } from "./get-config";
 import type { EnrichedArticle } from "./enrich";
-import type { IncludeSnippet } from "./include";
+import type { UserSnippet } from "./get-user-snippets";
+import { FEED_FILENAME } from "./render-atom";
 
-export interface RenderProps {
+export interface RenderHtmlInput {
   articles: EnrichedArticle[];
-  includeSnippets: IncludeSnippet[];
+  userSnippets: UserSnippet[];
+  config: Config;
 }
 
-const CONTENT_SLOT = `<!-- %MAIN_CONTENT% -->`;
+const MAIN_CONTENT_PATTERN = /%MAIN_CONTENT%/;
+const SITE_TITLE_PATTERN = /%SITE_TITLE%/g;
+const FEED_FILENAME_PATTERN = /%FEED_FILENAME%/;
 
-export function render({ articles, includeSnippets }: RenderProps): string {
+export function renderHtml({ articles, userSnippets: snippets, config }: RenderHtmlInput): string {
   const articlesBySourceByDates: Record<string, Record<string, EnrichedArticle[]>> = articles.reduce(
     (groupedArticles, article) => {
       const publishedOnDate = article.publishedOn.split("T")[0];
@@ -68,8 +73,12 @@ export function render({ articles, includeSnippets }: RenderProps): string {
     `);
 
   const template = fs.readFileSync(path.resolve(ENTRY_DIR, "index-template.html"), "utf8");
-  const hydratedTemplate = template.replace(CONTENT_SLOT, articlesHtml);
-  const customizedTemplate = includeSnippets.reduce(
+  const hydratedTemplate = template
+    .replace(MAIN_CONTENT_PATTERN, articlesHtml)
+    .replace(FEED_FILENAME_PATTERN, FEED_FILENAME)
+    .replace(SITE_TITLE_PATTERN, config.siteTitle); // TODO use `replaceAll` once we bump github workflow to node v16 LTS
+
+  const customizedTemplate = snippets.reduce(
     (currentTemplate, snippet) => currentTemplate.replace(snippet.replaceFrom, snippet.replaceTo),
     hydratedTemplate
   );

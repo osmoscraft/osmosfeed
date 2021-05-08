@@ -10,6 +10,7 @@ export interface Config {
   sources: Source[];
   cacheUrl: string | null;
   cacheMaxDays: number;
+  siteTitle: string;
 }
 
 const CONFIG_FILENAME = "osmosfeed.yaml";
@@ -20,6 +21,7 @@ export function getConfig(): Config {
     sources: [],
     cacheUrl: null,
     cacheMaxDays: 30,
+    siteTitle: "osmos::feed",
   };
 
   const configPath = path.resolve(CONFIG_FILENAME);

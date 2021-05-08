@@ -14,6 +14,9 @@ sources:
   - href: https://example-website-2.com/feed/
   - href: https://example-website-3.com/feed/
 
+# Title to use in the browser tab and the machine readable feed output. (optional)
+siteTitle: "osmos::feed"
+
 # Max number of days to keep the feed content in cache. A very large value can increase the initial load time of the site. (optional)
 cacheMaxDays: 30
 ```

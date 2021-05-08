@@ -6,7 +6,7 @@ export const USER_STATIC_DIR = "static";
 export const SYSTEM_STATIC_DIR = "system-static";
 export const PUBLIC_ROOT_DIR = "public";
 
-export async function copy() {
+export async function copyStatic() {
   await copySystemStatic();
   // copy user asset last to allow overwrite
   await copyUserStatic();

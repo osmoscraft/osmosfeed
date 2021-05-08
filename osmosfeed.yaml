@@ -2,12 +2,13 @@
 
 # cacheUrl: https://dailyread.netlify.app/cache.json
 # cacheMaxDays: 30
+# siteTitle: dev - osmosfeed
 sources:
   - href: https://christianheilmann.com/feed/
-  # - href: https://daverupert.com/atom.xml
-  # - href: https://www.taniarascia.com/rss.xml
-  # - href: https://css-tricks.com/feed/
-  # - href: https://www.smashingmagazine.com/feed/
-  # - href: https://gomakethings.com/feed/index.xml
-  # - href: https://uxmovement.com/feed/
-  # - href: https://alistapart.com/main/feed/
+  - href: https://daverupert.com/atom.xml
+  - href: https://www.taniarascia.com/rss.xml
+  - href: https://css-tricks.com/feed/
+  - href: https://www.smashingmagazine.com/feed/
+  - href: https://gomakethings.com/feed/index.xml
+  - href: https://uxmovement.com/feed/
+  - href: https://alistapart.com/main/feed/
