@@ -63,7 +63,7 @@ A web-based RSS reader running entirely from your GitHub repo.
 
 ## To contribute
 
-For questions, bug reports, feature requests, translation: [How to contribute](./CONTRIBUTING.md)
+[How to contribute](./CONTRIBUTING.md)
 
 ## FAQ
 
