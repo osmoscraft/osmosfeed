@@ -1,4 +1,4 @@
-# Unreleased
+# v1.5.0
 
 - Added: Atom feed generator
 - Added: Customizable site title
