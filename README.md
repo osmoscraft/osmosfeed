@@ -63,7 +63,7 @@ A web-based RSS reader running entirely from your GitHub repo.
 
 ## To contribute
 
-For questions, bug reports, feature requests, translation: [How to contribute](./CONTRIBUTING.md)
+[How to contribute](./CONTRIBUTING.md)
 
 ## FAQ
 
@@ -77,7 +77,7 @@ For questions, bug reports, feature requests, translation: [How to contribute](.
 
 ### Do I have to type `index.html` at the end of the URL?
 
-> No. But there is a known issue with GitHub. See [discussion from GitHub Community](https://github.community/t/my-github-page-doesnt-redirect-to-index-html/10367/24) and [some solutions from Stack Overflow](https://stackoverflow.com/questions/45362628/github-pages-site-not-detecting-index-html)
+> No. There is a known issue with GitHub, so you might have to type it until it starts to work. See [discussion from GitHub Community](https://github.community/t/my-github-page-doesnt-redirect-to-index-html/10367/24) and [some solutions from Stack Overflow](https://stackoverflow.com/questions/45362628/github-pages-site-not-detecting-index-html)
 
 ### How to trigger a manual site update?
 
