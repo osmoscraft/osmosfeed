@@ -5,12 +5,13 @@ import { htmlToText } from "../utils/html-to-text";
 import { sanitizeHtml } from "../utils/sanitize-html";
 import { cliVersion } from "../utils/version";
 import type { Config } from "./get-config";
-import type { EnrichedArticle } from "./enrich";
+import type { EnrichedArticle, EnrichedSource } from "./enrich";
 import type { UserSnippet } from "./get-user-snippets";
 import { FEED_FILENAME } from "./render-atom";
+import { getHostnameFromUrl } from "../utils/get-hostname-from-url";
 
 export interface RenderHtmlInput {
-  articles: EnrichedArticle[];
+  enrichedSources: EnrichedSource[];
   userSnippets: UserSnippet[];
   config: Config;
 }
@@ -19,30 +20,61 @@ const MAIN_CONTENT_PATTERN = /%MAIN_CONTENT%/;
 const SITE_TITLE_PATTERN = /%SITE_TITLE%/g;
 const FEED_FILENAME_PATTERN = /%FEED_FILENAME%/;
 
-export function renderHtml({ articles, userSnippets: snippets, config }: RenderHtmlInput): string {
-  const articlesBySourceByDates: Record<string, Record<string, EnrichedArticle[]>> = articles.reduce(
-    (groupedArticles, article) => {
-      const publishedOnDate = article.publishedOn.split("T")[0];
-      const sourceTitle = article.sourceTitle;
-      groupedArticles[publishedOnDate] ??= [];
-      groupedArticles[publishedOnDate][sourceTitle] ??= [];
-      groupedArticles[publishedOnDate][sourceTitle].push(article);
-      return groupedArticles;
-    },
-    Object.create(null)
-  );
+interface DisplayDayModel {
+  date: string;
+  sources: DisplaySource[];
+}
 
-  const articlesHtml = Object.entries(articlesBySourceByDates)
+interface DisplaySource {
+  title: string | null;
+  siteUrl: string | null;
+  feedUrl: string;
+  articles: EnrichedArticle[];
+}
+
+export function renderHtml({ enrichedSources, userSnippets: snippets, config }: RenderHtmlInput): string {
+  const displayDays: DisplayDayModel[] = [];
+
+  // Group articles by date
+  enrichedSources.forEach((source) => {
+    source.articles.forEach((article) => {
+      const publishedOnDate = article.publishedOn.split("T")[0];
+      let currentDay = displayDays.find((day) => day.date === publishedOnDate);
+      if (!currentDay) {
+        currentDay = {
+          date: publishedOnDate,
+          sources: [],
+        };
+        displayDays.push(currentDay);
+      }
+
+      let currentSource = currentDay.sources.find((displaySource) => displaySource.feedUrl === source.feedUrl);
+      if (!currentSource) {
+        currentSource = {
+          ...source,
+          title: source.title ?? getHostnameFromUrl(source.siteUrl) ?? getHostnameFromUrl(source.feedUrl),
+          articles: [],
+        };
+        currentDay.sources.push(currentSource);
+      }
+
+      currentSource.articles.push(article);
+    });
+  });
+
+  displayDays.sort((a, b) => b.date.localeCompare(a.date));
+
+  const articlesHtml = displayDays
     .map(
-      ([date, articlesBySource]) => `
+      (displayDay) => `
     <section class="day-container">
-    <h2>${date}</h2>
-    ${Object.entries(articlesBySource)
+    <h2>${displayDay.date}</h2>
+    ${displayDay.sources
       .map(
-        ([source, articles]) => `
-        <h3>${source}</h3>
+        (displaySource) => `
+        <h3>${displaySource.title}</h3>
         <section class="articles-per-source">
-          ${articles
+          ${displaySource.articles
             .map(
               (article) => `
           <article>

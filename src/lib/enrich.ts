@@ -14,16 +14,16 @@ const MAX_DESCRIPTION_LENGTH = 512; // characters
 
 export interface EnrichedArticle {
   id: string;
-  author: string;
+  author: string | null;
   description: string;
   link: string;
   publishedOn: string;
-  sourceTitle: string;
   title: string;
   wordCount: number | null;
 }
 
 export interface EnrichedSource {
+  title: string | null;
   feedUrl: string;
   siteUrl: string | null;
   articles: EnrichedArticle[];
@@ -75,7 +75,6 @@ async function enrichWithRetry(enrichInput: EnrichInput, retryLeft = FETCH_RETRY
   const newItems = items.filter((item) => cachedArticles.every((article) => article.link !== item.link));
 
   const newArticlesAsync: Promise<EnrichedArticle | null>[] = newItems.map(async (item) => {
-    const sourceTitle = feed.title ?? "Untitled";
     const title = item.title ?? "Untitled";
     const link = item.link;
 
@@ -85,7 +84,7 @@ async function enrichWithRetry(enrichInput: EnrichInput, retryLeft = FETCH_RETRY
     const description = item.contentSnippet ?? enrichedItem.description ?? "";
     const publishedOn = item.isoDate ?? enrichedItem.publishedTime?.toISOString() ?? new Date().toISOString();
     const id = item.guid ?? link;
-    const author = item.creator ?? feed.title ?? "Unknown author";
+    const author = item.creator ?? null;
 
     const enrichedArticle: EnrichedArticle = {
       id,
@@ -94,7 +93,6 @@ async function enrichWithRetry(enrichInput: EnrichInput, retryLeft = FETCH_RETRY
       link,
       publishedOn,
       wordCount: enrichedItem.wordCount,
-      sourceTitle,
       title,
     };
 
@@ -121,6 +119,7 @@ async function enrichWithRetry(enrichInput: EnrichInput, retryLeft = FETCH_RETRY
   );
 
   return {
+    title: feed.title ?? null,
     feedUrl: source.href,
     siteUrl: feed.link ?? null,
     articles: renderedArticles,
