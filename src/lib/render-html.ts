@@ -35,40 +35,44 @@ export function renderHtml({ articles, userSnippets: snippets, config }: RenderH
   const articlesHtml = Object.entries(articlesBySourceByDates)
     .map(
       ([date, articlesBySource]) => `
-    <section class="day-container">
-    <h2>${date}</h2>
-    ${Object.entries(articlesBySource)
-      .map(
-        ([source, articles]) => `
-        <h3>${source}</h3>
-        <section class="articles-per-source">
-          ${articles
-            .map(
-              (article) => `
-          <article>
-            <details>
-              <summary>${htmlToText(article.title)}</summary>
-              <div class="details-content">
-                <p>${htmlToText(article.description)}</p>
-                <a href="${sanitizeHtml(article.link)}">${
-                article.wordCount ? `Read · ${Math.round(article.wordCount / 300)} min` : "Read"
-              }</a>
-              </div>
-            </details>
-          </article>`
-            )
-            .join("\n")}
-        </section>
-        `
-      )
-      .join("\n")}
+    <section class="day">
+      <h2 class="day-heading">${date}</h2>
+      <ul class="channels">
+      ${Object.entries(articlesBySource)
+        .map(
+          ([source, articles]) => `
+          <li class="channel">
+            <h3 class="channel-name">${source}</h3>
+            <section class="articles-per-source">
+              ${articles
+                .map(
+                  (article) => `
+              <article>
+                <details class="article-expander">
+                  <summary class="article-expander__title">${htmlToText(article.title)}</summary>
+                  <div class="article-expander__body">
+                    <p>${htmlToText(article.description)}</p>
+                    <a class="default-button" href="${sanitizeHtml(article.link)}">${
+                    article.wordCount ? `Read · ${Math.round(article.wordCount / 300)} min` : "Read"
+                  }</a>
+                  </div>
+                </details>
+              </article>`
+                )
+                .join("\n")}
+            </section>
+          </li>
+          `
+        )
+        .join("\n")}
+      </ul>  
     </section>
     `
     )
     .join("\n").concat(`
     <footer>
       <time id="build-timestamp" datetime="${new Date().toISOString()}">${new Date().toISOString()}</time>
-      <span><a href="https://github.com/osmoscraft/osmosfeed">osmosfeed ${cliVersion}</a></span>
+      <span><a class="footer-link" href="https://github.com/osmoscraft/osmosfeed">osmosfeed ${cliVersion}</a></span>
     </footer>
     `);
 

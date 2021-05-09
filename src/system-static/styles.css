@@ -5,9 +5,8 @@
  */
 :root {
   /**
-   * Color
-   * scheme: "Gruvbox dark, medium"
-   * author: "Dawid Kurek (dawikur@gmail.com), morhetz (https://github.com/morhetz/gruvbox)"
+   * Gruvbox dark, medium
+   * Dawid Kurek (dawikur@gmail.com), morhetz (https://github.com/morhetz/gruvbox)
    */
   --base00: #282828; /* ---- */
   --base01: #3c3836; /* --- */
@@ -27,18 +26,11 @@
   --base0F: #d65d0e; /* brown */
 
   /**
-   * Typograph
-   * Use system fonts for best performance
+   * Geometry v2 - Unit sizes
    */
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue",
-    sans-serif;
-  --font-serif: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
-  --font-mono: "Courier New", Courier, monospace;
-
-  /**
-   * Geometry
-   */
-  --radius-s: 4px;
+  --u-px: 4px;
+  --u-rem: 0.25rem;
+  --u-em: 0.25em;
 }
 
 /**
@@ -47,16 +39,43 @@
  * This layer should not be coupled with concrete elements such as button or link
  */
 :root {
+  /**
+   * Typograph
+   */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue",
+    sans-serif;
+  --font-serif: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  --font-mono: "Courier New", Courier, monospace;
+  --font-weight-bold: 700;
+  --font-weight-semibold: 600;
+  --font-weight-normal: 400;
+  --font-size-scaler: 100%;
+  --font-size-m: calc(4 * var(--u-rem));
+  --font-size-s: calc(3.5 * var(--u-rem));
+  --font-size-xs: calc(3 * var(--u-rem));
+
+  /**
+   * Geometry
+   */
+  --radius-s: var(--u-px);
+  --space-m: calc(4 * var(--u-px));
+
+  /**
+   * Color
+   */
+
   /** Suggest interactivity, e.g. To show a link/button can be opened/clicked */
   --action-color: var(--base0D);
   /** Use sparingly to create hierarchy and draw attention, e.g. Heading or decorative elements */
   --accent-color: var(--base0A);
   /** Use for the core content of the site, e.g. Feed title and summary */
-  --text-color-default: var(--base06);
+  --neutral-color: var(--base06);
   /** Use for non-critical content or elements that can be activated */
-  --text-color-quiet: var(--base04);
+  --quiet-color: var(--base04);
 
-  /** Layer system: layer 2 is above 1, 1 is above 0 */
+  /**
+   * Layer
+   */
   --layer-low-bg: var(--base00);
   --layer-medium-bg: var(--base01);
   --layer-high-bg: var(--base02);
@@ -68,29 +87,44 @@
  */
 :root {
   --body-font: var(--font-sans);
-  --body-text: var(--text-color-default);
+  --body-text: var(--neutral-color);
   --body-bg: var(--layer-low-bg);
+  --body-padding: var(--space-m);
+
+  --days-gap: var(--space-m);
 
   --day-bg: var(--layer-medium-bg);
-  --day-title-text: var(--accent-color);
+  --day-radius: var(--radius-s);
+  --day-padding: var(--space-m);
+  --day-heading-text: var(--accent-color);
+  --day-heading-font-size: var(--font-size-xs);
+  --day-heading-font-weight: var(--font-weight-bold);
 
-  --channel-title-text: var(--text-color-quiet);
+  --channel-name-text: var(--quiet-color);
+  --channel-name-font-size: var(--font-size-s);
+  --channel-name-font-weight: var(--font-weight-normal);
 
   --article-bg: transparent;
   --article-expanded-bg: var(--layer-high-bg);
-  --article-title-text: inherit;
+  --article-title-text: var(--neutral-color);
+  --article-title-font-size: var(--font-size-m);
+  --article-title-font-weight: var(--font-weight-semibold);
   --article-title-hover-text: var(--action-color);
-  --article-summary-text: inherit;
+  --article-summary-text: var(--neutral-color);
+  --article-summary-font-size: var(--font-size-m);
 
-  --box-button-text: var(--text-color-quiet);
-  --box-button-border: var(--text-color-quiet);
+  --box-button-text: var(--quiet-color);
+  --box-button-font-size: var(--font-size-s);
+  --box-button-font-weight: var(--font-weight-normal);
+  --box-button-border: var(--quiet-color);
   --box-button-bg: transparent;
   --box-button-hover-text: var(--layer-medium-bg);
   --box-button-hover-border: var(--action-color);
   --box-button-hover-bg: var(--action-color);
   --box-button-radius: var(--radius-s);
 
-  --footer-text: var(--text-color-quiet);
+  --footer-text: var(--quiet-color);
+  --footer-font-size: var(--font-size-xs);
   --footer-link-text: inherit;
   --footer-link-hover-text: var(--action-color);
 }
@@ -107,36 +141,49 @@
  * 2. (Once extensible template API is ready) Write your own template.
  * 3. Target specific elements and write your own CSS. A future change in HTML may break your style.
  */
+html {
+  font-size: var(--font-size-scaler);
+}
+
 body {
   background-color: var(--body-bg);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue",
     sans-serif;
   color: var(--body-text);
   margin: 0;
-  padding: 16px;
+  padding: var(--body-padding);
+  display: grid;
+  gap: var(--days-gap);
 }
 
 :not(:focus-visible) {
   outline: none;
 }
 
-.day-container {
-  padding: 16px 16px 16px 16px;
+.day {
+  padding: var(--day-padding);
   background: var(--day-bg);
-  margin-bottom: 16px;
+  border-radius: var(--day-radius);
 }
 
-h2 {
-  font-size: 12px;
+.channels {
+  list-style: none;
   margin: 0;
-  color: var(--day-title-text);
+  padding: 0;
 }
 
-h3 {
-  color: var(--channel-title-text);
-  font-size: 12px;
-  line-height: 16px;
-  font-weight: 400;
+.day-heading {
+  font-size: var(--day-heading-font-size);
+  font-weight: var(--day-heading-font-weight);
+  margin: 0;
+  color: var(--day-heading-text);
+}
+
+.channel-name {
+  color: var(--channel-name-text);
+  font-size: var(--channel-name-font-size);
+  font-weight: var(--channel-name-font-weight);
+  line-height: 1;
   margin: 12px 0px 4px;
 }
 
@@ -144,33 +191,37 @@ p {
   margin: 0;
 }
 
-summary {
-  font-weight: 600;
+.article-expander {
+  background-color: var(--article-bg);
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+.article-expander[open] {
+  background-color: var(--article-expanded-bg);
 }
 
-summary:hover {
+.article-expander__title {
+  color: var(--article-title-text);
+  font-size: var(--article-title-font-size);
+  font-weight: var(--article-title-font-weight);
+}
+.article-expander__title:hover {
   text-decoration: underline;
   cursor: pointer;
   color: var(--article-title-hover-text);
 }
 
-details {
-  background-color: var(--article-bg);
-  padding: 2px 4px;
-  font-size: 14px;
-  border-radius: 4px;
-}
-details[open] {
-  background-color: var(--article-expanded-bg);
-}
-.details-content {
+.article-expander__body {
+  color: var(--article-summary-text);
+  font-size: var(--article-summary-font-size);
   display: grid;
   padding: 12px 16px;
   gap: 16px;
 }
 
-details a {
-  font-size: 14px;
+.default-button {
+  font-size: var(--box-button-font-size);
+  font-weight: var(--box-button-font-weight);
   text-decoration: none;
   border: 1px solid var(--box-button-border);
   color: var(--box-button-text);
@@ -180,7 +231,7 @@ details a {
   justify-self: start;
 }
 
-details a:hover {
+.default-button:hover {
   background-color: var(--box-button-hover-bg);
   border-color: var(--box-button-hover-border);
   color: var(--box-button-hover-text);
@@ -188,17 +239,17 @@ details a:hover {
 
 footer {
   color: var(--footer-text);
-  font-size: 12px;
+  font-size: var(--footer-font-size);
   display: flex;
   justify-content: space-between;
 }
 
-footer a {
+.footer-link {
   color: var(--footer-link-text);
   text-decoration: none;
 }
 
-footer a:hover {
+.footer-link:hover {
   color: var(--footer-link-hover-text);
   text-decoration: underline;
 }
