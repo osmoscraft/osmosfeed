@@ -25,7 +25,7 @@ export interface EnrichedArticle {
 
 export interface EnrichedSource {
   feedUrl: string;
-  siteUrl: string;
+  siteUrl: string | null;
   articles: EnrichedArticle[];
 }
 
@@ -122,7 +122,7 @@ async function enrichWithRetry(enrichInput: EnrichInput, retryLeft = FETCH_RETRY
 
   return {
     feedUrl: source.href,
-    siteUrl: feed.link!,
+    siteUrl: feed.link ?? null,
     articles: renderedArticles,
   };
 }
@@ -196,7 +196,7 @@ async function enrichItem(link: string, retryLeft = FETCH_RETRY): Promise<Enrich
 function normalizeFeed(feed: Parser.Output<{}>): Parser.Output<{}> {
   return {
     ...feed,
-    link: feed.link?.trim() ?? feed.feedUrl?.trim() ?? "",
+    link: feed.link?.trim(),
     title: feed.title?.trim(),
     items: feed.items.map((item) => ({
       ...item,
