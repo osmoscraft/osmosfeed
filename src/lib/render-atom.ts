@@ -2,17 +2,32 @@ import { Feed } from "feed";
 import { cliVersion } from "../utils/version";
 import { CACHE_FILENAME } from "./cache";
 import type { Config } from "./get-config";
-import type { EnrichedArticle } from "./enrich";
+import type { EnrichedArticle, EnrichedSource } from "./enrich";
+import { getHostnameFromUrl } from "../utils/get-hostname-from-url";
 
 export const FEED_FILENAME = "feed.atom";
 export const INDEX_FILENAME = "index.html";
 
 export interface RenderAtomInput {
-  articles: EnrichedArticle[];
+  enrichedSources: EnrichedSource[];
   config: Config;
 }
 
-export function renderAtom({ articles, config }: RenderAtomInput): string {
+interface EnrichedArticleWithSource extends EnrichedArticle {
+  source: EnrichedSource;
+}
+
+export function renderAtom({ enrichedSources, config }: RenderAtomInput): string {
+  const articles: EnrichedArticleWithSource[] = enrichedSources
+    .map((enrichedSource) =>
+      enrichedSource.articles.map((article) => ({
+        ...article,
+        source: enrichedSource,
+      }))
+    )
+    .flat()
+    .sort((a, b) => b.publishedOn.localeCompare(a.publishedOn));
+
   const nowTimestamp = new Date().toISOString();
   const siteUrl = config.cacheUrl?.replace(CACHE_FILENAME, INDEX_FILENAME);
   const feedUrl = config.cacheUrl?.replace(CACHE_FILENAME, FEED_FILENAME);
@@ -38,7 +53,13 @@ export function renderAtom({ articles, config }: RenderAtomInput): string {
       link: article.link,
       author: [
         {
-          name: article.author ?? article.sourceTitle ?? "Unknown author",
+          name:
+            article.author ??
+            article.source.title ??
+            getHostnameFromUrl(article.link) ??
+            getHostnameFromUrl(article.source.siteUrl) ??
+            getHostnameFromUrl(article.source.feedUrl) ??
+            "Unknown author",
         },
       ],
       date: new Date(article.publishedOn),

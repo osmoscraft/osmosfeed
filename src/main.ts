@@ -30,13 +30,8 @@ async function run() {
 
   const { userSnippets } = await getUserSnippets();
 
-  const articles = enrichedSources
-    .map((enrichedSource) => enrichedSource.articles)
-    .flat()
-    .sort((a, b) => b.publishedOn.localeCompare(a.publishedOn));
-
-  const html = renderHtml({ articles, userSnippets, config });
-  const atom = renderAtom({ articles, config });
+  const html = renderHtml({ enrichedSources, userSnippets, config });
+  const atom = renderAtom({ enrichedSources, config });
 
   await renderFiles({ html, atom });
 
