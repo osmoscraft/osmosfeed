@@ -1,6 +1,7 @@
 # unreleased
 
 - Added: `feedUrl` and `siteUrl` for each source in cache.
+- Changed: Moved feed metadata from article level to feed level in cache.
 - Removed: `href` for each source in cache. The value was never used.
 
 # v1.5.0

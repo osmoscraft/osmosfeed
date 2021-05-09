@@ -18,12 +18,12 @@ export interface EnrichedArticle {
   description: string;
   link: string;
   publishedOn: string;
-  sourceTitle: string;
   title: string;
   wordCount: number | null;
 }
 
 export interface EnrichedSource {
+  title: string | null;
   feedUrl: string;
   siteUrl: string | null;
   articles: EnrichedArticle[];
@@ -94,7 +94,6 @@ async function enrichWithRetry(enrichInput: EnrichInput, retryLeft = FETCH_RETRY
       link,
       publishedOn,
       wordCount: enrichedItem.wordCount,
-      sourceTitle,
       title,
     };
 
@@ -121,6 +120,7 @@ async function enrichWithRetry(enrichInput: EnrichInput, retryLeft = FETCH_RETRY
   );
 
   return {
+    title: feed.title ?? null,
     feedUrl: source.href,
     siteUrl: feed.link ?? null,
     articles: renderedArticles,
