@@ -1,7 +1,9 @@
 # unreleased
 
 - Added: `feedUrl` and `siteUrl` for each source in cache.
+- Changed: Better customizability for the default template theme.
 - Changed: Moved feed metadata from article level to feed level in cache.
+- Fixed: Any html-like text was stripped from title. Fixed with encoded text.
 - Removed: `href` for each source in cache. The value was never used.
 
 # v1.5.0

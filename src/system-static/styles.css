@@ -220,7 +220,6 @@ body {
   color: var(--article-summary-text);
   font-size: var(--article-summary-font-size);
   text-decoration: none;
-  color: inherit;
 }
 
 .article-summary-link:hover {
