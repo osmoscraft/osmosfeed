@@ -42,7 +42,7 @@ export function renderHtml({ articles, userSnippets: snippets, config }: RenderH
         .map(
           ([source, articles]) => `
           <li class="channel">
-            <h3 class="channel-name">${source}</h3>
+            <h3 class="channel-name"><a class="channel-name__link" href="#">${source}</a></h3>
             <section class="articles-per-source">
               ${articles
                 .map(
@@ -51,10 +51,19 @@ export function renderHtml({ articles, userSnippets: snippets, config }: RenderH
                 <details class="article-expander">
                   <summary class="article-expander__title">${htmlToText(article.title)}</summary>
                   <div class="article-expander__body">
-                    <p>${htmlToText(article.description)}</p>
-                    <a class="default-button" href="${sanitizeHtml(article.link)}">${
-                    article.wordCount ? `Read · ${Math.round(article.wordCount / 300)} min` : "Read"
-                  }</a>
+                    <a class="article-summary-link" href="${sanitizeHtml(article.link)}">${htmlToText(
+                    article.description
+                  )}</a>
+                    <div class="article-meta">
+                    ${[
+                      `<a class="article-meta__item article-meta__item--link" href="${sanitizeHtml(
+                        article.link
+                      )}" target="_blank">New tab</a>`,
+                      ...(article.wordCount
+                        ? [`<span class="article-meta__item">${Math.round(article.wordCount / 300)} min read</span>`]
+                        : []),
+                    ].join(" · ")}
+                    </div>
                   </div>
                 </details>
               </article>`
