@@ -8,6 +8,7 @@ import type { Config } from "./get-config";
 import type { EnrichedArticle, EnrichedSource } from "./enrich";
 import type { UserSnippet } from "./get-user-snippets";
 import { FEED_FILENAME } from "./render-atom";
+import { getHostnameFromUrl } from "../utils/get-hostname-from-url";
 
 export interface RenderHtmlInput {
   enrichedSources: EnrichedSource[];
@@ -51,6 +52,7 @@ export function renderHtml({ enrichedSources, userSnippets: snippets, config }: 
       if (!currentSource) {
         currentSource = {
           ...source,
+          title: source.title ?? getHostnameFromUrl(source.siteUrl) ?? getHostnameFromUrl(source.feedUrl),
           articles: [],
         };
         currentDay.sources.push(currentSource);
