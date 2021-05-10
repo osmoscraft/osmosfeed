@@ -9,6 +9,7 @@ A web-based RSS reader running entirely from your GitHub repo.
 - During a rebuild, [cache from the previous build](https://osmoscraft.github.io/osmosfeed-demo/cache.json) is used, so only new content will be downloaded.
 - The source of the content can be any RSS feed URL, configured in [osmosfeed.yaml](https://github.com/osmoscraft/osmosfeed-demo/blob/main/osmosfeed.yaml).
 - The content fetching and static site generation is powered by a custom [node.js script](https://github.com/osmoscraft/osmosfeed/blob/master/src/main.ts) optimized for speed.
+- Easy theming with CSS variables. Demos: [Solarized dark](https://osmoscraft.github.io/osmosfeed-examples/default-solarized-dark/), [Gruvbox light](https://osmoscraft.github.io/osmosfeed-examples/default-gruvbox-light/)
 
 ## Demo
 
