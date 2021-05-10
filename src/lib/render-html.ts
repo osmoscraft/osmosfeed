@@ -67,14 +67,14 @@ export function renderHtml({ enrichedSources, userSnippets: snippets, config }: 
   const articlesHtml = displayDays
     .map(
       (displayDay) => `
-    <section class="day">
-      <h2 class="day-heading">${displayDay.date}</h2>
-      <ul class="channels">
+    <section class="daily-content">
+      <h2 class="daily-heading">${displayDay.date}</h2>
+      <ul class="sources card">
       ${displayDay.sources
         .map(
           (source) => `
-          <li class="channel">
-            <h3 class="channel-name"><a class="channel-name__link" href="${source.siteUrl}">${source.title}</a></h3>
+          <li class="source">
+            <h3 class="source-name"><a class="source-name__link" href="${source.siteUrl}">${source.title}</a></h3>
             <section class="articles-per-source">
               ${source.articles
                 .map(
@@ -82,13 +82,14 @@ export function renderHtml({ enrichedSources, userSnippets: snippets, config }: 
               <article>
                 <details class="article-expander">
                   <summary class="article-expander__title">${sanitizeHtml(article.title)}</summary>
-                  <div class="article-expander__body">
-                    <a class="article-summary-link" href="${sanitizeHtml(
-                      article.link
-                    )}"><span class="article-reading-time">(&#8202;${Math.round(
-                    (article.wordCount ?? 0) / 300
-                  )} min&#8202;)</span> ${htmlToText(article.description)}</a>
-                  </div>
+                  <a class="article-summary-link article-summary-box-outer" href="${sanitizeHtml(article.link)}">
+                    <div class="article-summary-box-inner">
+                      <span class="article-reading-time">(&#8202;${Math.round(
+                        (article.wordCount ?? 0) / 300
+                      )} min&#8202;)</span>
+                      <span>${htmlToText(article.description)}</span>
+                    </div>
+                  </a>
                 </details>
               </article>`
                 )

@@ -1,10 +1,6 @@
-/**
- * [Layer 0] Variable creation
- * Declare all the raw values that can be used later by the theme.
- * This layer should not dictate how the values will be used. 
- */
 :root {
   /**
+   * Palette
    * Gruvbox dark, medium
    * Dawid Kurek (dawikur@gmail.com), morhetz (https://github.com/morhetz/gruvbox)
    */
@@ -26,121 +22,54 @@
   --base0F: #d65d0e; /* brown */
 
   /**
-   * Geometry v2 - Unit sizes
-   */
-  --u-px: 4px;
-  --u-rem: 0.25rem;
-  --u-em: 0.25em;
-}
-
-/**
- * [Layer 02] Functional mapping
- * Assign raw values to functional values.
- * This layer should not be coupled with concrete elements such as button or link
- */
-:root {
-  /**
    * Typograph
    */
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue",
-    sans-serif;
-  --font-serif: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
-  --font-mono: "Courier New", Courier, monospace;
-  --font-weight-bold: 700;
-  --font-weight-semibold: 600;
-  --font-weight-normal: 400;
-  --font-size-scaler: 100%;
-  --font-size-m: calc(4 * var(--u-rem));
-  --font-size-s: calc(3.5 * var(--u-rem));
-  --font-size-xs: calc(3 * var(--u-rem));
+  --font-family-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell,
+    "Helvetica Neue", sans-serif;
+  --font-size-scaler: 62.5%; /* 1rem = 10px */
+  --font-size-m: 1.4rem;
+  --font-size-s: 1.2rem;
 
   /**
-   * Geometry
+   * Element styling
    */
-  --radius-s: var(--u-px);
-  --space-m: calc(4 * var(--u-px));
-  --space-s: calc(3 * var(--u-px));
-  --space-xs: calc(2 * var(--u-px));
-  --space-xxs: var(--u-px);
+  --body-text: var(--base05);
+  --body-bg: var(--base00);
 
-  /**
-   * Color
-   */
+  --daily-box-bg: var(--base01);
+  --daily-box-heading-text: var(--base04);
 
-  /** Suggest interactivity, e.g. To show a link/button can be opened/clicked */
-  --action-color: var(--base0A);
-  /** Use sparingly to create hierarchy and draw attention, e.g. Heading, interactive or decorative elements */
-  --accent-color: var(--base0A);
-  --loud-color: var(--base07);
-  /** Use for the core content of the site, e.g. Feed title and summary */
-  --neutral-color: var(--base05);
-  /** Use for non-critical content or elements that can be activated */
-  --quiet-color: var(--base04);
-  /** Use for decorative content, structural divider and boxes */
-  --whisper-color: var(--base03);
+  --source-name-text: var(--base0A);
+  --source-name-hover-text: currentColor;
 
-  /**
-   * Layer
-   */
-  --layer-low-bg: var(--base00);
-  --layer-medium-bg: var(--base01);
-  --layer-high-bg: var(--base02);
+  --article-title-text: inherit;
+  --article-title-hover-text: var(--base07);
+  --article-summary-text: var(--base04);
+  --article-summary-hover-text: var(--base07);
+  --article-summary-rail-color: var(--base03);
+  --article-summary-rail-hover-color: var(--base04);
+
+  --accordion-marker-color: var(--base03);
+  --accordion-marker-hover-color: var(--base04);
+
+  --card-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+  --card-bg: var(--base01);
+  --card-radius: 4px;
+
+  --footer-text: var(--base04);
+  --footer-link-hover-text: var(--base07);
 }
 
 /**
- * [Layer 03] Element mapping
- * Assign styles to specific elements.
- */
-:root {
-  --body-font: var(--font-sans);
-  --body-text: var(--neutral-color);
-  --body-bg: var(--layer-low-bg);
-  --body-padding: var(--space-m);
-
-  --days-gap: var(--space-m);
-
-  --day-bg: var(--layer-medium-bg);
-  --day-radius: var(--radius-s);
-  --day-padding: var(--space-m);
-  --day-heading-text: var(--quiet-color);
-  --day-heading-font-size: var(--font-size-xs);
-  --day-heading-font-weight: var(--font-weight-bold);
-
-  --channels-gap: var(--space-m);
-
-  --channel-name-text: var(--action-color);
-  --channel-name-hover-text: var(--action-color);
-  --channel-name-font-size: var(--font-size-s);
-  --channel-name-font-weight: var(--font-weight-normal);
-
-  --article-bg: transparent;
-  --article-expanded-bg: transparent;
-  --article-title-text: var(--neutral-color);
-  --article-title-font-size: var(--font-size-m);
-  --article-title-font-weight: var(--font-weight-semibold);
-  --article-title-hover-text: var(--loud-color);
-  --article-summary-text: var(--quiet-color);
-  --article-summary-font-size: var(--font-size-m);
-  --article-summary-hover-text: var(--loud-color);
-  --article-meta-text: var(--quiet-color);
-
-  --footer-text: var(--quiet-color);
-  --footer-font-size: var(--font-size-xs);
-  --footer-link-text: inherit;
-  --footer-link-hover-text: var(--loud-color);
-}
-
-/**
- * 04 Internals
- * If you can't create a specific look and feel with the configuration above,
- * you might have reached the customization limit of the template:
- * 1. Certain variables should be changed together. Ejecting one of them breaks the integrety of the visual design.
- * 2. Some elements may not be ready for customization. The template author has limited resource and can't support every possible customization.
+ * Internals below
  *
- * Your options:
- * 1. File an issue against the template.
- * 2. (Once extensible template API is ready) Write your own template.
- * 3. Target specific elements and write your own CSS. A future change in HTML may break your style.
+ * If you can't create a specific look and feel with the configuration above,
+ * you might have reached the customization limit of the template.
+ *
+ * Options:
+ * 1. File an issue with the template.
+ * 2. Target specific elements and write your own CSS. A future change in HTML may break your style.
+ * 3. (Coming soon...) Write your own template with Template Extensibility API.
  */
 html {
   font-size: var(--font-size-scaler);
@@ -148,97 +77,100 @@ html {
 
 body {
   background-color: var(--body-bg);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue",
-    sans-serif;
+  font-family: var(--font-family-default);
   color: var(--body-text);
   margin: 0;
-  padding: var(--body-padding);
+  padding: 16px;
   display: grid;
-  gap: var(--days-gap);
 }
 
 :not(:focus-visible) {
   outline: none;
 }
 
-.day {
-  padding: var(--day-padding);
-  background: var(--day-bg);
-  border-radius: var(--day-radius);
+.card {
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  background: var(--card-bg);
 }
 
-.channels {
+.sources {
+  padding: 12px 16px;
   list-style: none;
   margin: 0;
-  padding: 0;
   display: grid;
-  gap: var(--channels-gap);
+  gap: 16px;
 }
 
-.day-heading {
-  font-size: var(--day-heading-font-size);
-  font-weight: var(--day-heading-font-weight);
-  margin: 0 0 var(--space-m);
-  color: var(--day-heading-text);
+.daily-heading {
+  font-size: var(--font-size-s);
+  font-weight: 600;
+  margin: 20px 0 4px;
+  padding-left: 16px;
+  color: var(--daily-box-heading-text);
 }
 
-.channel-name {
-  color: var(--channel-name-text);
-  font-size: var(--channel-name-font-size);
-  font-weight: var(--channel-name-font-weight);
+.source {
+  display: grid;
+  gap: 4px;
+}
+
+.source-name {
+  color: var(--source-name-text);
+  font-size: var(--font-size-s);
+  font-weight: 400;
   line-height: 1;
-  margin: 0 0 var(--space-xxs) 0;
+  margin: 0;
 }
-.channel-name__link {
+.source-name__link {
   color: inherit;
   text-decoration: none;
 }
-.channel-name__link:hover {
-  color: var(--channel-name-hover-text);
+.source-name__link:hover {
+  color: var(--source-name-hover-text);
   text-decoration: underline;
 }
 
 .article-expander {
-  background-color: var(--article-bg);
   padding: 2px 4px;
   border-radius: 4px;
-}
-.article-expander[open] {
-  background-color: var(--article-expanded-bg);
 }
 
 .article-expander__title {
   color: var(--article-title-text);
-  font-size: var(--article-title-font-size);
-  font-weight: var(--article-title-font-weight);
+  font-size: var(--font-size-m);
+  font-weight: 600;
 }
 .article-expander__title:hover {
   cursor: pointer;
   color: var(--article-title-hover-text);
 }
 .article-expander__title::marker {
-  color: var(--whisper-color);
+  color: var(--accordion-marker-color);
 }
 .article-expander__title:hover::marker {
-  color: var(--article-title-text);
-}
-
-.article-expander__body {
-  display: grid;
-  padding: 12px 16px;
-  gap: var(--space-xs);
-  margin: 0 0 0 4px;
-  border-left: 2px solid var(--whisper-color);
+  color: var(--accordion-marker-hover-color);
 }
 
 .article-summary-link {
   color: var(--article-summary-text);
-  font-size: var(--article-summary-font-size);
+  font-size: var(--font-size-m);
   text-decoration: none;
 }
 
 .article-summary-link:hover {
   color: var(--article-summary-hover-text);
+  --article-summary-rail-color: var(--article-summary-rail-hover-color);
+}
+
+.article-summary-box-outer {
+  display: block;
+  padding: 4px 8px 8px 4px;
+}
+
+.article-summary-box-inner {
+  padding-left: 8px;
+  border-left: 1px solid var(--article-summary-rail-color);
 }
 
 .article-reading-time {
@@ -247,8 +179,9 @@ body {
 
 footer {
   color: var(--footer-text);
-  font-size: var(--footer-font-size);
+  font-size: var(--font-size-s);
   display: flex;
+  padding: 16px;
   justify-content: space-between;
 }
 
