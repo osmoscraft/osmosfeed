@@ -61,7 +61,7 @@ With this technique, you can
 
 ### Theming guide
 
-⚠ The Template Extensibility API is coming soon. It will allow much more freedom in changing the content and structure of the page. Until then, your theming options are limited to what the default template allows.
+⚠ The Template Extensibility API is not ready yet. Once available, it will allow complete freedom in changing the content and structure of the page. Until then, your theming options are limited to what the default template allows.
 
 - Find the `:root` selector from the [default css file](https://github.com/osmoscraft/osmosfeed/blob/v1.6.0/src/system-static/styles.css). Copy any variables you want to change into your `before-head-end.html`.
 - If you want to replace the default `gruvbox-dark-medium` theme with other [base16](https://github.com/chriskempson/base16) themes, provide the new theme in the `Palette` section in the CSS.
