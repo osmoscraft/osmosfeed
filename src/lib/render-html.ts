@@ -83,19 +83,11 @@ export function renderHtml({ enrichedSources, userSnippets: snippets, config }: 
                 <details class="article-expander">
                   <summary class="article-expander__title">${sanitizeHtml(article.title)}</summary>
                   <div class="article-expander__body">
-                    <a class="article-summary-link" href="${sanitizeHtml(article.link)}">${htmlToText(
-                    article.description
-                  )}</a>
-                    <div class="article-meta">
-                    ${[
-                      `<a class="article-meta__item article-meta__item--link" href="${sanitizeHtml(
-                        article.link
-                      )}" target="_blank">Open in new tab</a>`,
-                      ...(article.wordCount
-                        ? [`<span class="article-meta__item">${Math.round(article.wordCount / 300)} min read</span>`]
-                        : []),
-                    ].join(" · ")}
-                    </div>
+                    <a class="article-summary-link" href="${sanitizeHtml(
+                      article.link
+                    )}"><span class="article-reading-time">(&#8202;${Math.round(
+                    (article.wordCount ?? 0) / 300
+                  )} min&#8202;)</span> ${htmlToText(article.description)}</a>
                   </div>
                 </details>
               </article>`

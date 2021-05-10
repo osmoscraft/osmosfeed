@@ -61,19 +61,23 @@
   --space-m: calc(4 * var(--u-px));
   --space-s: calc(3 * var(--u-px));
   --space-xs: calc(2 * var(--u-px));
+  --space-xxs: var(--u-px);
 
   /**
    * Color
    */
 
   /** Suggest interactivity, e.g. To show a link/button can be opened/clicked */
-  --action-color: var(--base0D);
-  /** Use sparingly to create hierarchy and draw attention, e.g. Heading or decorative elements */
+  --action-color: var(--base0A);
+  /** Use sparingly to create hierarchy and draw attention, e.g. Heading, interactive or decorative elements */
   --accent-color: var(--base0A);
+  --loud-color: var(--base07);
   /** Use for the core content of the site, e.g. Feed title and summary */
-  --neutral-color: var(--base06);
+  --neutral-color: var(--base05);
   /** Use for non-critical content or elements that can be activated */
   --quiet-color: var(--base04);
+  /** Use for decorative content, structural divider and boxes */
+  --whisper-color: var(--base03);
 
   /**
    * Layer
@@ -98,31 +102,32 @@
   --day-bg: var(--layer-medium-bg);
   --day-radius: var(--radius-s);
   --day-padding: var(--space-m);
-  --day-heading-text: var(--accent-color);
+  --day-heading-text: var(--quiet-color);
   --day-heading-font-size: var(--font-size-xs);
   --day-heading-font-weight: var(--font-weight-bold);
 
-  --channel-name-text: var(--quiet-color);
+  --channels-gap: var(--space-m);
+
+  --channel-name-text: var(--action-color);
   --channel-name-hover-text: var(--action-color);
   --channel-name-font-size: var(--font-size-s);
   --channel-name-font-weight: var(--font-weight-normal);
 
   --article-bg: transparent;
-  --article-expanded-bg: var(--layer-high-bg);
+  --article-expanded-bg: transparent;
   --article-title-text: var(--neutral-color);
   --article-title-font-size: var(--font-size-m);
   --article-title-font-weight: var(--font-weight-semibold);
-  --article-title-hover-text: var(--action-color);
-  --article-summary-text: var(--neutral-color);
+  --article-title-hover-text: var(--loud-color);
+  --article-summary-text: var(--quiet-color);
   --article-summary-font-size: var(--font-size-m);
-  --article-summary-hover-text: var(--action-color);
+  --article-summary-hover-text: var(--loud-color);
   --article-meta-text: var(--quiet-color);
-  --article-meta-hover-text: var(--action-color);
 
   --footer-text: var(--quiet-color);
   --footer-font-size: var(--font-size-xs);
   --footer-link-text: inherit;
-  --footer-link-hover-text: var(--action-color);
+  --footer-link-hover-text: var(--loud-color);
 }
 
 /**
@@ -166,12 +171,14 @@ body {
   list-style: none;
   margin: 0;
   padding: 0;
+  display: grid;
+  gap: var(--channels-gap);
 }
 
 .day-heading {
   font-size: var(--day-heading-font-size);
   font-weight: var(--day-heading-font-weight);
-  margin: 0;
+  margin: 0 0 var(--space-m);
   color: var(--day-heading-text);
 }
 
@@ -180,7 +187,7 @@ body {
   font-size: var(--channel-name-font-size);
   font-weight: var(--channel-name-font-weight);
   line-height: 1;
-  margin: 12px 0px 4px;
+  margin: 0 0 var(--space-xxs) 0;
 }
 .channel-name__link {
   color: inherit;
@@ -188,6 +195,7 @@ body {
 }
 .channel-name__link:hover {
   color: var(--channel-name-hover-text);
+  text-decoration: underline;
 }
 
 .article-expander {
@@ -208,12 +216,19 @@ body {
   cursor: pointer;
   color: var(--article-title-hover-text);
 }
+.article-expander__title::marker {
+  color: var(--whisper-color);
+}
+.article-expander__title:hover::marker {
+  color: var(--article-title-text);
+}
 
 .article-expander__body {
   display: grid;
   padding: 12px 16px;
   gap: var(--space-xs);
-  margin: 0;
+  margin: 0 0 0 4px;
+  border-left: 2px solid var(--whisper-color);
 }
 
 .article-summary-link {
@@ -224,19 +239,10 @@ body {
 
 .article-summary-link:hover {
   color: var(--article-summary-hover-text);
-  color: var(--action-color);
 }
 
-.article-meta {
-  color: var(--article-meta-text);
-}
-
-.article-meta__item--link {
-  color: var(--article-meta-text);
-  text-decoration: none;
-}
-.article-meta__item--link:hover {
-  color: var(--article-meta-hover-text);
+.article-reading-time {
+  font-weight: 600;
 }
 
 footer {
@@ -253,4 +259,5 @@ footer {
 
 .footer-link:hover {
   color: var(--footer-link-hover-text);
+  text-decoration: underline;
 }
