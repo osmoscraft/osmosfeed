@@ -64,10 +64,10 @@ With this technique, you can
 ⚠ The Template Extensibility API is not ready yet. Once available, it will allow complete freedom in changing the content and structure of the page. Until then, your theming options are limited to what the default template allows.
 
 - Find the `:root` selector from the [default css file](https://github.com/osmoscraft/osmosfeed/blob/v1.6.0/src/system-static/styles.css). Copy any variables you want to change into your `before-head-end.html`.
-- If you want to replace the default `gruvbox-dark-medium` theme with other [base16](https://github.com/chriskempson/base16) themes, provide the new theme in the `Palette` section in the CSS.
-- If you want to change font family and size, adjust the `Typograph` section in the CSS.
-- If you want to adjust specifics of the UI, adjust the `Components` section in the CSS.
-- A final result might look like [this](https://github.com/osmoscraft/osmosfeed-examples/tree/main/examples/default-gruvbox-light).
+- To replace the default `gruvbox-dark-medium` theme with other [base16](https://github.com/chriskempson/base16) themes, fill `base00`, `base01`, ... `base0F` in the `Palette` section with the colors from the theme you want.
+- To change font family and size, adjust variables in the `Typograph` section.
+- To tweak other aspects of the UI, adjust variables in the `Components` section.
+- A final result might look like [this](https://github.com/osmoscraft/osmosfeed-examples/blob/main/examples/default-solarized-light/includes/before-head-end.html).
 
 ### Theming examples
 
