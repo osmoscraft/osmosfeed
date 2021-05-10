@@ -33,31 +33,30 @@
   /**
    * Element styling
    */
-  --body-text: var(--base05);
+  --body-color: var(--base04);
   --body-bg: var(--base00);
 
-  --daily-box-bg: var(--base01);
-  --daily-box-heading-text: var(--base04);
+  --daily-heading-color: var(--base04);
 
-  --source-name-text: var(--base0A);
-  --source-name-hover-text: currentColor;
+  --source-name-color: var(--base0A);
+  --source-name-hover-color: var(--base0A);
 
-  --article-title-text: inherit;
-  --article-title-hover-text: var(--base07);
-  --article-summary-text: var(--base04);
-  --article-summary-hover-text: var(--base07);
-  --article-summary-rail-color: var(--base03);
-  --article-summary-hover-rail-color: var(--base04);
+  --article-title-color: var(--base05);
+  --article-title-hover-color: var(--base07);
+  --article-summary-color: var(--base04);
+  --article-summary-hover-color: var(--base07);
 
-  --accordion-marker-color: var(--base03);
-  --accordion-hover-marker-color: var(--base04);
+  --accordion-content-rail-color: var(--base03);
+  --accordion-content-hover-rail-color: var(--base04);
+  --accordion-title-marker-color: var(--base03);
+  --accordion-title-hover-marker-color: var(--base04);
 
   --card-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
   --card-bg: var(--base01);
   --card-radius: 4px;
 
-  --footer-text: var(--base04);
-  --footer-link-hover-text: var(--base07);
+  --footer-color: var(--base04);
+  --footer-link-hover-color: var(--base07);
 }
 
 /**
@@ -78,8 +77,9 @@ html {
 body {
   background-color: var(--body-bg);
   font-family: var(--font-family-default);
-  color: var(--body-text);
+  color: var(--body-color);
   margin: 0;
+  gap: 24px;
   padding: 16px;
   display: grid;
 }
@@ -105,9 +105,9 @@ body {
 .daily-heading {
   font-size: var(--font-size-s);
   font-weight: 600;
-  margin: 20px 0 4px;
+  margin: 0 0 8px 0;
   padding-left: 16px;
-  color: var(--daily-box-heading-text);
+  color: var(--daily-heading-color);
 }
 
 .source {
@@ -116,18 +116,16 @@ body {
 }
 
 .source-name {
-  color: var(--source-name-text);
   font-size: var(--font-size-s);
   font-weight: 400;
-  line-height: 1;
   margin: 0;
 }
 .source-name__link {
-  color: inherit;
+  color: var(--source-name-color);
   text-decoration: none;
 }
 .source-name__link:hover {
-  color: var(--source-name-hover-text);
+  color: var(--source-name-hover-color);
   text-decoration: underline;
 }
 
@@ -137,30 +135,30 @@ body {
 }
 
 .article-expander__title {
-  color: var(--article-title-text);
+  color: var(--article-title-color);
   font-size: var(--font-size-m);
   font-weight: 600;
 }
 .article-expander__title:hover {
   cursor: pointer;
-  color: var(--article-title-hover-text);
+  color: var(--article-title-hover-color);
 }
 .article-expander__title::marker {
-  color: var(--accordion-marker-color);
+  color: var(--accordion-title-marker-color);
 }
 .article-expander__title:hover::marker {
-  color: var(--accordion-hover-marker-color);
+  color: var(--accordion-title-hover-marker-color);
 }
 
 .article-summary-link {
-  color: var(--article-summary-text);
+  color: var(--article-summary-color);
   font-size: var(--font-size-m);
   text-decoration: none;
 }
 
 .article-summary-link:hover {
-  color: var(--article-summary-hover-text);
-  --article-summary-rail-color: var(--article-summary-hover-rail-color);
+  color: var(--article-summary-hover-color);
+  --accordion-content-rail-color: var(--accordion-content-hover-rail-color);
 }
 
 .article-summary-box-outer {
@@ -170,7 +168,7 @@ body {
 
 .article-summary-box-inner {
   padding-left: 8px;
-  border-left: 1px solid var(--article-summary-rail-color);
+  border-left: 1px solid var(--accordion-content-rail-color);
 }
 
 .article-reading-time {
@@ -178,10 +176,10 @@ body {
 }
 
 footer {
-  color: var(--footer-text);
+  color: var(--footer-color);
   font-size: var(--font-size-s);
   display: flex;
-  padding: 16px;
+  padding: 0 16px;
   justify-content: space-between;
 }
 
@@ -191,6 +189,6 @@ footer {
 }
 
 .footer-link:hover {
-  color: var(--footer-link-hover-text);
+  color: var(--footer-link-hover-color);
   text-decoration: underline;
 }
