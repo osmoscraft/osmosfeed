@@ -4,6 +4,7 @@
 # cacheMaxDays: 30
 # siteTitle: dev - osmosfeed
 sources:
+  - href: https://www.freecodecamp.org/news/rss/
   - href: https://christianheilmann.com/feed/
   - href: https://daverupert.com/atom.xml
   - href: https://www.taniarascia.com/rss.xml

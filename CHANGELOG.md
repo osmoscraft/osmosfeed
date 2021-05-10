@@ -1,8 +1,12 @@
 # unreleased
 
-- Added: `feedUrl` and `siteUrl` for each source in cache.
+- Added: Link from the title of a subscription to its website.
+- Added: Store `feedUrl` and `siteUrl` for each source in cache.
+- Added: Semantic element (`<time>`) for timestamp on the UI.
+- Added: Semantic API for theming the default template.
 - Changed: Moved feed metadata from article level to feed level in cache.
-- Removed: `href` for each source in cache. The value was never used.
+- Fixed: Any html-like text was stripped from title. Fixed with encoded text.
+- Removed: `href` for each source in cache. The value was never used so it's not a breaking change.
 
 # v1.5.0
 

@@ -38,7 +38,7 @@ export function renderHtml({ enrichedSources, userSnippets: snippets, config }: 
   // Group articles by date
   enrichedSources.forEach((source) => {
     source.articles.forEach((article) => {
-      const publishedOnDate = article.publishedOn.split("T")[0];
+      const publishedOnDate = article.publishedOn.split("T")[0]; // FIXME: convert to zero offset before extracting date.
       let currentDay = displayDays.find((day) => day.date === publishedOnDate);
       if (!currentDay) {
         currentDay = {
@@ -67,40 +67,46 @@ export function renderHtml({ enrichedSources, userSnippets: snippets, config }: 
   const articlesHtml = displayDays
     .map(
       (displayDay) => `
-    <section class="day-container">
-    <h2>${displayDay.date}</h2>
-    ${displayDay.sources
-      .map(
-        (displaySource) => `
-        <h3>${displaySource.title}</h3>
-        <section class="articles-per-source">
-          ${displaySource.articles
-            .map(
-              (article) => `
-          <article>
-            <details>
-              <summary>${htmlToText(article.title)}</summary>
-              <div class="details-content">
-                <p>${htmlToText(article.description)}</p>
-                <a href="${sanitizeHtml(article.link)}">${
-                article.wordCount ? `Read · ${Math.round(article.wordCount / 300)} min` : "Read"
-              }</a>
-              </div>
-            </details>
-          </article>`
-            )
-            .join("\n")}
-        </section>
-        `
-      )
-      .join("\n")}
+    <section class="daily-content">
+      <h2 class="daily-heading"><time datatime="${displayDay.date}">${displayDay.date}</time></h2>
+      <ul class="sources card">
+      ${displayDay.sources
+        .map(
+          (source) => `
+          <li class="source">
+            <h3 class="source-name"><a class="source-name__link" href="${source.siteUrl}">${source.title}</a></h3>
+            <section class="articles-per-source">
+              ${source.articles
+                .map(
+                  (article) => `
+              <article>
+                <details class="article-expander">
+                  <summary class="article-expander__title">${htmlToText(article.title)}</summary>
+                  <a class="article-summary-link article-summary-box-outer" href="${sanitizeHtml(article.link)}">
+                    <div class="article-summary-box-inner">
+                      <span class="article-reading-time">(&#8202;${Math.round(
+                        (article.wordCount ?? 0) / 300
+                      )} min&#8202;)</span>
+                      <span>${htmlToText(article.description)}</span>
+                    </div>
+                  </a>
+                </details>
+              </article>`
+                )
+                .join("\n")}
+            </section>
+          </li>
+          `
+        )
+        .join("\n")}
+      </ul>  
     </section>
     `
     )
     .join("\n").concat(`
     <footer>
       <time id="build-timestamp" datetime="${new Date().toISOString()}">${new Date().toISOString()}</time>
-      <span><a href="https://github.com/osmoscraft/osmosfeed">osmosfeed ${cliVersion}</a></span>
+      <span><a class="footer-link" href="https://github.com/osmoscraft/osmosfeed">osmosfeed ${cliVersion}</a></span>
     </footer>
     `);
 
