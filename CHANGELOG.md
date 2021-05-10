@@ -1,4 +1,4 @@
-# unreleased
+# v1.6.0
 
 - Added: Link from the title of a subscription to its website.
 - Added: Store `feedUrl` and `siteUrl` for each source in cache.
