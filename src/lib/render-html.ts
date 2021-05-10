@@ -38,7 +38,7 @@ export function renderHtml({ enrichedSources, userSnippets: snippets, config }: 
   // Group articles by date
   enrichedSources.forEach((source) => {
     source.articles.forEach((article) => {
-      const publishedOnDate = article.publishedOn.split("T")[0];
+      const publishedOnDate = article.publishedOn.split("T")[0]; // FIXME: convert to zero offset before extracting date.
       let currentDay = displayDays.find((day) => day.date === publishedOnDate);
       if (!currentDay) {
         currentDay = {
@@ -68,7 +68,7 @@ export function renderHtml({ enrichedSources, userSnippets: snippets, config }: 
     .map(
       (displayDay) => `
     <section class="daily-content">
-      <h2 class="daily-heading">${displayDay.date}</h2>
+      <h2 class="daily-heading"><time datatime="${displayDay.date}">${displayDay.date}</time></h2>
       <ul class="sources card">
       ${displayDay.sources
         .map(

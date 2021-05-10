@@ -1,6 +1,7 @@
 # unreleased
 
 - Added: `feedUrl` and `siteUrl` for each source in cache.
+- Added: Semantic element (`<time>`) for timestamp.
 - Changed: Better customizability for the default template theme.
 - Changed: Moved feed metadata from article level to feed level in cache.
 - Fixed: Any html-like text was stripped from title. Fixed with encoded text.

@@ -47,10 +47,10 @@
   --article-summary-text: var(--base04);
   --article-summary-hover-text: var(--base07);
   --article-summary-rail-color: var(--base03);
-  --article-summary-rail-hover-color: var(--base04);
+  --article-summary-hover-rail-color: var(--base04);
 
   --accordion-marker-color: var(--base03);
-  --accordion-marker-hover-color: var(--base04);
+  --accordion-hover-marker-color: var(--base04);
 
   --card-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
   --card-bg: var(--base01);
@@ -149,7 +149,7 @@ body {
   color: var(--accordion-marker-color);
 }
 .article-expander__title:hover::marker {
-  color: var(--accordion-marker-hover-color);
+  color: var(--accordion-hover-marker-color);
 }
 
 .article-summary-link {
@@ -160,7 +160,7 @@ body {
 
 .article-summary-link:hover {
   color: var(--article-summary-hover-text);
-  --article-summary-rail-color: var(--article-summary-rail-hover-color);
+  --article-summary-rail-color: var(--article-summary-hover-rail-color);
 }
 
 .article-summary-box-outer {
