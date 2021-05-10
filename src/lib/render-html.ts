@@ -81,7 +81,7 @@ export function renderHtml({ enrichedSources, userSnippets: snippets, config }: 
                   (article) => `
               <article>
                 <details class="article-expander">
-                  <summary class="article-expander__title">${sanitizeHtml(article.title)}</summary>
+                  <summary class="article-expander__title">${htmlToText(article.title)}</summary>
                   <a class="article-summary-link article-summary-box-outer" href="${sanitizeHtml(article.link)}">
                     <div class="article-summary-box-inner">
                       <span class="article-reading-time">(&#8202;${Math.round(
