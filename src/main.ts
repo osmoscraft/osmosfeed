@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-import fs from "fs-extra";
-import path from "path";
 import { performance } from "perf_hooks";
 import { getCache, setCache } from "./lib/cache";
 import { getConfig } from "./lib/get-config";
@@ -12,6 +10,8 @@ import { renderFiles } from "./lib/render-files";
 import { renderAtom } from "./lib/render-atom";
 import { renderHtml } from "./lib/render-html";
 import { cliVersion } from "./utils/version";
+import { getTemplates } from "./lib/get-templates";
+import Handlebars from "handlebars";
 
 async function run() {
   const startTime = performance.now();
@@ -29,6 +29,14 @@ async function run() {
   setCache({ sources: enrichedSources, cliVersion });
 
   const { userSnippets } = await getUserSnippets();
+
+  const templatesSummary = await getTemplates();
+
+  templatesSummary.partials.forEach((partial) => Handlebars.registerPartial(partial.name, partial.template));
+
+  const entryTemplate = Handlebars.compile("{{> index}}");
+
+  const htmlOutput = entryTemplate({ title: "test title", feedFilename: "feed.atom" });
 
   const html = renderHtml({ enrichedSources, userSnippets, config });
   const atom = renderAtom({ enrichedSources, config });
