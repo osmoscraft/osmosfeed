@@ -1,17 +1,18 @@
 #!/usr/bin/env node
 
+import Handlebars from "handlebars";
 import { performance } from "perf_hooks";
 import { getCache, setCache } from "./lib/cache";
-import { getConfig } from "./lib/get-config";
 import { copyStatic } from "./lib/copy-static";
 import { enrich, EnrichedSource } from "./lib/enrich";
+import { getConfig } from "./lib/get-config";
+import { getTemplateData } from "./lib/get-template-data";
+import { getTemplates } from "./lib/get-templates";
 import { userSnippets as getUserSnippets } from "./lib/get-user-snippets";
-import { renderFiles } from "./lib/render-files";
 import { renderAtom } from "./lib/render-atom";
+import { renderFiles } from "./lib/render-files";
 import { renderHtml } from "./lib/render-html";
 import { cliVersion } from "./utils/version";
-import { getTemplates } from "./lib/get-templates";
-import Handlebars from "handlebars";
 
 async function run() {
   const startTime = performance.now();
@@ -36,9 +37,25 @@ async function run() {
 
   const entryTemplate = Handlebars.compile("{{> index}}");
 
-  const htmlOutput = entryTemplate({ title: "test title", feedFilename: "feed.atom" });
+  /** Hierarchy options:
+   * - articles
+   * - dates
+   *   - articles
+   *   - sources
+   *     - articles
+   * - sources
+   *   - dates
+   *     - articles
+   *   - articles
+   */
+  const htmlOutput = entryTemplate(getTemplateData(enrichedSources));
 
-  const html = renderHtml({ enrichedSources, userSnippets, config });
+  // TODO migrate system style sheet to index.css
+  // TODO use template engine to handle site title and feed filename
+  // POC use template engine to handle user snippet?
+  // TODO prepare demos for all 5 custom structures
+
+  const html = renderHtml({ templateOutput: htmlOutput, userSnippets, config });
   const atom = renderAtom({ enrichedSources, config });
 
   await renderFiles({ html, atom });
