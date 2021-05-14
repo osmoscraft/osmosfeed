@@ -3,7 +3,7 @@
 ## Develop
 
 - `npm run dev`. It uses ts-node to spin up the feed builder script.
-  - It will use `osmosnote.yaml` in the project root.
+  - It will use `osmosfeed.yaml` in the project root.
 - To test remote caching, enable/update the cache url option inside `osmosnote.yaml`.
 - To test customization, create an `includes` directory and add snippets.
 - To test static file copying, create a `static` directory and add files.
