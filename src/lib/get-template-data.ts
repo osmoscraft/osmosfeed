@@ -6,6 +6,7 @@ import { FEED_FILENAME } from "./render-atom";
 
 interface TemplateArticle extends EnrichedArticle {
   source: EnrichedSource;
+  isoPublishDate: string;
   readingTimeInMin: number;
 }
 
@@ -58,6 +59,7 @@ function organizeByArticles(enrichedSources: EnrichedSource[]): TemplateArticle[
     enrichedSource.articles.map((article) => ({
       ...article,
       source: enrichedSource,
+      isoPublishDate: article.publishedOn.split("T")[0],
       title: ensureDisplayString(htmlToText(article.title), "Untitled"),
       description: ensureDisplayString(htmlToText(article.description), "No content preview"),
       readingTimeInMin: Math.round((article.wordCount ?? 0) / 300),
@@ -76,7 +78,7 @@ function organizeBySources(enrichedSources: EnrichedSource[]): TemplateSource[] 
     .map(([source, articles]) => ({
       ...source,
       articles: articles.sort((a, b) => b.publishedOn.localeCompare(a.publishedOn)), // by date, most recent first
-      dates: [...groupBy(articles, (article) => article.publishedOn.split("T")[0])]
+      dates: [...groupBy(articles, (article) => article.isoPublishDate)]
         .sort((a, b) => b[0].localeCompare(a[0])) // by date, most recent first
         .map(([date, articles]) => ({
           isoPublishDate: date,
@@ -90,7 +92,7 @@ function organizeBySources(enrichedSources: EnrichedSource[]): TemplateSource[] 
 function organizeByDates(enrichedSources: EnrichedSource[]): TemplateDates[] {
   const articles = organizeByArticles(enrichedSources);
 
-  const articlesByDate = groupBy(articles, (article) => article.publishedOn.split("T")[0]);
+  const articlesByDate = groupBy(articles, (article) => article.isoPublishDate);
   const sortedArticlesByDate = [...articlesByDate.entries()]
     .sort((a, b) => b[0].localeCompare(a[0])) // by date, most recent first
     .map(([date, articles]) => ({
