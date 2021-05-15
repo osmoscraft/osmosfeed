@@ -1,8 +1,9 @@
 import fs from "fs-extra";
 import path from "path";
+import { ENTRY_DIR } from "../utils/entry-dir";
 
 export const INCLUDE_DIR = "includes";
-export const SYSTEM_TEMPLATE_DIR = "src/system-templates";
+export const SYSTEM_TEMPLATE_DIR = "system-templates";
 
 export interface UserTemplateSummary {
   partials: Partial[];
@@ -24,7 +25,7 @@ interface FileSummary {
  * User templates from "include" overwrites system templates from "src/system-templates".
  */
 export async function getTemplates(): Promise<UserTemplateSummary> {
-  const systemIncludeDir = path.resolve(SYSTEM_TEMPLATE_DIR);
+  const systemIncludeDir = path.resolve(ENTRY_DIR, SYSTEM_TEMPLATE_DIR);
   const systemIncludeFilenames = await fs.readdir(systemIncludeDir).catch(() => [] as string[]);
 
   const userIncludeDir = path.resolve(INCLUDE_DIR);
