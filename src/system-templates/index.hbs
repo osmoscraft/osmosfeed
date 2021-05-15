@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>{{siteTitle}}</title>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="alternate" type="application/rss+xml" title="{{siteTitle}}" href="{{feedHref}}" />
+  <link href="index.css" rel="stylesheet" />
+  <!-- %before-head-end.html% -->
+</head>
+
+<body>
+<!-- %after-body-begin.html% -->
+  {{#each dates}}
+  <section class="daily-content">
+    <h2 class="daily-heading"><time datatime="{{isoPublishDate}}">{{isoPublishDate}}</time></h2>
+    <ul class="sources card">
+      {{#each sources}}
+      <li class="source">
+        <section>
+          <h3 class="source-name"><a class="source-name__link" href="{{siteUrl}}">{{title}}</a></h3>
+          <section class="articles-per-source">
+            {{#each articles}}
+            <article>
+              <details class="article-expander">
+                <summary class="article-expander__title">{{title}}</summary>
+                <a class="article-summary-link article-summary-box-outer" href="{{link}}">
+                  <div class="article-summary-box-inner">
+                    <span class="article-reading-time">({{readingTimeInMin}} min)</span>
+                    <span>{{description}}</span>
+                  </div>
+                </a>
+              </details>
+            </article>
+            {{/each}}
+        </section>
+      </li>
+      {{/each}}
+    </ul>
+  </section>
+  {{/each}}
+
+  <footer>
+    <time id="build-timestamp" datetime="{{siteBuildTimestamp}}">{{siteBuildTimestamp}}</time>
+    <span><a class="footer-link" href="{{projectUrl}}">osmosfeed {{cliVersion}}</a></span>
+  </footer>
+  <script src="index.js"></script>
+  <!-- %before-body-end.html% -->
+</body>
+
+</html>

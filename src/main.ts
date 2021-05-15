@@ -11,7 +11,7 @@ import { getTemplates } from "./lib/get-templates";
 import { userSnippets as getUserSnippets } from "./lib/get-user-snippets";
 import { renderAtom } from "./lib/render-atom";
 import { renderFiles } from "./lib/render-files";
-import { renderHtml } from "./lib/render-html";
+import { renderUserSnippets } from "./lib/render-user-snippets";
 import { cliVersion } from "./utils/version";
 
 async function run() {
@@ -35,31 +35,13 @@ async function run() {
 
   templatesSummary.partials.forEach((partial) => Handlebars.registerPartial(partial.name, partial.template));
 
-  const entryTemplate = Handlebars.compile("{{> index}}");
+  const renderTemplate = Handlebars.compile("{{> index}}");
 
-  /** Hierarchy options:
-   * - articles
-   * - dates
-   *   - articles
-   *   - sources
-   *     - articles
-   * - sources
-   *   - dates
-   *     - articles
-   *   - articles
-   */
-  const htmlOutput = entryTemplate(getTemplateData(enrichedSources));
-
-  // TODO migrate system style sheet to index.css
-  // TODO use template engine to handle site title and feed filename
-  // POC use template engine to handle user snippet?
-  // TODO prepare demos for all 5 custom structures
-
-  const html = renderHtml({ templateOutput: htmlOutput, userSnippets, config });
+  const templateOutput = renderTemplate(getTemplateData({ enrichedSources, config }));
+  const html = renderUserSnippets({ templateOutput, userSnippets, config });
   const atom = renderAtom({ enrichedSources, config });
 
   await renderFiles({ html, atom });
-
   await copyStatic();
 
   const durationInSeconds = ((performance.now() - startTime) / 1000).toFixed(2);

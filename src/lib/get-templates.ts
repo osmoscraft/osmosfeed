@@ -2,7 +2,7 @@ import fs from "fs-extra";
 import path from "path";
 
 export const INCLUDE_DIR = "includes";
-export const SYSTEM_TEMPLATE_DIR = "src/templates";
+export const SYSTEM_TEMPLATE_DIR = "src/system-templates";
 
 export interface UserTemplateSummary {
   partials: Partial[];

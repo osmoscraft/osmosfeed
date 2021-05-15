@@ -1,3 +1,5 @@
+import entities = require("entities");
+
 /**
  * Credit:
  * https://github.com/rbren/rss-parser/blob/master/lib/utils.js
@@ -12,7 +14,7 @@ export function htmlToText(htmlString: string): string {
   );
 
   // Remove all other tags
-  str = str.replace(/<(?:.|\n)*?>/gm, "");
+  str = str.replace(/<(?:.|\n)*?>/gm, "").trim();
 
-  return str.trim();
+  return entities.decodeHTML(str).trim();
 }

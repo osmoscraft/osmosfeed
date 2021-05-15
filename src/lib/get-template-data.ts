@@ -1,7 +1,12 @@
+import { htmlToText } from "../utils/html-to-text";
+import { cliVersion } from "../utils/version";
 import type { EnrichedArticle, EnrichedSource } from "./enrich";
+import type { Config } from "./get-config";
+import { FEED_FILENAME } from "./render-atom";
 
 interface TemplateArticle extends EnrichedArticle {
   source: EnrichedSource;
+  readingTimeInMin: number;
 }
 
 interface TemplateSource extends TemplateSourceBase {
@@ -21,19 +26,30 @@ interface TemplateSourceBase extends EnrichedSource {
   articles: TemplateArticle[];
 }
 
-export function getTemplateData(enrichedSources: EnrichedSource[]) {
+export interface GetTemplateDataInput {
+  enrichedSources: EnrichedSource[];
+  config: Config;
+}
+
+export function getTemplateData(input: GetTemplateDataInput) {
   return {
     get dates() {
-      return organizeByDates(enrichedSources);
+      return organizeByDates(input.enrichedSources);
     },
 
     get sources() {
-      return organizeBySources(enrichedSources);
+      return organizeBySources(input.enrichedSources);
     },
 
     get articles() {
-      return organizeByArticles(enrichedSources);
+      return organizeByArticles(input.enrichedSources);
     },
+
+    cliVersion,
+    siteTitle: input.config.siteTitle,
+    siteBuildTimestamp: new Date().toISOString(),
+    projectUrl: `https://github.com/osmoscraft/osmosfeed`,
+    feedHref: FEED_FILENAME,
   };
 }
 
@@ -42,6 +58,9 @@ function organizeByArticles(enrichedSources: EnrichedSource[]): TemplateArticle[
     enrichedSource.articles.map((article) => ({
       ...article,
       source: enrichedSource,
+      title: ensureDisplayString(htmlToText(article.title), "Untitled"),
+      description: ensureDisplayString(htmlToText(article.description), "No content preview"),
+      readingTimeInMin: Math.round((article.wordCount ?? 0) / 300),
     }))
   );
 
@@ -101,4 +120,8 @@ function groupBy<T, K>(array: T[], selector: (item: T) => K) {
 
     return latest;
   }, result);
+}
+
+function ensureDisplayString(input: string | null | undefined, fallback: string) {
+  return input?.length ? input : fallback;
 }

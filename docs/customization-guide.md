@@ -76,7 +76,19 @@ With this technique, you can
 
 ### Use different HTML template
 
-(TBD)
+```js
+/** Hierarchy options:
+ * - articles
+ * - dates
+ *   - articles
+ *   - sources
+ *     - articles
+ * - sources
+ *   - dates
+ *     - articles
+ *   - articles
+ */
+```
 
 ## Backend customization
 

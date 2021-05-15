@@ -1,0 +1,25 @@
+<!-- Collecting special cases for future testing. Unimportant fields are omitted -->
+
+<!-- [1] Expect backtick and html tag to show -->
+<!-- This might be impossible to we want to support [3] -->
+<item>
+  <title>
+  <![CDATA[ The Humble `<img>` Element And Core Web Vitals ]]>
+  </title>
+</item>
+
+
+<!-- [2] Expect escaped content to be decoded back to html string for display, but not parsed as html elements -->
+<item>
+  <description>
+  <![CDATA[ Yesterday, we looked at how to get the first and last elements inside a parent. Today, we&rsquo;re going to look at how to get the next and previous sibling elements. Once again, we&rsquo;re going to use some sample markup for today&rsquo;s article. &lt;ul&gt; &lt;!-- The gray wizard --&gt; &lt;li&gt;Gandalf&lt;/li&gt; &lt;li&gt;Radagast&lt;/li&gt; &lt;li id=&#34;hermione&#34;&gt;Hermione&lt;/li&gt; &lt;!-- The surprise hero --&gt; &lt;li&gt;Neville&lt;/li&gt; &lt;/ul&gt; Let&rsquo;s dig in! The Node.nextSibling and Node.previousSibling properties The Node.nextSibling and Node. ]]>
+  </description>
+</item>
+
+
+<!-- [3] Expect "Now THAT'S What I Call Serivce Worker!" -->
+<item>
+  <title>
+  <![CDATA[ Now THAT&#8217;S What I Call Service Worker! ]]>
+  </title>
+</item>
