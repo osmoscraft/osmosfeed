@@ -1,9 +1,10 @@
 # Customization guide
 
-## Concpets
+## What's supported
 
 - **Theming**: Changing CSS to achieve different look and feel on the same HTML content.
 - **Templating**: Changing both HTML and CSS to achieve different layout and content structure on the same feed data.
+- **Adding Inline HTML**: Add HTML (which can include CSS and JavaScript) into the existing template. Supported by default template and optionally supported by user created templates.
 
 ## Theming guide
 
@@ -114,7 +115,7 @@ repo-root/
 └── package.json
 ```
 
-## Add inline HTML and CSS
+## Add inline HTML
 
 You can inject arbitrary content into 3 predefined slots in the default template.
 
