@@ -78,7 +78,7 @@ With this technique, you can
 
 ### Template customization guide
 
-Template allows you to fully customize the output of the HTML. Unlike the [inline HTML snippet approach](extend-the-default-template-with-inline-html-snippets) where you extend on top of the existing HTML, customizating template means starting from scratch to build your own frontend.
+Template allows you to fully customize the output of the HTML. Unlike the [inline HTML snippet approach](extend-the-default-template-with-inline-html-snippets) where you extend the existing HTML, customizating template means starting from scratch to build your own frontend.
 
 #### Prerequisite
 
