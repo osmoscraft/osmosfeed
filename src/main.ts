@@ -19,6 +19,10 @@ async function run() {
   console.log(`[main] Starting build using cli version ${cliVersion}`);
 
   const config = getConfig();
+
+  const templatesSummary = await getTemplates();
+  const { userSnippets } = await getUserSnippets();
+
   const { sources, cacheUrl } = config;
 
   const cache = await getCache(cacheUrl);
@@ -28,10 +32,6 @@ async function run() {
   );
 
   setCache({ sources: enrichedSources, cliVersion });
-
-  const { userSnippets } = await getUserSnippets();
-
-  const templatesSummary = await getTemplates();
 
   templatesSummary.partials.forEach((partial) => Handlebars.registerPartial(partial.name, partial.template));
 

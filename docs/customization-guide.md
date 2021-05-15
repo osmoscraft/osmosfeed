@@ -74,7 +74,7 @@ With this technique, you can
 - Default template, solarized light theme. [Demo](https://osmoscraft.github.io/osmosfeed-examples/default-solarized-light/) | [Source](https://github.com/osmoscraft/osmosfeed-examples/tree/main/examples/default-solarized-light)
 - Default template, solarized dark theme. [Demo](https://osmoscraft.github.io/osmosfeed-examples/default-solarized-dark/) | [Source](https://github.com/osmoscraft/osmosfeed-examples/tree/main/examples/default-solarized-dark)
 
-### Use different HTML template
+### Templating guide
 
 ```js
 /** Hierarchy options:
@@ -89,6 +89,8 @@ With this technique, you can
  *   - articles
  */
 ```
+
+### Templating examples
 
 ## Backend customization
 

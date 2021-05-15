@@ -13,22 +13,36 @@ export interface Partial {
   template: string;
 }
 
+interface FileSummary {
+  path: string;
+  ext: string;
+  filename: string;
+}
+
 /**
- * Detect and load any custom HTML snippet from the `includes` dir.
- * TODO: rename from `includes` to `snippets` in next major release.
+ * Detect and load templates.
+ * User templates from "include" overwrites system templates from "src/system-templates".
  */
 export async function getTemplates(): Promise<UserTemplateSummary> {
-  // TODO load built-in template by default.
-  // Then allow override from user include dir.
-  // const includeDir = path.resolve(INCLUDE_DIR);
-  const includeDir = path.resolve(SYSTEM_TEMPLATE_DIR);
-  const includeFilenames = await fs.readdir(includeDir).catch(() => [] as string[]);
+  const systemIncludeDir = path.resolve(SYSTEM_TEMPLATE_DIR);
+  const systemIncludeFilenames = await fs.readdir(systemIncludeDir).catch(() => [] as string[]);
 
-  const includeFileDetails = includeFilenames.map((filename) => ({
-    path: path.join(includeDir, filename),
-    ext: path.extname(filename).toLowerCase(),
-    basename: filename,
-  }));
+  const userIncludeDir = path.resolve(INCLUDE_DIR);
+  const userIncludeFilenames = await fs.readdir(userIncludeDir).catch(() => [] as string[]);
+
+  const userIncludeFileMapper = getFileSummaryMapper(userIncludeDir);
+  const systemIncludeFileMapper = getFileSummaryMapper(systemIncludeDir);
+
+  const includeFileDetails = [
+    ...userIncludeFilenames.map(userIncludeFileMapper),
+    ...systemIncludeFilenames.map(systemIncludeFileMapper),
+  ].reduce<FileSummary[]>((fileSummaries, currentFileSummary) => {
+    if (!fileSummaries.some((file) => file.filename === currentFileSummary.filename)) {
+      fileSummaries.push(currentFileSummary);
+    }
+
+    return fileSummaries;
+  }, []);
 
   const htmlIncludes = includeFileDetails.filter((detail) => [".hbs"].includes(detail.ext));
   console.log(`[template] Found ${htmlIncludes.length} templates`);
@@ -40,7 +54,7 @@ export async function getTemplates(): Promise<UserTemplateSummary> {
         .then((content) => {
           console.log(`[template] Loaded ${htmlInclude.path}`);
           return {
-            name: htmlInclude.basename.replace(".hbs", ""),
+            name: htmlInclude.filename.replace(".hbs", ""),
             template: content,
           };
         })
@@ -56,4 +70,12 @@ export async function getTemplates(): Promise<UserTemplateSummary> {
   return {
     partials: includedPartials,
   };
+}
+
+function getFileSummaryMapper(dir: string) {
+  return (filename: string) => ({
+    path: path.join(dir, filename),
+    ext: path.extname(filename).toLowerCase(),
+    filename: filename,
+  });
 }
