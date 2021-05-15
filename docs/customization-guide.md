@@ -106,10 +106,10 @@ Template allows you to fully customize the output of the HTML. Unlike the [inlin
     - Add `<script> /** you_code_here */</script>` inline in the template, or
     - Add `<script src="{filename}.js"></script>` just before `<body>` section ends, then place `{filename}.js` inside `static` folder.
     - If you want to use es6 module `import` syntax, use `<script type="module" src="{filename}.js"></script>`.
-- Use one of these content organization schemes to pull data into your template:
-  1. A flat list of articles, sorted by publish time
-  2. A list of dates, with articles inside each date
-  3. A list of dates, with a list of sources inside each date, with a list of articles inside each source
+- Use one of these content structure to pull data into your template:
+  1. A flat list of articles, sorted by publish time.  [Demo](https://osmoscraft.github.io/osmosfeed-examples/articles-unstyled/) | [Source](https://github.com/osmoscraft/osmosfeed-examples/blob/main/examples/articles-unstyled/includes/index.hbs)
+  2. A list of dates, with articles inside each date. [Demo](https://osmoscraft.github.io/osmosfeed-examples/articles-daily-unstyled/) | [Source](https://github.com/osmoscraft/osmosfeed-examples/blob/main/examples/articles-daily-unstyled/includes/index.hbs)
+  3. A list of dates, with a list of sources inside each date, with a list of articles inside each source. [Demo](https://osmoscraft.github.io/osmosfeed-examples/sources-daily-unstyled/) | [Source](https://github.com/osmoscraft/osmosfeed-examples/blob/main/examples/sources-daily-unstyled/includes/index.hbs)
   4. A list of sources, with articles inside each source
   5. A list of sources, with a list of dates inside each source, with a list of articles inside each date
 - Refer to [source code](https://github.com/osmoscraft/osmosfeed/blob/master/src/lib/get-template-data.ts) for all the data available to the template
