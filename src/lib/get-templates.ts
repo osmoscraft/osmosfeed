@@ -46,7 +46,6 @@ export async function getTemplates(): Promise<UserTemplateSummary> {
   }, []);
 
   const htmlIncludes = includeFileDetails.filter((detail) => [".hbs"].includes(detail.ext));
-  console.log(`[template] Found ${htmlIncludes.length} templates`);
 
   const fsSnippets = await Promise.all(
     htmlIncludes.map((htmlInclude) =>
