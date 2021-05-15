@@ -55,14 +55,18 @@ An RSS reader running entirely from your GitHub repo.
 
 ## Guides and references
 
-- [Configuration reference](./docs/osmosfeed-yaml-reference.md)
 - [Customization guide](./docs/customization-guide.md)
+  - Changing theme
+  - Changing template
+  - Add static files
+  - Custom javascript and css override
+- [Configuration reference](./docs/osmosfeed-yaml-reference.md)
 - [Headless usage guide](./docs/headless-usage-guide.md)
-- [Developer guide](./docs/developer-guide.md)
 
 ## To contribute
 
-[How to contribute](./CONTRIBUTING.md)
+- [How to contribute](./CONTRIBUTING.md)
+- [Developer guide](./docs/developer-guide.md)
 
 ## FAQ
 
