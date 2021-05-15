@@ -5,6 +5,7 @@
 - **Theming**: Changing CSS to achieve different look and feel on the same HTML content.
 - **Templating**: Changing both HTML and CSS to achieve different layout and content structure on the same feed data.
 - **Adding Inline HTML**: Add HTML (which can include CSS and JavaScript) into the existing template. Supported by default template and optionally supported by user created templates.
+- **Adding static files**: Add files to the host for public access.
 
 ## Theming guide
 
@@ -99,22 +100,6 @@ Template allows you to fully customize the output of the HTML. Unlike the [themi
    ```
 7. Need help? You can raise a question on the [Q&A discussions](https://github.com/osmoscraft/osmosfeed/discussions/categories/q-a) page.
 
-## Add static files
-
-Add any file to the `static` directory. The builder will copy those files to the root of your site. This is useful for
-
-- Configure custom domain with `CNAME`
-- Override the default `favicon.ico` with a custom one.
-
-```
-repo-root/
-├── static/
-│   ├── CNAME
-│   └── favicon.ico
-├── osmosfeed.yaml
-└── package.json
-```
-
 ## Add inline HTML
 
 You can inject arbitrary content into 3 predefined slots in the default template.
@@ -155,3 +140,19 @@ With this technique, you can
 - Customize the parameters in the current theme. See [theming guide](#theming-guide).
 - Add custom CSS by injecting a `<style>` tag using `before-head-end.html`.
 - Run custom JavaScript by injecting a `<script>` tag using `before-body-end.html`.
+
+## Add static files
+
+Add any file to the `static` directory. The builder will copy those files to the root of your site. This is useful for
+
+- Configure custom domain with `CNAME`
+- Override the default `favicon.ico` with a custom one.
+
+```
+repo-root/
+├── static/
+│   ├── CNAME
+│   └── favicon.ico
+├── osmosfeed.yaml
+└── package.json
+```
