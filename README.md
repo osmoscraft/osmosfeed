@@ -1,4 +1,4 @@
-![image](https://user-images.githubusercontent.com/1895289/115334130-aa80fb00-a14f-11eb-9f9a-e0d2b8a15851.png)
+![image](./docs/media/osmosfeed-square-badge.svg)
 
 # osmos::feed
 
