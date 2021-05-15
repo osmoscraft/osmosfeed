@@ -1,16 +1,17 @@
 #!/usr/bin/env node
 
-import fs from "fs-extra";
-import path from "path";
+import Handlebars from "handlebars";
 import { performance } from "perf_hooks";
 import { getCache, setCache } from "./lib/cache";
-import { getConfig } from "./lib/get-config";
 import { copyStatic } from "./lib/copy-static";
 import { enrich, EnrichedSource } from "./lib/enrich";
+import { getConfig } from "./lib/get-config";
+import { getTemplateData } from "./lib/get-template-data";
+import { getTemplates } from "./lib/get-templates";
 import { userSnippets as getUserSnippets } from "./lib/get-user-snippets";
-import { renderFiles } from "./lib/render-files";
 import { renderAtom } from "./lib/render-atom";
-import { renderHtml } from "./lib/render-html";
+import { renderFiles } from "./lib/render-files";
+import { renderUserSnippets } from "./lib/render-user-snippets";
 import { cliVersion } from "./utils/version";
 
 async function run() {
@@ -18,6 +19,10 @@ async function run() {
   console.log(`[main] Starting build using cli version ${cliVersion}`);
 
   const config = getConfig();
+
+  const templatesSummary = await getTemplates();
+  const { userSnippets } = await getUserSnippets();
+
   const { sources, cacheUrl } = config;
 
   const cache = await getCache(cacheUrl);
@@ -28,13 +33,15 @@ async function run() {
 
   setCache({ sources: enrichedSources, cliVersion });
 
-  const { userSnippets } = await getUserSnippets();
+  templatesSummary.partials.forEach((partial) => Handlebars.registerPartial(partial.name, partial.template));
 
-  const html = renderHtml({ enrichedSources, userSnippets, config });
+  const renderTemplate = Handlebars.compile("{{> index}}");
+
+  const templateOutput = renderTemplate(getTemplateData({ enrichedSources, config }));
+  const html = renderUserSnippets({ templateOutput, userSnippets, config });
   const atom = renderAtom({ enrichedSources, config });
 
   await renderFiles({ html, atom });
-
   await copyStatic();
 
   const durationInSeconds = ((performance.now() - startTime) / 1000).toFixed(2);

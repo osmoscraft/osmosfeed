@@ -13,3 +13,4 @@ require("esbuild")
 
 fs.copySync(path.resolve("src/index-template.html"), path.resolve("bin/index-template.html"));
 fs.copySync(path.resolve("src/system-static"), path.resolve("bin/system-static"));
+fs.copySync(path.resolve("src/system-templates"), path.resolve("bin/system-templates"));
