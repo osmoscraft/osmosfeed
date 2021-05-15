@@ -4,6 +4,26 @@ import type { EnrichedArticle, EnrichedSource } from "./enrich";
 import type { Config } from "./get-config";
 import { FEED_FILENAME } from "./render-atom";
 
+export interface GetTemplateDataOutput {
+  /** Array of dates, each containing the content published on the date */
+  dates: TemplateDates[];
+  /** Array of source, each containing the content published from the source */
+  sources: TemplateSource[];
+  /** Array of articles, most recent first */
+  articles: TemplateArticle[];
+
+  /** npm package version of the builder */
+  cliVersion: string;
+  /** URL for the generated atom feed */
+  feedHref: string;
+  /** URL for the osmosfeed project */
+  projectUrl: string;
+  /** ISO timestamp for the build */
+  siteBuildTimestamp: string;
+
+  siteTitle: string;
+}
+
 interface TemplateArticle extends EnrichedArticle {
   source: EnrichedSource;
   isoPublishDate: string;
@@ -32,7 +52,7 @@ export interface GetTemplateDataInput {
   config: Config;
 }
 
-export function getTemplateData(input: GetTemplateDataInput) {
+export function getTemplateData(input: GetTemplateDataInput): GetTemplateDataOutput {
   return {
     get dates() {
       return organizeByDates(input.enrichedSources);
