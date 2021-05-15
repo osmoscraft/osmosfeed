@@ -1,4 +1,4 @@
-![image](./docs/media/osmosfeed-square-badge.svg)
+[![image](./docs/media/osmosfeed-square-badge.svg)](#get-started)
 
 # osmos::feed
 
