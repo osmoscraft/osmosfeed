@@ -42,7 +42,7 @@ async function run() {
   const atom = renderAtom({ enrichedSources, config });
 
   await renderFiles({ html, atom });
-  await copyStatic();
+  await copyStatic(templatesSummary);
 
   const durationInSeconds = ((performance.now() - startTime) / 1000).toFixed(2);
   console.log(`[main] Finished build in ${durationInSeconds} seconds`);

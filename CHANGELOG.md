@@ -1,3 +1,7 @@
+# unreleased
+
+- Fixed: static files were unnecessarily copied for custom templates.
+
 # v1.7.0
 
 - Added: templating system. [Demo](https://osmoscraft.github.io/osmosfeed-examples/articles-unstyled/) | [Source](https://github.com/osmoscraft/osmosfeed-examples/tree/main/examples/articles-unstyled) | [Docs](https://github.com/osmoscraft/osmosfeed/blob/master/docs/customization-guide.md#template-customization-guide)
