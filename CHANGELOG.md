@@ -1,4 +1,4 @@
-# unreleased
+# v1.7.1
 
 - Fixed: static files were unnecessarily copied for custom templates.
 
