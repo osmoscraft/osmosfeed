@@ -1,3 +1,9 @@
+# v1.7.0
+
+- Added: templating system. [Demo](https://osmoscraft.github.io/osmosfeed-examples/articles-unstyled/) | [Source](https://github.com/osmoscraft/osmosfeed-examples/tree/main/examples/articles-unstyled) | [Docs](https://github.com/osmoscraft/osmosfeed/blob/master/docs/customization-guide.md#template-customization-guide)
+- Chore: rendering logic refactoring. Adopting functional paradigm.
+- Thank you @tianheg, @onnyyonn
+
 # v1.6.0
 
 - Added: Link from the title of a subscription to its website.
