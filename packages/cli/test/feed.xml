@@ -1,7 +1,7 @@
 <!-- Collecting special cases for future testing. Unimportant fields are omitted -->
 
 <!-- [1] Expect backtick and html tag to show -->
-<!-- This might be impossible to we want to support [3] -->
+<!-- This might be impossible if we want to support [3] -->
 <item>
   <title>
   <![CDATA[ The Humble `<img>` Element And Core Web Vitals ]]>
