@@ -1,11 +1,15 @@
+# unreleased
+
+- Chore: Reorganize to monorepo with multiple npm workspace.
+
 # v1.7.1
 
-- Fixed: static files were unnecessarily copied for custom templates.
+- Fixed: Static files were unnecessarily copied for custom templates.
 
 # v1.7.0
 
-- Added: templating system. [Demo](https://osmoscraft.github.io/osmosfeed-examples/articles-unstyled/) | [Source](https://github.com/osmoscraft/osmosfeed-examples/tree/main/examples/articles-unstyled) | [Docs](https://github.com/osmoscraft/osmosfeed/blob/master/docs/customization-guide.md#template-customization-guide)
-- Chore: rendering logic refactoring. Adopting functional paradigm.
+- Added: Templating system. [Demo](https://osmoscraft.github.io/osmosfeed-examples/articles-unstyled/) | [Source](https://github.com/osmoscraft/osmosfeed-examples/tree/main/examples/articles-unstyled) | [Docs](https://github.com/osmoscraft/osmosfeed/blob/master/docs/customization-guide.md#template-customization-guide)
+- Chore: Rendering logic refactoring. Adopting functional paradigm.
 - Thank you @tianheg, @onnyyonn
 
 # v1.6.0
