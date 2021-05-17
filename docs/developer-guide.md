@@ -6,11 +6,18 @@
 
 ## Develop
 
-### One-time install
+### First-time install
 
-- In `packages/cli`, run `npm install`, then `npm run build`. (This step is temporarily added, due to [this npm bug](https://github.com/npm/cli/issues/2632)).
-- In repo root, run `npm install`, then `npm run build`.
-- Validate `osmosfeed` binary location with `which osmosfeed`.
+```bash
+# --- Step start (This step is temporarily added, due to [this npm bug](https://github.com/npm/cli/issues/2632)).
+cd packages/cli
+npm install
+npm run build
+# --- Step end
+
+cd ../../ # back to repo root
+npm install
+```
 
 ### Development loop
 
