@@ -1,0 +1,43 @@
+{
+  "name": "@osmoscraft/osmosfeed",
+  "version": "1.7.2-beta.0",
+  "description": "",
+  "scripts": {
+    "dev": "node scripts/build.js",
+    "build": "npm run clean && node scripts/build.js",
+    "clean": "rm -rf bin"
+  },
+  "main": "bin/main.js",
+  "bin": {
+    "osmosfeed": "bin/main.js"
+  },
+  "files": [
+    "bin"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/osmoscraft/osmosfeed.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/osmoscraft/osmosfeed/issues"
+  },
+  "homepage": "https://osmoscraft.org",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "cheerio": "^1.0.0-rc.9",
+    "feed": "^4.2.2",
+    "fs-extra": "^10.0.0",
+    "handlebars": "^4.7.7",
+    "js-yaml": "^4.0.0",
+    "rss-parser": "^3.12.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^9.0.10",
+    "@types/js-yaml": "^4.0.0",
+    "@types/node": "^15.0.2",
+    "esbuild": "^0.11.23"
+  }
+}

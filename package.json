@@ -1,47 +1,27 @@
 {
-  "name": "@osmoscraft/osmosfeed",
-  "version": "1.7.1",
-  "description": "",
+  "name": "root",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Monorepo root",
+  "directories": {
+    "doc": "docs"
+  },
   "scripts": {
-    "dev": "ts-node src/main.ts",
-    "start": "node bin/main.js",
-    "build": "npm run clean && node scripts/build.js",
-    "clean": "rm -rf bin && rm -rf public"
+    "start": "npm run dev -w @osmoscraft/osmosfeed -w sandbox",
+    "build": "npm run build -w @osmoscraft/osmosfeed"
   },
-  "main": "bin/main.js",
-  "bin": {
-    "osmosfeed": "bin/main.js"
-  },
-  "files": [
-    "bin"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/osmoscraft/osmosfeed.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "osmoscraft",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/osmoscraft/osmosfeed/issues"
   },
-  "homepage": "https://osmoscraft.org",
-  "dependencies": {
-    "axios": "^0.21.1",
-    "cheerio": "^1.0.0-rc.6",
-    "feed": "^4.2.2",
-    "fs-extra": "^9.1.0",
-    "handlebars": "^4.7.7",
-    "js-yaml": "^4.0.0",
-    "rss-parser": "^3.12.0"
-  },
-  "devDependencies": {
-    "@types/cheerio": "^0.22.28",
-    "@types/fs-extra": "^9.0.10",
-    "@types/js-yaml": "^4.0.0",
-    "@types/node": "^14.14.37",
-    "esbuild": "^0.8.57",
-    "ts-node": "^9.1.1",
-    "typescript": "^4.2.4"
-  }
+  "homepage": "https://github.com/osmoscraft/osmosfeed#readme",
+  "workspaces": [
+    "./packages/*"
+  ]
 }

@@ -2,12 +2,18 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "node",
+      "name": "Debug with sandbox",
       "request": "launch",
-      "name": "Debug with ts-node",
-      "runtimeArgs": ["-r", "ts-node/register"],
-      "args": ["${workspaceFolder}/src/main.ts"]
-      // "args": ["${file}"]
+      "runtimeArgs": [
+        "run-script",
+        "start"
+      ],
+      "runtimeVersion": "16",
+      "runtimeExecutable": "npm",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "pwa-node"
     }
   ]
 }
