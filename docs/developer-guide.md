@@ -49,14 +49,22 @@ npm install
 
 ## Publish
 
-Currently no CI/CD integration. To publish a new version:
+Currently no CI/CD integration. To publish a new version you must have permission to the `@osmoscraft` org in npm.
 
-1. You must have permission to publish to the npm feed.
-2. `npm version patch|minor|major` - updates version.
-3. `npm run build` - this generates the latest binary in `bin` dir.
-4. `npm publish --access public` - push to npm registry.
-5. Update `CHANGELOG.md` to include the latest stable version
-6. `git push origin vX.Y.Z` - publish tag to remote.
-7. Add changelog as release notes in [GitHub Releases](https://github.com/osmoscraft/osmosfeed/tags).
+```bash
+cd packages/cli
 
-The consumer of the builder script may need to update the dependency version to receive the latest builder script.
+# Choose one of the three
+npm version prerelease --preid=beta # starting a new beta
+npm version prerelease              # bumping up an existing beta
+npm version patch|minor|major       # update official release to new semver
+
+npm run build
+npm publish --access public
+git push origin vX.Y.Z
+```
+
+Afterwards, remember to
+
+1. Update `CHANGELOG.md` to include the latest stable version
+2. Add changelog as release notes in [GitHub Releases](https://github.com/osmoscraft/osmosfeed/tags).
