@@ -1,6 +1,6 @@
 # unreleased
 
-- Chore: Reorganize to monorepo with multiple npm workspace.
+- Chore: Reorganize to monorepo with npm workspace.
 
 # v1.7.1
 
