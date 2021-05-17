@@ -34,10 +34,6 @@ npm install
 - To test customization, create an `packages/sandbox/includes` directory and add snippets.
 - To test static file copying, create a `packages/sandbox/static` directory and add files.
 
-### Clean-up
-
-- If you need to use the latest cli from npm (insteald of from local machine), run `npm uninstall -g @osmoscraft/osmosfeed`
-
 ## Test
 
 (WIP)
