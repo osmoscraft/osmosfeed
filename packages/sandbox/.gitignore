@@ -1,3 +1,6 @@
+# Always use latest
+package-lock.json
+
 # Depenendies
 node_modules
 
