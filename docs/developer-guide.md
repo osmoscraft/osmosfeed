@@ -1,12 +1,35 @@
 # Developer guide
 
+## Prerequisite
+
+- Node v16
+
 ## Develop
 
-- `npm run dev`. It uses ts-node to spin up the feed builder script.
-  - It will use `osmosfeed.yaml` in the project root.
-- To test remote caching, enable/update the cache url option inside `osmosfeed.yaml`.
-- To test customization, create an `includes` directory and add snippets.
-- To test static file copying, create a `static` directory and add files.
+### One-time install
+
+- In `packages/cli`, run `npm install`, then `npm run build`. (This step is temporarily added, due to [this npm bug](https://github.com/npm/cli/issues/2632)).
+- In repo root, run `npm install`, then `npm run build`.
+- Validate `osmosfeed` binary location with `which osmosfeed`.
+
+### Development loop
+
+- Make changes to TypeScript files in the `packages/cli` folder.
+- In repo root, run `npm start`. This will build latest cli and run it inside the sandbox.
+- To debug with breakpoints
+  1. Use Visual Studio Code to set breakpoints in any TypeScript file within `packages/cli`.
+  2. Open debug menu, execute `Debug with sandbox` launch task.
+- Validate build output in `packages/sandbox/public`.
+
+### Simulate use cases
+
+- To test remote caching, enable/update the cache url option inside `packages/sandbox/osmosfeed.yaml`.
+- To test customization, create an `packages/sandbox/includes` directory and add snippets.
+- To test static file copying, create a `packages/sandbox/static` directory and add files.
+
+### Clean-up
+
+- If you need to use the latest cli from npm (insteald of from local machine), run `npm uninstall -g @osmoscraft/osmosfeed`
 
 ## Test
 

@@ -1,0 +1,5 @@
+# Depenendies
+node_modules
+
+# Build output
+bin
