@@ -1,5 +1,5 @@
 {
-  "name": "root",
+  "name": "osmosfeed-root",
   "private": true,
   "version": "1.0.0",
   "description": "Monorepo root",
@@ -7,7 +7,7 @@
     "doc": "docs"
   },
   "scripts": {
-    "start": "npm run dev -w @osmoscraft/osmosfeed -w sandbox",
+    "start": "npm run dev -w @osmoscraft/osmosfeed -w osmosfeed-sandbox",
     "build": "npm run build -w @osmoscraft/osmosfeed"
   },
   "repository": {
