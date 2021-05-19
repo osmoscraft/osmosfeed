@@ -29,7 +29,7 @@ function getDefaultConfig(): Config {
 }
 
 /**
- * Retrun empty object when user config doesn't exist
+ * Return empty object when user config doesn't exist
  */
 async function getUserConfig(): Promise<Config | {}> {
   const configPath = path.resolve(CONFIG_FILENAME);
