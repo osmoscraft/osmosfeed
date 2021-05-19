@@ -33,7 +33,7 @@ async function run() {
 
   setCache({ sources: enrichedSources, cliVersion });
 
-  templatesSummary.partials.forEach((partial) => Handlebars.registerPartial(partial.name, partial.template));
+  templatesSummary.handlebarPartials.forEach((partial) => Handlebars.registerPartial(partial.name, partial.template));
 
   const renderTemplate = Handlebars.compile("{{> index}}");
 

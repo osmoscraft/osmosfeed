@@ -10,7 +10,7 @@ export const PUBLIC_ROOT_DIR = "public";
 const FAVICON_FILENAME = "favicon.ico";
 
 export async function copyStatic(templateSummary: TemplateSummary) {
-  const isSystemTemplateIntact = templateSummary.partials.every((partials) => partials.source === "system");
+  const isSystemTemplateIntact = templateSummary.handlebarPartials.every((partials) => partials.source === "system");
   await copySystemStatic(isSystemTemplateIntact);
 
   // copy user asset last to allow overwrite

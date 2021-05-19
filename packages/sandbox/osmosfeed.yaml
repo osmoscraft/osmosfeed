@@ -7,7 +7,7 @@ sources:
   - href: https://www.freecodecamp.org/news/rss/
   - href: https://christianheilmann.com/feed/
   - href: https://daverupert.com/atom.xml
-  - href: https://www.taniarascia.com/rss.xml
   - href: https://css-tricks.com/feed/
-  - href: https://www.smashingmagazine.com/feed/
-  - href: https://gomakethings.com/feed/index.xml
+  - href: https://developer.chrome.com/feeds/blog.xml
+  - href: https://webkit.org/feed/atom/
+  - href: https://hacks.mozilla.org/feed/

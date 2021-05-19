@@ -1,4 +1,4 @@
-import { readFile } from "fs";
-import { promisify } from "util";
+import { promises } from "fs";
 
-export const readFileAsync = promisify(readFile);
+export const readFileAsync = promises.readFile;
+export const readDirAsync = promises.readdir;
