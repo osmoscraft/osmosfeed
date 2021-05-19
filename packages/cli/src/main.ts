@@ -18,7 +18,7 @@ async function run() {
   const startTime = performance.now();
   console.log(`[main] Starting build using cli version ${cliVersion}`);
 
-  const config = getConfig();
+  const config = await getConfig();
 
   const templatesSummary = await getTemplates();
   const { userSnippets } = await getUserSnippets();

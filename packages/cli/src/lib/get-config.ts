@@ -1,6 +1,6 @@
 import yaml from "js-yaml";
-import fs from "fs";
 import path from "path";
+import { readFileAsync } from "../utils/fs";
 
 export interface Source {
   href: string;
@@ -15,28 +15,34 @@ export interface Config {
 
 const CONFIG_FILENAME = "osmosfeed.yaml";
 
-export function getConfig(): Config {
-  // populate config with default values
-  const defaultConfig: Config = {
+export async function getConfig(): Promise<Config> {
+  return { ...getDefaultConfig(), ...(await getUserConfig()) };
+}
+
+function getDefaultConfig(): Config {
+  return {
     sources: [],
     cacheUrl: null,
     cacheMaxDays: 30,
     siteTitle: "osmos::feed",
   };
+}
 
+/**
+ * Retrun empty object when user config doesn't exist
+ */
+async function getUserConfig(): Promise<Config | {}> {
   const configPath = path.resolve(CONFIG_FILENAME);
 
   try {
-    const sourcesText = fs.readFileSync(configPath, "utf8");
-    const customizedConfig = yaml.load(sourcesText) as Partial<Config>; // TODO error checking
-
-    const config = { ...defaultConfig, ...customizedConfig };
+    const sourcesText = await readFileAsync(configPath, { encoding: "utf8" });
+    const userConfig = yaml.load(sourcesText) as Partial<Config>; // TODO error checking
     console.log(`[config] Config loaded ${configPath}`);
-    return config;
+    return userConfig;
   } catch (error) {
     if (error.code === "ENOENT") {
       console.log(`[config] No config found at ${configPath}`);
-      return defaultConfig;
+      return {};
     } else {
       throw error;
     }
