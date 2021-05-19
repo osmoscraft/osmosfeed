@@ -1,5 +1,6 @@
-import fs from "fs-extra";
 import path from "path";
+import { FileRequest, getExtensionsFilter, getFilenameToFileRequestConverter } from "../utils/file-request";
+import { readDirAsync, readFileAsync } from "../utils/fs";
 
 export const INCLUDE_DIR = "includes";
 
@@ -18,38 +19,34 @@ export interface UserSnippet {
  */
 export async function userSnippets(): Promise<UserSnippetsSummary> {
   const includeDir = path.resolve(INCLUDE_DIR);
-  const includeFilenames = await fs.readdir(includeDir).catch(() => [] as string[]);
+  const includeFilenames = await readDirAsync(includeDir).catch(() => [] as string[]);
 
-  const includeFileDetails = includeFilenames.map((filename) => ({
-    path: path.join(includeDir, filename),
-    ext: path.extname(filename).toLowerCase(),
-    basename: filename,
-  }));
+  const convertFilenameToFileRequest = getFilenameToFileRequestConverter(includeDir);
 
-  const htmlIncludes = includeFileDetails.filter((detail) => [".html", ".htm"].includes(detail.ext));
-  console.log(`[snippets] Found ${htmlIncludes.length} user html snippets`);
+  const snippetRequests = includeFilenames
+    .map(convertFilenameToFileRequest)
+    .filter(getExtensionsFilter([".html", ".htm"]));
 
-  const fsSnippets = await Promise.all(
-    htmlIncludes.map((htmlInclude) =>
-      fs
-        .readFile(htmlInclude.path, "utf-8")
-        .then((content) => {
-          console.log(`[snippets] Loaded ${htmlInclude.path}`);
-          return {
-            replaceFrom: `<!-- %${htmlInclude.basename}% -->`,
-            replaceTo: content,
-          };
-        })
-        .catch((e) => {
-          console.error(`[snippets] error loading ${htmlInclude.path}`);
-          return null;
-        })
-    )
+  const includeSnippets = (await Promise.all(snippetRequests.map(getUserSnippetFromFile))).filter(
+    (snippet): snippet is UserSnippet => snippet !== null
   );
-
-  const includeSnippets = fsSnippets.filter((snippet): snippet is UserSnippet => snippet !== null);
 
   return {
     userSnippets: includeSnippets,
   };
+}
+
+async function getUserSnippetFromFile(fileRequest: FileRequest): Promise<UserSnippet | null> {
+  try {
+    const fileContent = await readFileAsync(fileRequest.path, "utf-8");
+    const snippet = {
+      replaceFrom: `<!-- %${fileRequest.filename}% -->`,
+      replaceTo: fileContent,
+    };
+    console.log(`[snippets] Loaded ${fileRequest.path}`);
+    return snippet;
+  } catch (e) {
+    console.error(`[snippets] error loading ${fileRequest.path}`);
+    return null;
+  }
 }

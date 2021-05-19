@@ -1,5 +1,6 @@
 import path from "path";
 import { ENTRY_DIR } from "../utils/entry-dir";
+import { FileRequest, getExtensionsFilter, getFilenameToFileRequestConverter } from "../utils/file-request";
 import { readDirAsync, readFileAsync } from "../utils/fs";
 
 export const INCLUDE_DIR = "includes";
@@ -17,12 +18,10 @@ export interface HandlebarPartial {
 
 export type PartialSource = "user" | "system";
 
-interface FileRequest {
-  path: string;
-  ext: string;
-  filename: string;
+interface TemplateDetails {
   source: PartialSource;
 }
+type TemplateRequest = FileRequest<TemplateDetails>;
 
 /**
  * Detect and load templates.
@@ -35,15 +34,19 @@ export async function getTemplates(): Promise<TemplateSummary> {
   const userIncludeDir = path.resolve(INCLUDE_DIR);
   const userIncludeFilenames = await readDirAsync(userIncludeDir).catch(() => [] as string[]);
 
-  const convertUserFilenameToFileRequest = createFilenameToFileRequestFunction(userIncludeDir, "user");
-  const convertSystemFilenameToFileRequest = createFilenameToFileRequestFunction(systemIncludeDir, "system");
+  const convertUserFilenameToFileRequest = getFilenameToFileRequestConverter<TemplateDetails>(userIncludeDir, {
+    source: "user",
+  });
+  const convertSystemFilenameToFileRequest = getFilenameToFileRequestConverter<TemplateDetails>(systemIncludeDir, {
+    source: "system",
+  });
 
   const templateFileRequests = [
     ...userIncludeFilenames.map(convertUserFilenameToFileRequest),
     ...systemIncludeFilenames.map(convertSystemFilenameToFileRequest),
   ]
-    .reduce<FileRequest[]>(deduplicateFileRequests, [])
-    .filter(filterToHandlebarTemplates);
+    .reduce<TemplateRequest[]>(deduplicateFileRequests, [])
+    .filter(getExtensionsFilter([".hbs"]));
 
   const handlebarPartials = (await Promise.all(templateFileRequests.map(getHandlebarPartialFromFile))).filter(
     (partial): partial is HandlebarPartial => partial !== null
@@ -52,15 +55,6 @@ export async function getTemplates(): Promise<TemplateSummary> {
   return {
     handlebarPartials,
   };
-}
-
-function createFilenameToFileRequestFunction(dir: string, source: PartialSource) {
-  return (filename: string) => ({
-    path: path.join(dir, filename),
-    ext: path.extname(filename).toLowerCase(),
-    filename: filename,
-    source,
-  });
 }
 
 /**
@@ -74,19 +68,15 @@ function deduplicateFileRequests(fileRequests: FileRequest[], currentRequest: Fi
   return fileRequests;
 }
 
-function filterToHandlebarTemplates(fileRequest: FileRequest) {
-  return [".hbs"].includes(fileRequest.ext);
-}
-
-async function getHandlebarPartialFromFile(fileRequest: FileRequest): Promise<HandlebarPartial | null> {
+async function getHandlebarPartialFromFile(fileRequest: TemplateRequest): Promise<HandlebarPartial | null> {
   try {
     const fileContent = await readFileAsync(fileRequest.path, "utf-8");
     const partial = {
       name: fileRequest.filename.replace(".hbs", ""),
       template: fileContent,
-      source: fileRequest.source,
+      source: fileRequest.details.source,
     };
-    console.log(`[template] Loaded ${fileRequest.source} template: ${fileRequest.path}`);
+    console.log(`[template] Loaded ${fileRequest.details.source} template: ${fileRequest.path}`);
     return partial;
   } catch (e) {
     console.error(`[template] error loading ${fileRequest.path}`);
