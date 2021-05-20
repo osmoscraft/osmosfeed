@@ -1,4 +1,4 @@
-[![image](./docs/media/osmosfeed-square-badge.svg)](#get-started)
+[![image](./docs/media/osmosfeed-square-badge.svg)](#快速上手)
 
 # 奥斯莫::源系统
 
