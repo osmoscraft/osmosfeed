@@ -1,5 +1,7 @@
 [![image](./docs/media/osmosfeed-square-badge.svg)](#快速上手)
 
+[English](./README.md)
+
 # 奥斯莫::源系统
 
 利用GitHub搭建个人RSS阅读器
@@ -65,7 +67,7 @@
   - 添加内联HTML, CSS, JavaScript
   - 添加静态拷贝文件
 - [设置参考（英文）](./docs/osmosfeed-yaml-reference.md)
-- [无前端使用指南（英文）](./docs/headless-usage-guide.md)
+- [源生成指南（英文）](./docs/headless-usage-guide.md)
 
 ## 贡献
 
