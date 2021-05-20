@@ -1,5 +1,7 @@
 [![image](./docs/media/osmosfeed-square-badge.svg)](#get-started)
 
+[中文](./README_zh.md)
+
 # osmos::feed
 
 An RSS reader running entirely from your GitHub repo.
