@@ -1,5 +1,7 @@
 [![image](./docs/media/osmosfeed-square-badge.svg)](#get-started)
 
+[中文](./README_zh.md)
+
 # osmos::feed
 
 An RSS reader running entirely from your GitHub repo.
@@ -7,6 +9,7 @@ An RSS reader running entirely from your GitHub repo.
 - Free hosting on [GitHub Pages](https://pages.github.com/). No ads. No third party tracking.
 - No need for backend. Content updates via [GitHub Actions](https://github.com/features/actions).
 - Customizable layouts and styles via templating and theming API. Just bring your HTML and CSS.
+- Free and open source. No third-party tracking.
 
 ## Demos
 
@@ -15,7 +18,7 @@ An RSS reader running entirely from your GitHub repo.
 - [Default template + Gruvbox dark](https://osmoscraft.github.io/osmosfeed-demo/) | [View source](https://github.com/osmoscraft/osmosfeed-demo)
 - [Default template + Solarized dark](https://osmoscraft.github.io/osmosfeed-examples/default-solarized-dark/)
 - [Default template + Gruvbox light](https://osmoscraft.github.io/osmosfeed-examples/default-gruvbox-light/)
-- [Custom template + Nord dark](https://onnyyonn.github.io/feed/) | [View source](https://github.com/onnyyonn/feed) | by [onnyyonn](https://github.com/onnyyonn) 
+- [Custom template + Nord dark](https://onnyyonn.github.io/feed/) | [View source](https://github.com/onnyyonn/feed) | by [onnyyonn](https://github.com/onnyyonn)
 - [An unstyled minimalist template](https://osmoscraft.github.io/osmosfeed-examples/articles-unstyled/) for building from scratch.
 
 ## Get started
@@ -23,7 +26,8 @@ An RSS reader running entirely from your GitHub repo.
 ### Create a repository
 
 1. Open [Create a new repository from osmosfeed-template](https://github.com/osmoscraft/osmosfeed-template/generate).
-2. Set visibility to "Public".
+2. Set visibility to "Public".  
+   ![image](https://user-images.githubusercontent.com/1895289/118917672-3d938900-b8e6-11eb-892c-6bb9203c7419.png)
 3. Click "Create repository from template" button.
 
 ### Turn on GitHub Pages
