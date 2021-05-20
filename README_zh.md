@@ -2,23 +2,25 @@
 
 # 奥斯莫::源系统
 
-An RSS reader running entirely from your GitHub repo.
+利用GitHub搭建个人RSS阅读器
 
-- Free hosting on [GitHub Pages](https://pages.github.com/). No ads. No third party tracking.
-- No need for backend. Content updates via [GitHub Actions](https://github.com/features/actions).
-- Customizable layouts and styles via templating and theming API. Just bring your HTML and CSS.
+- 利用[GitHub Pages](https://pages.github.com/)实现Hosting
+- 利用[GitHub Actions](https://github.com/features/actions)实现内容定期自动更新
+- 前端由Node.js静态生成
+- 使用Handlebars模板和CSS自定义变量实现主题自定义
+- 开源，免费，无第三方追踪
 
-## Demos
+## 展示
 
 [![image](https://user-images.githubusercontent.com/1895289/114334657-e4268600-9aff-11eb-90c6-184284b90be2.png)](https://osmoscraft.github.io/osmosfeed-demo/)
 
-- [Default template + Gruvbox dark](https://osmoscraft.github.io/osmosfeed-demo/) | [View source](https://github.com/osmoscraft/osmosfeed-demo)
-- [Default template + Solarized dark](https://osmoscraft.github.io/osmosfeed-examples/default-solarized-dark/)
-- [Default template + Gruvbox light](https://osmoscraft.github.io/osmosfeed-examples/default-gruvbox-light/)
-- [Custom template + Nord dark](https://onnyyonn.github.io/feed/) | [View source](https://github.com/onnyyonn/feed) | by [onnyyonn](https://github.com/onnyyonn)
-- [An unstyled minimalist template](https://osmoscraft.github.io/osmosfeed-examples/articles-unstyled/) for building from scratch.
+- [官方模板 + Gruvbox dark](https://osmoscraft.github.io/osmosfeed-demo/) | [源代码](https://github.com/osmoscraft/osmosfeed-demo)
+- [官方模板 + Solarized dark](https://osmoscraft.github.io/osmosfeed-examples/default-solarized-dark/)
+- [官方模板 + Gruvbox light](https://osmoscraft.github.io/osmosfeed-examples/default-gruvbox-light/)
+- [社区模板 + Nord dark](https://onnyyonn.github.io/feed/) | [源代码](https://github.com/onnyyonn/feed) | 作者 [onnyyonn](https://github.com/onnyyonn)
+- [极简模板 (无皮肤)](https://osmoscraft.github.io/osmosfeed-examples/articles-unstyled/) 用于进阶自主设计
 
-## Get started
+## 快速上手
 
 ### Create a repository
 
