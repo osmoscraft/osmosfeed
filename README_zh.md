@@ -22,13 +22,13 @@
 
 ## 快速上手
 
-### Create a repository
+### 创建新仓库
 
 1. Open [Create a new repository from osmosfeed-template](https://github.com/osmoscraft/osmosfeed-template/generate).
 2. Set visibility to "Public".
 3. Click "Create repository from template" button.
 
-### Turn on GitHub Pages
+### 部署GitHub Pages
 
 1. In the repository you just created, navigate to **Settings** tab > **Pages** section.
 2. In **Source** option, select `gh-pages`, click "Save" button. If `gh-pages` doesn't exist, wait for a couple of seconds and refresh the page. It will eventually show up.  
@@ -37,7 +37,7 @@
 3. Refresh the page until it shows `Your site is published at https://<github_username>.github.io/<repo>`. This may take up to a minute.  
    ![image](https://user-images.githubusercontent.com/1895289/114324153-75383580-9add-11eb-81a6-186cb18d0851.png)
 
-### Customize the feed
+### 自定义订阅
 
 1. In the repository root, open `osmosfeed.yaml` file, click the "Pencil (Edit this file)" button to edit.
 2. Remove `# ` to uncommend the `cacheUrl` property, replace `<github_username>` with your GitHub username, and replace `<repo>` with your GitHub repo name.
@@ -56,22 +56,22 @@
 4. Scroll to the bottom of the page, click "Commit changes" button.
 5. Once the rebuild finishes, your feed will be available at `https://<github_username>.github.io/<repo>`.
 
-## Guides and references
+## 指南与参考
 
-- [Customization guide](./docs/customization-guide.md)
-  - Changing theme
-  - Changing template
-  - Add inline HTML, CSS, JavaScript
-  - Add static files
-- [Configuration reference](./docs/osmosfeed-yaml-reference.md)
-- [Headless usage guide](./docs/headless-usage-guide.md)
+- [自定义指南（英文）](./docs/customization-guide.md)
+  - 更换皮肤
+  - 更换模板
+  - 添加内联HTML, CSS, JavaScript
+  - 添加静态拷贝文件
+- [设置参考（英文）](./docs/osmosfeed-yaml-reference.md)
+- [无前端使用指南（英文）](./docs/headless-usage-guide.md)
 
-## To contribute
+## 贡献
 
-- [How to contribute](./CONTRIBUTING.md)
-- [Developer guide](./docs/developer-guide.md)
+- [如何贡献（英文）](./CONTRIBUTING.md)
+- [开发者指南（英文）](./docs/developer-guide.md)
 
-## FAQ
+## 常见问题
 
 ### Can I update the content more frequently?
 
@@ -93,9 +93,9 @@
 
 > You can comment out the `cacheUrl` property in the `osmosfeed.yaml`. Note that after the build, cache will still be created, except it won't contain any content from the previous cache.
 
-## Ecosystem
+## 生态系统
 
-osmos::feed is part of the [osmos::craft](https://osmoscraft.org) ecosystem. If you enjoy this tool, you might also like:
+奥斯莫::源系统是[奥斯莫::工艺系统](https://osmoscraft.org)的一员。如果你觉得这个工具好用，不妨认识一下它的“朋友”？
 
-- [osmos::memo](https://github.com/osmoscraft/osmosmemo): An in-browser bookmark manager optimized for tagging and retrieval speed.
-- [osmos::note](https://github.com/osmoscraft/osmosnote): A web-based text editor for networked note-taking, self-hostable on any Git repository.
+- [奥斯莫::浏览器书签](https://github.com/osmoscraft/osmosmemo): 能够快速创建和搜索的浏览器书签。
+- [奥斯莫::知识笔记](https://github.com/osmoscraft/osmosnote): 以Git作为存储媒介，支持双向超链接的文本编辑器。
