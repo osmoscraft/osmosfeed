@@ -27,13 +27,13 @@
 ### 创建新仓库
 
 1. [使用osmosfeed-template官方模板创建仓库](https://github.com/osmoscraft/osmosfeed-template/generate)
-2. 将可见性设为**Public（公共）**。  
+2. 将可见性设为Public（公共）。  
    ![image](https://user-images.githubusercontent.com/1895289/118917672-3d938900-b8e6-11eb-892c-6bb9203c7419.png)
-3. 单击**Create repository from template（从模板创建仓库）**
+3. 单击Create repository from template（从模板创建仓库）
 
 ### 部署GitHub Pages
 
-1. 打开刚才创建的仓库，在仓库名称下，单击 **Settings（设置）**, 在左侧边栏中，单击**Pages（页面）**
+1. 打开刚才创建的仓库，在仓库名称下，单击Settings（设置）, 在左侧边栏中，单击Pages（页面）
 2. 在“GitHub Pages”下，使用 None（无）下拉菜单选择发布源。选择 `gh-pages`, 单击 Save（保存）。如果在初次访问该页面的时候`gh-pages`并不存在，等待1－2分钟，刷新之后选项便会出现。  
    ![image](https://user-images.githubusercontent.com/1895289/114324508-3dca8880-9adf-11eb-98c9-0a0779f5fd7a.png)
 
@@ -84,9 +84,9 @@
 
 > 目前GitHub Pages建站暂不兼容私人仓库。如果你将静态生成的网站部署到其它虚拟主机或者存储服务器上的话，他们可能会提供密码保护。
 
-### 我在部署GitHub Pages之后访问阅读器，始终遇到404。等到了海枯石烂也
+### 我在部署GitHub Pages之后访问阅读器，等到了海枯石烂也只能看到404。
 
-> 在地址后加上`index.html`，比如`https://<github_username>.github.io/<repo>／index.html`。GitHub有已知缺陷，详见[社区讨论](https://github.community/t/my-github-page-doesnt-redirect-to-index-html/10367/24)和[Stack Overflow上的解决方案](https://stackoverflow.com/questions/45362628/github-pages-site-not-detecting-index-html)。笔者亲测，随便提交一些空白的更新，重新触发工作流程便可解决问题。
+> 在地址后加上`index.html`试试看？比如`https://<github_username>.github.io/<repo>／index.html`。GitHub有已知缺陷，详见[社区讨论](https://github.community/t/my-github-page-doesnt-redirect-to-index-html/10367/24)和[Stack Overflow上的解决方案](https://stackoverflow.com/questions/45362628/github-pages-site-not-detecting-index-html)。笔者亲测，随便提交一些空白的更新，重新触发工作流程便可解决问题。
 
 ### 如何手动触发内容更新？
 
