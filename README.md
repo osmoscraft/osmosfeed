@@ -7,6 +7,7 @@ An RSS reader running entirely from your GitHub repo.
 - Free hosting on [GitHub Pages](https://pages.github.com/). No ads. No third party tracking.
 - No need for backend. Content updates via [GitHub Actions](https://github.com/features/actions).
 - Customizable layouts and styles via templating and theming API. Just bring your HTML and CSS.
+- Free and open source. No third-party tracking.
 
 ## Demos
 
@@ -15,7 +16,7 @@ An RSS reader running entirely from your GitHub repo.
 - [Default template + Gruvbox dark](https://osmoscraft.github.io/osmosfeed-demo/) | [View source](https://github.com/osmoscraft/osmosfeed-demo)
 - [Default template + Solarized dark](https://osmoscraft.github.io/osmosfeed-examples/default-solarized-dark/)
 - [Default template + Gruvbox light](https://osmoscraft.github.io/osmosfeed-examples/default-gruvbox-light/)
-- [Custom template + Nord dark](https://onnyyonn.github.io/feed/) | [View source](https://github.com/onnyyonn/feed) | by [onnyyonn](https://github.com/onnyyonn) 
+- [Custom template + Nord dark](https://onnyyonn.github.io/feed/) | [View source](https://github.com/onnyyonn/feed) | by [onnyyonn](https://github.com/onnyyonn)
 - [An unstyled minimalist template](https://osmoscraft.github.io/osmosfeed-examples/articles-unstyled/) for building from scratch.
 
 ## Get started
