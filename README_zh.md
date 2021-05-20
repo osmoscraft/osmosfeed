@@ -25,22 +25,23 @@
 ### 创建新仓库
 
 1. [使用osmosfeed-template官方模板创建仓库](https://github.com/osmoscraft/osmosfeed-template/generate)
-2. 将可见性设为**Public（公共）**
+2. 将可见性设为**Public（公共）**。  
+   ![image](https://user-images.githubusercontent.com/1895289/118917672-3d938900-b8e6-11eb-892c-6bb9203c7419.png)
 3. 单击**Create repository from template（从模板创建仓库）**
 
 ### 部署GitHub Pages
 
 1. 打开刚才创建的仓库，在仓库名称下，单击 **Settings（设置）**, 在左侧边栏中，单击**Pages（页面）**
-2. 在“GitHub Pages”下，使用 None（无）下拉菜单选择发布源。选择 `gh-pages`, 单击 Save（保存）。在初次访问该页面的时候，`gh-pages` 可能不会立即出现。等待1－3分钟，刷新即可。  
+2. 在“GitHub Pages”下，使用 None（无）下拉菜单选择发布源。选择 `gh-pages`, 单击 Save（保存）。如果在初次访问该页面的时候`gh-pages`并不存在，等待1－2分钟，刷新之后选项便会出现。  
    ![image](https://user-images.githubusercontent.com/1895289/114324508-3dca8880-9adf-11eb-98c9-0a0779f5fd7a.png)
 
-3. 刷新页面，直到界面上出现 `Your site is published at https://<github_username>.github.io/<repo>`的确认信息（最多等待1－3分钟）即可离开。就此部署成功。  
+3. 刷新页面，直到界面上出现 `Your site is published at https://<github_username>.github.io/<repo>`的确认信息（最多等待1－3分钟）即可离开。部署就此成功。  
    ![image](https://user-images.githubusercontent.com/1895289/114324153-75383580-9add-11eb-81a6-186cb18d0851.png)
 
 ### 配置订阅
 
 1. 进入仓库的根目录，打开`osmosfeed.yaml`文件, 单击有铅笔图标的Edit this file（编辑此文件）按钮。
-2. 删除 `# ` 从而取消`cacheUrl`一行的注释。将`<github_username>`替换为你的GitHub用户名，将`<repo>`替换为仓库名.
+2. 删除 `# ` 从而取消`cacheUrl`一行的注释。将`<github_username>`替换为GitHub用户名，将`<repo>`替换为仓库名.
 3. 在`sources:`(订阅源)下，添加你想要的RSS/Atom源。
 
    ```yaml
@@ -85,13 +86,13 @@
 
 > 在地址后加上`index.html`，比如`https://<github_username>.github.io/<repo>／index.html`。GitHub有已知缺陷，详见[社区讨论](https://github.community/t/my-github-page-doesnt-redirect-to-index-html/10367/24)和[Stack Overflow上的解决方案](https://stackoverflow.com/questions/45362628/github-pages-site-not-detecting-index-html)。笔者亲测，随便提交一些空白的更新，重新触发工作流程便可解决问题。
 
-### How to trigger a manual site update?
+### 如何手动触发内容更新？
 
-> You can make some changes to the `osmosfeed.yaml` file to trigger an update. For example, add an empty comment like this `# ` on a new line.
+> 提交任意源代码更改即可。比如在`osmosfeed.yaml`文件中另起一行，添加空白注释`# `。
 
-### How to build the site without using cache?
+### 如何清空内容缓存？
 
-> You can comment out the `cacheUrl` property in the `osmosfeed.yaml`. Note that after the build, cache will still be created, except it won't contain any content from the previous cache.
+> 打开`osmosfeed.yaml`文件，在`cacheUrl`前添加注释`# `，关闭缓存。提交更改。部署成功后记得取消注释喔。
 
 ## 生态系统
 
@@ -99,3 +100,5 @@
 
 - [奥斯莫::浏览器书签](https://github.com/osmoscraft/osmosmemo): 能够快速创建和搜索的浏览器书签。
 - [奥斯莫::知识笔记](https://github.com/osmoscraft/osmosnote): 以Git作为存储媒介，支持双向超链接的文本编辑器。
+
+（翻译若有不妥请多多见谅。欢迎提供修改意见。如有志愿贡献其余文档翻译，请在[Disucssion界面](https://github.com/osmoscraft/osmosfeed/discussions/categories/ideas)创建新话题。）
