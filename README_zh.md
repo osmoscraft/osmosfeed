@@ -24,8 +24,8 @@
 
 ### 创建新仓库
 
-1. [使用osmosfeed-template官方模板创建仓库](https://github.com/osmoscraft/osmosfeed-template/generate).
-2. 将可见性设为**Public（公共）**.
+1. [使用osmosfeed-template官方模板创建仓库](https://github.com/osmoscraft/osmosfeed-template/generate)
+2. 将可见性设为**Public（公共）**
 3. 单击**Create repository from template（从模板创建仓库）**
 
 ### 部署GitHub Pages
@@ -73,17 +73,17 @@
 
 ## 常见问题
 
-### Can I update the content more frequently?
+### 可以更加频繁的更新内容吗？
 
-> Yes, you can make it as frequent as you want. In the `.github/workflows/update-feed.yaml` file, change the [cron schedule](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#schedule). But be aware that there is a [limit](<(https://docs.github.com/en/github/setting-up-and-managing-billing-and-payments-on-github/about-billing-for-github-actions)>) to the free tier of GitHub Actions. My rough estimate shows that even with hourly update, you should still have plenty of unused time. You can monitor spending on [Billing & plans page in Account settings](https://github.com/settings/billing).
+> 可以。更新频率没有特定限制。只需在工作流程设置文件`.github/workflows/update-feed.yaml`中改变[cron schedule](https://docs.github.com/cn/actions/reference/events-that-trigger-workflows)。但不要太贪心哟。GitHub对于每月工作流程运行的总时间有[限制](https://docs.github.com/cn/github/setting-up-and-managing-billing-and-payments-on-github/managing-billing-for-github-actions/about-billing-for-github-actions)。我掐指算了算，即便是每小时更新一次，每月将仍有不少分钟数盈余。你可以在[设置界面](https://github.com/settings/billing)随时查看本月剩余分钟数。
 
-### Can I make the site private so only I can see it?
+### 我可以将仓库可见性设为Private（私人）吗？
 
-> It is not possible with GitHub Pages. However, if you move the site to a different hosting service, you should be able to set up authorization on the host level. For example, if you [deploy to Netlify](./docs/guide-deploy-to-netlify), there is a paid plan for [password protection](https://docs.netlify.com/visitor-access/password-protection/).
+> 目前GitHub Pages建站暂不兼容私人仓库。如果你将静态生成的网站部署到其它虚拟主机或者存储服务器上的话，他们可能会提供密码保护。
 
-### Do I have to type `index.html` at the end of the URL?
+### 我在部署GitHub Pages之后访问阅读器，始终遇到404。等到了海枯石烂也
 
-> No. There is a known issue with GitHub, so you might have to type it until it starts to work. See [discussion from GitHub Community](https://github.community/t/my-github-page-doesnt-redirect-to-index-html/10367/24) and [some solutions from Stack Overflow](https://stackoverflow.com/questions/45362628/github-pages-site-not-detecting-index-html)
+> 在地址后加上`index.html`，比如`https://<github_username>.github.io/<repo>／index.html`。GitHub有已知缺陷，详见[社区讨论](https://github.community/t/my-github-page-doesnt-redirect-to-index-html/10367/24)和[Stack Overflow上的解决方案](https://stackoverflow.com/questions/45362628/github-pages-site-not-detecting-index-html)。笔者亲测，随便提交一些空白的更新，重新触发工作流程便可解决问题。
 
 ### How to trigger a manual site update?
 
