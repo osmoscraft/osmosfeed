@@ -26,7 +26,7 @@ An RSS reader running entirely from your GitHub repo.
 ### Create a repository
 
 1. Open [Create a new repository from osmosfeed-template](https://github.com/osmoscraft/osmosfeed-template/generate).
-2. Set visibility to "Public".
+2. Set visibility to "Public".  
    ![image](https://user-images.githubusercontent.com/1895289/118917672-3d938900-b8e6-11eb-892c-6bb9203c7419.png)
 3. Click "Create repository from template" button.
 
