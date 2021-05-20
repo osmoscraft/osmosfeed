@@ -103,4 +103,4 @@
 - [奥斯莫::浏览器书签](https://github.com/osmoscraft/osmosmemo): 能够快速创建和搜索的浏览器书签。
 - [奥斯莫::知识笔记](https://github.com/osmoscraft/osmosnote): 以Git作为存储媒介，支持双向超链接的文本编辑器。
 
-（翻译若有不妥请多多见谅。欢迎提供修改意见。如有志愿贡献其余文档翻译，请在[Disucssion界面](https://github.com/osmoscraft/osmosfeed/discussions/categories/ideas)创建新话题。）
+（翻译若有不妥请多多见谅。欢迎提供修改意见。想贡献其余文档翻译的读者请在[Disucssion界面](https://github.com/osmoscraft/osmosfeed/discussions/categories/ideas)创建新话题。谢谢）
