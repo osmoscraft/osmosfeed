@@ -24,24 +24,24 @@
 
 ### 创建新仓库
 
-1. Open [Create a new repository from osmosfeed-template](https://github.com/osmoscraft/osmosfeed-template/generate).
-2. Set visibility to "Public".
-3. Click "Create repository from template" button.
+1. [使用osmosfeed-template官方模板创建仓库](https://github.com/osmoscraft/osmosfeed-template/generate).
+2. 将可见性设为**Public（公共）**.
+3. 单击**Create repository from template（从模板创建仓库）**
 
 ### 部署GitHub Pages
 
-1. In the repository you just created, navigate to **Settings** tab > **Pages** section.
-2. In **Source** option, select `gh-pages`, click "Save" button. If `gh-pages` doesn't exist, wait for a couple of seconds and refresh the page. It will eventually show up.  
+1. 打开刚才创建的仓库，在仓库名称下，单击 **Settings（设置）**, 在左侧边栏中，单击**Pages（页面）**
+2. 在“GitHub Pages”下，使用 None（无）下拉菜单选择发布源。选择 `gh-pages`, 单击 Save（保存）。在初次访问该页面的时候，`gh-pages` 可能不会立即出现。等待1－3分钟，刷新即可。  
    ![image](https://user-images.githubusercontent.com/1895289/114324508-3dca8880-9adf-11eb-98c9-0a0779f5fd7a.png)
 
-3. Refresh the page until it shows `Your site is published at https://<github_username>.github.io/<repo>`. This may take up to a minute.  
+3. 刷新页面，直到界面上出现 `Your site is published at https://<github_username>.github.io/<repo>`的确认信息（最多等待1－3分钟）即可离开。就此部署成功。  
    ![image](https://user-images.githubusercontent.com/1895289/114324153-75383580-9add-11eb-81a6-186cb18d0851.png)
 
-### 自定义订阅
+### 配置订阅
 
-1. In the repository root, open `osmosfeed.yaml` file, click the "Pencil (Edit this file)" button to edit.
-2. Remove `# ` to uncommend the `cacheUrl` property, replace `<github_username>` with your GitHub username, and replace `<repo>` with your GitHub repo name.
-3. In the sources, update the items to the sources you want to follow. The final content of the file should look similar to this:
+1. 进入仓库的根目录，打开`osmosfeed.yaml`文件, 单击有铅笔图标的Edit this file（编辑此文件）按钮。
+2. 删除 `# ` 从而取消`cacheUrl`一行的注释。将`<github_username>`替换为你的GitHub用户名，将`<repo>`替换为仓库名.
+3. 在`sources:`(订阅源)下，添加你想要的RSS/Atom源。
 
    ```yaml
    cacheUrl: https://<github_username>.github.io/<repo>/cache.json
@@ -53,8 +53,8 @@
      - href: https://my-rss-source-5/rss/
    ```
 
-4. Scroll to the bottom of the page, click "Commit changes" button.
-5. Once the rebuild finishes, your feed will be available at `https://<github_username>.github.io/<repo>`.
+4. 单击页面底部的Commit changes（提交更改）按钮。
+5. 等待前端自动静态生成（1－3分钟）。阅读器将在`https://<github_username>.github.io/<repo>`接受访问。
 
 ## 指南与参考
 
