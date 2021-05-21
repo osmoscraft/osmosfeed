@@ -14,6 +14,38 @@ import { renderFiles } from "./lib/render-files";
 import { renderUserSnippets } from "./lib/render-user-snippets";
 import { cliVersion } from "./utils/version";
 
+/*
+ * Execution plan
+ *
+ * Read system files into memory
+ * - Config file
+ * - System templates
+ * - Local cache file
+ *
+ * Read user files into memory
+ * - User templates
+ * - User snippets
+ *
+ * Parse config file content
+ * - Get source list
+ *
+ * For each item in source list
+ * - Get feed xml download url
+ *
+ * Download all feed xml files (parallelism)
+ * Download remote cache into memory
+ *
+ * Parse new feed content
+ * Merge new feed content with cache to get new cache
+ *
+ * Write cache to disk
+ *
+ * Render site from template
+ * Render user snippets
+ *
+ * Render atom feed output
+ */
+
 async function run() {
   const startTime = performance.now();
   console.log(`[main] Starting build using cli version ${cliVersion}`);
