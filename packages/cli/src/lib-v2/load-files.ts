@@ -26,7 +26,7 @@ export interface PassthroughFile {
   path: string;
 }
 
-export async function getSystemFiles(): Promise<SystemFiles> {
+export async function loadSystemFiles(): Promise<SystemFiles> {
   const configFile = await getParsableFile(path.resolve(CONFIG_FILENAME)).catch(() => null);
   const localCacheFile = await getParsableFile(path.resolve(PUBLIC_ROOT_DIR, CACHE_FILENAME)).catch(() => null);
   const systemStaticFiles = await getPassthroughFilesInDirDeep(path.resolve(ENTRY_DIR, SYSTEM_STATIC_DIR));
