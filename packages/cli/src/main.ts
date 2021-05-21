@@ -2,6 +2,7 @@
 
 import Handlebars from "handlebars";
 import { performance } from "perf_hooks";
+import { getSystemFiles } from "./lib-v2/get-system-files";
 import { getCache, setCache } from "./lib/cache";
 import { copyStatic } from "./lib/copy-static";
 import { enrich, EnrichedSource } from "./lib/enrich";
@@ -49,6 +50,8 @@ import { cliVersion } from "./utils/version";
 async function run() {
   const startTime = performance.now();
   console.log(`[main] Starting build using cli version ${cliVersion}`);
+
+  const pocSystemFiles = await getSystemFiles();
 
   const config = await getConfig();
 

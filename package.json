@@ -8,7 +8,8 @@
   },
   "scripts": {
     "start": "npm run dev -w @osmoscraft/osmosfeed -w osmosfeed-sandbox",
-    "build": "npm run build -w @osmoscraft/osmosfeed"
+    "build": "npm run build -w @osmoscraft/osmosfeed",
+    "clean": "npm run clean --workspaces=true"
   },
   "repository": {
     "type": "git",

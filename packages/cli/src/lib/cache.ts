@@ -11,7 +11,7 @@ export const CACHE_FILENAME = "cache.json";
 /**
  * relative to the dir that contains package.json
  */
-const CACHE_PATH = `public/${CACHE_FILENAME}`;
+const CACHE_PATH = `${PUBLIC_ROOT_DIR}/${CACHE_FILENAME}`;
 
 const INITIAL_CACHE: Cache = {
   sources: [],

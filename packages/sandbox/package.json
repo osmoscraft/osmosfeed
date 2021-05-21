@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "For developement and testing",
   "scripts": {
-    "dev": "rm -rf public && osmosfeed",
+    "dev": "osmosfeed",
     "build": "osmosfeed",
     "clean": "rm -rf public"
   },
