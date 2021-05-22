@@ -1,7 +1,6 @@
 import fs from "fs-extra";
 import path from "path";
 import { ENTRY_DIR } from "../utils/entry-dir";
-import type { TemplateSummary } from "./get-templates";
 
 export const USER_STATIC_DIR = "static";
 export const SYSTEM_STATIC_DIR = "system-static";
@@ -9,8 +8,7 @@ export const PUBLIC_ROOT_DIR = "public";
 
 const FAVICON_FILENAME = "favicon.ico";
 
-export async function copyStatic(templateSummary: TemplateSummary) {
-  const isSystemTemplateIntact = templateSummary.handlebarPartials.every((partials) => partials.source === "system");
+export async function copyStatic(isSystemTemplateIntact: boolean) {
   await copySystemStatic(isSystemTemplateIntact);
 
   // copy user asset last to allow overwrite

@@ -2,14 +2,14 @@
 
 import Handlebars from "handlebars";
 import { performance } from "perf_hooks";
-import { loadSystemFiles } from "./lib-v2/load-files";
+import { discoverSystemFiles, discoverUserFiles } from "./lib-v2/discover-files";
+import { getConfig } from "./lib-v2/get-config";
+import { getSnippets } from "./lib-v2/get-snippets";
+import { registerTemplates } from "./lib-v2/register-templates";
 import { getCache, setCache } from "./lib/cache";
 import { copyStatic } from "./lib/copy-static";
 import { enrich, EnrichedSource } from "./lib/enrich";
-import { getConfig } from "./lib/get-config";
 import { getTemplateData } from "./lib/get-template-data";
-import { getTemplates } from "./lib/get-templates";
-import { userSnippets as getUserSnippets } from "./lib/get-user-snippets";
 import { renderAtom } from "./lib/render-atom";
 import { renderFiles } from "./lib/render-files";
 import { renderUserSnippets } from "./lib/render-user-snippets";
@@ -51,24 +51,24 @@ async function run() {
   const startTime = performance.now();
   console.log(`[main] Starting build using cli version ${cliVersion}`);
 
-  const pocSystemFiles = await loadSystemFiles();
+  const systemFiles = await discoverSystemFiles();
+  const config = await getConfig(systemFiles.configFile);
+  const userFiles = await discoverUserFiles();
 
-  const config = await getConfig();
+  registerTemplates({ userTemplates: userFiles.userTemplateFiles, systemTemplates: systemFiles.systemTemplateFiles });
+  const userSnippets = getSnippets(userFiles.userSnippetFiles);
 
-  const templatesSummary = await getTemplates();
-  const { userSnippets } = await getUserSnippets();
+  // TODO consider parallelize with previous fs operations
+  // TODO Fallback plan
+  // With url, download remmote > With url, fallback to initial cache > Without url use local file > Throw error
 
-  const { sources, cacheUrl } = config;
-
-  const cache = await getCache(cacheUrl);
+  const cache = await getCache(config.cacheUrl);
 
   const enrichedSources: EnrichedSource[] = await Promise.all(
-    sources.map((source) => enrich({ source, cache, config }))
+    config.sources.map((source) => enrich({ source, cache, config }))
   );
 
   setCache({ sources: enrichedSources, cliVersion });
-
-  templatesSummary.handlebarPartials.forEach((partial) => Handlebars.registerPartial(partial.name, partial.template));
 
   const renderTemplate = Handlebars.compile("{{> index}}");
 
@@ -77,7 +77,10 @@ async function run() {
   const atom = renderAtom({ enrichedSources, config });
 
   await renderFiles({ html, atom });
-  await copyStatic(templatesSummary);
+
+  // TODO clean this up. split copy static into different tasks
+  const isSystemTemplateIntact = userFiles.userTemplateFiles.length === 0;
+  await copyStatic(isSystemTemplateIntact);
 
   const durationInSeconds = ((performance.now() - startTime) / 1000).toFixed(2);
   console.log(`[main] Finished build in ${durationInSeconds} seconds`);
