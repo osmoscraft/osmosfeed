@@ -1,3 +1,8 @@
+# v1.7.3
+
+- Chore: Refactoring initialization and filesystem io
+- Chore: Removed dependency `fs-extra`
+
 # v1.7.2
 
 - ⚠ Deprecated: To accommodate the monorepo setup, the node version in all templates/demos/examples has changed from 14 to 16. This is not a breaking change as our compile target is still node 14, and node 16 is backward compatible. We still recommend you start using `node-version: "16"` in your `.github/workflows/update-feed.yaml` today to get the performance/security improvements from the newer node. [See example](https://github.com/osmoscraft/osmosfeed-template/blob/main/.github/workflows/update-feed.yaml#L22).
