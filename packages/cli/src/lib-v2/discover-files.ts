@@ -20,6 +20,7 @@ export interface SystemFiles {
   localCacheFile: ParsableFile | null;
   systemStaticFiles: PassthroughFile[];
   systemTemplateFiles: ParsableFile[];
+  systemTemplateStaticFiles: PassthroughFile[];
 }
 
 export interface ParsableFile extends PassthroughFile {
@@ -32,6 +33,8 @@ export interface PassthroughFile {
   path: string;
 }
 
+const systemStaticFileList = ["favicon.ico"];
+
 export async function discoverSystemFiles(): Promise<SystemFiles> {
   const configFile = await getParsableFile(path.resolve(CONFIG_FILENAME)).catch(() => null);
   console.log(`[system-file] Config: ${configFile?.path}`);
@@ -39,17 +42,23 @@ export async function discoverSystemFiles(): Promise<SystemFiles> {
   const localCacheFile = await getParsableFile(path.resolve(PUBLIC_ROOT_DIR, CACHE_FILENAME)).catch(() => null);
   console.log(`[system-file] Local cache: ${localCacheFile?.path}`);
 
-  const systemStaticFiles = await getPassthroughFilesInDirDeep(path.resolve(ENTRY_DIR, SYSTEM_STATIC_DIR));
-  systemStaticFiles.forEach((file) => console.log(`[system-file] Static: ${file.path}`));
-
   const systemTemplateFiles = await getParsableFilesInDirShallow(path.resolve(ENTRY_DIR, SYSTEM_TEMPLATE_DIR));
   systemTemplateFiles.forEach((file) => console.log(`[system-file] Template: ${file.path}`));
+
+  const allStaticFiles = await getPassthroughFilesInDirDeep(path.resolve(ENTRY_DIR, SYSTEM_STATIC_DIR));
+
+  const systemStaticFiles = allStaticFiles.filter((file) => systemStaticFileList.includes(file.filename));
+  systemStaticFiles.forEach((file) => console.log(`[system-file] System static: ${file.path}`));
+
+  const systemTemplateStaticFiles = allStaticFiles.filter((file) => !systemStaticFileList.includes(file.filename));
+  systemTemplateStaticFiles.forEach((file) => console.log(`[system-file] System template static: ${file.path}`));
 
   return {
     configFile,
     localCacheFile,
     systemStaticFiles,
     systemTemplateFiles,
+    systemTemplateStaticFiles,
   };
 }
 

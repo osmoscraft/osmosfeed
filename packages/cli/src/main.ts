@@ -2,17 +2,18 @@
 
 import Handlebars from "handlebars";
 import { performance } from "perf_hooks";
+import { copyStatic } from "./lib-v2/copy-static";
 import { discoverSystemFiles, discoverUserFiles } from "./lib-v2/discover-files";
 import { getCache } from "./lib-v2/get-cache";
 import { getConfig } from "./lib-v2/get-config";
+import { getCopyStaticPlan } from "./lib-v2/get-copy-static-plan";
 import { getSnippets } from "./lib-v2/get-snippets";
 import { registerTemplates } from "./lib-v2/register-templates";
 import { setCache } from "./lib-v2/set-cache";
-import { copyStatic } from "./lib/copy-static";
+import { writeFiles } from "./lib-v2/write-files";
 import { enrich, EnrichedSource } from "./lib/enrich";
 import { getTemplateData } from "./lib/get-template-data";
 import { renderAtom } from "./lib/render-atom";
-import { renderFiles } from "./lib/render-files";
 import { renderUserSnippets } from "./lib/render-user-snippets";
 import { cliVersion } from "./utils/version";
 
@@ -69,11 +70,16 @@ async function run() {
   const templateOutput = executableTemplate(getTemplateData({ enrichedSources, config }));
   const html = renderUserSnippets({ templateOutput, userSnippets, config });
   const atom = renderAtom({ enrichedSources, config });
-  await renderFiles({ html, atom });
+  await writeFiles({ html, atom });
 
-  // TODO clean this up. split copy static into different tasks
-  const isSystemTemplateIntact = userFiles.userTemplateFiles.length === 0;
-  await copyStatic(isSystemTemplateIntact);
+  const copyPlan = getCopyStaticPlan({
+    userStaticFiles: userFiles.userStaticFiles,
+    userTemplateFiles: userFiles.userTemplateFiles,
+    systemStaticFiles: systemFiles.systemStaticFiles,
+    systemTemplateStaticFiles: systemFiles.systemTemplateStaticFiles,
+  });
+
+  await copyStatic(copyPlan);
 
   await setCache({ sources: enrichedSources, cliVersion });
 

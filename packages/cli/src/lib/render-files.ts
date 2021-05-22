@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs-extra";
 import { FEED_FILENAME, INDEX_FILENAME } from "./render-atom";
-import { PUBLIC_ROOT_DIR } from "./copy-static";
+import { PUBLIC_ROOT_DIR } from "../lib-v2/path-constants";
 
 export interface RenderFilesInput {
   html: string;
