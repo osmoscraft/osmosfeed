@@ -1,7 +1,8 @@
 # v1.7.3
 
-- Chore: Refactoring initialization and filesystem io
-- Chore: Removed dependency `fs-extra`
+- This release has no user facing changes. It is created for recording keeping and won't be published.
+- Chore: Refactoring initialization and filesystem io.
+- Chore: Removed dependency `fs-extra`.
 
 # v1.7.2
 
