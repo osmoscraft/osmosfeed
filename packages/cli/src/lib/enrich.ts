@@ -3,7 +3,7 @@ import { performance } from "perf_hooks";
 import Parser from "rss-parser";
 import { downloadTextFile } from "../utils/download";
 import { htmlToText } from "../utils/html-to-text";
-import type { Cache } from "../lib-v2/get-cache";
+import type { Cache } from "./get-cache";
 import type { Config, Source } from "./get-config";
 
 const FETCH_TIMEOUT_MS = 15000; // 15 seconds

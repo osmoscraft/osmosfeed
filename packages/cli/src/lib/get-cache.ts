@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios";
-import type { EnrichedSource } from "../lib/enrich";
+import type { EnrichedSource } from "./enrich";
 import { cliVersion } from "../utils/version";
 import type { ParsableFile } from "./discover-files";
 

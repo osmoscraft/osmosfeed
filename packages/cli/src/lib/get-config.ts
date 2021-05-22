@@ -1,6 +1,5 @@
+import type { ParsableFile } from "./discover-files";
 import yaml from "js-yaml";
-import path from "path";
-import { readFileAsync } from "../utils/fs";
 
 export interface Source {
   href: string;
@@ -13,10 +12,11 @@ export interface Config {
   siteTitle: string;
 }
 
-const CONFIG_FILENAME = "osmosfeed.yaml";
-
-export async function getConfig(): Promise<Config> {
-  return { ...getDefaultConfig(), ...(await getUserConfig()) };
+export async function getConfig(configFile: ParsableFile | null): Promise<Config> {
+  const userConfig = configFile ? parseUserConfig(configFile.rawText) : {};
+  const finalConfig = { ...getDefaultConfig(), ...userConfig };
+  console.log(`[load-config] Effective config: `, finalConfig);
+  return finalConfig;
 }
 
 function getDefaultConfig(): Config {
@@ -28,23 +28,6 @@ function getDefaultConfig(): Config {
   };
 }
 
-/**
- * Return empty object when user config doesn't exist
- */
-async function getUserConfig(): Promise<Config | {}> {
-  const configPath = path.resolve(CONFIG_FILENAME);
-
-  try {
-    const sourcesText = await readFileAsync(configPath, { encoding: "utf8" });
-    const userConfig = yaml.load(sourcesText) as Partial<Config>; // TODO error checking
-    console.log(`[config] Config loaded ${configPath}`);
-    return userConfig;
-  } catch (error) {
-    if (error.code === "ENOENT") {
-      console.log(`[config] No config found at ${configPath}`);
-      return {};
-    } else {
-      throw error;
-    }
-  }
+function parseUserConfig(configRawText: string) {
+  return yaml.load(configRawText) as Partial<Config>;
 }

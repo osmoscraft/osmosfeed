@@ -1,6 +1,6 @@
 import path from "path";
 import { PUBLIC_ROOT_DIR } from "./path-constants";
-import { FEED_FILENAME, INDEX_FILENAME } from "../lib/render-atom";
+import { FEED_FILENAME, INDEX_FILENAME } from "./render-atom";
 import { mkdirAsync, writeFileAsync } from "../utils/fs";
 
 export interface RenderFilesInput {

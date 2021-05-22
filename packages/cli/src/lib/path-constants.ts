@@ -12,3 +12,5 @@ export const SYSTEM_TEMPLATE_DIR = "system-templates";
 
 /** Build output folder, also the root of the website */
 export const PUBLIC_ROOT_DIR = "public";
+
+export const CACHE_FILENAME = "cache.json";
