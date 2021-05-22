@@ -6,8 +6,6 @@ import { htmlToText } from "../utils/html-to-text";
 import type { Cache } from "./get-cache";
 import type { Config, Source } from "./get-config";
 
-const FETCH_TIMEOUT_MS = 15000; // 15 seconds
-const FETCH_RETRY = 2; // 2 retries after initial fail
 const MILLISECONDS_PER_DAY = 86400000; // 1000 * 60 * 60 * 24
 const MAX_DESCRIPTION_LENGTH = 512; // characters
 
@@ -117,7 +115,7 @@ export interface EnrichItemResult {
   publishedTime: Date | null;
 }
 
-async function enrichItem(link: string, retryLeft = FETCH_RETRY): Promise<EnrichItemResult> {
+async function enrichItem(link: string): Promise<EnrichItemResult> {
   try {
     const responseHtml = await downloadTextFile(link);
 
