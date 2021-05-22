@@ -1,18 +1,16 @@
 import type { Config } from "./get-config";
-import type { UserSnippet } from "./get-user-snippets";
+import type { UserSnippet } from "./get-snippets";
 
 export interface RenderHtmlInput {
-  templateOutput: string;
+  baseHtml: string;
   userSnippets: UserSnippet[];
   config: Config;
 }
 
-export function renderUserSnippets({ templateOutput, userSnippets: snippets }: RenderHtmlInput): string {
-  const template = templateOutput;
-
+export function renderUserSnippets({ baseHtml, userSnippets: snippets }: RenderHtmlInput): string {
   const customizedTemplate = snippets.reduce(
     (currentTemplate, snippet) => currentTemplate.replace(snippet.replaceFrom, snippet.replaceTo),
-    template
+    baseHtml
   );
 
   return customizedTemplate;

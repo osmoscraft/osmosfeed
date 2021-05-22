@@ -1,6 +1,5 @@
+import type { ParsableFile } from "./discover-files";
 import yaml from "js-yaml";
-import fs from "fs";
-import path from "path";
 
 export interface Source {
   href: string;
@@ -13,32 +12,22 @@ export interface Config {
   siteTitle: string;
 }
 
-const CONFIG_FILENAME = "osmosfeed.yaml";
+export async function getConfig(configFile: ParsableFile | null): Promise<Config> {
+  const userConfig = configFile ? parseUserConfig(configFile.rawText) : {};
+  const finalConfig = { ...getDefaultConfig(), ...userConfig };
+  console.log(`[load-config] Effective config: `, finalConfig);
+  return finalConfig;
+}
 
-export function getConfig(): Config {
-  // populate config with default values
-  const defaultConfig: Config = {
+function getDefaultConfig(): Config {
+  return {
     sources: [],
     cacheUrl: null,
     cacheMaxDays: 30,
     siteTitle: "osmos::feed",
   };
+}
 
-  const configPath = path.resolve(CONFIG_FILENAME);
-
-  try {
-    const sourcesText = fs.readFileSync(configPath, "utf8");
-    const customizedConfig = yaml.load(sourcesText) as Partial<Config>; // TODO error checking
-
-    const config = { ...defaultConfig, ...customizedConfig };
-    console.log(`[config] Config loaded ${configPath}`);
-    return config;
-  } catch (error) {
-    if (error.code === "ENOENT") {
-      console.log(`[config] No config found at ${configPath}`);
-      return defaultConfig;
-    } else {
-      throw error;
-    }
-  }
+function parseUserConfig(configRawText: string) {
+  return yaml.load(configRawText) as Partial<Config>;
 }

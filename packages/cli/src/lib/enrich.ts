@@ -1,14 +1,11 @@
-import type { AxiosError, AxiosResponse } from "axios";
-import axios from "axios";
 import cheerio from "cheerio";
 import { performance } from "perf_hooks";
 import Parser from "rss-parser";
+import { downloadTextFile } from "../utils/download";
 import { htmlToText } from "../utils/html-to-text";
-import type { Cache } from "./cache";
+import type { Cache } from "./get-cache";
 import type { Config, Source } from "./get-config";
 
-const FETCH_TIMEOUT_MS = 15000; // 15 seconds
-const FETCH_RETRY = 2; // 2 retries after initial fail
 const MILLISECONDS_PER_DAY = 86400000; // 1000 * 60 * 60 * 24
 const MAX_DESCRIPTION_LENGTH = 512; // characters
 
@@ -38,30 +35,15 @@ export interface EnrichInput {
 }
 
 export async function enrich(enrichInput: EnrichInput): Promise<EnrichedSource> {
-  return enrichWithRetry(enrichInput, FETCH_RETRY);
+  // TODO split into download, parse, report, etc. steps
+  return enrichInternal(enrichInput);
 }
 
-async function enrichWithRetry(enrichInput: EnrichInput, retryLeft = FETCH_RETRY): Promise<EnrichedSource> {
+async function enrichInternal(enrichInput: EnrichInput): Promise<EnrichedSource> {
   const { source, cache, config } = enrichInput;
 
   const startTime = performance.now();
-  let response: AxiosResponse;
-  try {
-    response = await axios.get(source.href, { timeout: FETCH_TIMEOUT_MS });
-  } catch (err) {
-    const axiosError = err as AxiosError;
-    console.error(`[enrich] Fetch source error ${source.href}`, axiosError?.code ?? axiosError?.message ?? axiosError);
-
-    if (retryLeft > 0) {
-      console.log(`[enrich] ${retryLeft} retry left.`);
-      return enrichWithRetry(enrichInput, retryLeft - 1);
-    } else {
-      console.log(`[enrich] No retry left. Fetch source failed.`);
-      throw err;
-    }
-  }
-
-  const xmlString = response.data;
+  const xmlString = await downloadTextFile(source.href);
   const rawFeed = await parser.parseString(xmlString)!.catch((err) => {
     console.error(`[enrich] Parse source failed ${source.href}`);
     throw err;
@@ -80,6 +62,7 @@ async function enrichWithRetry(enrichInput: EnrichInput, retryLeft = FETCH_RETRY
 
     if (!link) return null;
 
+    // TODO split into download, parse steps
     const enrichedItem = await enrichItem(link);
     const description = item.contentSnippet ?? enrichedItem.description ?? "";
     const publishedOn = item.isoDate ?? enrichedItem.publishedTime?.toISOString() ?? new Date().toISOString();
@@ -132,13 +115,9 @@ export interface EnrichItemResult {
   publishedTime: Date | null;
 }
 
-async function enrichItem(link: string, retryLeft = FETCH_RETRY): Promise<EnrichItemResult> {
+async function enrichItem(link: string): Promise<EnrichItemResult> {
   try {
-    const response = await axios.get(link, { timeout: FETCH_TIMEOUT_MS });
-    const responseHtml = response.data;
-    if (response.status !== 200 || typeof responseHtml !== "string") {
-      throw new Error(`Error download ${link}`);
-    }
+    const responseHtml = await downloadTextFile(link);
 
     const $ = cheerio.load(responseHtml);
     const plainText = $.root().text();
@@ -172,15 +151,7 @@ async function enrichItem(link: string, retryLeft = FETCH_RETRY): Promise<Enrich
 
     return enrichItemResult;
   } catch (err) {
-    const axiosError = err as AxiosError;
-    console.error(`[enrich] Enrich item error ${link}`, axiosError?.code ?? axiosError?.message ?? axiosError);
-
-    if (retryLeft > 0) {
-      console.log(`[enrich] ${retryLeft} retry left.`);
-      return enrichItem(link, retryLeft - 1);
-    } else {
-      console.log(`[enrich] No retry left. Enrich item failed.`);
-    }
+    console.log(`[enrich] Error enrich ${link}`);
 
     const emptyResult: EnrichItemResult = {
       description: null,
