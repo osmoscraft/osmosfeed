@@ -3,10 +3,11 @@
 import Handlebars from "handlebars";
 import { performance } from "perf_hooks";
 import { discoverSystemFiles, discoverUserFiles } from "./lib-v2/discover-files";
+import { getCache } from "./lib-v2/get-cache";
 import { getConfig } from "./lib-v2/get-config";
 import { getSnippets } from "./lib-v2/get-snippets";
 import { registerTemplates } from "./lib-v2/register-templates";
-import { getCache, setCache } from "./lib/cache";
+import { setCache } from "./lib-v2/set-cache";
 import { copyStatic } from "./lib/copy-static";
 import { enrich, EnrichedSource } from "./lib/enrich";
 import { getTemplateData } from "./lib/get-template-data";
@@ -55,32 +56,26 @@ async function run() {
   const config = await getConfig(systemFiles.configFile);
   const userFiles = await discoverUserFiles();
 
-  registerTemplates({ userTemplates: userFiles.userTemplateFiles, systemTemplates: systemFiles.systemTemplateFiles });
-  const userSnippets = getSnippets(userFiles.userSnippetFiles);
-
-  // TODO consider parallelize with previous fs operations
-  // TODO Fallback plan
-  // With url, download remmote > With url, fallback to initial cache > Without url use local file > Throw error
-
-  const cache = await getCache(config.cacheUrl);
+  const cache = await getCache({ cacheUrl: config.cacheUrl, localCacheFile: systemFiles.localCacheFile });
 
   const enrichedSources: EnrichedSource[] = await Promise.all(
     config.sources.map((source) => enrich({ source, cache, config }))
   );
 
-  setCache({ sources: enrichedSources, cliVersion });
+  registerTemplates({ userTemplates: userFiles.userTemplateFiles, systemTemplates: systemFiles.systemTemplateFiles });
+  const executableTemplate = Handlebars.compile("{{> index}}");
+  const userSnippets = getSnippets(userFiles.userSnippetFiles);
 
-  const renderTemplate = Handlebars.compile("{{> index}}");
-
-  const templateOutput = renderTemplate(getTemplateData({ enrichedSources, config }));
+  const templateOutput = executableTemplate(getTemplateData({ enrichedSources, config }));
   const html = renderUserSnippets({ templateOutput, userSnippets, config });
   const atom = renderAtom({ enrichedSources, config });
-
   await renderFiles({ html, atom });
 
   // TODO clean this up. split copy static into different tasks
   const isSystemTemplateIntact = userFiles.userTemplateFiles.length === 0;
   await copyStatic(isSystemTemplateIntact);
+
+  await setCache({ sources: enrichedSources, cliVersion });
 
   const durationInSeconds = ((performance.now() - startTime) / 1000).toFixed(2);
   console.log(`[main] Finished build in ${durationInSeconds} seconds`);

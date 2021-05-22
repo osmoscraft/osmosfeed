@@ -23,6 +23,6 @@ function getUserSnippetFromFile(parsableFile: ParsableFile): UserSnippet {
     replaceFrom: `<!-- %${parsableFile.filename}% -->`,
     replaceTo: parsableFile.rawText,
   };
-  console.log(`[snippets] Loaded ${parsableFile.path}`);
+  console.log(`[snippets] Loaded:`, parsableFile.path);
   return snippet;
 }

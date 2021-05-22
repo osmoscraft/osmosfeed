@@ -4,6 +4,9 @@ import path from "path";
 export const readFileAsync = promises.readFile;
 export const readDirAsync = promises.readdir;
 
+export const mkdirAsync = promises.mkdir;
+export const writeFileAsync = promises.writeFile;
+
 export async function readDirDeepAsync(dir: string): Promise<string[]> {
   const absolutePaths = await readDirDeepHelper(dir);
   const relativePaths = absolutePaths.map((absPath) => path.relative(dir, absPath));
