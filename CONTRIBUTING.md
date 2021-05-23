@@ -1,5 +1,6 @@
 # How to contribute
 
+- **💅 Show and tell** Share your customization with others in the [Show and tell disucssion](https://github.com/osmoscraft/osmosfeed/discussions/categories/show-and-tell).
 - **🐞 Bug reports**: Please [file an issue](https://github.com/osmoscraft/osmosfeed/issues/new?assignees=&labels=&template=bug_report.md&title=)
 - **🙏 Q&A**: Please [start a discussion](https://github.com/osmoscraft/osmosfeed/discussions/categories/q-a) and choose the **Q&A** category.
 - **💡 Idea and feature request**: Please [start a discussion](https://github.com/osmoscraft/osmosfeed/discussions/categories/ideas) and choose the **Idea** category.
