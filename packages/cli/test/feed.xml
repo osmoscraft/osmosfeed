@@ -23,3 +23,9 @@
   <![CDATA[ Now THAT&#8217;S What I Call Service Worker! ]]>
   </title>
 </item>
+
+<!-- [4] Expect description to be used as summary, content:encoded to be used as content -->
+<item>
+  <description><![CDATA[ Some description here ]]></description>
+  <content:encoded><![CDATA[ <p>Some content here</p> ]]></content:encoded>
+</item>  

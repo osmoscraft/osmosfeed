@@ -198,6 +198,8 @@ function normalizeFeed(feed: Parser.Output<{}>): ParsedFeed {
   };
 }
 
+// TODO improve summary accuracy
+// when `content:encodedSnippet` exists and differs from content, we can assume content is the summary.
 function getSummary(input: GetSummaryInput): string {
   return getFirstNonNullItem(
     input.parsedItem.summary,
