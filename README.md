@@ -91,9 +91,9 @@ An RSS reader running entirely from your GitHub repo.
 
 > You can make some changes to the `osmosfeed.yaml` file to trigger an update. For example, add an empty comment like this `# ` on a new line.
 
-### How to build the site without using cache?
+### How to reset cache?
 
-> You can comment out the `cacheUrl` property in the `osmosfeed.yaml`. Note that after the build, cache will still be created, except it won't contain any content from the previous cache.
+> You can browse to the `gh-pages` branch on GitHub at `https://github.com/<owner>/<repo>/tree/gh-pages`. Manually delete the `cache.json` file. Then trigger a manual site update.
 
 ## Ecosystem
 
