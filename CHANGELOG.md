@@ -1,3 +1,7 @@
+# unreleased
+
+- Added: Smart summary truncation. It first checks whether the content looks like the full text (by using some length threshold) or a short synposis. In the latter case, no truncation will be applied.
+
 # v1.7.3
 
 - This release has no user facing changes. It is created for recording keeping and won't be published.

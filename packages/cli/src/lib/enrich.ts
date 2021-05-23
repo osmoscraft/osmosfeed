@@ -7,7 +7,8 @@ import type { Cache } from "./get-cache";
 import type { Config, Source } from "./get-config";
 
 const MILLISECONDS_PER_DAY = 86400000; // 1000 * 60 * 60 * 24
-const MAX_DESCRIPTION_LENGTH = 512; // characters
+const SUMMARY_TRIM_ACTIVATION_THRESHOLD = 2048; // characters
+const SUMMARY_TRIM_TO_LENGTH = 1024; // characters
 
 export interface EnrichedArticle {
   id: string;
@@ -180,11 +181,21 @@ function normalizeFeed(feed: Parser.Output<{}>): Parser.Output<{}> {
 }
 
 function normalizeContentSnippet(item: Parser.Item): string | undefined {
-  if (item.content?.trim()) return limitLength(htmlToText(item.content.trim()), MAX_DESCRIPTION_LENGTH);
-  if (item.contentSnippet?.trim()) return limitLength(htmlToText(item.contentSnippet.trim()), MAX_DESCRIPTION_LENGTH);
+  /* We trust Atom feed authors not putting full text in the summary field */
+  if (item.summary?.trim()) return item.summary.trim();
+
+  /* When using the `content` fields, the author has an ambigous intention: it can be either full text or a synopsis. */
+  if (item.content?.trim())
+    return limitLength(htmlToText(item.content.trim()), SUMMARY_TRIM_ACTIVATION_THRESHOLD, SUMMARY_TRIM_TO_LENGTH);
+  if (item.contentSnippet?.trim())
+    return limitLength(
+      htmlToText(item.contentSnippet.trim()),
+      SUMMARY_TRIM_ACTIVATION_THRESHOLD,
+      SUMMARY_TRIM_TO_LENGTH
+    );
   return;
 }
 
-function limitLength(input: string, length: number): string {
-  return input.length > length ? `${input.slice(0, length)}…` : input;
+function limitLength(input: string, activationThreshold: number, trimTo: number): string {
+  return input.length > activationThreshold ? `${input.slice(0, trimTo)}…` : input;
 }
