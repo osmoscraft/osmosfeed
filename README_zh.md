@@ -94,7 +94,7 @@
 
 ### 如何清空内容缓存？
 
-> 打开`osmosfeed.yaml`文件，在`cacheUrl`前添加注释`# `关闭缓存。提交更改。部署成功后记得取消注释喔。
+> 进入GitHub仓库里的`gh-pages`分支，（地址`https://github.com/<owner>/<repo>/tree/gh-pages`）。手动删除`cache.json`文件。触发一次内容更新即可。
 
 ## 生态系统
 
