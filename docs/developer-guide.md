@@ -56,7 +56,7 @@ npm version prerelease              # bumping up an existing beta
 npm version patch|minor|major       # update official release to new semver
 
 npm run build
-npm publish --access public
+npm publish --access=public
 git tag vX.Y.X                      # npm might have automatically added a tag. If not, perform the step manually
 git push origin vX.Y.Z
 ```
