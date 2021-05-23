@@ -2,17 +2,21 @@ import cheerio from "cheerio";
 import { performance } from "perf_hooks";
 import Parser from "rss-parser";
 import { downloadTextFile } from "../utils/download";
+import { getNonEmptyStringOrNull } from "../utils/ensure-string-content";
+import { getFirstNonNullItem } from "../utils/get-first-non-null-item";
 import { htmlToText } from "../utils/html-to-text";
+import { trimWithThreshold } from "../utils/trim-with-threshold";
 import type { Cache } from "./get-cache";
 import type { Config, Source } from "./get-config";
 
 const MILLISECONDS_PER_DAY = 86400000; // 1000 * 60 * 60 * 24
-const MAX_DESCRIPTION_LENGTH = 512; // characters
+const SUMMARY_TRIM_ACTIVATION_THRESHOLD = 2048; // characters
+const SUMMARY_TRIM_TO_LENGTH = 800; // characters
 
 export interface EnrichedArticle {
   id: string;
   author: string | null;
-  description: string;
+  description: string; // TODO in next major release, use `summary` instead, so as to distinguish from `content`
   link: string;
   publishedOn: string;
   title: string;
@@ -62,9 +66,8 @@ async function enrichInternal(enrichInput: EnrichInput): Promise<EnrichedSource>
 
     if (!link) return null;
 
-    // TODO split into download, parse steps
     const enrichedItem = await enrichItem(link);
-    const description = item.contentSnippet ?? enrichedItem.description ?? "";
+    const description = getSummary({ parsedItem: item, enrichedItem: enrichedItem });
     const publishedOn = item.isoDate ?? enrichedItem.publishedTime?.toISOString() ?? new Date().toISOString();
     const id = item.guid ?? link;
     const author = item.creator ?? null;
@@ -163,28 +166,50 @@ async function enrichItem(link: string): Promise<EnrichItemResult> {
   }
 }
 
-function normalizeFeed(feed: Parser.Output<{}>): Parser.Output<{}> {
+interface ParsedFeed {
+  link: string | null;
+  title: string | null;
+  items: ParsedFeedItem[];
+}
+
+interface ParsedFeedItem {
+  guid: string | null;
+  title: string | null;
+  link: string | null;
+  isoDate: string | null;
+  creator: string | null;
+  summary: string | null;
+  content: string | null;
+}
+
+function normalizeFeed(feed: Parser.Output<{}>): ParsedFeed {
   return {
-    ...feed,
-    link: feed.link?.trim(),
-    title: feed.title?.trim(),
+    link: getNonEmptyStringOrNull(feed.link),
+    title: getNonEmptyStringOrNull(feed.title),
     items: feed.items.map((item) => ({
-      ...item,
-      guid: item.guid?.trim(),
-      title: item.title?.trim(),
-      link: item.link?.trim(),
-      creator: item.creator?.trim(),
-      contentSnippet: normalizeContentSnippet(item),
+      content: getNonEmptyStringOrNull(item.contentSnippet),
+      creator: getNonEmptyStringOrNull(item.creator),
+      guid: getNonEmptyStringOrNull(item.guid),
+      isoDate: getNonEmptyStringOrNull(item.isoDate),
+      link: getNonEmptyStringOrNull(item.link),
+      summary: getNonEmptyStringOrNull(item.summary),
+      title: getNonEmptyStringOrNull(item.title),
     })),
   };
 }
 
-function normalizeContentSnippet(item: Parser.Item): string | undefined {
-  if (item.content?.trim()) return limitLength(htmlToText(item.content.trim()), MAX_DESCRIPTION_LENGTH);
-  if (item.contentSnippet?.trim()) return limitLength(htmlToText(item.contentSnippet.trim()), MAX_DESCRIPTION_LENGTH);
-  return;
+function getSummary(input: GetSummaryInput): string {
+  return getFirstNonNullItem(
+    input.parsedItem.summary,
+    input.parsedItem.content
+      ? trimWithThreshold(input.parsedItem.content, SUMMARY_TRIM_ACTIVATION_THRESHOLD, SUMMARY_TRIM_TO_LENGTH)
+      : null,
+    input.enrichedItem.description,
+    ""
+  );
 }
 
-function limitLength(input: string, length: number): string {
-  return input.length > length ? `${input.slice(0, length)}…` : input;
+interface GetSummaryInput {
+  parsedItem: ParsedFeedItem;
+  enrichedItem: EnrichItemResult;
 }

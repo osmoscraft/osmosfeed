@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import Handlebars from "handlebars";
 import { performance } from "perf_hooks";
 import { copyStatic } from "./lib/copy-static";
 import { discoverSystemFiles, discoverUserFiles } from "./lib/discover-files";
