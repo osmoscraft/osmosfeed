@@ -1,6 +1,7 @@
-# unreleased
+# v1.8.0
 
-- Added: Smart summary truncation. It first checks whether the content looks like the full text (by using some length threshold) or a short synposis. In the latter case, no truncation will be applied.
+- Changed: Smart summary truncation. When there is no dedicated `summary` (Atom only) from the source, we check if the content/description (Both Atom and RSS) field is long enough to be full text. If so, it will be truncated into a "pseudo" summary. If not, we assume the source used the `content` field as summary, and it will be displayed in full length.
+- Thank you: @LooperXX.
 
 # v1.7.3
 

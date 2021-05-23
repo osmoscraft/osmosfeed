@@ -14,9 +14,9 @@ export interface Config {
 
 export async function getConfig(configFile: ParsableFile | null): Promise<Config> {
   const userConfig = configFile ? parseUserConfig(configFile.rawText) : {};
-  const finalConfig = { ...getDefaultConfig(), ...userConfig };
-  console.log(`[load-config] Effective config: `, finalConfig);
-  return finalConfig;
+  const effectiveConfig = { ...getDefaultConfig(), ...userConfig };
+  console.log(`[load-config] Effective config: `, effectiveConfig);
+  return effectiveConfig;
 }
 
 function getDefaultConfig(): Config {
