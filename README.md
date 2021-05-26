@@ -19,7 +19,8 @@ An RSS reader running entirely from your GitHub repo.
 - [Default template + Solarized dark](https://osmoscraft.github.io/osmosfeed-examples/default-solarized-dark/)
 - [Default template + Solarized light](https://osmoscraft.github.io/osmosfeed-examples/default-solarized-light/)
 - [Custom template + Nord dark](https://onnyyonn.github.io/feed/) | [View source](https://github.com/onnyyonn/feed) | by [onnyyonn](https://github.com/onnyyonn)
-- [An unstyled minimalist template](https://osmoscraft.github.io/osmosfeed-examples/articles-unstyled/) for building from scratch.
+- [An unstyled minimalist template](https://osmoscraft.github.io/osmosfeed-examples/articles-unstyled/) for building from scratch.  
+- [Sources and more examples](https://github.com/osmoscraft/osmosfeed-examples)
 
 ## Get started
 
