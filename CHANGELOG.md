@@ -1,9 +1,10 @@
-# unreleased
+# v1.9.0
 
 - Added: experimental support for podcast sources. You can render an audio control to play the mp3 file and display iTunes episode duration. Caveats:
-  - 1. iTunes has no strict format requirement for `duration`. The unit is most likely seconds. A future version may parse it automatically.
-  - 2. No image support yet. Some shows might have disabled CORS so osmosfeed must figure out a way to download the asset. A future version may support it.
-  - 2. You can't republish the podcast in the feed output. This is currently beyond the scope of the project though a future major update might make it possible.
+  - 1. This feature is currently only available through custom template.
+  - 2. iTunes has no strict format requirement for `duration`. The unit is most likely seconds. A future version may expose a human readable string to the template.
+  - 3. No image support yet. Some shows might have disabled CORS or use a relative URL for image, which forces osmosfeed to download the image during build. A future version may support it.
+  - 4. You can't republish the podcast in the feed output. Supporting this goes beyond the scope of the project at the moment.
 - Fixed: the `articles` in template data were not sorted.
 
 # v1.8.1
