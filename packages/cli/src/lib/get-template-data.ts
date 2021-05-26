@@ -75,17 +75,18 @@ export function getTemplateData(input: GetTemplateDataInput): GetTemplateDataOut
 }
 
 function organizeByArticles(enrichedSources: EnrichedSource[]): TemplateArticle[] {
-  const articles: TemplateArticle[] = enrichedSources.flatMap((enrichedSource) =>
-    enrichedSource.articles.map((article) => ({
-      ...article,
-      source: enrichedSource,
-      isoPublishDate: article.publishedOn.split("T")[0],
-      title: ensureDisplayString(htmlToText(article.title), "Untitled"),
-      description: ensureDisplayString(htmlToText(article.description), "No content preview"),
-      readingTimeInMin: Math.round((article.wordCount ?? 0) / 300),
-    }))
-  );
-
+  const articles: TemplateArticle[] = enrichedSources
+    .flatMap((enrichedSource) =>
+      enrichedSource.articles.map((article) => ({
+        ...article,
+        source: enrichedSource,
+        isoPublishDate: article.publishedOn.split("T")[0],
+        title: ensureDisplayString(htmlToText(article.title), "Untitled"),
+        description: ensureDisplayString(htmlToText(article.description), "No content preview"),
+        readingTimeInMin: Math.round((article.wordCount ?? 0) / 300),
+      }))
+    )
+    .sort((a, b) => b.publishedOn.localeCompare(a.publishedOn)); // by time, most recent first
   return articles;
 }
 

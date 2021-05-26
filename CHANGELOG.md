@@ -4,6 +4,7 @@
   - 1. iTunes has no strict format requirement for `duration`. The unit is most likely seconds. A future version may parse it automatically.
   - 2. No image support yet. Some shows might have disabled CORS so osmosfeed must figure out a way to download the asset. A future version may support it.
   - 2. You can't republish the podcast in the feed output. This is currently beyond the scope of the project though a future major update might make it possible.
+- Fixed: the `articles` in template data were not sorted.
 
 # v1.8.1
 
