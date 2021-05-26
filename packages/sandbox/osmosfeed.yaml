@@ -1,15 +1,5 @@
-# This config is used for local developement
-
-# cacheUrl: https://dailyread.netlify.app/cache.json
-# cacheMaxDays: 30
-# siteTitle: dev - osmosfeed
+# cacheUrl: https://GITHUB_USERNAME.github.io/REPO_NAME/cache.json
 sources:
-  - href: https://www.freecodecamp.org/news/rss/
-  - href: https://christianheilmann.com/feed/
-  - href: https://daverupert.com/atom.xml
-  - href: https://css-tricks.com/feed/
-  - href: https://developer.chrome.com/feeds/blog.xml
-  - href: https://webkit.org/feed/atom/
-  - href: https://hacks.mozilla.org/feed/
-  # - href: https://gomakethings.com/feed
-  # - href: https://feeds.npr.org/510289/podcast.xml
+  - href: https://feeds.npr.org/510289/podcast.xml
+  - href: https://shoptalkshow.com/feed/podcast/
+  - href: https://feed.syntax.fm/rss

@@ -74,8 +74,8 @@ async function enrichInternal(enrichInput: EnrichInput): Promise<EnrichedSource>
 
     if (!link) return null;
 
-    const enrichedItem = await enrichItem(link);
-    const description = getSummary({ parsedItem: item, enrichedItem: enrichedItem });
+    const enrichedItem = item.itunes ? unenrichableItem : await enrichItem(link);
+    const description = getSummary({ parsedItem: item, enrichedItem });
     const publishedOn = item.isoDate ?? enrichedItem.publishedTime?.toISOString() ?? new Date().toISOString();
     const id = item.guid ?? link;
     const author = item.creator ?? null;
@@ -165,16 +165,15 @@ async function enrichItem(link: string): Promise<EnrichItemResult> {
     return enrichItemResult;
   } catch (err) {
     console.log(`[enrich] Error enrich ${link}`);
-
-    const emptyResult: EnrichItemResult = {
-      description: null,
-      wordCount: null,
-      publishedTime: null,
-    };
-
-    return emptyResult;
+    return unenrichableItem;
   }
 }
+
+const unenrichableItem: EnrichItemResult = {
+  description: null,
+  wordCount: null,
+  publishedTime: null,
+};
 
 interface ParsedFeed {
   link: string | null;
