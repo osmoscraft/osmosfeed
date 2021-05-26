@@ -51,7 +51,7 @@ Currently no CI/CD integration. To publish a new version you must have permissio
 cd packages/cli
 
 # Choose one of the three
-npm version prerelease --preid=beta # starting a new beta
+npm version preminor --preid=beta # starting a new beta (use prepatch|preemajor as needed)
 npm version prerelease              # bumping up an existing beta
 npm version patch|minor|major       # update official release to new semver
 

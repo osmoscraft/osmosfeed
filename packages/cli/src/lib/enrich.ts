@@ -21,6 +21,14 @@ export interface EnrichedArticle {
   publishedOn: string;
   title: string;
   wordCount: number | null;
+  enclosure?: {
+    url: string;
+    type: string;
+    length: number;
+  };
+  itunes?: {
+    duration?: string;
+  };
 }
 
 export interface EnrichedSource {
@@ -66,8 +74,8 @@ async function enrichInternal(enrichInput: EnrichInput): Promise<EnrichedSource>
 
     if (!link) return null;
 
-    const enrichedItem = await enrichItem(link);
-    const description = getSummary({ parsedItem: item, enrichedItem: enrichedItem });
+    const enrichedItem = item.itunes ? unenrichableItem : await enrichItem(link);
+    const description = getSummary({ parsedItem: item, enrichedItem });
     const publishedOn = item.isoDate ?? enrichedItem.publishedTime?.toISOString() ?? new Date().toISOString();
     const id = item.guid ?? link;
     const author = item.creator ?? null;
@@ -80,6 +88,8 @@ async function enrichInternal(enrichInput: EnrichInput): Promise<EnrichedSource>
       publishedOn,
       wordCount: enrichedItem.wordCount,
       title,
+      itunes: item.itunes,
+      enclosure: item.enclosure,
     };
 
     return enrichedArticle;
@@ -155,16 +165,15 @@ async function enrichItem(link: string): Promise<EnrichItemResult> {
     return enrichItemResult;
   } catch (err) {
     console.log(`[enrich] Error enrich ${link}`);
-
-    const emptyResult: EnrichItemResult = {
-      description: null,
-      wordCount: null,
-      publishedTime: null,
-    };
-
-    return emptyResult;
+    return unenrichableItem;
   }
 }
+
+const unenrichableItem: EnrichItemResult = {
+  description: null,
+  wordCount: null,
+  publishedTime: null,
+};
 
 interface ParsedFeed {
   link: string | null;
@@ -172,7 +181,7 @@ interface ParsedFeed {
   items: ParsedFeedItem[];
 }
 
-interface ParsedFeedItem {
+interface ParsedFeedItem extends CustomFields {
   guid: string | null;
   title: string | null;
   link: string | null;
@@ -182,7 +191,18 @@ interface ParsedFeedItem {
   content: string | null;
 }
 
-function normalizeFeed(feed: Parser.Output<{}>): ParsedFeed {
+interface CustomFields {
+  itunes?: {
+    duration: string;
+  };
+  enclosure?: {
+    url: string;
+    type: string;
+    length: number;
+  };
+}
+
+function normalizeFeed(feed: Parser.Output<CustomFields>): ParsedFeed {
   return {
     link: getNonEmptyStringOrNull(feed.link),
     title: getNonEmptyStringOrNull(feed.title),
@@ -194,7 +214,27 @@ function normalizeFeed(feed: Parser.Output<{}>): ParsedFeed {
       link: getNonEmptyStringOrNull(item.link),
       summary: getNonEmptyStringOrNull(item.summary),
       title: getNonEmptyStringOrNull(item.title),
+      ...getItunesFields(item),
     })),
+  };
+}
+
+function getItunesFields(itunesItem: CustomFields) {
+  const itunes = itunesItem.itunes
+    ? {
+        duration: itunesItem.itunes.duration,
+      }
+    : undefined;
+
+  const enclosure = itunesItem.enclosure
+    ? {
+        ...itunesItem.enclosure,
+      }
+    : undefined;
+
+  return {
+    itunes,
+    enclosure,
   };
 }
 
