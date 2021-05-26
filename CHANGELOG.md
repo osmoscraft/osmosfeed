@@ -6,6 +6,7 @@
   - 3. No image support yet. Some shows might have disabled CORS or use a relative URL for image, which forces osmosfeed to download the image during build. A future version may support it.
   - 4. You can't republish the podcast in the feed output. Supporting this goes beyond the scope of the project at the moment.
 - Fixed: the `articles` in template data were not sorted.
+- Thank you @Zenigata
 
 # v1.8.1
 
