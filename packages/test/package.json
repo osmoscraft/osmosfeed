@@ -1,0 +1,14 @@
+{
+  "name": "osmosfeed-e2e-tests",
+  "private": true,
+  "version": "1.0.0",
+  "description": "For developement and testing",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "author": "osmoscraft",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^15.6.1"
+  }
+}
