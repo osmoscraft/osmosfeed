@@ -20,16 +20,17 @@ try {
       assert(files.includes("robots.txt"));
     });
 
-    await spec("favicon.ico overwrites default", async ({ dir }) => {
+    await spec("favicon.ico is copied", async ({ dir }) => {
       const outputVersion = await readFileAsync(`${dir}/public/favicon.ico`);
       const userVersion = await readFileAsync(`${dir}/static/favicon.ico`);
       assert(Buffer.compare(outputVersion, userVersion) === 0);
     });
 
-    await spec("index.js overwrites default", async ({ dir }) => {
-      const outputVersion = await readFileAsync(`${dir}/public/index.js`);
-      const userVersion = await readFileAsync(`${dir}/static/index.js`);
-      assert(Buffer.compare(outputVersion, userVersion) === 0);
+    await spec("index.js is copied", async ({ dir }) => {
+      const outputVersion = await readFileAsync(`${dir}/public/index.js`, "utf-8");
+      const userVersion = await readFileAsync(`${dir}/static/index.js`, "utf-8");
+      assert(userVersion === outputVersion);
+      assert(outputVersion.includes("// hello world"));
     });
   });
 
