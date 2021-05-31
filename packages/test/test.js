@@ -4,13 +4,13 @@ import { scenario } from "./fixture/runner.js";
 import { readJsonAsync, readDirAsync, readFileAsync } from "./fixture/utils.js";
 
 try {
-  await scenario("default-empty", "A single empty source with no customization", async ({ spec }) => {
+  await scenario("default-empty", "Single empty source with no customization", async ({ spec }) => {
     await spec("Cache is not changed", assertCacheIsNotChanged);
     await spec("System assets are copied", assertSystemAssetsAreCopied);
     await spec("Default template assets are copied", assertDefaultTemplateAssetsAreCopied);
   });
 
-  await scenario("with-user-assets", "A single empty source with static assets from user", async ({ spec }) => {
+  await scenario("with-user-assets", "Single empty source with static assets from user", async ({ spec }) => {
     await spec("Cache is not changed", assertCacheIsNotChanged);
     await spec("System assets are copied", assertSystemAssetsAreCopied);
     await spec("Default template assets are copied", assertDefaultTemplateAssetsAreCopied);
@@ -34,7 +34,7 @@ try {
     });
   });
 
-  await scenario("with-user-templates", "A single empty source with template from user", async ({ spec }) => {
+  await scenario("with-user-templates", "Single empty source with template from user", async ({ spec }) => {
     await spec("Cache is not changed", assertCacheIsNotChanged);
     await spec("System assets are copied", assertSystemAssetsAreCopied);
     await spec("Default template assets not copied", assertDefaultTemplateAssetsAreNotCopied);
@@ -45,7 +45,7 @@ try {
     });
   });
 
-  await scenario("with-user-snippets", "A single empty source with snippets from user", async ({ spec }) => {
+  await scenario("with-user-snippets", "Single empty source with snippets from user", async ({ spec }) => {
     await spec("Cache is not changed", assertCacheIsNotChanged);
     await spec("System assets are copied", assertSystemAssetsAreCopied);
     await spec("Default template assets are copied", assertDefaultTemplateAssetsAreCopied);
@@ -53,14 +53,14 @@ try {
     await spec("User snippets are rendered into index.html", async ({ dir }) => {
       const outputHtml = await readFileAsync(`${dir}/public/index.html`, "utf-8");
       assert(outputHtml.includes("<div>after body begin snippet</div>"));
-      assert(outputHtml.includes("<div>before body end snippet</div>"));
+      assert(outputHtml.includes("<div>before body end snippset</div>"));
       assert(outputHtml.includes("<div>before head end snippet</div>"));
     });
   });
 
-  console.log("[PASS] All tests passed");
+  console.log("All tests passed");
 } catch (error) {
-  console.error(`[FAIL] Some tests failed.`, error);
+  console.log(error);
   exit(1);
 }
 

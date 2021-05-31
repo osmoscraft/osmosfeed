@@ -48,7 +48,7 @@ export async function scenario(scenarioDir, scenarioName, scenarioFn) {
           await specFn({ dir: scenarioFullDir });
         } catch (err) {
           console.log(`"${scenarioName}: ${specName}" failed`);
-          throw err;
+          reject(err);
         }
       };
 
