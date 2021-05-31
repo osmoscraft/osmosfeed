@@ -1,36 +1,57 @@
-// for each spec folder
-// 1. spin up test server
-// 2. run build
-// 3. assert
-const { spawn } = require("child_process");
-const promises = require("fs/promises");
-const assert = require("assert/strict");
+import assert from "assert/strict";
+import { exit } from "process";
+import { scenario } from "./fixture/runner.js";
+import { readJsonAsync, readDirAsync, readFileAsync } from "./fixture/utils.js";
 
-const readFileAsync = promises.readFile;
+try {
+  await scenario("default-empty", "A single empty source with no customization", async ({ spec }) => {
+    await spec("Cache is not changed", assertCacheIsNotChanged);
+    await spec("System assets are copied", assertSystemAssetsAreCopied);
+    await spec("Default template assets are copied", assertDefaultTemplateAssetsAreCopied);
+  });
 
-const mockServerThread = spawn("node", ["../../mock-server/serve-static.js"], { cwd: "specs/single-empty-source" });
-mockServerThread.stdout.on("data", function (msg) {
-  console.log(msg.toString());
-});
+  await scenario("with-user-assets", "A single empty source with static assets from user", async ({ spec }) => {
+    await spec("Cache is not changed", assertCacheIsNotChanged);
+    await spec("System assets are copied", assertSystemAssetsAreCopied);
+    await spec("Default template assets are copied", assertDefaultTemplateAssetsAreCopied);
 
-const builderThread = spawn("npm", ["run", "build"], { cwd: "specs/single-empty-source" });
-builderThread.stdout.on("data", function (msg) {
-  console.log(msg.toString());
-});
-builderThread.on("exit", () => {
-  mockServerThread.kill();
-});
+    await spec("robots.txt is copied", async ({ dir }) => {
+      const files = await readDirAsync(`${dir}/public`);
+      assert(files.includes("robots.txt"));
+    });
 
-async function assertOutput() {
-  const cacheOutput = await readJsonAsync("specs/single-empty-source/public/cache.json");
-  const cacheSnapshot = await readJsonAsync("specs/single-empty-source/snapshots/cache.json");
-  assert.deepEqual(cacheOutput, cacheSnapshot);
+    await spec("favicon.ico overwrites default", async ({ dir }) => {
+      const outputVersion = await readFileAsync(`${dir}/public/favicon.ico`);
+      const userVersion = await readFileAsync(`${dir}/static/favicon.ico`);
+      assert(Buffer.compare(outputVersion, userVersion) === 0);
+    });
+
+    await spec("index.js overwrites default", async ({ dir }) => {
+      const outputVersion = await readFileAsync(`${dir}/public/index.js`);
+      const userVersion = await readFileAsync(`${dir}/static/index.js`);
+      assert(Buffer.compare(outputVersion, userVersion) === 0);
+    });
+  });
+
+  console.log("[PASS] All tests passed");
+} catch (error) {
+  console.error(`[FAIL] Some tests failed.`, error);
+  exit(1);
 }
 
-assertOutput();
+async function assertCacheIsNotChanged({ dir }) {
+  const cacheOutput = await readJsonAsync(`${dir}/public/cache.json`);
+  const cacheSnapshot = await readJsonAsync(`${dir}/snapshots/cache.json`);
+  assert.deepEqual(cacheOutput.sources, cacheSnapshot.sources);
+}
 
-async function readJsonAsync(path) {
-  const data = await readFileAsync(path, "utf-8");
-  const object = JSON.parse(data);
-  return object;
+async function assertSystemAssetsAreCopied({ dir }) {
+  const files = await readDirAsync(`${dir}/public`);
+  assert(files.includes("favicon.ico"));
+}
+
+async function assertDefaultTemplateAssetsAreCopied({ dir }) {
+  const files = await readDirAsync(`${dir}/public`);
+  assert(files.includes("index.css"));
+  assert(files.includes("index.js"));
 }

@@ -1,12 +1,16 @@
-const path = require("path");
-const http = require("http");
-const promises = require("fs/promises");
+import path from "path";
+import http from "http";
+import promises from "fs/promises";
 const readFileAsync = promises.readFile;
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const PORT = 12321;
-const MOCK_CONTENT_DIR = "mock-content";
+const MOCK_CONTENT_DIR = "feeds";
 
-const mockContentDir = path.join(process.cwd(), MOCK_CONTENT_DIR);
+const mockContentDir = path.resolve(__dirname, MOCK_CONTENT_DIR);
 
 console.log(`[serve-static] content dir:`, mockContentDir);
 

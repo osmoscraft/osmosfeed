@@ -6,6 +6,7 @@
   "scripts": {
     "test": "node test.js"
   },
+  "type": "module",
   "author": "osmoscraft",
   "license": "MIT",
   "devDependencies": {

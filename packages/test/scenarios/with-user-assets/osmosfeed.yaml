@@ -1,0 +1,7 @@
+# This config is used for local developement
+
+# cacheUrl: https://dailyread.netlify.app/cache.json
+# cacheMaxDays: 30
+# siteTitle: dev - osmosfeed
+sources:
+  - href: http://localhost:12321/rss-2-empty.xml
