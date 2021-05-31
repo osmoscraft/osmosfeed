@@ -45,6 +45,19 @@ try {
     });
   });
 
+  await scenario("with-user-snippets", "A single empty source with snippets from user", async ({ spec }) => {
+    await spec("Cache is not changed", assertCacheIsNotChanged);
+    await spec("System assets are copied", assertSystemAssetsAreCopied);
+    await spec("Default template assets are copied", assertDefaultTemplateAssetsAreCopied);
+
+    await spec("User snippets are rendered into index.html", async ({ dir }) => {
+      const outputHtml = await readFileAsync(`${dir}/public/index.html`, "utf-8");
+      assert(outputHtml.includes("<div>after body begin snippet</div>"));
+      assert(outputHtml.includes("<div>before body end snippet</div>"));
+      assert(outputHtml.includes("<div>before head end snippet</div>"));
+    });
+  });
+
   console.log("[PASS] All tests passed");
 } catch (error) {
   console.error(`[FAIL] Some tests failed.`, error);

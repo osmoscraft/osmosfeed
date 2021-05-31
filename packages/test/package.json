@@ -1,10 +1,11 @@
 {
-  "name": "osmosfeed-e2e-tests",
+  "name": "osmosfeed-tests",
   "private": true,
   "version": "1.0.0",
   "description": "For developement and testing",
   "scripts": {
-    "test": "node test.js"
+    "test": "node test.js",
+    "clean": "git clean -fx scenarios"
   },
   "type": "module",
   "author": "osmoscraft",
