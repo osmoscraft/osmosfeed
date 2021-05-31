@@ -1,8 +1,5 @@
-//@ts-check
-
 import { spawn } from "child_process";
 import path from "path";
-import assert from "assert";
 
 /**
  * Information about the current test scenario
