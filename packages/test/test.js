@@ -34,6 +34,17 @@ try {
     });
   });
 
+  await scenario("with-user-templates", "A single empty source with template from user", async ({ spec }) => {
+    await spec("Cache is not changed", assertCacheIsNotChanged);
+    await spec("System assets are copied", assertSystemAssetsAreCopied);
+    await spec("Default template assets not copied", assertDefaultTemplateAssetsAreNotCopied);
+
+    await spec("index.hbs is rendered into index.html", async ({ dir }) => {
+      const outputHtml = await readFileAsync(`${dir}/public/index.html`, "utf-8");
+      assert(outputHtml.includes("test template"));
+    });
+  });
+
   console.log("[PASS] All tests passed");
 } catch (error) {
   console.error(`[FAIL] Some tests failed.`, error);
@@ -55,4 +66,10 @@ async function assertDefaultTemplateAssetsAreCopied({ dir }) {
   const files = await readDirAsync(`${dir}/public`);
   assert(files.includes("index.css"));
   assert(files.includes("index.js"));
+}
+
+async function assertDefaultTemplateAssetsAreNotCopied({ dir }) {
+  const files = await readDirAsync(`${dir}/public`);
+  assert(!files.includes("index.css"));
+  assert(!files.includes("index.js"));
 }
