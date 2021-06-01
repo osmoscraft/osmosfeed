@@ -27,8 +27,8 @@ jobs:
         working-directory: packages/cli
       - name: Install root
         run: npm install
-      # - name: Test
-      #   run: npm run test
+      - name: Test
+        run: npm run test
 
       # - name: Publish to npm
       #   if: startsWith(github.ref, 'refs/tags/v')
