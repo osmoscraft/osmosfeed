@@ -51,20 +51,22 @@ npm install
 
 ### To publish beta build
 
+First, create a pull request against master.
+
 ```bash
 cd packages/cli
 
 # Choose one of the three
-npm version preminor --preid=beta # starting a new beta (use prepatch|preemajor as needed)
+npm version prepatch --preid=beta   # starting a new beta (use prepatch|preminor|preemajor as needed)
 npm version prerelease              # bumping up an existing beta
 
-npm run build
-npm publish --access=public
 git tag vX.Y.X                      # npm might have automatically added a tag. If not, perform the step manually
 git push origin vX.Y.Z
 ```
 
 ### To publish official build
+
+First, checkout the lastest master branch.
 
 ```bash
 cd packages/cli
