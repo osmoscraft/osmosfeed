@@ -1,0 +1,16 @@
+{
+  "name": "osmosfeed-test",
+  "private": true,
+  "version": "1.0.0",
+  "description": "For developement and testing",
+  "scripts": {
+    "test": "node test.js",
+    "nuke": "git clean -fx scenarios"
+  },
+  "type": "module",
+  "author": "osmoscraft",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^15.6.1"
+  }
+}

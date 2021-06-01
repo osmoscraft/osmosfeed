@@ -36,16 +36,20 @@ npm install
 
 ## Test
 
-(WIP)
+- `cd` to the root of the repo. Then `npm run test`.
+- Tests are located in `packages/test`.
+  - Each test scenario simulates a unique configuration of a repo. Add new new scenarios in `packages/test/scenarios`.
+  - Each spec validates a single behavior under a senario. Add new specs in `packages/test/test.js`.
+- To debug with breakpoints
+  1. Use Visual Studio Code to set breakpoints in either test code in `packages/test` or CLI code in `packages/cli`.
+  2. Open debug menu, execute `Debug tests` launch task.
 
-## Debug
+## CI/CD
 
-1. Use vscode to set break point.
-2. "Run and Debug".
+- Build and test are automatically executed for pull requests.
+- GitHub acition will run `npm publish` when a git tag `v<major>.<minor>.<patch>` is pushed to master branch.
 
-## Publish
-
-Currently no CI/CD integration. To publish a new version you must have permission to the `@osmoscraft` org in npm.
+### To publish beta build
 
 ```bash
 cd packages/cli
@@ -53,13 +57,26 @@ cd packages/cli
 # Choose one of the three
 npm version preminor --preid=beta # starting a new beta (use prepatch|preemajor as needed)
 npm version prerelease              # bumping up an existing beta
-npm version patch|minor|major       # update official release to new semver
 
 npm run build
 npm publish --access=public
 git tag vX.Y.X                      # npm might have automatically added a tag. If not, perform the step manually
 git push origin vX.Y.Z
 ```
+
+### To publish official build
+
+```bash
+cd packages/cli
+
+# Choose one of the three
+npm version patch|minor|major       # update official release to new semver
+
+git tag vX.Y.X                      # npm might have automatically added a tag. If not, perform the step manually
+git push origin vX.Y.Z
+```
+
+This cause GitHub action to build and publish to npm.
 
 Afterwards, remember to
 

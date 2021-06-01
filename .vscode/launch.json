@@ -4,15 +4,19 @@
     {
       "name": "Debug with sandbox",
       "request": "launch",
-      "runtimeArgs": [
-        "run-script",
-        "start"
-      ],
+      "runtimeArgs": ["run-script", "start"],
       "runtimeVersion": "16",
       "runtimeExecutable": "npm",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
+      "skipFiles": ["<node_internals>/**"],
+      "type": "pwa-node"
+    },
+    {
+      "name": "Debug tests",
+      "request": "launch",
+      "runtimeArgs": ["run-script", "test"],
+      "runtimeVersion": "16",
+      "runtimeExecutable": "npm",
+      "skipFiles": ["<node_internals>/**"],
       "type": "pwa-node"
     }
   ]

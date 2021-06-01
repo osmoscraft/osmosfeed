@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "target": "ES2019",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "checkJs": true
+  },
+  "exclude": ["scenarios/**/*", "node_modules"]
+}
