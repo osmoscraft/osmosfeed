@@ -53,7 +53,7 @@ try {
     await spec("User snippets are rendered into index.html", async ({ dir }) => {
       const outputHtml = await readFileAsync(`${dir}/public/index.html`, "utf-8");
       assert(outputHtml.includes("<div>after body begin snippet</div>"));
-      assert(outputHtml.includes("<div>before body end snippset</div>"));
+      assert(outputHtml.includes("<div>before body end snippet</div>"));
       assert(outputHtml.includes("<div>before head end snippet</div>"));
     });
   });
