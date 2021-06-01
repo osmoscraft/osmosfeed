@@ -1,6 +1,6 @@
-name: Build and release
+name: PR validation
 
-on: [push, pull_request]
+on: pull_request
 
 jobs:
   build-and-publish:
