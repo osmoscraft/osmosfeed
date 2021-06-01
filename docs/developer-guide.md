@@ -49,11 +49,10 @@ npm install
 - Build and test are automatically executed for pull requests.
 - GitHub acition will run `npm publish` when a git tag `v<major>.<minor>.<patch>` is pushed to master branch.
 
-### To publish beta build
-
-First, create a pull request against master.
+### To publish beta build from feature branch
 
 ```bash
+git checkout <name_of_your_branch>
 cd packages/cli
 
 # Choose one of the three
@@ -68,11 +67,12 @@ git tag vX.Y.X                      # npm might have automatically added a tag. 
 git push origin vX.Y.X
 ```
 
-### To publish official build
+### To publish official build from master branch
 
 First, checkout the lastest master branch.
 
 ```bash
+git checkout master
 cd packages/cli
 
 npm version patch|minor|major       # update official release to new semver
