@@ -64,7 +64,7 @@ git add -u                          # Add updated package.json
 git commit -m "message"             # Commit updated package.json
 
 git tag vX.Y.X                      # npm might have automatically added a tag. If not, perform the step manually
-git push --follow-tags
+git push vX.Y.X
 ```
 
 ### To publish official build
@@ -79,7 +79,7 @@ npm version patch|minor|major       # update official release to new semver
 git add -u                          # Add updated package.json
 
 git tag vX.Y.X                      # npm might have automatically added a tag. If not, perform the step manually
-git push --follow-tags
+git push vX.Y.X
 ```
 
 This cause GitHub action to build and publish to npm.
