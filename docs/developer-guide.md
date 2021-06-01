@@ -36,25 +36,20 @@ npm install
 
 ## Test
 
-- `cd` to the root of the repo. Then run `npm run test`.
+- `cd` to the root of the repo. Then `npm run test`.
 - Tests are located in `packages/test`.
-  - Each test scenario simulates the root of a repo. Add new new scenarios in `packages/test/scenarios`.
-  - Each spec validates a single behavior in a specific senario. Add new spec in `packages/test/test.js`.
+  - Each test scenario simulates a unique configuration of a repo. Add new new scenarios in `packages/test/scenarios`.
+  - Each spec validates a single behavior under a senario. Add new specs in `packages/test/test.js`.
 - To debug with breakpoints
   1. Use Visual Studio Code to set breakpoints in either test code in `packages/test` or CLI code in `packages/cli`.
   2. Open debug menu, execute `Debug tests` launch task.
 
-## Debug
-
-1. Use vscode to set break point.
-2. "Run and Debug".
-
 ## CI/CD
 
 - Build and test are automatically executed for pull requests.
-- npm publish is triggered by when git tags are added to master branch.
+- GitHub acition will run `npm publish` when a git tag `v<major>.<minor>.<patch>` is pushed to master branch.
 
-### To publish
+### To publish beta build
 
 ```bash
 cd packages/cli
@@ -62,6 +57,19 @@ cd packages/cli
 # Choose one of the three
 npm version preminor --preid=beta # starting a new beta (use prepatch|preemajor as needed)
 npm version prerelease              # bumping up an existing beta
+
+npm run build
+npm publish --access=public
+git tag vX.Y.X                      # npm might have automatically added a tag. If not, perform the step manually
+git push origin vX.Y.Z
+```
+
+### To publish official build
+
+```bash
+cd packages/cli
+
+# Choose one of the three
 npm version patch|minor|major       # update official release to new semver
 
 git tag vX.Y.X                      # npm might have automatically added a tag. If not, perform the step manually
