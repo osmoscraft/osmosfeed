@@ -60,8 +60,11 @@ cd packages/cli
 npm version prepatch --preid=beta   # starting a new beta (use prepatch|preminor|preemajor as needed)
 npm version prerelease              # bumping up an existing beta
 
+git add -u                          # Add updated package.json
+git commit -m "message"             # Commit updated package.json
+
 git tag vX.Y.X                      # npm might have automatically added a tag. If not, perform the step manually
-git push origin vX.Y.Z
+git push --follow-tags
 ```
 
 ### To publish official build
@@ -71,11 +74,12 @@ First, checkout the lastest master branch.
 ```bash
 cd packages/cli
 
-# Choose one of the three
 npm version patch|minor|major       # update official release to new semver
 
+git add -u                          # Add updated package.json
+
 git tag vX.Y.X                      # npm might have automatically added a tag. If not, perform the step manually
-git push origin vX.Y.Z
+git push --follow-tags
 ```
 
 This cause GitHub action to build and publish to npm.
