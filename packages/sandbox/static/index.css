@@ -1,0 +1,54 @@
+body {
+  background-color: #222;
+  color: #eee;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.channel-list-layout {
+  display: grid;
+}
+
+.channel-layout {
+  display: grid;
+  grid-template:
+    "title title title" auto
+    "scroll-left video-list scroll-right" auto / 20px 1fr 20px;
+}
+.channel-layout__video-list {
+  grid-area: video-list;
+}
+
+.channel-layout__scroll-left {
+  grid-area: scroll-left;
+  display: none;
+}
+
+.js-horizontal-scroll.has-backward .channel-layout__scroll-left {
+  display: block;
+}
+
+.channel-layout__scroll-right {
+  grid-area: scroll-right;
+  display: none;
+}
+
+.js-horizontal-scroll.has-forward .channel-layout__scroll-right {
+  display: block;
+}
+
+.video-list-layout {
+  display: grid;
+  overflow: auto;
+  grid-auto-flow: column;
+  justify-content: start;
+  scroll-snap-type: x mandatory;
+}
+
+.video {
+  width: clamp(200px, 30vw, 320px);
+  scroll-snap-align: start;
+}

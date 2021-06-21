@@ -4,13 +4,15 @@
 # cacheMaxDays: 30
 # siteTitle: dev - osmosfeed
 sources:
-  - href: https://www.freecodecamp.org/news/rss/
-  - href: https://christianheilmann.com/feed/
-  - href: https://daverupert.com/atom.xml
-  - href: https://css-tricks.com/feed/
-  - href: https://developer.chrome.com/feeds/blog.xml
-  - href: https://webkit.org/feed/atom/
-  - href: https://hacks.mozilla.org/feed/
+  - href: https://www.youtube.com/feeds/videos.xml?channel_id=UCsUalyRg43M8D60mtHe6YcA
+  - href: https://www.youtube.com/feeds/videos.xml?channel_id=UC9-y-6csu5WGm29I7JiwpnA
+  - href: https://www.youtube.com/feeds/videos.xml?channel_id=UCVls1GmFKf6WlTraIb_IaJg
+  - href: https://www.youtube.com/feeds/videos.xml?channel_id=UC29ju8bIPH5as8OGnQzwJyA
+  - href: https://www.youtube.com/feeds/videos.xml?channel_id=UCnUYZLuoy1rq1aVMwx4aTzw
+  # - href: https://css-tricks.com/feed/
+  # - href: https://developer.chrome.com/feeds/blog.xml
+  # - href: https://webkit.org/feed/atom/
+  # - href: https://hacks.mozilla.org/feed/
   # - href: https://gomakethings.com/feed
   # - href: https://feeds.npr.org/510289/podcast.xml
   # - href: https://shoptalkshow.com/feed/podcast/
