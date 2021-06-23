@@ -1,3 +1,7 @@
+:root {
+  --icon-button-color: #909090;
+}
+
 body {
   background-color: #222;
   color: #eee;
@@ -8,6 +12,13 @@ ul {
   padding: 0;
 }
 
+.no-scrollbar {
+  scrollbar-width: none; /* Firefox */
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 .channel-list-layout {
   display: grid;
 }
@@ -15,16 +26,32 @@ ul {
 .channel-layout {
   display: grid;
   grid-template:
-    "title title title" auto
-    "scroll-left video-list scroll-right" auto / 20px 1fr 20px;
+    "title" auto
+    "video-list" auto / 1fr;
+  padding: 0 1.5rem;
 }
 .channel-layout__video-list {
   grid-area: video-list;
 }
 
+.scroll-btn {
+  color: var(--icon-button-color);
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  border: none;
+  background: white;
+  box-shadow: 0 4px 4px rgb(0 0 0 / 30%), 0 0 4px rgb(0 0 0 / 20%);
+}
+
 .channel-layout__scroll-left {
-  grid-area: scroll-left;
+  z-index: 1;
+  grid-area: video-list;
+  align-self: center;
+  justify-self: start;
   display: none;
+  transform: translateX(-50%);
 }
 
 .js-horizontal-scroll.has-backward .channel-layout__scroll-left {
@@ -32,8 +59,12 @@ ul {
 }
 
 .channel-layout__scroll-right {
-  grid-area: scroll-right;
+  z-index: 1;
+  grid-area: video-list;
+  align-self: center;
+  justify-self: end;
   display: none;
+  transform: translateX(50%);
 }
 
 .js-horizontal-scroll.has-forward .channel-layout__scroll-right {
@@ -42,13 +73,38 @@ ul {
 
 .video-list-layout {
   display: grid;
-  overflow: auto;
+  gap: 1rem;
+  overflow-x: auto;
   grid-auto-flow: column;
   justify-content: start;
   scroll-snap-type: x mandatory;
 }
 
-.video {
-  width: clamp(200px, 30vw, 320px);
+.video-list-layout__item {
   scroll-snap-align: start;
+}
+
+.video-item-layout {
+  width: clamp(200px, 30vw, 320px);
+}
+
+.video-title {
+  margin-top: 4px;
+  margin-bottom: 2px;
+  font-size: 16px;
+  text-decoration: none;
+  color: inherit;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.video-title:hover {
+  text-decoration: underline;
+}
+
+.video-publish-date {
+  font-size: 14px;
+  color: #aaa;
 }

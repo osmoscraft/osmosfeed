@@ -1,45 +1,66 @@
-<!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <title>{{siteTitle}}</title>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="robots" content="noindex, nofollow" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
-  <link rel="alternate" type="application/rss+xml" title="{{siteTitle}}" href="{{feedHref}}" />
-  <link rel="stylesheet" href="index.css" />
-  <link rel="stylesheet" href="lite-yt-embed.css" />
-</head>
+  <head>
+    <title>{{siteTitle}}</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="alternate" type="application/rss+xml" title="{{siteTitle}}" href="{{feedHref}}" />
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="lite-yt-embed.css" />
+  </head>
 
-<body>
-  <ul class="channel-list-layout">
-  {{#each sources}}
-    <li>
-      <section class="channel-layout js-horizontal-scroll">
-        <h2>
-          <a href="{{siteUrl}}">{{title}}</a>
-        </h2>
-        <button class="channel-layout__scroll-left js-horizontal-scroll__backward">&lt;</button>
-        <ul class="channel-layout__video-list video-list-layout js-horizontal-scroll__list">
-          {{#each articles}}
-          <li class="video js-horizontal-scroll__item">
-            <lite-youtube watchUrl="{{link}}"></lite-youtube>
-            <a href={{link}}>{{title}}</a>
-            <div>{{isoPublishDate}}</div>
-          </li>
-          {{/each}}
-        </ul>
-        <button class="channel-layout__scroll-right js-horizontal-scroll__forward">&gt;</button>
-      </section>
-    </li>
+  <body>
+    <ul class="channel-list-layout">
+      {{#each sources}}
+        <li>
+          <section class="channel-layout js-horizontal-scroll">
+            <h2>
+              <a href="{{siteUrl}}">{{title}}</a>
+            </h2>
+            <button class="scroll-btn scroll-btn--left channel-layout__scroll-left js-horizontal-scroll__backward">
+              <svg
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                preserveAspectRatio="xMidYMid meet"
+                focusable="false"
+                style="pointer-events: none; display: block; width: 100%; height: 100%;"
+              ><g><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path></g></svg>
+            </button>
+            <ul class="channel-layout__video-list no-scrollbar video-list-layout js-horizontal-scroll__list">
+              {{#each articles}}
+                <li class="video-item-layout video-list-layout__item js-horizontal-scroll__item">
+                  <lite-youtube watchUrl="{{link}}"></lite-youtube>
+                  <a class="video-title" href={{link}}>{{title}}</a>
+                  <div>
+                    <time
+                      class="video-publish-date js-relative-time"
+                      datetime="{{isoPublishDate}}"
+                    >{{isoPublishDate}}</time>
+                  </div>
+                </li>
+              {{/each}}
+            </ul>
+            <button class="scroll-btn scroll-btn--right channel-layout__scroll-right js-horizontal-scroll__forward">
+              <svg
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                preserveAspectRatio="xMidYMid meet"
+                focusable="false"
+                style="pointer-events: none; display: block; width: 100%; height: 100%;"
+              ><g><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></g></svg>
+            </button>
+          </section>
+        </li>
 
-  {{/each}}
-  </ul>
+      {{/each}}
+    </ul>
 
-  <script src="lite-yt-embed.js"></script>
-  <script src="horizontal-scroll.js"></script>
-</body>
+    <script src="lite-yt-embed.js"></script>
+    <script src="relative-time.js"></script>
+    <script src="horizontal-scroll.js"></script>
+  </body>
 
 </html>
