@@ -1,4 +1,4 @@
-# unreleased
+# v1.11.0
 
 - Changed: Default HTML template meta tag adjusted to match convention
 - Changed: `sources` in template data is now ordered by last update timestamp (as opposed to alphabetical)
