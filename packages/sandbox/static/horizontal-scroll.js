@@ -39,7 +39,7 @@ lists.forEach((list) => {
     {
       root: list,
       rootMargin: "0px",
-      threshold: 1.0,
+      threshold: 0.98, // using 1 causes the false positive occasionally
     }
   );
 
