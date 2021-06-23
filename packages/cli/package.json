@@ -1,6 +1,6 @@
 {
   "name": "@osmoscraft/osmosfeed",
-  "version": "1.10.2",
+  "version": "1.10.3-beta.0",
   "description": "",
   "scripts": {
     "dev": "node scripts/build.js",
