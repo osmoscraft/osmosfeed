@@ -144,10 +144,11 @@ footer {
 }
 
 .footer-link {
-  color: var(--primary-text);
+  color: var(--secondary-text);
   text-decoration: none;
 }
 
 .footer-link:hover {
+  color: var(--primary-text);
   text-decoration: underline;
 }
