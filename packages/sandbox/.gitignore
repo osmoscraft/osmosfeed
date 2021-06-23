@@ -6,3 +6,7 @@ node_modules
 
 # Directories that build generates. A test run will generate it but don't check in
 public
+
+# Directories that user can add. We can add them for testing but don't check in as the changes are insignificant
+static
+includes
