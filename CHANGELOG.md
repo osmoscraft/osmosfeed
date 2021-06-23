@@ -1,3 +1,12 @@
+# unreleased
+
+- Changed: Default HTML template meta tag adjusted to match convention
+- Changed: `sources` in template data is now ordered by last update timestamp (as opposed to alphabetical)
+
+# v1.10.2
+
+- Added: testing and CI/CD workflows
+
 # v1.9.0
 
 - Added: experimental support for podcast sources. You can render an audio control to play the mp3 file and display iTunes episode duration. Caveats:

@@ -74,7 +74,7 @@ async function enrichInternal(enrichInput: EnrichInput): Promise<EnrichedSource>
 
     if (!link) return null;
 
-    const enrichedItem = item.itunes ? unenrichableItem : await enrichItem(link);
+    const enrichedItem = isItemEnrichable(item) ? await enrichItem(link) : unenrichableItem;
     const description = getSummary({ parsedItem: item, enrichedItem });
     const publishedOn = item.isoDate ?? enrichedItem.publishedTime?.toISOString() ?? new Date().toISOString();
     const id = item.guid ?? link;
@@ -98,6 +98,7 @@ async function enrichInternal(enrichInput: EnrichInput): Promise<EnrichedSource>
   const newArticles = (await Promise.all(newArticlesAsync)).filter((article) => article !== null) as EnrichedArticle[];
 
   const combinedArticles = [...newArticles, ...cachedArticles];
+
   const renderedArticles = combinedArticles
     .filter(
       (item) => Math.round((now - new Date(item.publishedOn).getTime()) / MILLISECONDS_PER_DAY) < config.cacheMaxDays
@@ -254,4 +255,14 @@ function getSummary(input: GetSummaryInput): string {
 interface GetSummaryInput {
   parsedItem: ParsedFeedItem;
   enrichedItem: EnrichItemResult;
+}
+
+const NO_ENRICH_URL_PATTERNS = ["^https?://www.youtube.com/watch"]; // Huge payload with anti crawler
+
+function isItemEnrichable(item: ParsedFeedItem): boolean {
+  if (!item.link) return false;
+  if (item.itunes) return false;
+  if (NO_ENRICH_URL_PATTERNS.some((pattern) => item.link!.match(pattern))) return false;
+
+  return true;
 }

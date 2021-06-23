@@ -94,18 +94,16 @@ function organizeBySources(enrichedSources: EnrichedSource[]): TemplateSource[] 
   const articles = organizeByArticles(enrichedSources);
 
   const articlesBySource = groupBy(articles, (article) => article.source);
-  const sortedArticlesBySource = [...articlesBySource.entries()]
-    .sort((a, b) => a[0].feedUrl.localeCompare(b[0].feedUrl)) // by feed url, a-z
-    .map(([source, articles]) => ({
-      ...source,
-      articles: articles.sort((a, b) => b.publishedOn.localeCompare(a.publishedOn)), // by date, most recent first
-      dates: [...groupBy(articles, (article) => article.isoPublishDate)]
-        .sort((a, b) => b[0].localeCompare(a[0])) // by date, most recent first
-        .map(([date, articles]) => ({
-          isoPublishDate: date,
-          articles,
-        })),
-    }));
+  const sortedArticlesBySource = [...articlesBySource.entries()].map(([source, articles]) => ({
+    ...source,
+    articles: articles.sort((a, b) => b.publishedOn.localeCompare(a.publishedOn)), // by date, most recent first
+    dates: [...groupBy(articles, (article) => article.isoPublishDate)]
+      .sort((a, b) => b[0].localeCompare(a[0])) // by date, most recent first
+      .map(([date, articles]) => ({
+        isoPublishDate: date,
+        articles,
+      })),
+  }));
 
   return sortedArticlesBySource;
 }
