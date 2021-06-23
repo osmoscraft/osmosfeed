@@ -44,6 +44,17 @@ ul {
   grid-area: video-list;
 }
 
+.channel-name-link {
+  font-size: 16px;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.channel-name-link:hover {
+  text-decoration: underline;
+}
+
 .scroll-btn {
   color: var(--icon-button-color);
   width: 40px;
@@ -105,7 +116,7 @@ ul {
   font-weight: 600;
   margin-top: 4px;
   margin-bottom: 2px;
-  font-size: 16px;
+  font-size: 14px;
   text-decoration: none;
   color: inherit;
   display: -webkit-box;
@@ -119,7 +130,7 @@ ul {
 }
 
 .video-publish-date {
-  font-size: 14px;
+  font-size: 12px;
   color: var(--secondary-text);
 }
 
@@ -133,7 +144,7 @@ footer {
 }
 
 .footer-link {
-  color: var(--secondary-textt);
+  color: var(--primary-text);
   text-decoration: none;
 }
 

@@ -55,50 +55,49 @@ async function enrichInternal(enrichInput: EnrichInput): Promise<EnrichedSource>
   const { source, cache, config } = enrichInput;
 
   const startTime = performance.now();
-  // const xmlString = await downloadTextFile(source.href);
-  // const rawFeed = await parser.parseString(xmlString)!.catch((err) => {
-  //   console.error(`[enrich] Parse source failed ${source.href}`);
-  //   throw err;
-  // });
-  // const feed = normalizeFeed(rawFeed);
-  // const items = feed.items;
+  const xmlString = await downloadTextFile(source.href);
+  const rawFeed = await parser.parseString(xmlString)!.catch((err) => {
+    console.error(`[enrich] Parse source failed ${source.href}`);
+    throw err;
+  });
+  const feed = normalizeFeed(rawFeed);
+  const items = feed.items;
   const now = Date.now();
 
   const cachedArticles = cache.sources.find((cachedSource) => cachedSource.feedUrl === source.href)?.articles ?? [];
 
-  // const newItems = items.filter((item) => cachedArticles.every((article) => article.link !== item.link));
+  const newItems = items.filter((item) => cachedArticles.every((article) => article.link !== item.link));
 
-  // const newArticlesAsync: Promise<EnrichedArticle | null>[] = newItems.map(async (item) => {
-  //   const title = item.title ?? "Untitled";
-  //   const link = item.link;
+  const newArticlesAsync: Promise<EnrichedArticle | null>[] = newItems.map(async (item) => {
+    const title = item.title ?? "Untitled";
+    const link = item.link;
 
-  //   if (!link) return null;
+    if (!link) return null;
 
-  //   const enrichedItem = isItemEnrichable(item) ? await enrichItem(link) : unenrichableItem;
-  //   const description = getSummary({ parsedItem: item, enrichedItem });
-  //   const publishedOn = item.isoDate ?? enrichedItem.publishedTime?.toISOString() ?? new Date().toISOString();
-  //   const id = item.guid ?? link;
-  //   const author = item.creator ?? null;
+    const enrichedItem = isItemEnrichable(item) ? await enrichItem(link) : unenrichableItem;
+    const description = getSummary({ parsedItem: item, enrichedItem });
+    const publishedOn = item.isoDate ?? enrichedItem.publishedTime?.toISOString() ?? new Date().toISOString();
+    const id = item.guid ?? link;
+    const author = item.creator ?? null;
 
-  //   const enrichedArticle: EnrichedArticle = {
-  //     id,
-  //     author,
-  //     description,
-  //     link,
-  //     publishedOn,
-  //     wordCount: enrichedItem.wordCount,
-  //     title,
-  //     itunes: item.itunes,
-  //     enclosure: item.enclosure,
-  //   };
+    const enrichedArticle: EnrichedArticle = {
+      id,
+      author,
+      description,
+      link,
+      publishedOn,
+      wordCount: enrichedItem.wordCount,
+      title,
+      itunes: item.itunes,
+      enclosure: item.enclosure,
+    };
 
-  //   return enrichedArticle;
-  // });
+    return enrichedArticle;
+  });
 
-  // const newArticles = (await Promise.all(newArticlesAsync)).filter((article) => article !== null) as EnrichedArticle[];
+  const newArticles = (await Promise.all(newArticlesAsync)).filter((article) => article !== null) as EnrichedArticle[];
 
-  // const combinedArticles = [...newArticles, ...cachedArticles];
-  const combinedArticles = cachedArticles;
+  const combinedArticles = [...newArticles, ...cachedArticles];
 
   const renderedArticles = combinedArticles
     .filter(
@@ -117,11 +116,9 @@ async function enrichInternal(enrichInput: EnrichInput): Promise<EnrichedSource>
   );
 
   return {
-    // title: feed.title ?? null,
-    title: null,
+    title: feed.title ?? null,
     feedUrl: source.href,
-    siteUrl: source.href,
-    // siteUrl: feed.link ?? null,
+    siteUrl: feed.link ?? null,
     articles: renderedArticles,
   };
 }
