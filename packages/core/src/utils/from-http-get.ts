@@ -1,11 +1,26 @@
 import { Observable, of } from "rxjs";
 import got from 'got';
 
-export function fromHttpGet(url: string): Observable<string> {
+export interface HttpResponse {
+  statusCode: number;
+  contentType?: string;
+  raw: string;
+}
+
+export function fromHttpGet(url: string): Observable<HttpResponse> {
   return new Observable((subscriber) => {
-    got.get(url).text().then(text => {
-      subscriber.next(text);
-      subscriber.complete();
+    const req = got.get(url);
+
+    Promise.all([req, req.text()]).then(([req, raw]) => {
+      subscriber.next({
+        statusCode: req.statusCode,
+        contentType: req.headers["content-type"],
+        raw,
+      })
     });
+
+    return function unsubscribe() {
+      req.cancel();
+    }
   });
 }
