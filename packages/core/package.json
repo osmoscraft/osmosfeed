@@ -2,11 +2,12 @@
   "name": "@osmoscraft/osmosfeed-core",
   "version": "0.0.1-alpha.0",
   "description": "",
-  "main": "main.js",
   "type": "module",
   "scripts": {
-    "dev": "node main.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "npm run build && node main.js",
+    "build": "node scripts/build.js",
+    "clean": "rm -rf dist",
+    "test": "npm run build && node ./dist/run-test.js"
   },
   "author": "osmoscraft",
   "license": "MIT",
@@ -14,5 +15,9 @@
     "got": "^11.8.2",
     "rxjs": "^7.2.0",
     "xmlbuilder2": "^2.4.1"
+  },
+  "devDependencies": {
+    "esbuild": "^0.12.15",
+    "tiny-glob": "^0.2.9"
   }
 }
