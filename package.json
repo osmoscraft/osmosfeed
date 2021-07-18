@@ -10,7 +10,8 @@
     "start": "npm run dev -w @osmoscraft/osmosfeed -w osmosfeed-sandbox",
     "build": "npm run build -w @osmoscraft/osmosfeed",
     "test": "npm run test -w osmosfeed-test",
-    "clean": "npm run clean --workspaces=true"
+    "clean": "npm run clean --workspaces=true",
+    "dev-core": "npm run dev -w @osmoscraft/osmosfeed-core"
   },
   "repository": {
     "type": "git",

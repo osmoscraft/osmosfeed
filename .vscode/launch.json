@@ -11,6 +11,14 @@
       "type": "pwa-node"
     },
     {
+      "name": "Debug core",
+      "request": "launch",
+      "runtimeArgs": ["run-script", "dev-core"],
+      "runtimeExecutable": "npm",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "pwa-node"
+    },
+    {
       "name": "Debug tests",
       "request": "launch",
       "runtimeArgs": ["run-script", "test"],

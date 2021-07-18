@@ -1,0 +1,18 @@
+{
+  "name": "@osmoscraft/osmosfeed-core",
+  "version": "0.0.1-alpha.0",
+  "description": "",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "osmoscraft",
+  "license": "MIT",
+  "dependencies": {
+    "got": "^11.8.2",
+    "rxjs": "^7.2.0",
+    "xmlbuilder2": "^2.4.1"
+  }
+}
