@@ -23,6 +23,11 @@ describe("XML to JSON feed", async ({ spec }) => {
     const jsonFeed = await parseRss2();
     await expect(jsonFeed.title).toEqual("Scripting News");
   });
+
+  spec("RSS 2.0/Parse home page url", async () => {
+    const jsonFeed = await parseRss2();
+    await expect(jsonFeed.home_page_url).toEqual("http://www.scripting.com/");
+  });
 });
 
 async function parseRss2(): Promise<JsonFeed> {

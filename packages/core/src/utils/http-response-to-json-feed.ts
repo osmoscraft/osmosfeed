@@ -4,6 +4,8 @@ import { parseXml } from "./parse-xml.js";
 export interface JsonFeed {
   version: string;
   title: string;
+  home_page_url?: string;
+  feed_url?: string;
 }
 
 export interface HttpResponseToJsonFeedInput {
@@ -40,10 +42,12 @@ function parseXmlFeed(contentType: string, xmlObject: XMLSerializedAsObject | XM
 
 function parseRss(xmlObject: XMLSerializedAsObject): JsonFeed {
   const channelTitle = (xmlObject as any)?.rss?.channel?.title;
+  const homePageUrl = (xmlObject as any)?.rss?.channel?.link;
 
   return {
     version: "https://jsonfeed.org/version/1.1",
     title: channelTitle,
+    home_page_url: homePageUrl,
   };
 }
 
