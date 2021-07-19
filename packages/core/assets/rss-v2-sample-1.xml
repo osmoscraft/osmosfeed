@@ -5,5 +5,10 @@
 		<link>http://mock-domain.com</link>
 		<description>Mock channel description</description>
 		<language>en-us</language>
+		<item>
+			<title>Mock item title 1</title>
+			<link>http://mock-domain.com/item/1</link>
+			<description>Mock item description 1</description>
+		</item>
 	</channel>
 </rss>
