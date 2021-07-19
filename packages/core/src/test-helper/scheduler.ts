@@ -1,5 +1,5 @@
 export interface ScenarioFn {
-  (context: ScenarioContext): Promise<void>
+  (context: ScenarioContext): Promise<void>;
 }
 
 export interface ScenarioContext {
@@ -7,18 +7,18 @@ export interface ScenarioContext {
 }
 
 export interface SpecFn {
-  (specName: string, specFn: () => Promise<void>): Promise<void>
+  (specName: string, specFn: () => Promise<void>): Promise<void>;
 }
 
 export async function describe(scenarioName: string, scenarioFn: ScenarioFn) {
   return new Promise(async (resolve, reject) => {
-
     const runSpec: SpecFn = async (specName, specFn) => {
-      console.log(`[SPEC] ${scenarioName}: ${specName}`);
       try {
         await specFn();
+        console.log(`[PASS] ${scenarioName}/${specName}`);
       } catch (err) {
-        console.log(`"${scenarioName}: ${specName}" failed`);
+        console.log(`[FAIL] ${scenarioName}/${specName}`);
+        console.error(err);
         reject(err);
       }
     };

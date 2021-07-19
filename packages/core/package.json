@@ -4,7 +4,8 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "dev": "npm run build && node main.js",
+    "start": "npm run build && node main.js",
+    "dev": "npm run test",
     "build": "node scripts/build.js",
     "clean": "rm -rf dist",
     "test": "npm run build && node ./dist/run-test.js"

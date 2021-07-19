@@ -1,1 +1,1 @@
-import "./utils/tests/xml-to-json-feed.tests.js";
+import "./utils/tests/http-response-to-json-feed.test.js";

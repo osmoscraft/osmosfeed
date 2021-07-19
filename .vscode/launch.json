@@ -11,7 +11,7 @@
       "type": "pwa-node"
     },
     {
-      "name": "Debug core",
+      "name": "Debug core test",
       "request": "launch",
       "runtimeArgs": ["run-script", "dev-core"],
       "runtimeExecutable": "npm",
