@@ -1,5 +1,8 @@
 import { XMLSerializedAsObject, XMLSerializedAsObjectArray } from "xmlbuilder2/lib/interfaces";
 import { parseXml } from "./parse-xml.js";
+import { decodeHTML } from "entities";
+import htmlparser2 from "htmlparser2";
+import { innerText, textContent } from "domutils";
 
 export interface JsonFeed {
   version: string;
@@ -69,7 +72,7 @@ function parseRssItem(item: any): JsonFeedItem {
     id: "PLACEHOLDER",
     title: item?.title,
     url: item?.link,
-    summary: item?.description,
+    summary: xmlFieldToPlaintext(item?.description),
   };
 }
 
@@ -90,4 +93,24 @@ function ensureSingleRoot(
 function arrayify(maybeArray: any) {
   if (maybeArray === undefined) return [];
   return Array.isArray(maybeArray) ? maybeArray : [maybeArray];
+}
+
+function xmlFieldToPlaintext(xmlField: any) {
+  if (!xmlField) return undefined;
+  return htmlToPlaintext(unescapeHtml(unwrapCdataIfExists(xmlField)));
+}
+
+function unwrapCdataIfExists(maybeCdataField: any): string {
+  return maybeCdataField.$ ?? maybeCdataField;
+}
+
+function unescapeHtml(html: string) {
+  return decodeHTML(html);
+}
+
+function htmlToPlaintext(html: string) {
+  const dom = htmlparser2.parseDocument(html);
+  // TODO: this is a simple recursion call. Can be implemented inline
+  const text = innerText(dom.children);
+  return text;
 }

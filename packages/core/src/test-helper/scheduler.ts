@@ -1,5 +1,5 @@
-export interface ScenarioFn {
-  (context: ScenarioContext): Promise<void>;
+export interface DescribeFn {
+  (context: ScenarioContext): void;
 }
 
 export interface ScenarioContext {
@@ -10,20 +10,35 @@ export interface SpecFn {
   (specName: string, specFn: () => Promise<void>): Promise<void>;
 }
 
-export async function describe(scenarioName: string, scenarioFn: ScenarioFn) {
-  return new Promise(async (resolve, reject) => {
-    const runSpec: SpecFn = async (specName, specFn) => {
-      try {
-        await specFn();
-        console.log(`[PASS] ${scenarioName}/${specName}`);
-      } catch (err) {
-        console.log(`[FAIL] ${scenarioName}/${specName}`);
-        console.error(err);
-        reject(err);
-      }
-    };
+export interface CollectedSpecFn {
+  name: string;
+  fn: () => Promise<void>;
+}
 
-    await scenarioFn({ spec: runSpec });
-    resolve(true);
-  });
+export async function describe(scenarioName: string, describeFn: DescribeFn) {
+  const collectedSpecFns: CollectedSpecFn[] = [];
+
+  const collectSpec: SpecFn = async (specName, specFn) => {
+    collectedSpecFns.push({
+      name: specName,
+      fn: specFn,
+    });
+  };
+
+  describeFn({ spec: collectSpec });
+
+  const collectedErrors: Error[] = [];
+
+  for (let spec of collectedSpecFns) {
+    try {
+      await spec.fn();
+      console.log(`[PASS] ${scenarioName}/${spec.name}`);
+    } catch (err) {
+      console.log(`[FAIL] ${scenarioName}/${spec.name}`);
+      console.error(err);
+      collectedErrors.push(err);
+    }
+  }
+
+  if (collectedErrors.length) process.exit(1);
 }

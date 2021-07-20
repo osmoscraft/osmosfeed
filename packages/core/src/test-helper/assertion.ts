@@ -47,16 +47,13 @@ async function chainToEqual(this: ExpectContext, expectedValue: any) {
   try {
     assert.deepEqual(this.actual, expectedValue);
   } catch {
-    console.error("toEqual assertion failed");
-    console.error("Expected=", expectedValue);
-    console.error("Actual=", this.actual);
-    throw new NotEqualError();
+    throw new NotEqualError(JSON.stringify(expectedValue), JSON.stringify(this.actual));
   }
 }
 
 class NotEqualError extends Error {
-  constructor() {
+  constructor(expected: string, actual: string) {
     super();
-    this.message = "Actual value and expected value are not equal";
+    this.message = `Not equal. \nExpected=${expected}\nActual=${actual}`;
   }
 }

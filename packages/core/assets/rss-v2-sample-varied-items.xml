@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<rss version="2.0" xmlns:blogChannel="http://backend.userland.com/blogChannelModule">
+	<channel>
+		<title>Mock channel title</title>
+		<link>http://mock-domain.com</link>
+		<description>Mock channel description</description>
+		<language>en-us</language>
+		<item>
+			<title>Basic</title>
+			<link>http://mock-domain.com/item/1</link>
+			<description>Plaintext description</description>
+		</item>
+		<item>
+			<title>Escaped entities in description</title>
+			<link>http://mock-domain.com/item/2</link>
+			<description>I'm &lt;b&gt;bold&lt;/b&gt;</description>
+		</item>
+		<item>
+			<title>CDATA in description</title>
+			<link>http://mock-domain.com/item/3</link>
+			<description><![CDATA[I'm <b>bold</b>]]></description>
+		</item>
+	</channel>
+</rss>
