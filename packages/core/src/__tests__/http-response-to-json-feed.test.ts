@@ -1,7 +1,7 @@
-import { expect } from "../../test-helper/assertion.js";
-import { readTextAsync } from "../../test-helper/file-system.js";
-import { describe } from "../../test-helper/scheduler.js";
-import { httpResponseToJsonFeed, JsonFeed } from "../http-response-to-json-feed.js";
+import { expect } from "../test-helper/assertion.js";
+import { describe } from "../test-helper/scheduler.js";
+import { httpResponseToJsonFeed, JsonFeed } from "../utils/http-response-to-json-feed.js";
+import { loadFixtureXml } from "../__fixtures__/load-fixture.js";
 
 describe("XML to JSON feed", ({ spec }) => {
   spec("Reject incorrect content type", async () => {
@@ -71,8 +71,8 @@ describe("XML to JSON feed", ({ spec }) => {
   // TODO add 2 more scenarios https://cyber.harvard.edu/rss/encodingDescriptions.html
 });
 
-async function parseRss2(sampleFilename: string): Promise<JsonFeed> {
-  const feedContent = await readTextAsync(`assets/${sampleFilename}`);
+async function parseRss2(fixtureFilename: string): Promise<JsonFeed> {
+  const feedContent = await loadFixtureXml(fixtureFilename);
 
   const jsonFeed = httpResponseToJsonFeed({
     contentType: "application/xml",

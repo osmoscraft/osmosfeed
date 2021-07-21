@@ -1,44 +1,59 @@
-export interface DescribeFn {
-  (context: ScenarioContext): void;
-}
+const scheduledSuites: ScheduledSuite[] = [];
 
-export interface ScenarioContext {
-  spec: SpecFn;
-}
+export function describe(suiteName: string, suiteContext: (context: { spec: ScheduleSpecFn }) => void) {
+  const scheduleSpec = (specName: string, run: () => Promise<void>) => {
+    let currentSuite = scheduledSuites.find((suite) => suite.name === suiteName);
+    if (!currentSuite) {
+      currentSuite = {
+        name: suiteName,
+        specs: [],
+      };
+      scheduledSuites.push(currentSuite);
+    }
 
-export interface SpecFn {
-  (specName: string, specFn: () => Promise<void>): Promise<void>;
-}
-
-export interface CollectedSpecFn {
-  name: string;
-  fn: () => Promise<void>;
-}
-
-export async function describe(scenarioName: string, describeFn: DescribeFn) {
-  const collectedSpecFns: CollectedSpecFn[] = [];
-
-  const collectSpec: SpecFn = async (specName, specFn) => {
-    collectedSpecFns.push({
+    currentSuite.specs.push({
       name: specName,
-      fn: specFn,
+      run,
     });
   };
 
-  describeFn({ spec: collectSpec });
+  suiteContext({ spec: scheduleSpec });
+}
 
-  const collectedErrors: Error[] = [];
+export async function runTests() {
+  let suiteCount = 0;
+  let passCount = 0;
+  let failCount = 0;
 
-  for (let spec of collectedSpecFns) {
-    try {
-      await spec.fn();
-      console.log(`[PASS] ${scenarioName}/${spec.name}`);
-    } catch (err) {
-      console.log(`[FAIL] ${scenarioName}/${spec.name}`);
-      console.error(err);
-      collectedErrors.push(err);
+  for (let suite of scheduledSuites) {
+    suiteCount++;
+    for (let spec of suite.specs) {
+      try {
+        await spec.run();
+        console.log(`[PASS] ${suite.name}/${spec.name}`);
+        passCount++;
+      } catch (error) {
+        console.log(`[FAIL] ${suite.name}/${spec.name}`);
+        console.error(error);
+        failCount++;
+      }
     }
   }
 
-  if (collectedErrors.length) process.exit(1);
+  console.log(`${suiteCount} suites | ${passCount + failCount} specs | ${passCount} passed | ${failCount} failed`);
+  if (failCount) process.exit(1);
+}
+
+interface ScheduledSuite {
+  name: string;
+  specs: ScheduledSpec[];
+}
+
+interface ScheduledSpec {
+  name: string;
+  run: () => Promise<void>;
+}
+
+interface ScheduleSpecFn {
+  (specName: string, run: () => Promise<void>): void;
 }
