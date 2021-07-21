@@ -13,12 +13,11 @@
   "author": "osmoscraft",
   "license": "MIT",
   "dependencies": {
-    "domutils": "^2.7.0",
+    "cheerio": "^1.0.0-rc.10",
     "entities": "^2.2.0",
     "got": "^11.8.2",
     "htmlparser2": "^6.1.0",
-    "rxjs": "^7.2.0",
-    "xmlbuilder2": "^2.4.1"
+    "rxjs": "^7.2.0"
   },
   "devDependencies": {
     "esbuild": "^0.12.15",
