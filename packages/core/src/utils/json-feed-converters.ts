@@ -1,4 +1,4 @@
-import { Cheerio, CheerioAPI, Node } from "cheerio";
+import cheerio, { Cheerio, CheerioAPI, Node } from "cheerio";
 
 export interface JsonFeed {
   version: string;
@@ -49,12 +49,16 @@ export class RssToJsonFeedConverter extends AbstractJsonFeedConverter {
   transformChannel($: CheerioAPI) {
     return {
       title: $("rss channel title").html(),
-      home_page_url: "",
-      feed_url: "",
+      home_page_url: $("rss channel link").html(),
+      feed_url: "", // TODO fill with user provided feed url
     };
   }
 
   transformItems($: CheerioAPI) {
-    return [];
+    return $("rss item").map((i, element) => ({
+      title: $("title", element).text(), // TODO support html
+      url: $("link", element).text(),
+      summary: cheerio.load($("description", element).text() ?? "").text(), // inner layer is HTML literal
+    }));
   }
 }

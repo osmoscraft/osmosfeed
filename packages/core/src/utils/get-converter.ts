@@ -3,8 +3,7 @@ import { AbstractJsonFeedConverter, RssToJsonFeedConverter } from "./json-feed-c
 
 export class UnknownFeedTypeError extends Error {}
 export function getConverter(root: Document): AbstractJsonFeedConverter {
-  // TODO adjust config
-  const cheerioDom = cheerio.load(root, { xmlMode: true, decodeEntities: false });
+  const cheerioDom = cheerio.load(root, { xmlMode: true, decodeEntities: false, recognizeCDATA: true });
   if (!cheerioDom("rss").length) throw new UnknownFeedTypeError();
 
   return new RssToJsonFeedConverter(cheerioDom);
