@@ -20,5 +20,10 @@
 			<link>http://mock-domain.com/item/3</link>
 			<description><![CDATA[I'm <b>bold</b>]]></description>
 		</item>
+		<item>
+			<title>HTML in description</title>
+			<link>http://mock-domain.com/item/3</link>
+			<description><p>What a <em>beautiful</em> day!</p></description>
+		</item>
 	</channel>
 </rss>
