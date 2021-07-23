@@ -1,4 +1,5 @@
-import cheerio, { Cheerio, CheerioAPI, Node } from "cheerio";
+import cheerio, { Cheerio, CheerioAPI, Node, Element } from "cheerio";
+import { ElementType } from "htmlparser2";
 
 export interface JsonFeed {
   version: string;
@@ -13,7 +14,7 @@ export interface JsonFeedItem {
   url?: string;
   title?: string;
   content_html?: string;
-  context_text?: string;
+  content_text?: string;
   summary?: string;
 }
 
@@ -48,17 +49,44 @@ export class RssToJsonFeedConverter extends AbstractJsonFeedConverter {
 
   transformChannel($: CheerioAPI) {
     return {
-      title: $("rss channel title").html(),
-      home_page_url: $("rss channel link").html(),
+      title: $("rss channel title").html(), // TODO title should be strictly plaintext
+      home_page_url: $("rss channel link").html(), // TODO ibid
       feed_url: "", // TODO fill with user provided feed url
     };
   }
 
+  // TODO refactor after we have 3 feed types
   transformItems($: CheerioAPI) {
-    return $("rss item").map((i, element) => ({
-      title: $("title", element).text(), // TODO support html
-      url: $("link", element).text(),
-      summary: cheerio.load($("description", element).text() ?? "").text(), // inner layer is HTML literal
-    }));
+    return $("rss item").map((i, element) => {
+      const [descriptionHtml, descriptionText] = decodeField($("description", element));
+      const [encodedContentHtml, encodedContentText] = decodeField($("content\\:encoded", element));
+
+      return {
+        title: $("title", element).text(), // TODO support html
+        url: $("link", element).text(),
+        summary: firstContentfulString(descriptionText, encodedContentText),
+        content_text: firstContentfulString(encodedContentText, descriptionText),
+        content_html: firstContentfulString(encodedContentHtml, descriptionHtml),
+      };
+    });
   }
+}
+
+export function firstContentfulString(...strings: string[]) {
+  return strings.find((s) => s) ?? "";
+}
+
+export function hasCdata$($: Cheerio<Element>) {
+  return $.toArray().some(hasCdata);
+}
+
+export function hasCdata(element: Element) {
+  return element.children.some((c) => c.type === ElementType.CDATA);
+}
+
+export function decodeField($: Cheerio<Element>): [html: string, text: string] {
+  const html = hasCdata$($) ? $.text() : $.html() ?? "";
+  const text = cheerio.load(html).text();
+
+  return [html, text];
 }

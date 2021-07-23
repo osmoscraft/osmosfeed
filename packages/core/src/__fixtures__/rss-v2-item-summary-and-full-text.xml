@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<rss version="2.0" xmlns:blogChannel="http://backend.userland.com/blogChannelModule">
+	<channel>
+		<title>Mock channel title</title>
+		<link>http://mock-domain.com</link>
+		<description>Mock channel description</description>
+		<language>en-us</language>
+		<item>
+			<title>Has description but no content:encoded</title> 
+			<link>http://mock-domain.com/item/1</link>
+			<description>I'm <b>description</b></description>
+		</item>
+		<item>
+			<title>Has description and content:encoded</title>
+			<link>http://mock-domain.com/item/1</link>
+			<description>I'm <b>description</b></description>
+			<content:encoded>I'm <b>encoded content</b></content:encoded>
+		</item>
+		<item>
+			<title>Has no description but has content:encoded</title>
+			<link>http://mock-domain.com/item/1</link>
+			<content:encoded>I'm <b>encoded content</b></content:encoded>
+		</item>
+		<item>
+			<title>Has no description or content:encoded</title>
+			<link>http://mock-domain.com/item/1</link>
+		</item>
+		<item>
+			<title>Has description with CDATA but no content:encoded</title>
+			<description><![CDATA[I'm <b>description</b>]]></description>
+		</item>
+	</channel>
+</rss>

@@ -12,18 +12,28 @@
 		</item>
 		<item>
 			<title>Escaped entities in description</title>
-			<link>http://mock-domain.com/item/2</link>
+			<link>http://mock-domain.com/item/1</link>
 			<description>I'm &lt;b&gt;bold&lt;/b&gt;</description>
 		</item>
 		<item>
 			<title>CDATA in description</title>
-			<link>http://mock-domain.com/item/3</link>
+			<link>http://mock-domain.com/item/1</link>
 			<description><![CDATA[I'm <b>bold</b>]]></description>
 		</item>
 		<item>
+			<title>Double escaped entities in description</title>
+			<link>http://mock-domain.com/item/1</link>
+			<description>I'm &amp;lt;b&amp;gt;bold&amp;lt;/b&amp;gt;</description>
+		</item>
+		<item>
+			<title>CDATA with escaped entities in description</title>
+			<link>http://mock-domain.com/item/1</link>
+			<description><![CDATA[I'm &lt;b&gt;bold&lt;/b&gt;]]></description>
+		</item>
+		<item>
 			<title>HTML in description</title>
-			<link>http://mock-domain.com/item/3</link>
-			<description><p>What a <em>beautiful</em> day!</p></description>
+			<link>http://mock-domain.com/item/1</link>
+			<description>I'm <b>bold</b></description>
 		</item>
 	</channel>
 </rss>
