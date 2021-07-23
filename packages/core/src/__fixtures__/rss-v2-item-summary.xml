@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<rss version="2.0" xmlns:blogChannel="http://backend.userland.com/blogChannelModule">
+<rss version="2.0">
 	<channel>
 		<title>Mock channel title</title>
 		<link>http://mock-domain.com</link>
