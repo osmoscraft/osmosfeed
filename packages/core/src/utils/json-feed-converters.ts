@@ -72,20 +72,21 @@ export class RssToJsonFeedConverter extends AbstractJsonFeedConverter {
   }
 }
 
-export function firstContentfulString(...strings: string[]) {
+function firstContentfulString(...strings: string[]) {
   return strings.find((s) => s) ?? "";
 }
 
-export function hasCdata$($: Cheerio<Element>) {
-  return $.toArray().some(hasCdata);
+function $hasCdata($: Cheerio<Element>) {
+  return $.toArray().some(elementHasCdata);
 }
 
-export function hasCdata(element: Element) {
+function elementHasCdata(element: Element) {
   return element.children.some((c) => c.type === ElementType.CDATA);
 }
 
-export function decodeField($: Cheerio<Element>): [html: string, text: string] {
-  const html = hasCdata$($) ? $.text() : $.html() ?? "";
+// TODO expose as utility API
+function decodeField($: Cheerio<Element>): [html: string, text: string] {
+  const html = $hasCdata($) ? $.text() : $.html() ?? "";
   const text = cheerio.load(html).text();
 
   return [html, text];
