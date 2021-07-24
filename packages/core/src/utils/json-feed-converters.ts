@@ -23,7 +23,7 @@ export abstract class AbstractJsonFeedConverter {
 
   convert(): JsonFeed {
     return {
-      ...this.transformMetadata(this.$),
+      ...this.generateMeta(this.$),
       ...this.transformChannel(this.$),
       items: this.transformItems(this.$),
     };
@@ -31,7 +31,7 @@ export abstract class AbstractJsonFeedConverter {
 
   abstract getItems(): Cheerio<Node>;
 
-  abstract transformMetadata($: CheerioAPI): Record<string, any>;
+  abstract generateMeta($: CheerioAPI): Record<string, any>;
   abstract transformChannel($: CheerioAPI): any;
   abstract transformItems($: CheerioAPI): any;
 }
@@ -41,7 +41,7 @@ export class RssToJsonFeedConverter extends AbstractJsonFeedConverter {
     return this.$("item");
   }
 
-  transformMetadata() {
+  generateMeta() {
     return {
       version: "https://jsonfeed.org/version/1.1",
     };
@@ -49,8 +49,8 @@ export class RssToJsonFeedConverter extends AbstractJsonFeedConverter {
 
   transformChannel($: CheerioAPI) {
     return {
-      title: $("rss channel title").html(), // TODO title should be strictly plaintext
-      home_page_url: $("rss channel link").html(), // TODO ibid
+      title: decodeField($("rss channel title")).text, // TODO title should be strictly plaintext
+      home_page_url: $("rss channel link").text(),
       feed_url: "", // TODO fill with user provided feed url
     };
   }
@@ -58,8 +58,8 @@ export class RssToJsonFeedConverter extends AbstractJsonFeedConverter {
   // TODO refactor after we have 3 feed types
   transformItems($: CheerioAPI) {
     return $("rss item").map((i, element) => {
-      const [descriptionHtml, descriptionText] = decodeField($("description", element));
-      const [encodedContentHtml, encodedContentText] = decodeField($("content\\:encoded", element));
+      const { html: descriptionHtml, text: descriptionText } = decodeField($("description", element));
+      const { html: encodedContentHtml, text: encodedContentText } = decodeField($("content\\:encoded", element));
 
       return {
         title: $("title", element).text(), // TODO support html
@@ -85,9 +85,9 @@ function elementHasCdata(element: Element) {
 }
 
 // TODO expose as utility API
-function decodeField($: Cheerio<Element>): [html: string, text: string] {
+function decodeField($: Cheerio<Element>): { html: string; text: string } {
   const html = $hasCdata($) ? $.text() : $.html() ?? "";
   const text = cheerio.load(html).text();
 
-  return [html, text];
+  return { html, text };
 }
