@@ -1,6 +1,6 @@
 import { expect } from "../test-helper/assertion.js";
 import { describe } from "../test-helper/scheduler.js";
-import { JsonFeed } from "../utils/json-feed-converters.js";
+import { JsonFeed } from "../utils/feed-converters.js";
 import { xmlToJsonFeed } from "../utils/parse-feed.js";
 import { loadXmlFixture } from "../__fixtures__/load-fixture.js";
 

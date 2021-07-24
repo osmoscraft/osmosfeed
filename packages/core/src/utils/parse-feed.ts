@@ -1,6 +1,6 @@
 import cheerio from "cheerio";
 import htmlparser2 from "htmlparser2";
-import { RssToJsonFeedConverter } from "./json-feed-converters.js";
+import { rssToJsonFeed } from "./feed-converters.js";
 
 export class UnknownFeedTypeError extends Error {}
 
@@ -9,14 +9,9 @@ export function xmlToJsonFeed(input: string) {
 
   const cheerioDom = cheerio.load(dom, { xmlMode: true, decodeEntities: false });
 
-  let converter;
-
-  // TODO refactor into a function
   if (cheerioDom("rss").length) {
-    converter = new RssToJsonFeedConverter(cheerioDom);
+    return rssToJsonFeed(cheerioDom);
   } else {
     throw new UnknownFeedTypeError();
   }
-
-  return converter.convert();
 }
