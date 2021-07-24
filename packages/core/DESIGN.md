@@ -3,15 +3,22 @@
    2. htmlparser2 has working demo of feedparsing.
    3. htmlparser2 is at ast level. Require additional abstraction work.
 
+# Understanding RSS feed version
+
+- 0.91, 2.0, 2.01 family
+- 1.0 (RDF) family
+  - Items are not inside channel
+- Atom
+- JSON
 
 Parser architecture
+
 ```
 feed: FeedObjectResolver
    title: TitleFieldResolver
    link: LinkFieldResolver
    items: ItemsMapper(ItemResolver)
 ```
-
 
 ```js
 
@@ -21,7 +28,7 @@ const rssFeed = resolveObject(() => {
    return {
       title,
       link,
-      items, 
+      items,
    }
 });
 
