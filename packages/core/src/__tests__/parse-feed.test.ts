@@ -51,8 +51,10 @@ describe("Parse feed", ({ spec }) => {
   });
 
   spec("Parse multiple items/RSS 2.0", async () => {
-    const jsonFeed = await parseXmlFixture("multi-item-rss.xml");
-    await expect(jsonFeed.items.length > 1).toEqual(true);
+    await runMatrix(["multi-item-atom.xml", "multi-item-rss.xml", "multi-item-rdf.xml"], async (filename) => {
+      const jsonFeed = await parseXmlFixture(filename);
+      await expect(jsonFeed.items.length > 1).toEqual(true);
+    });
   });
 
   spec("Parse item title/RSS 2.0", async () => {

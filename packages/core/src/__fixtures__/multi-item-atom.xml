@@ -11,4 +11,11 @@
     <summary>Mock item description 1</summary>
     <content>Mock item content 1</content>
   </entry>
+  <entry>
+    <title>Mock item title 2</title>
+    <link href="http://mock-domain.com/item/1"/>
+    <id>urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a</id>
+    <summary>Mock item description 2</summary>
+    <content>Mock item content 2</content>
+  </entry>
 </feed>
