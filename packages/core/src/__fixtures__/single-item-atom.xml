@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Mock channel title</title>
+  <subtitle>Mock channel description</subtitle>
+  <link href="http://mock-domain.com"/>
+
+  <entry>
+    <title>Mock item title</title>
+    <link href="http://mock-domain.com/item/1"/>
+    <id>urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a</id>
+    <summary>Mock item description</summary>
+    <content>Mock item content</content>
+  </entry>
+</feed>

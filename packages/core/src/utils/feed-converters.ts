@@ -24,7 +24,20 @@ export function atomToJsonFeed($: CheerioAPI) {
     title: decode($("feed title")).text(),
     home_page_url: $("feed link").attr("href"),
     feed_url: "", // TBD
-    items: [],
+    items: [...$("entry")].map((element) => {
+      const item$ = withContext($, element);
+      const description = item$("summary"); // TODO handle types
+      const content = item$("content"); // TODO handle types
+
+      return {
+        id: "",
+        title: decode(item$("title")).text(),
+        url: item$("link").text(),
+        summary: description.text(),
+        content_text: content.text(),
+        content_html: content.text(),
+      };
+    }),
   };
 }
 
@@ -34,7 +47,20 @@ export function rdfToJsonFeed($: CheerioAPI) {
     title: decode($("channel title")).text(),
     home_page_url: $("channel link").text(),
     feed_url: "", // TBD
-    items: [],
+    items: [...$("item")].map((element) => {
+      const item$ = withContext($, element);
+      const description = decode(item$("description"));
+      const content = decode(item$("content\\:encoded"));
+
+      return {
+        id: "",
+        title: decode(item$("title")).text(),
+        url: item$("link").text(),
+        summary: getNonEmptyString(description.text, content.text),
+        content_text: getNonEmptyString(content.text, description.text),
+        content_html: getNonEmptyString(content.html, description.html),
+      };
+    }),
   };
 }
 
