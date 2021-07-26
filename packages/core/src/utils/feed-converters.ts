@@ -18,17 +18,33 @@ export interface JsonFeedItem {
   summary?: string;
 }
 
-export function atomToJsonFeed($: CheerioAPI) {}
+export function atomToJsonFeed($: CheerioAPI) {
+  return {
+    version: "https://jsonfeed.org/version/1.1",
+    title: decode($("feed title")).text(),
+    home_page_url: $("feed link").attr("href"),
+    feed_url: "", // TBD
+    items: [],
+  };
+}
 
-export function rdfToJsonFeed($: CheerioAPI) {}
+export function rdfToJsonFeed($: CheerioAPI) {
+  return {
+    version: "https://jsonfeed.org/version/1.1",
+    title: decode($("channel title")).text(),
+    home_page_url: $("channel link").text(),
+    feed_url: "", // TBD
+    items: [],
+  };
+}
 
 export function rssToJsonFeed($: CheerioAPI): JsonFeed {
   return {
     version: "https://jsonfeed.org/version/1.1",
-    title: decode($("rss channel title")).text(),
-    home_page_url: $("rss channel link").text(),
+    title: decode($("channel title")).text(),
+    home_page_url: $("channel link").text(),
     feed_url: "", // TODO fill with user provided feed url
-    items: [...$("rss item")].map((element) => {
+    items: [...$("item")].map((element) => {
       const item$ = withContext($, element);
       const description = decode(item$("description"));
       const content = decode(item$("content\\:encoded"));
