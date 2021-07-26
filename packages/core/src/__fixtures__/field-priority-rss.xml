@@ -27,6 +27,7 @@
 		</item>
 		<item>
 			<title>Has description with CDATA but no content:encoded</title>
+			<link>http://mock-domain.com/item/1</link>
 			<description><![CDATA[I'm <b>description</b>]]></description>
 		</item>
 	</channel>

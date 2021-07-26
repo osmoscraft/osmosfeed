@@ -3,7 +3,6 @@
   <title>Mock channel title</title>
   <subtitle>Mock channel description</subtitle>
   <link href="http://mock-domain.com"/>
-
   <entry>
     <title>Mock item title 1</title>
     <link href="http://mock-domain.com/item/1"/>

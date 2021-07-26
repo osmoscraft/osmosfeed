@@ -71,69 +71,143 @@ describe("Parse feed", ({ spec }) => {
     });
   });
 
-  spec("Parse item summary of plaintext/RSS 2.0", async () => {
-    const jsonFeed = await parseXmlFixture("item-summary-rss.xml");
-    await expect(jsonFeed.items[0].summary).toEqual("Plaintext description");
+  spec("Parse item summary of plaintext", async () => {
+    await runMatrix(
+      ["field-decoding-atom.xml", "field-decoding-rss.xml", "field-decoding-rdf.xml"],
+      async (filename) => {
+        const jsonFeed = await parseXmlFixture(filename);
+        await expect(jsonFeed.items[0].summary).toEqual("Plaintext description");
+        await expect(jsonFeed.items[0].content_html).toEqual("Plaintext description");
+      }
+    );
   });
 
-  spec("Parse item summary of escaped HTML entities/RSS 2.0", async () => {
-    const jsonFeed = await parseXmlFixture("item-summary-rss.xml");
-    await expect(jsonFeed.items[1].summary).toEqual("I'm bold");
+  spec("Parse item summary of escaped HTML entities", async () => {
+    await runMatrix(
+      ["field-decoding-atom.xml", "field-decoding-rss.xml", "field-decoding-rdf.xml"],
+      async (filename) => {
+        const jsonFeed = await parseXmlFixture(filename);
+        await expect(jsonFeed.items[1].summary).toEqual("I'm bold");
+        await expect(jsonFeed.items[1].content_html).toEqual("I'm <b>bold</b>");
+      }
+    );
   });
 
-  spec("Parse item summary of CDATA/RSS 2.0", async () => {
-    const jsonFeed = await parseXmlFixture("item-summary-rss.xml");
-    await expect(jsonFeed.items[2].summary).toEqual("I'm bold");
+  spec("Parse item summary of CDATA", async () => {
+    await runMatrix(
+      ["field-decoding-atom.xml", "field-decoding-rss.xml", "field-decoding-rdf.xml"],
+      async (filename) => {
+        const jsonFeed = await parseXmlFixture(filename);
+        await expect(jsonFeed.items[2].summary).toEqual("I'm bold");
+        await expect(jsonFeed.items[2].content_html).toEqual("I'm <b>bold</b>");
+      }
+    );
   });
 
-  spec("Parse item summary of double escaped HTML entities/RSS 2.0", async () => {
-    const jsonFeed = await parseXmlFixture("item-summary-rss.xml");
-    await expect(jsonFeed.items[3].summary).toEqual("I'm <b>bold</b>");
+  spec("Parse item summary of double escaped HTML entities", async () => {
+    await runMatrix(
+      ["field-decoding-atom.xml", "field-decoding-rss.xml", "field-decoding-rdf.xml"],
+      async (filename) => {
+        const jsonFeed = await parseXmlFixture(filename);
+        await expect(jsonFeed.items[3].summary).toEqual("I'm <b>bold</b>");
+        await expect(jsonFeed.items[3].content_html).toEqual("I'm &lt;b&gt;bold&lt;/b&gt;");
+      }
+    );
   });
 
-  spec("Parse item summary of CDATA containing escaped HTML entities/RSS 2.0", async () => {
-    const jsonFeed = await parseXmlFixture("item-summary-rss.xml");
-    await expect(jsonFeed.items[4].summary).toEqual("I'm <b>bold</b>");
+  spec("Parse item summary of CDATA containing escaped HTML entities", async () => {
+    await runMatrix(
+      ["field-decoding-atom.xml", "field-decoding-rss.xml", "field-decoding-rdf.xml"],
+      async (filename) => {
+        const jsonFeed = await parseXmlFixture(filename);
+        await expect(jsonFeed.items[4].summary).toEqual("I'm <b>bold</b>");
+        await expect(jsonFeed.items[4].content_html).toEqual("I'm &lt;b&gt;bold&lt;/b&gt;");
+      }
+    );
   });
 
-  spec("Parse item summary of HTML/RSS 2.0", async () => {
-    const jsonFeed = await parseXmlFixture("item-summary-rss.xml");
-    await expect(jsonFeed.items[5].summary).toEqual("I'm bold");
+  spec("Parse item summary of HTML", async () => {
+    await runMatrix(
+      ["field-decoding-atom.xml", "field-decoding-rss.xml", "field-decoding-rdf.xml"],
+      async (filename) => {
+        const jsonFeed = await parseXmlFixture(filename);
+        await expect(jsonFeed.items[5].summary).toEqual("I'm bold");
+        await expect(jsonFeed.items[5].content_html).toEqual("I'm <b>bold</b>");
+      }
+    );
   });
+
+  spec("Parse item summary of printable entities", async () => {
+    await runMatrix(
+      ["field-decoding-atom.xml", "field-decoding-rss.xml", "field-decoding-rdf.xml"],
+      async (filename) => {
+        const jsonFeed = await parseXmlFixture(filename);
+        await expect(jsonFeed.items[6].summary).toEqual("AT&T");
+        await expect(jsonFeed.items[6].content_html).toEqual("AT&T"); // We shouldn't escape the &
+      }
+    );
+  });
+
+  // TODO Insert Atom test case for embedding xhtml
 
   spec("Parse item with description but no content:encoded/RSS 2.0", async () => {
-    const jsonFeed = await parseXmlFixture("item-description-rss.xml");
-    await expect(jsonFeed.items[0].summary).toEqual("I'm description");
-    await expect(jsonFeed.items[0].content_html).toEqual("I'm <b>description</b>");
-    await expect(jsonFeed.items[0].content_text).toEqual("I'm description");
+    await runMatrix(
+      ["field-priority-atom.xml", "field-priority-rss.xml", "field-priority-rdf.xml"],
+      async (filename) => {
+        const jsonFeed = await parseXmlFixture(filename);
+        await expect(jsonFeed.items[0].summary).toEqual("I'm description");
+        await expect(jsonFeed.items[0].content_html).toEqual("I'm <b>description</b>");
+        await expect(jsonFeed.items[0].content_text).toEqual("I'm description");
+      }
+    );
   });
 
   spec("Parse item with description and content:encoded/RSS 2.0", async () => {
-    const jsonFeed = await parseXmlFixture("item-description-rss.xml");
-    await expect(jsonFeed.items[1].summary).toEqual("I'm description");
-    await expect(jsonFeed.items[1].content_html).toEqual("I'm <b>encoded content</b>");
-    await expect(jsonFeed.items[1].content_text).toEqual("I'm encoded content");
+    await runMatrix(
+      ["field-priority-atom.xml", "field-priority-rss.xml", "field-priority-rdf.xml"],
+      async (filename) => {
+        const jsonFeed = await parseXmlFixture(filename);
+        await expect(jsonFeed.items[1].summary).toEqual("I'm description");
+        await expect(jsonFeed.items[1].content_html).toEqual("I'm <b>encoded content</b>");
+        await expect(jsonFeed.items[1].content_text).toEqual("I'm encoded content");
+      }
+    );
   });
 
   spec("Parse item with no description but with content:encoded/RSS 2.0", async () => {
-    const jsonFeed = await parseXmlFixture("item-description-rss.xml");
-    await expect(jsonFeed.items[2].summary).toEqual("I'm encoded content");
-    await expect(jsonFeed.items[2].content_html).toEqual("I'm <b>encoded content</b>");
-    await expect(jsonFeed.items[2].content_text).toEqual("I'm encoded content");
+    await runMatrix(
+      ["field-priority-atom.xml", "field-priority-rss.xml", "field-priority-rdf.xml"],
+      async (filename) => {
+        const jsonFeed = await parseXmlFixture(filename);
+        await expect(jsonFeed.items[2].summary).toEqual("I'm encoded content");
+        await expect(jsonFeed.items[2].content_html).toEqual("I'm <b>encoded content</b>");
+        await expect(jsonFeed.items[2].content_text).toEqual("I'm encoded content");
+      }
+    );
   });
 
   spec("Parse item with neither description nor content:encoded/RSS 2.0", async () => {
-    const jsonFeed = await parseXmlFixture("item-description-rss.xml");
-    await expect(jsonFeed.items[3].summary).toEqual("");
-    await expect(jsonFeed.items[3].content_html).toEqual("");
-    await expect(jsonFeed.items[3].content_text).toEqual("");
+    await runMatrix(
+      ["field-priority-atom.xml", "field-priority-rss.xml", "field-priority-rdf.xml"],
+      async (filename) => {
+        const jsonFeed = await parseXmlFixture(filename);
+        await expect(jsonFeed.items[3].summary).toEqual("");
+        await expect(jsonFeed.items[3].content_html).toEqual("");
+        await expect(jsonFeed.items[3].content_text).toEqual("");
+      }
+    );
   });
 
   spec("Parse item with CDATA description but no content:encoded/RSS 2.0", async () => {
-    const jsonFeed = await parseXmlFixture("item-description-rss.xml");
-    await expect(jsonFeed.items[4].summary).toEqual("I'm description");
-    await expect(jsonFeed.items[4].content_html).toEqual("I'm <b>description</b>");
-    await expect(jsonFeed.items[4].content_text).toEqual("I'm description");
+    await runMatrix(
+      ["field-priority-atom.xml", "field-priority-rss.xml", "field-priority-rdf.xml"],
+      async (filename) => {
+        const jsonFeed = await parseXmlFixture(filename);
+        await expect(jsonFeed.items[4].summary).toEqual("I'm description");
+        await expect(jsonFeed.items[4].content_html).toEqual("I'm <b>description</b>");
+        await expect(jsonFeed.items[4].content_text).toEqual("I'm description");
+      }
+    );
   });
 });
 

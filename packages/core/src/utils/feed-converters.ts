@@ -26,16 +26,16 @@ export function atomToJsonFeed($: CheerioAPI) {
     feed_url: "", // TBD
     items: [...$("entry")].map((element) => {
       const item$ = withContext($, element);
-      const description = item$("summary"); // TODO handle types
-      const content = item$("content"); // TODO handle types
+      const description = decodeAtomElement(item$("summary"));
+      const content = decodeAtomElement(item$("content"));
 
       return {
         id: "",
         title: decode(item$("title")).text(),
         url: item$("link").attr("href"),
-        summary: description.text(),
-        content_text: content.text(),
-        content_html: content.text(),
+        summary: getNonEmptyString(description.text, content.text),
+        content_text: getNonEmptyString(content.text, description.text),
+        content_html: getNonEmptyString(content.html, description.html),
       };
     }),
   };
@@ -114,6 +114,22 @@ function $hasCdata($: Cheerio<Node>) {
 
 function elementHasCdata(node: Node) {
   return (node as Element)?.children.some((c) => c.type === ElementType.CDATA);
+}
+
+function decodeAtomElement($: Cheerio<Node>) {
+  const type = $.attr("type");
+  switch (type) {
+    case "html":
+      return decode($);
+    case "xhtml":
+      throw new Error("xhtml type handling is not implemented yet"); // TBD
+    case "text":
+    default:
+      return {
+        html: () => $.html() ?? "",
+        text: () => $.text(),
+      };
+  }
 }
 
 function decode($: Cheerio<Node>): { html: () => string; text: () => string } {

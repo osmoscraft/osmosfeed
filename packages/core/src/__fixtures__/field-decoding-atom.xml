@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Mock channel title</title>
+  <subtitle>Mock channel description</subtitle>
+  <link href="http://mock-domain.com"/>
+  <entry>
+    <title>Basic</title>
+    <link href="http://mock-domain.com/item/1"/>
+    <summary>Plaintext description</summary>
+  </entry>
+  <entry>
+    <title>Escaped entities in description</title>
+    <link href="http://mock-domain.com/item/1"/>
+    <summary type="html">I'm &lt;b&gt;bold&lt;/b&gt;</summary>
+  </entry>
+  <entry>
+    <title>CDATA in description</title>
+    <link href="http://mock-domain.com/item/1"/>
+    <summary type="html"><![CDATA[I'm <b>bold</b>]]></summary>
+  </entry>
+  <entry>
+    <title>Double escaped entities in description</title>
+    <link href="http://mock-domain.com/item/1"/>
+    <summary type="html">I'm &amp;lt;b&amp;gt;bold&amp;lt;/b&amp;gt;</summary>
+  </entry>
+  <entry>
+    <title>CDATA with escaped entities in description</title>
+    <link href="http://mock-domain.com/item/1"/>
+    <summary type="html"><![CDATA[I'm &lt;b&gt;bold&lt;/b&gt;]]></summary>
+  </entry>
+  <entry>
+    <title>HTML in description</title>
+    <link href="http://mock-domain.com/item/1"/>
+    <summary type="html">I'm <b>bold</b></summary>
+  </entry>
+  <entry>
+    <title>Printable entity in description</title>
+    <link href="http://mock-domain.com/item/1"/>
+    <summary>AT&amp;T</summary> 
+  </entry>
+</feed>
