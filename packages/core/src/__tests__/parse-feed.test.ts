@@ -36,21 +36,21 @@ describe("Parse feed", ({ spec }) => {
     });
   });
 
-  spec("Parse empty items/RSS 2.0", async () => {
+  spec("Parse empty items", async () => {
     await runMatrix(["empty-atom.xml", "empty-rss.xml", "empty-rdf.xml"], async (filename) => {
       const jsonFeed = await parseXmlFixture(filename);
       await expect(jsonFeed.items.length).toEqual(0);
     });
   });
 
-  spec("Parse 1 item/RSS 2.0", async () => {
+  spec("Parse single item", async () => {
     await runMatrix(["single-item-atom.xml", "single-item-rss.xml", "single-item-rdf.xml"], async (filename) => {
       const jsonFeed = await parseXmlFixture(filename);
       await expect(jsonFeed.items.length).toEqual(1);
     });
   });
 
-  spec("Parse multiple items/RSS 2.0", async () => {
+  spec("Parse multiple items", async () => {
     await runMatrix(["multi-item-atom.xml", "multi-item-rss.xml", "multi-item-rdf.xml"], async (filename) => {
       const jsonFeed = await parseXmlFixture(filename);
       await expect(jsonFeed.items.length > 1).toEqual(true);
