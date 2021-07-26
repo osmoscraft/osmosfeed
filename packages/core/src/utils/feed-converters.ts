@@ -32,7 +32,7 @@ export function atomToJsonFeed($: CheerioAPI) {
       return {
         id: "",
         title: decode(item$("title")).text(),
-        url: item$("link").text(),
+        url: item$("link").attr("href"),
         summary: description.text(),
         content_text: content.text(),
         content_html: content.text(),

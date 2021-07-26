@@ -57,14 +57,18 @@ describe("Parse feed", ({ spec }) => {
     });
   });
 
-  spec("Parse item title/RSS 2.0", async () => {
-    const jsonFeed = await parseXmlFixture("single-item-rss.xml");
-    await expect(jsonFeed.items[0].title).toEqual("Mock item title 1");
+  spec("Parse item title", async () => {
+    await runMatrix(["single-item-atom.xml", "single-item-rss.xml", "single-item-rdf.xml"], async (filename) => {
+      const jsonFeed = await parseXmlFixture(filename);
+      await expect(jsonFeed.items[0].title).toEqual("Mock item title 1");
+    });
   });
 
-  spec("Parse item url/RSS 2.0", async () => {
-    const jsonFeed = await parseXmlFixture("single-item-rss.xml");
-    await expect(jsonFeed.items[0].url).toEqual("http://mock-domain.com/item/1");
+  spec("Parse item url", async () => {
+    await runMatrix(["single-item-atom.xml", "single-item-rss.xml", "single-item-rdf.xml"], async (filename) => {
+      const jsonFeed = await parseXmlFixture(filename);
+      await expect(jsonFeed.items[0].url).toEqual("http://mock-domain.com/item/1");
+    });
   });
 
   spec("Parse item summary of plaintext/RSS 2.0", async () => {
