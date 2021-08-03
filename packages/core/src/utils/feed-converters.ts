@@ -21,8 +21,8 @@ export interface JsonFeedItem {
 export function atomToJsonFeed($: CheerioAPI) {
   return {
     version: "https://jsonfeed.org/version/1.1",
-    title: decode($("feed title")).text(),
-    home_page_url: $("feed link").attr("href"),
+    title: decode($("feed title").first()).text(),
+    home_page_url: $("feed link").first().attr("href"),
     feed_url: "", // TBD
     items: [...$("entry")].map((element) => {
       const item$ = withContext($, element);
@@ -44,8 +44,8 @@ export function atomToJsonFeed($: CheerioAPI) {
 export function rdfToJsonFeed($: CheerioAPI) {
   return {
     version: "https://jsonfeed.org/version/1.1",
-    title: decode($("channel title")).text(),
-    home_page_url: $("channel link").text(),
+    title: decode($("channel title").first()).text(),
+    home_page_url: $("channel link").first().text(),
     feed_url: "", // TBD
     items: [...$("item")].map((element) => {
       const item$ = withContext($, element);
@@ -67,8 +67,8 @@ export function rdfToJsonFeed($: CheerioAPI) {
 export function rssToJsonFeed($: CheerioAPI): JsonFeed {
   return {
     version: "https://jsonfeed.org/version/1.1",
-    title: decode($("channel title")).text(),
-    home_page_url: $("channel link").text(),
+    title: decode($("channel title").first()).text(),
+    home_page_url: $("channel link").first().text(),
     feed_url: "", // TODO fill with user provided feed url
     items: [...$("item")].map((element) => {
       const item$ = withContext($, element);

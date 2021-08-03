@@ -39,7 +39,7 @@
       <itunes:duration>999</itunes:duration>
       <itunes:explicit>no</itunes:explicit>
       <itunes:episodeType>full</itunes:episodeType>
-      <content:encoded><![CDATA[Mock iTunes content]]></content:encoded>
+      <content:encoded><![CDATA[Mock episode content]]></content:encoded>
       <enclosure url="http://mock-domain.com/assets/episode-1.mp3" length="10000000" type="audio/mpeg"/>
     </item>
   </channel>
