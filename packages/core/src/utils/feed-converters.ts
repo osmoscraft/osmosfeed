@@ -18,12 +18,27 @@ export interface JsonFeedItem {
   summary?: string;
 }
 
-export function atomToJsonFeed($: CheerioAPI) {
+export interface ConverterPlugin {
+  channelResolvers?: Resolver[];
+  itemResolvers?: Resolver[];
+}
+
+export interface Resolver {
+  ($: CheerioAPI, currentValue: Record<string, any>): Record<string, any>;
+}
+
+export function atomToJsonFeed($: CheerioAPI, plugins: ConverterPlugin[] = []) {
   return {
     version: "https://jsonfeed.org/version/1.1",
     title: decode($("feed title").first()).text(),
     home_page_url: $("feed link").first().attr("href"),
     feed_url: "", // TBD
+
+    ...applyResolvers(
+      $,
+      plugins.flatMap((plugin) => plugin.channelResolvers ?? [])
+    ),
+
     items: [...$("entry")].map((element) => {
       const item$ = withContext($, element);
       const description = decodeAtomElement(item$("summary"));
@@ -36,12 +51,17 @@ export function atomToJsonFeed($: CheerioAPI) {
         summary: getNonEmptyString(description.text, content.text),
         content_text: getNonEmptyString(content.text, description.text),
         content_html: getNonEmptyString(content.html, description.html),
+
+        ...applyResolvers(
+          $,
+          plugins.flatMap((plugin) => plugin.itemResolvers ?? [])
+        ),
       };
     }),
   };
 }
 
-export function rdfToJsonFeed($: CheerioAPI) {
+export function rdfToJsonFeed($: CheerioAPI, plugins: ConverterPlugin[] = []) {
   return {
     version: "https://jsonfeed.org/version/1.1",
     title: decode($("channel title").first()).text(),
@@ -64,7 +84,7 @@ export function rdfToJsonFeed($: CheerioAPI) {
   };
 }
 
-export function rssToJsonFeed($: CheerioAPI): JsonFeed {
+export function rssToJsonFeed($: CheerioAPI, plugins: ConverterPlugin[] = []): JsonFeed {
   return {
     version: "https://jsonfeed.org/version/1.1",
     title: decode($("channel title").first()).text(),
@@ -140,4 +160,12 @@ function decode($: Cheerio<Node>): { html: () => string; text: () => string } {
     html: _getHtml,
     text: _getText,
   };
+}
+
+function applyResolvers($: CheerioAPI, resolverChain: Resolver[]) {
+  const channelObject = resolverChain.reduce(
+    (result, resolver) => ({ ...result, ...resolver($, result) }),
+    {} as Record<string, any>
+  );
+  return channelObject;
 }
