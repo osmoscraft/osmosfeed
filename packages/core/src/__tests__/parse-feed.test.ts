@@ -1,7 +1,6 @@
 import { expect } from "../test-helper/assertion.js";
 import { describe } from "../test-helper/scheduler.js";
-import { JsonFeed } from "../utils/convert-to-json-feed.js";
-import { parseFeed } from "../utils/parse-feed.js";
+import { JsonFeed, parseFeed } from "../utils/parse-feed.js";
 import { loadXmlFixture } from "../test-helper/load-fixture.js";
 
 describe("Parse feed", ({ spec }) => {
