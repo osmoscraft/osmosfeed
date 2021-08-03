@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0">
+  <channel>
+    <title>Mock title</title>
+    <link>http://mock-domain.com/podcast</link>
+    <description><![CDATA[Mock description]]></description>
+    <copyright>Mock copyright</copyright>
+    <language>en</language>
+    <itunes:summary><![CDATA[Mock iTunes summmary]]></itunes:summary>
+    <itunes:author>Mock iTunes Author</itunes:author>
+    <itunes:block>no</itunes:block>
+    <itunes:owner>
+      <itunes:email>mock-user@mock-domain.com</itunes:email>
+      <itunes:name>Mock User</itunes:name>
+    </itunes:owner>
+    <itunes:category text="Business"/>
+    <itunes:category text="News"/>
+    <itunes:image href="http://mock-domain.com/assets/image.png"/>
+    <itunes:type>episodic</itunes:type>
+    <media:restriction type="country" relationship="allow">us</media:restriction>
+    <image>
+      <url>http://mock-domain.com/assets/image.png</url>
+      <title>Mock image title</title>
+      <link>http://mock-domain.com/podcast</link>
+    </image>
+    <lastBuildDate>Fri, 30 Jul 2021 18:26:00 -0400</lastBuildDate>
+    <item>
+      <title>Mock episode title</title>
+      <description><![CDATA[Mock episode description]]></description>
+      <pubDate>Fri, 30 Jul 2021 18:26:00 -0400</pubDate>
+      <copyright>Mock copyright</copyright>
+      <guid isPermalink="false">12345678-1111-2222-3333-444444444444</guid>
+      <link>http://mock-domain.com/podcast/episode/1</link>
+      <itunes:title>Mock iTunes episode title</itunes:title>
+      <itunes:episode>1</itunes:episode>
+      <itunes:author>Mock iTunes episode author</itunes:author>
+      <itunes:summary><![CDATA[Mock iTunes episode summary]]></itunes:summary>
+      <itunes:image href="http://mock-domain.com/assets/image.png"/>
+      <itunes:duration>999</itunes:duration>
+      <itunes:explicit>no</itunes:explicit>
+      <itunes:episodeType>full</itunes:episodeType>
+      <content:encoded><![CDATA[Mock iTunes content]]></content:encoded>
+      <enclosure url="http://mock-domain.com/assets/episode-1.mp3" length="10000000" type="audio/mpeg"/>
+    </item>
+  </channel>
+</rss>
