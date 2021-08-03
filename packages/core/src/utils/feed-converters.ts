@@ -122,18 +122,18 @@ function decodeAtomElement($: Cheerio<Node>) {
     case "html":
       return decode($);
     case "xhtml":
-      throw new Error("xhtml type handling is not implemented yet"); // TBD
+      return decode($);
     case "text":
     default:
       return {
-        html: () => $.html() ?? "",
-        text: () => $.text(),
+        html: () => $.html()?.trim() ?? "",
+        text: () => $.text()?.trim(),
       };
   }
 }
 
 function decode($: Cheerio<Node>): { html: () => string; text: () => string } {
-  const _getHtml = () => ($hasCdata($) ? $.text() : $.html() ?? "");
+  const _getHtml = () => ($hasCdata($) ? $.text().trim() : $.html()?.trim() ?? "");
   const _getText = () => cheerio.load(_getHtml()).text();
 
   return {

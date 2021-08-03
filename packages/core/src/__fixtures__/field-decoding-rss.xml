@@ -40,5 +40,19 @@
 			<link>http://mock-domain.com/item/1</link>
 			<description>AT&amp;T</description>
 		</item>
+		<item>
+			<title>Leading and trailing space in plaintext description</title>
+			<link>http://mock-domain.com/item/1</link>
+			<description>
+				Plaintext description
+			</description> 
+		</item>
+		<item>
+			<title>Leading and trailing space in HTML description</title>
+			<link>http://mock-domain.com/item/1</link>
+			<description>
+				I'm <b>bold</b>
+			</description> 
+		</item>
 	</channel>
 </rss>

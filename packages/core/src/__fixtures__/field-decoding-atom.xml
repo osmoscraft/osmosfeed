@@ -38,4 +38,18 @@
     <link href="http://mock-domain.com/item/1"/>
     <summary>AT&amp;T</summary> 
   </entry>
+  <entry>
+    <title>Leading and trailing space in plaintext description</title>
+    <link href="http://mock-domain.com/item/1"/>
+    <summary>
+      Plaintext description
+    </summary> 
+  </entry>
+  <entry>
+    <title>Leading and trailing space in HTML description</title>
+    <link href="http://mock-domain.com/item/1"/>
+    <summary type="html">
+      I'm <b>bold</b>
+    </summary> 
+  </entry>
 </feed>
