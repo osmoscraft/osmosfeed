@@ -1,14 +1,28 @@
+import { localJsonFeedCacheProvider } from "./lib/local-cache-provider.js";
+import { mergeJsonFeeds } from "./lib/merge-json-feeds.js";
 import { httpGet } from "./utils/http-get.js";
-import { parseFeed } from "./utils/parse-feed.js";
+import { JsonFeed, parseFeed } from "./utils/parse-feed.js";
 
-export async function osmosfeed(sources: string[]) {
-  const jsonFeedsAsync = sources.map(async (source) => {
-    const response = await httpGet(source);
-    const raw = response.raw;
-    const jsonFeed = parseFeed(raw);
-    return jsonFeed;
-  });
+export async function osmosfeed(feedUrls: string[]) {
+  // TODO Extract to lib
+  const rawFeeds = await Promise.all(
+    feedUrls.map(async (feedUrl) => ({
+      feedUrl,
+      textResponse: (await httpGet(feedUrl)).raw, // TODO error status handling
+    }))
+  );
 
-  const jsonFeeds = await Promise.all(jsonFeedsAsync);
-  console.dir(jsonFeeds);
+  const jsonFeeds: JsonFeed[] = rawFeeds.map((rawFeed) => ({
+    ...parseFeed(rawFeed.textResponse), // TODO Expose parameters for customization
+    feed_url: rawFeed.feedUrl,
+  }));
+
+  const cacheProvider = localJsonFeedCacheProvider("cache");
+
+  const cachedJsonFeeds = await cacheProvider.read();
+  const mergedJsonFeeds = mergeJsonFeeds(jsonFeeds, cachedJsonFeeds);
+
+  await cacheProvider.write(mergedJsonFeeds);
+
+  // TODO build site with cache
 }
