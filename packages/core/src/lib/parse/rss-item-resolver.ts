@@ -1,4 +1,4 @@
-import { decode, getNonEmptyString, Resolver } from "../sdk/sdk.js";
+import { decode, getNonEmptyString, Resolver } from "../../sdk/sdk.js";
 
 export const rssItemResolver: Resolver = (_upstreamValue, item$) => {
   const description = decode(item$("description"));

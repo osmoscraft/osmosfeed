@@ -1,5 +1,5 @@
-import { localJsonFeedCacheProvider } from "./lib/local-cache-provider.js";
-import { mergeJsonFeeds } from "./lib/merge-json-feeds.js";
+import { localJsonFeedCacheProvider } from "./lib/cache/local-cache-provider.js";
+import { mergeJsonFeeds } from "./lib/merge/merge-json-feeds.js";
 import { httpGet } from "./utils/http-get.js";
 import { JsonFeed, parseFeed } from "./utils/parse-feed.js";
 

@@ -1,4 +1,4 @@
-import { decode, Resolver } from "../sdk/sdk.js";
+import { decode, Resolver } from "../../sdk/sdk.js";
 
 export const rssChannelResolver: Resolver = (_upstreamValue, $) => ({
   title: decode($("channel title").first()).text(),

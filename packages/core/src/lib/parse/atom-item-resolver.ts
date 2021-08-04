@@ -1,4 +1,4 @@
-import { decode, decodeAtomElement, getNonEmptyString, Resolver } from "../sdk/sdk.js";
+import { decode, decodeAtomElement, getNonEmptyString, Resolver } from "../../sdk/sdk.js";
 
 export const atomItemResolver: Resolver = (_upstreamValue, item$) => {
   const description = decodeAtomElement(item$("summary"));

@@ -1,4 +1,4 @@
-import { decode, Resolver } from "../sdk/sdk.js";
+import { decode, Resolver } from "../../sdk/sdk.js";
 
 export const atomChannelResolver: Resolver = (_upstreamValue, $) => ({
   title: decode($("feed title").first()).text(),
