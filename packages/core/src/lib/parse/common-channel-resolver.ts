@@ -1,5 +1,5 @@
-import { Resolver } from "../../sdk/sdk.js";
+import type { XmlResolver } from "./parse-xml-feed";
 
-export const commonChannelResolver: Resolver = (_upstreamValue, $) => ({
+export const commonChannelResolver: XmlResolver = (_upstreamValue, $) => ({
   version: "https://jsonfeed.org/version/1.1",
 });

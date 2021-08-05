@@ -1,4 +1,4 @@
-import { JsonFeed } from "../../utils/parse-feed";
+import type { JsonFeed } from "../parse/parse-xml-feed";
 
 export function mergeJsonFeeds(newFeeds: JsonFeed[], existingFeeds: JsonFeed[]): JsonFeed[] {
   return [...existingFeeds, ...newFeeds]; // TODO implement actual merge with TDD

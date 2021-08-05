@@ -1,6 +1,7 @@
-import { decode, Resolver } from "../../sdk/sdk.js";
+import { decode } from "./decode.js";
+import type { XmlResolver } from "./parse-xml-feed";
 
-export const rssChannelResolver: Resolver = (_upstreamValue, $) => ({
+export const rssChannelResolver: XmlResolver = (_upstreamValue, $) => ({
   title: decode($("channel title").first()).text(),
   home_page_url: $("channel link").first().text(),
   feed_url: "", // TBD

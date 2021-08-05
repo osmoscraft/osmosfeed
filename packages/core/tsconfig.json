@@ -3,7 +3,9 @@
     "target": "es2019",
     "module": "esnext",
     "moduleResolution": "node",
+    "importsNotUsedAsValues": "error",
     "strict": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "outDir": "dist"
   }
 }

@@ -1,3 +1,3 @@
-import { ItemSelector } from "../../sdk/sdk.js";
+import type { XmlItemSelector } from "./parse-xml-feed";
 
-export const atomItemSelector: ItemSelector = (root$) => [...root$("entry")];
+export const atomItemSelector: XmlItemSelector = (root$) => [...root$("entry")];

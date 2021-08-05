@@ -1,19 +1,28 @@
 import { localJsonFeedCacheProvider } from "./lib/cache/local-cache-provider.js";
 import { mergeJsonFeeds } from "./lib/merge/merge-json-feeds.js";
+import { atomParser } from "./lib/parse/atom-parser.js";
+import type { JsonFeed } from "./lib/parse/parse-xml-feed";
+import { parseXmlFeed } from "./lib/parse/parse-xml-feed.js";
+import { rssParser } from "./lib/parse/rss-parser.js";
 import { httpGet } from "./utils/http-get.js";
-import { JsonFeed, parseFeed } from "./utils/parse-feed.js";
 
 export async function osmosfeed(feedUrls: string[]) {
   // TODO Extract to lib
   const rawFeeds = await Promise.all(
-    feedUrls.map(async (feedUrl) => ({
-      feedUrl,
-      textResponse: (await httpGet(feedUrl)).raw, // TODO error status handling
-    }))
+    feedUrls.map(async (feedUrl) => {
+      const { raw } = await httpGet(feedUrl);
+      return {
+        feedUrl,
+        textResponse: raw, // TODO error status handling
+      };
+    })
   );
 
   const jsonFeeds: JsonFeed[] = rawFeeds.map((rawFeed) => ({
-    ...parseFeed(rawFeed.textResponse), // TODO Expose parameters for customization
+    ...parseXmlFeed({
+      rawString: rawFeed.textResponse,
+      xmlParsers: [rssParser, atomParser],
+    }),
     feed_url: rawFeed.feedUrl,
   }));
 

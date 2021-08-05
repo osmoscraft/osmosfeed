@@ -1,3 +1,3 @@
-import { ItemSelector } from "../../sdk/sdk.js";
+import type { XmlItemSelector } from "./parse-xml-feed";
 
-export const rssItemSelector: ItemSelector = (root$) => [...root$("item")];
+export const rssItemSelector: XmlItemSelector = (root$) => [...root$("item")];

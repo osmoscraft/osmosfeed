@@ -1,6 +1,7 @@
-import { decode, Resolver } from "../../sdk/sdk.js";
+import { decode } from "./decode.js";
+import type { XmlResolver } from "./parse-xml-feed";
 
-export const atomChannelResolver: Resolver = (_upstreamValue, $) => ({
+export const atomChannelResolver: XmlResolver = (_upstreamValue, $) => ({
   title: decode($("feed title").first()).text(),
   home_page_url: $("feed link").first().attr("href"),
   feed_url: "", // TBD

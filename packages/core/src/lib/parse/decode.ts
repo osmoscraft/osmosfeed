@@ -1,13 +1,6 @@
-import cheerio, { Cheerio, CheerioAPI, Element, Node } from "cheerio";
+import type { Cheerio, Element, Node } from "cheerio";
+import cheerio from "cheerio";
 import { ElementType } from "htmlparser2";
-
-export interface Resolver {
-  (upstreamValue: Record<string, any>, current$: CheerioAPI, root$: CheerioAPI): Record<string, any>;
-}
-
-export interface ItemSelector {
-  (root$: CheerioAPI): Element[];
-}
 
 export function getNonEmptyString(...stringGetters: (() => string)[]) {
   for (let fn of stringGetters) {

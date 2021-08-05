@@ -1,4 +1,4 @@
-import { JsonFeed } from "../../utils/parse-feed";
+import type { JsonFeed } from "../parse/parse-xml-feed";
 
 import { readdir, readFile, writeFile, mkdir } from "fs/promises";
 import * as uuid from "uuid"; // TODO implement v5 without lib

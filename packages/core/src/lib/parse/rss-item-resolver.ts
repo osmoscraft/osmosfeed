@@ -1,6 +1,7 @@
-import { decode, getNonEmptyString, Resolver } from "../../sdk/sdk.js";
+import { decode, getNonEmptyString } from "./decode.js";
+import type { XmlResolver } from "./parse-xml-feed";
 
-export const rssItemResolver: Resolver = (_upstreamValue, item$) => {
+export const rssItemResolver: XmlResolver = (_upstreamValue, item$) => {
   const description = decode(item$("description"));
   const content = decode(item$("content\\:encoded"));
 

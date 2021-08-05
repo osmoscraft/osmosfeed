@@ -1,7 +1,10 @@
+import { atomParser } from "../lib/parse/atom-parser.js";
+import type { JsonFeed } from "../lib/parse/parse-xml-feed";
+import { parseXmlFeed } from "../lib/parse/parse-xml-feed.js";
+import { rssParser } from "../lib/parse/rss-parser.js";
 import { expect } from "../test-helper/assertion.js";
-import { describe } from "../test-helper/scheduler.js";
-import { JsonFeed, parseFeed } from "../utils/parse-feed.js";
 import { loadXmlFixture } from "../test-helper/load-fixture.js";
+import { describe } from "../test-helper/scheduler.js";
 
 describe("Parse feed", ({ spec }) => {
   spec("Rejects non feed xml", async () => {
@@ -232,7 +235,10 @@ describe("Parse feed", ({ spec }) => {
 
 async function parseXmlFixture(fixtureFilename: string): Promise<JsonFeed> {
   const feedContent = await loadXmlFixture(fixtureFilename);
-  return parseFeed(feedContent);
+  return parseXmlFeed({
+    rawString: feedContent,
+    xmlParsers: [rssParser, atomParser],
+  });
 }
 
 async function runMatrix(filenames: string[], assertion: (filename: string) => Promise<void>) {
