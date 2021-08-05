@@ -37,7 +37,7 @@ export const localJsonFeedCacheProvider: JsonFeedCacheProvider = (cacheInputDir:
       fileContent: JSON.stringify(jsonFeed),
     }));
 
-    console.log(filesToWrite);
+    console.log(`[local-cache-provider] ${filesToWrite.length} files to write to cache`);
 
     // TODO ensure dir
     await mkdir(cacheOutputFullDir, { recursive: true });

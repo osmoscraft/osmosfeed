@@ -6,18 +6,18 @@ import { parseXmlFeed } from "../lib/parse/parse-xml-feed.js";
 import { rssParser } from "../lib/parse/rss-parser.js";
 import { expect } from "../test-helper/assertion.js";
 import { describe } from "../test-helper/scheduler.js";
-import { httpGet } from "../utils/http-get.js";
+import { httpGet } from "../lib/http/http-get.js";
 
-import { readdir, rmdir, access } from "fs/promises";
+import { readdir, rm, access } from "fs/promises";
 import path from "path";
 
-const cacheOutputDir = path.join(process.cwd(), "src/e2e/__fixtures__/cache-output");
+const cacheOutputDir = path.join(process.cwd(), "src/__tests__/cache-output");
 
 describe("E2E", ({ beforeEach, spec }) => {
   beforeEach(async () => {
     try {
       await access(cacheOutputDir);
-      await rmdir(cacheOutputDir, { recursive: true });
+      await rm(cacheOutputDir, { recursive: true });
     } catch (error) {}
   });
 
@@ -43,7 +43,7 @@ describe("E2E", ({ beforeEach, spec }) => {
       feed_url: rawFeed.feedUrl,
     }));
 
-    const cacheProvider = localJsonFeedCacheProvider("src/e2e/__fixtures__/cache", "src/e2e/__fixtures__/cache-output");
+    const cacheProvider = localJsonFeedCacheProvider("src/e2e/__fixtures__/mock-cache", "src/__tests__/cache-output");
 
     const cachedJsonFeeds = await cacheProvider.read();
     const mergedJsonFeeds = mergeJsonFeeds(jsonFeeds, cachedJsonFeeds);
