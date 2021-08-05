@@ -12,13 +12,16 @@ export interface JsonFeedCacheProvider {
   };
 }
 
-export const localJsonFeedCacheProvider: JsonFeedCacheProvider = (cacheDirRelativeToCwd: string) => {
-  const cacheDir = path.join(process.cwd(), cacheDirRelativeToCwd);
+export const localJsonFeedCacheProvider: JsonFeedCacheProvider = (cacheInputDir: string, cacheOutputDir?: string) => {
+  const cacheInputFullDir = path.join(process.cwd(), cacheInputDir);
+  const cacheOutputFullDir = cacheOutputDir ? path.join(process.cwd(), cacheOutputDir) : cacheInputFullDir;
 
   const read = async () => {
-    const cacheFilenames = await getFilenamesSafe(cacheDir);
+    const cacheFilenames = await getFilenamesSafe(cacheInputFullDir);
     const jsonFeedList = (
-      await Promise.all(cacheFilenames.map((filename) => readJsonSafe<JsonFeed>(path.join(cacheDir, filename))))
+      await Promise.all(
+        cacheFilenames.map((filename) => readJsonSafe<JsonFeed>(path.join(cacheInputFullDir, filename)))
+      )
     ).filter(ensureNotNull);
 
     return jsonFeedList;
@@ -37,11 +40,13 @@ export const localJsonFeedCacheProvider: JsonFeedCacheProvider = (cacheDirRelati
     console.log(filesToWrite);
 
     // TODO ensure dir
-    await mkdir(cacheDir, { recursive: true });
+    await mkdir(cacheOutputFullDir, { recursive: true });
 
     // TODO error handling
     await Promise.all(
-      filesToWrite.map(async (file) => writeFile(path.join(cacheDir, file.filename), file.fileContent, "utf-8"))
+      filesToWrite.map(async (file) =>
+        writeFile(path.join(cacheOutputFullDir, file.filename), file.fileContent, "utf-8")
+      )
     );
   };
 

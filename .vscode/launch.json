@@ -19,6 +19,14 @@
       "type": "pwa-node"
     },
     {
+      "name": "Debug core e2e",
+      "request": "launch",
+      "runtimeArgs": ["run-script", "e2e-core"],
+      "runtimeExecutable": "npm",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "pwa-node"
+    },
+    {
       "name": "Debug tests",
       "request": "launch",
       "runtimeArgs": ["run-script", "test"],

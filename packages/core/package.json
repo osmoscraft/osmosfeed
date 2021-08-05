@@ -4,12 +4,13 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "start": "npm run build && node main.js",
+    "start": "npm run e2e",
     "dev": "npm run test",
     "build": "node scripts/build.js",
     "build:types": "tsc --declaration --emitDeclarationOnly",
     "clean": "rm -rf dist",
-    "test": "npm run build && node ./dist/run-test.js"
+    "test": "npm run build && node ./dist/run-unit-tests.js",
+    "e2e": "npm run build && node ./dist/run-e2e-tests.js"
   },
   "author": "osmoscraft",
   "license": "MIT",

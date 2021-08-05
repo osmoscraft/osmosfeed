@@ -11,7 +11,8 @@
     "build": "npm run build -w @osmoscraft/osmosfeed",
     "test": "npm run test -w osmosfeed-test",
     "clean": "npm run clean --workspaces=true",
-    "dev-core": "npm run dev -w @osmoscraft/osmosfeed-core"
+    "dev-core": "npm run dev -w @osmoscraft/osmosfeed-core",
+    "e2e-core": "npm run e2e -w @osmoscraft/osmosfeed-core"
   },
   "repository": {
     "type": "git",
