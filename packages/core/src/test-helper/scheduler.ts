@@ -1,13 +1,40 @@
 const scheduledSuites: ScheduledSuite[] = [];
 
-export function describe(suiteName: string, suiteContext: (context: { spec: ScheduleSpecFn }) => void) {
-  const scheduleSpec = (specName: string, run: () => Promise<void>) => {
+export function describe(
+  suiteName: string,
+  suiteContext: (context: { beforeEach: ScheduleTask; afterEach: ScheduleTask; spec: ScheduleSpecFn }) => void
+) {
+  const getInitialSuite = () => ({
+    name: suiteName,
+    beforeEach: [],
+    afterEach: [],
+    specs: [],
+  });
+
+  const scheduleBeforeEach: ScheduleTask = (task) => {
     let currentSuite = scheduledSuites.find((suite) => suite.name === suiteName);
     if (!currentSuite) {
-      currentSuite = {
-        name: suiteName,
-        specs: [],
-      };
+      currentSuite = getInitialSuite();
+      scheduledSuites.push(currentSuite);
+    }
+
+    currentSuite.beforeEach.push(task);
+  };
+
+  const scheduleAfterEach: ScheduleTask = (task) => {
+    let currentSuite = scheduledSuites.find((suite) => suite.name === suiteName);
+    if (!currentSuite) {
+      currentSuite = getInitialSuite();
+      scheduledSuites.push(currentSuite);
+    }
+
+    currentSuite.afterEach.push(task);
+  };
+
+  const scheduleSpec: ScheduleSpecFn = (specName, run) => {
+    let currentSuite = scheduledSuites.find((suite) => suite.name === suiteName);
+    if (!currentSuite) {
+      currentSuite = getInitialSuite();
       scheduledSuites.push(currentSuite);
     }
 
@@ -17,7 +44,7 @@ export function describe(suiteName: string, suiteContext: (context: { spec: Sche
     });
   };
 
-  suiteContext({ spec: scheduleSpec });
+  suiteContext({ beforeEach: scheduleBeforeEach, afterEach: scheduleAfterEach, spec: scheduleSpec });
 }
 
 export async function runTests() {
@@ -27,9 +54,16 @@ export async function runTests() {
 
   for (let suite of scheduledSuites) {
     suiteCount++;
+
     for (let spec of suite.specs) {
       try {
+        for (let task of suite.beforeEach) {
+          await task();
+        }
         await spec.run();
+        for (let task of suite.afterEach) {
+          await task();
+        }
         console.log(`[PASS] ${suite.name}/${spec.name}`);
         passCount++;
       } catch (error) {
@@ -46,14 +80,24 @@ export async function runTests() {
 
 interface ScheduledSuite {
   name: string;
+  beforeEach: AsyncCall[];
   specs: ScheduledSpec[];
+  afterEach: AsyncCall[];
 }
 
 interface ScheduledSpec {
   name: string;
-  run: () => Promise<void>;
+  run: AsyncCall;
 }
 
 interface ScheduleSpecFn {
-  (specName: string, run: () => Promise<void>): void;
+  (specName: string, run: AsyncCall): void;
+}
+
+interface ScheduleTask {
+  (task: AsyncCall): void;
+}
+
+interface AsyncCall {
+  (): Promise<void>;
 }

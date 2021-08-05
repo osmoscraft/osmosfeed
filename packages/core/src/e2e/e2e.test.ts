@@ -11,16 +11,17 @@ import { httpGet } from "../utils/http-get.js";
 import { readdir, rmdir, access } from "fs/promises";
 import path from "path";
 
-describe("E2E", ({ spec }) => {
-  spec("Parse CSS Tricks RSS", async () => {
-    // arrange
-    const cacheOutputDir = path.join(process.cwd(), "src/e2e/__fixtures__/cache-output");
+const cacheOutputDir = path.join(process.cwd(), "src/e2e/__fixtures__/cache-output");
 
+describe("E2E", ({ beforeEach, spec }) => {
+  beforeEach(async () => {
     try {
       await access(cacheOutputDir);
       await rmdir(cacheOutputDir, { recursive: true });
     } catch (error) {}
+  });
 
+  spec("Parse CSS Tricks RSS", async () => {
     // act
     const feedUrls = ["https://css-tricks.com/feed/"];
 

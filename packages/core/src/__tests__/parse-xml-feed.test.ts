@@ -6,7 +6,7 @@ import { expect } from "../test-helper/assertion.js";
 import { loadXmlFixture } from "../test-helper/load-fixture.js";
 import { describe } from "../test-helper/scheduler.js";
 
-describe("Parse feed", ({ spec }) => {
+describe("Parse feed", ({ spec, beforeEach, afterEach }) => {
   spec("Rejects non feed xml", async () => {
     await expect(async () => await parseXmlFixture("non-feed.xml")).toThrow();
   });
