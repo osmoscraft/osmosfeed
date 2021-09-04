@@ -2,9 +2,8 @@ import { atomParser } from "../lib/parse/atom-parser";
 import type { JsonFeed } from "../lib/parse/parse-xml-feed";
 import { parseXmlFeed } from "../lib/parse/parse-xml-feed";
 import { rssParser } from "../lib/parse/rss-parser";
-import { expect } from "../test-helper/assertion";
-import { loadXmlFixture } from "../test-helper/load-fixture";
-import { describe, it } from "@osmosframe/test-utils";
+import { loadXmlFixture } from "../__fixtures__/test-helper/load-fixture";
+import { describe, it, expect } from "@osmosframe/test-utils";
 
 describe("Parse feed", () => {
   it("Rejects non feed xml", async () => {

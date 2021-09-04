@@ -4,16 +4,15 @@ import { atomParser } from "../lib/parse/atom-parser";
 import type { JsonFeed } from "../lib/parse/parse-xml-feed";
 import { parseXmlFeed } from "../lib/parse/parse-xml-feed";
 import { rssParser } from "../lib/parse/rss-parser";
-import { expect } from "../test-helper/assertion";
-import { describe } from "../test-helper/scheduler";
 import { httpGet } from "../lib/http/http-get";
+import { describe, beforeEach, it, expect } from "@osmosframe/test-utils";
 
 import { readdir, rm, access } from "fs/promises";
 import path from "path";
 
 const cacheOutputDir = path.join(process.cwd(), "src/__tests__/cache-output");
 
-describe("E2E", ({ beforeEach, spec }) => {
+describe("E2E", () => {
   beforeEach(async () => {
     try {
       await access(cacheOutputDir);
@@ -21,7 +20,7 @@ describe("E2E", ({ beforeEach, spec }) => {
     } catch (error) {}
   });
 
-  spec("Parse CSS Tricks RSS", async () => {
+  it("Parse CSS Tricks RSS", async () => {
     // act
     const feedUrls = ["https://css-tricks.com/feed/"];
 
