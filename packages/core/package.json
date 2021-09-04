@@ -4,12 +4,12 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "start": "npm run e2e",
-    "dev": "npm run test",
+    "start": "npm run test",
     "build": "node scripts/build.js",
     "build:types": "tsc --declaration --emitDeclarationOnly",
     "clean": "rm -rf dist",
-    "test": "ts-node-dev --project tsconfig.json --respawn --watch --transpile-only src/run-test.ts"
+    "test": "ts-node-dev --project tsconfig.json --transpile-only src/run-test.ts",
+    "test:watch": "ts-node-dev --project tsconfig.json --respawn --watch --transpile-only src/run-test.ts"
   },
   "author": "osmoscraft",
   "license": "MIT",
