@@ -7,12 +7,11 @@
     "doc": "docs"
   },
   "scripts": {
-    "start": "npm run dev -w @osmoscraft/osmosfeed -w osmosfeed-sandbox",
-    "build": "npm run build -w @osmoscraft/osmosfeed",
-    "test": "npm run test -w osmosfeed-test",
-    "clean": "npm run clean --workspaces=true",
-    "dev-core": "npm run dev -w @osmoscraft/osmosfeed-core",
-    "e2e-core": "npm run e2e -w @osmoscraft/osmosfeed-core"
+    "start": "npm run start -w ./packages/core",
+    "build": "npm run build -w ./packages/core",
+    "test": "npm run test -w ./packages/core",
+    "clean": "npm run clean -w ./packages/core",
+    "e2e": "npm run e2e -w ./packages/core"
   },
   "repository": {
     "type": "git",
