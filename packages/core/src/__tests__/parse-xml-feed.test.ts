@@ -1,79 +1,79 @@
-import { atomParser } from "../lib/parse/atom-parser.js";
+import { atomParser } from "../lib/parse/atom-parser";
 import type { JsonFeed } from "../lib/parse/parse-xml-feed";
-import { parseXmlFeed } from "../lib/parse/parse-xml-feed.js";
-import { rssParser } from "../lib/parse/rss-parser.js";
-import { expect } from "../test-helper/assertion.js";
-import { loadXmlFixture } from "../test-helper/load-fixture.js";
-import { describe } from "../test-helper/scheduler.js";
+import { parseXmlFeed } from "../lib/parse/parse-xml-feed";
+import { rssParser } from "../lib/parse/rss-parser";
+import { expect } from "../test-helper/assertion";
+import { loadXmlFixture } from "../test-helper/load-fixture";
+import { describe, it } from "@osmosframe/test-utils";
 
-describe("Parse feed", ({ spec }) => {
-  spec("Rejects non feed xml", async () => {
+describe("Parse feed", () => {
+  it("Rejects non feed xml", async () => {
     await expect(async () => await parseXmlFixture("non-feed.xml")).toThrow();
   });
 
-  spec("No error thrown on basic setup", async () => {
+  it("No error thrown on basic setup", async () => {
     await runMatrix(["empty-atom.xml", "empty-rss.xml", "empty-rdf.xml"], async (filename) => {
       await parseXmlFixture(filename);
     });
   });
 
-  spec("JSON feed version", async () => {
+  it("JSON feed version", async () => {
     await runMatrix(["empty-atom.xml", "empty-rss.xml", "empty-rdf.xml"], async (filename) => {
       const jsonFeed = await parseXmlFixture(filename);
       await expect(jsonFeed.version).toEqual("https://jsonfeed.org/version/1.1");
     });
   });
 
-  spec("Parse channel title", async () => {
+  it("Parse channel title", async () => {
     await runMatrix(["empty-atom.xml", "empty-rss.xml", "empty-rdf.xml"], async (filename) => {
       const jsonFeed = await parseXmlFixture(filename);
       await expect(jsonFeed.title).toEqual("Mock channel title");
     });
   });
 
-  spec("Parse home page url", async () => {
+  it("Parse home page url", async () => {
     await runMatrix(["empty-atom.xml", "empty-rss.xml", "empty-rdf.xml"], async (filename) => {
       const jsonFeed = await parseXmlFixture(filename);
       await expect(jsonFeed.home_page_url).toEqual("http://mock-domain.com");
     });
   });
 
-  spec("Parse empty items", async () => {
+  it("Parse empty items", async () => {
     await runMatrix(["empty-atom.xml", "empty-rss.xml", "empty-rdf.xml"], async (filename) => {
       const jsonFeed = await parseXmlFixture(filename);
       await expect(jsonFeed.items.length).toEqual(0);
     });
   });
 
-  spec("Parse single item", async () => {
+  it("Parse single item", async () => {
     await runMatrix(["single-item-atom.xml", "single-item-rss.xml", "single-item-rdf.xml"], async (filename) => {
       const jsonFeed = await parseXmlFixture(filename);
       await expect(jsonFeed.items.length).toEqual(1);
     });
   });
 
-  spec("Parse multiple items", async () => {
+  it("Parse multiple items", async () => {
     await runMatrix(["multi-item-atom.xml", "multi-item-rss.xml", "multi-item-rdf.xml"], async (filename) => {
       const jsonFeed = await parseXmlFixture(filename);
       await expect(jsonFeed.items.length > 1).toEqual(true);
     });
   });
 
-  spec("Parse item title", async () => {
+  it("Parse item title", async () => {
     await runMatrix(["single-item-atom.xml", "single-item-rss.xml", "single-item-rdf.xml"], async (filename) => {
       const jsonFeed = await parseXmlFixture(filename);
       await expect(jsonFeed.items[0].title).toEqual("Mock item title 1");
     });
   });
 
-  spec("Parse item url", async () => {
+  it("Parse item url", async () => {
     await runMatrix(["single-item-atom.xml", "single-item-rss.xml", "single-item-rdf.xml"], async (filename) => {
       const jsonFeed = await parseXmlFixture(filename);
       await expect(jsonFeed.items[0].url).toEqual("http://mock-domain.com/item/1");
     });
   });
 
-  spec("Parse item summary of plaintext", async () => {
+  it("Parse item summary of plaintext", async () => {
     await runMatrix(
       ["field-decoding-atom.xml", "field-decoding-rss.xml", "field-decoding-rdf.xml"],
       async (filename) => {
@@ -84,7 +84,7 @@ describe("Parse feed", ({ spec }) => {
     );
   });
 
-  spec("Parse item summary of escaped HTML entities", async () => {
+  it("Parse item summary of escaped HTML entities", async () => {
     await runMatrix(
       ["field-decoding-atom.xml", "field-decoding-rss.xml", "field-decoding-rdf.xml"],
       async (filename) => {
@@ -95,7 +95,7 @@ describe("Parse feed", ({ spec }) => {
     );
   });
 
-  spec("Parse item summary of CDATA", async () => {
+  it("Parse item summary of CDATA", async () => {
     await runMatrix(
       ["field-decoding-atom.xml", "field-decoding-rss.xml", "field-decoding-rdf.xml"],
       async (filename) => {
@@ -106,7 +106,7 @@ describe("Parse feed", ({ spec }) => {
     );
   });
 
-  spec("Parse item summary of double escaped HTML entities", async () => {
+  it("Parse item summary of double escaped HTML entities", async () => {
     await runMatrix(
       ["field-decoding-atom.xml", "field-decoding-rss.xml", "field-decoding-rdf.xml"],
       async (filename) => {
@@ -117,7 +117,7 @@ describe("Parse feed", ({ spec }) => {
     );
   });
 
-  spec("Parse item summary of CDATA containing escaped HTML entities", async () => {
+  it("Parse item summary of CDATA containing escaped HTML entities", async () => {
     await runMatrix(
       ["field-decoding-atom.xml", "field-decoding-rss.xml", "field-decoding-rdf.xml"],
       async (filename) => {
@@ -128,7 +128,7 @@ describe("Parse feed", ({ spec }) => {
     );
   });
 
-  spec("Parse item summary of HTML", async () => {
+  it("Parse item summary of HTML", async () => {
     await runMatrix(
       ["field-decoding-atom.xml", "field-decoding-rss.xml", "field-decoding-rdf.xml"],
       async (filename) => {
@@ -139,7 +139,7 @@ describe("Parse feed", ({ spec }) => {
     );
   });
 
-  spec("Parse item summary of printable entities", async () => {
+  it("Parse item summary of printable entities", async () => {
     await runMatrix(
       ["field-decoding-atom.xml", "field-decoding-rss.xml", "field-decoding-rdf.xml"],
       async (filename) => {
@@ -150,7 +150,7 @@ describe("Parse feed", ({ spec }) => {
     );
   });
 
-  spec("Parse item summary with plaintext surrounded by whitespace", async () => {
+  it("Parse item summary with plaintext surrounded by whitespace", async () => {
     await runMatrix(
       ["field-decoding-atom.xml", "field-decoding-rss.xml", "field-decoding-rdf.xml"],
       async (filename) => {
@@ -161,7 +161,7 @@ describe("Parse feed", ({ spec }) => {
     );
   });
 
-  spec("Parse item summary with HTML surrounded by whitespace", async () => {
+  it("Parse item summary with HTML surrounded by whitespace", async () => {
     await runMatrix(
       ["field-decoding-atom.xml", "field-decoding-rss.xml", "field-decoding-rdf.xml"],
       async (filename) => {
@@ -172,7 +172,7 @@ describe("Parse feed", ({ spec }) => {
     );
   });
 
-  spec("Parse item with description but no content:encoded/RSS 2.0", async () => {
+  it("Parse item with description but no content:encoded/RSS 2.0", async () => {
     await runMatrix(
       ["field-priority-atom.xml", "field-priority-rss.xml", "field-priority-rdf.xml"],
       async (filename) => {
@@ -184,7 +184,7 @@ describe("Parse feed", ({ spec }) => {
     );
   });
 
-  spec("Parse item with description and content:encoded/RSS 2.0", async () => {
+  it("Parse item with description and content:encoded/RSS 2.0", async () => {
     await runMatrix(
       ["field-priority-atom.xml", "field-priority-rss.xml", "field-priority-rdf.xml"],
       async (filename) => {
@@ -196,7 +196,7 @@ describe("Parse feed", ({ spec }) => {
     );
   });
 
-  spec("Parse item with no description but with content:encoded/RSS 2.0", async () => {
+  it("Parse item with no description but with content:encoded/RSS 2.0", async () => {
     await runMatrix(
       ["field-priority-atom.xml", "field-priority-rss.xml", "field-priority-rdf.xml"],
       async (filename) => {
@@ -208,7 +208,7 @@ describe("Parse feed", ({ spec }) => {
     );
   });
 
-  spec("Parse item with neither description nor content:encoded/RSS 2.0", async () => {
+  it("Parse item with neither description nor content:encoded/RSS 2.0", async () => {
     await runMatrix(
       ["field-priority-atom.xml", "field-priority-rss.xml", "field-priority-rdf.xml"],
       async (filename) => {
@@ -220,7 +220,7 @@ describe("Parse feed", ({ spec }) => {
     );
   });
 
-  spec("Parse item with CDATA description but no content:encoded/RSS 2.0", async () => {
+  it("Parse item with CDATA description but no content:encoded/RSS 2.0", async () => {
     await runMatrix(
       ["field-priority-atom.xml", "field-priority-rss.xml", "field-priority-rdf.xml"],
       async (filename) => {

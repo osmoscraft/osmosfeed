@@ -9,8 +9,7 @@
     "build": "node scripts/build.js",
     "build:types": "tsc --declaration --emitDeclarationOnly",
     "clean": "rm -rf dist",
-    "test": "npm run build && node ./dist/run-unit-tests.js",
-    "e2e": "npm run build && node ./dist/run-e2e-tests.js"
+    "test": "ts-node-dev --project tsconfig.json --respawn --watch --transpile-only src/run-test.ts"
   },
   "author": "osmoscraft",
   "license": "MIT",

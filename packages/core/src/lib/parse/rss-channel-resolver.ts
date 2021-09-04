@@ -1,4 +1,4 @@
-import { decode } from "./decode.js";
+import { decode } from "./decode";
 import type { XmlResolver } from "./parse-xml-feed";
 
 export const rssChannelResolver: XmlResolver = (_upstreamValue, $) => ({

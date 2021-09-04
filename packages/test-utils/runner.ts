@@ -28,7 +28,7 @@ export async function runTests(files: string[], config?: RunTestConfig) {
     for (let task of suite.beforeAll) {
       try {
         await task.run();
-      } catch (error) {
+      } catch (error: any) {
         logger.info(yellow(`[WARN] ${suite.name}/${task.name}`));
         logger.error(error);
         warningCount++;
@@ -40,7 +40,7 @@ export async function runTests(files: string[], config?: RunTestConfig) {
         for (let task of suite.beforeEach) {
           try {
             await task.run();
-          } catch (error) {
+          } catch (error: any) {
             logger.info(yellow(`[WARN] ${suite.name}/${task.name}`));
             logger.error(error);
             warningCount++;
@@ -52,7 +52,7 @@ export async function runTests(files: string[], config?: RunTestConfig) {
         for (let task of suite.afterEach) {
           try {
             await task.run();
-          } catch (error) {
+          } catch (error: any) {
             logger.info(yellow(`[WARN] ${suite.name}/${task.name}`));
             logger.error(error);
             warningCount++;
@@ -61,7 +61,7 @@ export async function runTests(files: string[], config?: RunTestConfig) {
 
         logger.info(green(`[PASS] ${suite.name}/${spec.name}`));
         passCount++;
-      } catch (error) {
+      } catch (error: any) {
         logger.info(red(`[FAIL] ${suite.name}/${spec.name}`));
         logger.error(error);
         failCount++;
@@ -71,7 +71,7 @@ export async function runTests(files: string[], config?: RunTestConfig) {
     for (let task of suite.afterAll) {
       try {
         await task.run();
-      } catch (error) {
+      } catch (error: any) {
         logger.info(yellow(`[WARN] ${suite.name}/${task.name}`));
         logger.error(error);
         warningCount++;

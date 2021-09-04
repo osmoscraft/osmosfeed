@@ -1,8 +1,8 @@
 import type { XmlParser } from "./parse-xml-feed";
-import { atomChannelResolver } from "./atom-channel-resolver.js";
-import { atomItemResolver } from "./atom-item-resolver.js";
-import { atomItemSelector } from "./atom-item-selector.js";
-import { commonChannelResolver } from "./common-channel-resolver.js";
+import { atomChannelResolver } from "./atom-channel-resolver";
+import { atomItemResolver } from "./atom-item-resolver";
+import { atomItemSelector } from "./atom-item-selector";
+import { commonChannelResolver } from "./common-channel-resolver";
 
 export const atomParser: XmlParser = {
   matcher: (root$) => root$("feed").length > 0,

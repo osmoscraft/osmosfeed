@@ -1,12 +1,12 @@
-import { localJsonFeedCacheProvider } from "../lib/cache/local-cache-provider.js";
-import { mergeJsonFeeds } from "../lib/merge/merge-json-feeds.js";
-import { atomParser } from "../lib/parse/atom-parser.js";
+import { localJsonFeedCacheProvider } from "../lib/cache/local-cache-provider";
+import { mergeJsonFeeds } from "../lib/merge/merge-json-feeds";
+import { atomParser } from "../lib/parse/atom-parser";
 import type { JsonFeed } from "../lib/parse/parse-xml-feed";
-import { parseXmlFeed } from "../lib/parse/parse-xml-feed.js";
-import { rssParser } from "../lib/parse/rss-parser.js";
-import { expect } from "../test-helper/assertion.js";
-import { describe } from "../test-helper/scheduler.js";
-import { httpGet } from "../lib/http/http-get.js";
+import { parseXmlFeed } from "../lib/parse/parse-xml-feed";
+import { rssParser } from "../lib/parse/rss-parser";
+import { expect } from "../test-helper/assertion";
+import { describe } from "../test-helper/scheduler";
+import { httpGet } from "../lib/http/http-get";
 
 import { readdir, rm, access } from "fs/promises";
 import path from "path";

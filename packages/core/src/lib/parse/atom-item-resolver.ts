@@ -1,4 +1,4 @@
-import { decode, decodeAtomElement, getNonEmptyString } from "./decode.js";
+import { decode, decodeAtomElement, getNonEmptyString } from "./decode";
 import type { XmlResolver } from "./parse-xml-feed";
 
 export const atomItemResolver: XmlResolver = (_upstreamValue, item$) => {

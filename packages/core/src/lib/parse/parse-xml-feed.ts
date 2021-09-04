@@ -1,6 +1,6 @@
 import cheerio from "cheerio";
 import type { BasicAcceptedElems, CheerioAPI, Element, Node } from "cheerio";
-import htmlparser2 from "htmlparser2";
+import * as htmlparser2 from "htmlparser2";
 
 export interface XmlResolver {
   (upstreamValue: Record<string, any>, current$: CheerioAPI, root$: CheerioAPI): Record<string, any>;
