@@ -1,18 +1,45 @@
-import type { JsonFeed } from "../parse/parse-xml-feed";
+import type { JsonFeed, JsonFeedItem } from "../parse/parse-xml-feed";
 
-export function render(jsonFeeds: JsonFeed[]) {
-  return `
-  <!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="utf-8">
-      <title>title</title>
-      <link rel="stylesheet" href="style.css">
-      <script src="script.js"></script>
-    </head>
-    <body>
-      TODO: render the feed
-    </body>
-  </html>
+export function render(jsonFeeds: JsonFeed[], css: string) {
+	return `
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>osmos::feed</title>
+		<link rel="stylesheet" href="style.css">
+		<script src="script.js"></script>
+	</head>
+	<body>
+		<style>${css}</style>
+		<div class="feed-list">
+			${jsonFeeds.map((feed) => renderFeed(feed)).join("\n")}
+		</div>
+	</body>
+</html>
+`.trim();
+}
+
+function renderFeed(feed: JsonFeed) {
+	return `
+	<section class="feed">
+		<h1>
+			<a class="reset-link" href="${feed.feed_url}">${feed.title}</a>
+		</h1>
+		<div class="article-list">
+			${feed.items.map(renderArticle).join("\n")}
+		</div>
+	</section>
+`.trim();
+}
+
+function renderArticle(item: JsonFeedItem) {
+	return `
+<article class="article">
+	<a class="reset-link" href="${item.url}">
+		<h2 class="article__title">${item.title}</h2>
+		<p class="article__summary">${item.summary}</p>
+	</a>
+</article>
 `.trim();
 }
