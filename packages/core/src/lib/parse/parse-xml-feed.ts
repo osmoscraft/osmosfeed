@@ -46,6 +46,7 @@ export interface JsonFeed {
   version: string;
   title: string;
   home_page_url?: string;
+	icon?: string;
   feed_url?: string;
   items: JsonFeedItem[];
 }
@@ -57,6 +58,7 @@ export interface JsonFeedItem {
   content_html?: string;
   content_text?: string;
   summary?: string;
+	image?: string;
 }
 
 export interface ConvertToJsonFeedInput {

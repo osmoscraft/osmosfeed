@@ -23,7 +23,8 @@ export function render(jsonFeeds: JsonFeed[], css: string) {
 function renderFeed(feed: JsonFeed) {
 	return `
 	<section class="feed">
-		<h1>
+		<h1 class="feed-title-group">
+			<img src="${feed.icon}" width="32" height="32" onError="this.remove()">
 			<a class="reset-link" href="${feed.feed_url}">${feed.title}</a>
 		</h1>
 		<div class="article-list">

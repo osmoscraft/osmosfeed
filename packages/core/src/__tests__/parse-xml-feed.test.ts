@@ -37,6 +37,13 @@ describe("Parse feed", () => {
     });
   });
 
+	it("Parse channel icon", async () => {
+		await runMatrix(["empty-atom.xml", "empty-rss.xml", "empty-rdf.xml"], async (filename) => {
+			const jsonFeed = await parseXmlFixture(filename);
+			await expect(jsonFeed.icon).toEqual("http://mock-domain.com/channel-image.png");
+		});
+	});
+
   it("Parse empty items", async () => {
     await runMatrix(["empty-atom.xml", "empty-rss.xml", "empty-rdf.xml"], async (filename) => {
       const jsonFeed = await parseXmlFixture(filename);

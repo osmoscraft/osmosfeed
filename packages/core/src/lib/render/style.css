@@ -5,6 +5,12 @@
 	color: white;
 }
 
+.feed-title-group {
+	display: flex;
+	gap: 1rem;
+	align-items: center;
+}
+
 .article-list {
 	display: grid;
 	grid-auto-flow: column;

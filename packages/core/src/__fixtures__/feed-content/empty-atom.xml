@@ -3,4 +3,5 @@
   <title>Mock channel title</title>
   <subtitle>Mock channel description</subtitle>
   <link href="http://mock-domain.com"/>
+	<icon>http://mock-domain.com/channel-image.png</icon>
 </feed>
