@@ -13,5 +13,4 @@ import glob from "tiny-glob";
     target: "node16",
     outdir: "dist",
   }).catch(() => process.exit(1));
-
-})()
+})();

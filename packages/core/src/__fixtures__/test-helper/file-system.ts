@@ -1,7 +1,6 @@
 import promises from "fs/promises";
 import path from "path";
 
-
 export const readFileAsync = promises.readFile;
 export const readDirAsync = promises.readdir;
 

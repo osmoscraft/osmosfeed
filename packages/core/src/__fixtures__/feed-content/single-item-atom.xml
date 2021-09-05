@@ -10,5 +10,6 @@
     <id>urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a</id>
     <summary>Mock item description 1</summary>
     <content>Mock item content 1</content>
+    <link rel="enclosure" type="image/png" href="http://mock-domain.com/item-image-1.png" />
   </entry>
 </feed>

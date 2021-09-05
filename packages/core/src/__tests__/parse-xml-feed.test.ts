@@ -37,12 +37,12 @@ describe("Parse feed", () => {
     });
   });
 
-	it("Parse channel icon", async () => {
-		await runMatrix(["empty-atom.xml", "empty-rss.xml", "empty-rdf.xml"], async (filename) => {
-			const jsonFeed = await parseXmlFixture(filename);
-			await expect(jsonFeed.icon).toEqual("http://mock-domain.com/channel-image.png");
-		});
-	});
+  it("Parse channel icon", async () => {
+    await runMatrix(["empty-atom.xml", "empty-rss.xml", "empty-rdf.xml"], async (filename) => {
+      const jsonFeed = await parseXmlFixture(filename);
+      await expect(jsonFeed.icon).toEqual("http://mock-domain.com/channel-image.png");
+    });
+  });
 
   it("Parse empty items", async () => {
     await runMatrix(["empty-atom.xml", "empty-rss.xml", "empty-rdf.xml"], async (filename) => {
@@ -79,12 +79,12 @@ describe("Parse feed", () => {
     });
   });
 
-	it("Parse item image", async () => {
-		await runMatrix(["single-item-rss.xml","single-item-rdf.xml"], async (filename) => {
+  it("Parse item image", async () => {
+    await runMatrix(["single-item-atom.xml", "single-item-rss.xml", "single-item-rdf.xml"], async (filename) => {
       const jsonFeed = await parseXmlFixture(filename);
       await expect(jsonFeed.items[0].image).toEqual("http://mock-domain.com/item-image-1.png");
-		})
-	});
+    });
+  });
 
   it("Parse item summary of plaintext", async () => {
     await runMatrix(

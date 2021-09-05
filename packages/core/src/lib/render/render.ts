@@ -1,7 +1,7 @@
 import type { JsonFeed, JsonFeedItem } from "../parse/parse-xml-feed";
 
 export function render(jsonFeeds: JsonFeed[], css: string) {
-	return `
+  return `
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -21,7 +21,7 @@ export function render(jsonFeeds: JsonFeed[], css: string) {
 }
 
 function renderFeed(feed: JsonFeed) {
-	return `
+  return `
 	<section class="feed">
 		<h1 class="feed-title-group">
 			<img class="feed-icon" src="${feed.icon}" width="32" height="32" onError="this.remove()">
@@ -35,7 +35,7 @@ function renderFeed(feed: JsonFeed) {
 }
 
 function renderArticle(item: JsonFeedItem) {
-	return `
+  return `
 <article class="article">
 	<a class="reset-link" href="${item.url}">
 		<img class="article__image" src="${item.image}" onError="this.remove()">

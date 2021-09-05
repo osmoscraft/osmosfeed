@@ -24,9 +24,7 @@
     "url": "https://github.com/osmoscraft/osmosfeed/issues"
   },
   "homepage": "https://github.com/osmoscraft/osmosfeed#readme",
-  "workspaces": [
-    "./packages/*"
-  ],
+  "workspaces": ["./packages/*"],
   "devDependencies": {
     "prettier": "^2.3.2"
   }

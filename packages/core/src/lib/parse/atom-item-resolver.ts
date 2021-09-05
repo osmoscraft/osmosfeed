@@ -12,5 +12,6 @@ export const atomItemResolver: XmlResolver = (_upstreamValue, item$) => {
     summary: getNonEmptyString(description.text, content.text),
     content_text: getNonEmptyString(content.text, description.text),
     content_html: getNonEmptyString(content.html, description.html),
+    image: item$(`link[rel="enclosure"][type^="image"]`).attr("href"),
   };
 };
