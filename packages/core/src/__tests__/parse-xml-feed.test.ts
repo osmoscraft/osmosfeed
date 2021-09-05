@@ -79,6 +79,13 @@ describe("Parse feed", () => {
     });
   });
 
+	it("Parse item image", async () => {
+		await runMatrix(["single-item-rss.xml","single-item-rdf.xml"], async (filename) => {
+      const jsonFeed = await parseXmlFixture(filename);
+      await expect(jsonFeed.items[0].image).toEqual("http://mock-domain.com/item-image-1.png");
+		})
+	});
+
   it("Parse item summary of plaintext", async () => {
     await runMatrix(
       ["field-decoding-atom.xml", "field-decoding-rss.xml", "field-decoding-rdf.xml"],

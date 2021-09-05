@@ -9,6 +9,7 @@
 			<title>Mock item title 1</title>
 			<link>http://mock-domain.com/item/1</link>
 			<description>Mock item description 1</description>
+			<enclosure url="http://mock-domain.com/item-image-1.png" length="1000" type="image/png" />
 		</item>
 	</channel>
 </rss>

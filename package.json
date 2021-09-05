@@ -10,8 +10,8 @@
     "start": "npm run start -w ./packages/core",
     "build": "npm run build -w ./packages/core",
     "test": "npm run test -w ./packages/test-utils -w ./packages/core",
-    "clean": "npm run clean -w ./packages/core",
-    "e2e": "npm run e2e -w ./packages/core"
+    "test:watch": "npm run test:watch -w ./packages/core",
+    "clean": "npm run clean -w ./packages/core"
   },
   "repository": {
     "type": "git",
