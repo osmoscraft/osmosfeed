@@ -24,9 +24,10 @@ describe("E2E", () => {
   it("Generates feed reader from urls", async () => {
     // act
     const feedUrls = [
-      "https://css-tricks.com/feed/",
-      "https://www.smashingmagazine.com/feed",
-      "http://export.arxiv.org/rss/cs",
+      "https://www.youtube.com/feeds/videos.xml?channel_id=UCHugE6eRhqB9_AZQh4DDbIw", // Atom, YouTube
+      "https://css-tricks.com/feed/", // RSS 2.0
+      "https://www.smashingmagazine.com/feed", // RSS 2.0, enclosure
+      "http://export.arxiv.org/rss/cs", // RSS 1.0 (rdf)
     ];
 
     const rawFeeds = await Promise.all(
