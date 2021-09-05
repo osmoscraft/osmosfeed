@@ -24,7 +24,7 @@ function renderFeed(feed: JsonFeed) {
 	return `
 	<section class="feed">
 		<h1 class="feed-title-group">
-			<img src="${feed.icon}" width="32" height="32" onError="this.remove()">
+			<img class="feed-icon" src="${feed.icon}" width="32" height="32" onError="this.remove()">
 			<a class="reset-link" href="${feed.feed_url}">${feed.title}</a>
 		</h1>
 		<div class="article-list">
@@ -38,6 +38,7 @@ function renderArticle(item: JsonFeedItem) {
 	return `
 <article class="article">
 	<a class="reset-link" href="${item.url}">
+		<img class="article__image" src="${item.image}" onError="this.remove()">
 		<h2 class="article__title">${item.title}</h2>
 		<p class="article__summary">${item.summary}</p>
 	</a>

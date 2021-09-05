@@ -28,6 +28,13 @@
 	font-weight: 600;
 }
 
+.article__image {
+	width: 100%;
+	height: auto;
+	aspect-ratio: 16 / 9;
+	object-fit: cover;
+}
+
 .article__summary {
 	color: #ddd;
 	display: -webkit-box;

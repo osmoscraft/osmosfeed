@@ -1,3 +1,4 @@
+import { coerceEmptyString } from "./coerce-empty-string";
 import { decode, getNonEmptyString } from "./decode";
 import type { XmlResolver } from "./parse-xml-feed";
 
@@ -12,5 +13,6 @@ export const rssItemResolver: XmlResolver = (_upstreamValue, item$) => {
     summary: getNonEmptyString(description.text, content.text),
     content_text: getNonEmptyString(content.text, description.text),
     content_html: getNonEmptyString(content.html, description.html),
+		image: item$(`enclosure[type^="image"]`).attr("url") ?? undefined, 
   };
 };
