@@ -86,6 +86,21 @@ describe("Parse feed", () => {
     });
   });
 
+  it("Parse item published time", async () => {
+    await runMatrix(["single-item-atom.xml", "single-item-rss.xml", "single-item-rdf.xml"], async (filename) => {
+      const jsonFeed = await parseXmlFixture(filename);
+      await expect(jsonFeed.items[0].date_published).toEqual("2000-01-01T00:00:00.000Z");
+    });
+  });
+
+  it("Parse item modified time", async () => {
+    // RSS feeds don't distinguish publish vs. modified time
+    await runMatrix(["single-item-atom.xml"], async (filename) => {
+      const jsonFeed = await parseXmlFixture(filename);
+      await expect(jsonFeed.items[0].date_modified).toEqual("2000-12-12T12:12:12.000Z");
+    });
+  });
+
   it("Parse item summary of plaintext", async () => {
     await runMatrix(
       ["field-decoding-atom.xml", "field-decoding-rss.xml", "field-decoding-rdf.xml"],

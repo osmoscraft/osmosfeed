@@ -40,6 +40,7 @@ function renderArticle(item: JsonFeedItem) {
 	<a class="reset-link" href="${item.url}">
 		<img class="article__image" src="${item.image}" onError="this.remove()">
 		<h2 class="article__title">${item.title}</h2>
+    <time datetime="${item.date_published}">${item.date_published}</time>
 		<p class="article__summary">${item.summary}</p>
 	</a>
 </article>

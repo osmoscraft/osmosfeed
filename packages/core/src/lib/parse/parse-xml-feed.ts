@@ -57,6 +57,8 @@ export interface JsonFeedItem {
   title?: string;
   content_html?: string;
   content_text?: string;
+  date_published?: string;
+  date_modified?: string;
   summary?: string;
   image?: string;
 }

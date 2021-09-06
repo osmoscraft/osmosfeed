@@ -1,9 +1,19 @@
+import { coerceEmptyString } from "./coerce-empty-string";
+import { coerceError } from "./coerce-error";
 import { decode, getNonEmptyString } from "./decode";
 import type { XmlResolver } from "./parse-xml-feed";
 
 export const rssItemResolver: XmlResolver = (_upstreamValue, item$) => {
   const description = decode(item$("description"));
   const content = decode(item$("content\\:encoded"));
+
+  const rss2Date = coerceEmptyString(item$(`pubDate`).text(), undefined);
+  const rdfDate = coerceEmptyString(item$(`dc\\:date`).text(), undefined);
+  const unknownFormatDate = rss2Date ?? rdfDate;
+
+  const isoDate = unknownFormatDate
+    ? coerceError(() => new Date(unknownFormatDate).toISOString(), undefined)
+    : undefined;
 
   return {
     id: "",
@@ -16,5 +26,6 @@ export const rssItemResolver: XmlResolver = (_upstreamValue, item$) => {
       item$(`enclosure[type^="image"]`).attr("url") ??
       item$(`enc\\:enclosre[enc\\:type^="image"]`).attr("rdf:resource") ??
       undefined,
+    date_published: isoDate,
   };
 };
