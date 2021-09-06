@@ -8,6 +8,7 @@
     <link>http://mock-domain.com</link>
     <description>Mock channel description</description>
 		<image rdf:resource="http://mock-domain.com/channel-image.png" />
+    <dc:date>2000-01-01T00:00:00Z</dc:date>
   </channel>
 	<image rdf:about="https://mock-domain.com/channel.image.png">
 		<url>http://mock-domain.com/channel-image.png</url>

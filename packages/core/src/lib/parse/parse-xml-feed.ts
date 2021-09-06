@@ -49,6 +49,12 @@ export interface JsonFeed {
   icon?: string;
   feed_url?: string;
   items: JsonFeedItem[];
+  _ext?: FeedExtensions;
+}
+
+export interface FeedExtensions {
+  date_published?: string;
+  date_modified?: string;
 }
 
 export interface JsonFeedItem {

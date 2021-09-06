@@ -4,4 +4,5 @@
   <subtitle>Mock channel description</subtitle>
   <link href="http://mock-domain.com"/>
 	<icon>http://mock-domain.com/channel-image.png</icon>
+  <updated>2000-12-12T12:12:12Z</updated>
 </feed>

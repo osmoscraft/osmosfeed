@@ -10,5 +10,7 @@
 			<title>Mock channel image title</title>
 			<link>http://mock-domain.com</link>
 		</image>
+    <pubDate>Sat, 01 Jan 2000 00:00:00 GMT</pubDate>
+    <lastBuildDate>Tue, 12 Dec 2000 12:12:12 GMT</lastBuildDate>
 	</channel>
 </rss>

@@ -44,6 +44,22 @@ describe("Parse feed", () => {
     });
   });
 
+  it("Parse channel published time", async () => {
+    await runMatrix(["empty-rss.xml", "empty-rdf.xml"], async (filename) => {
+      // Atom does not have published time
+      const jsonFeed = await parseXmlFixture(filename);
+      await expect(jsonFeed._ext?.date_published).toEqual("2000-01-01T00:00:00.000Z");
+    });
+  });
+
+  it("Parse channel modified time", async () => {
+    await runMatrix(["empty-atom.xml", "empty-rss.xml"], async (filename) => {
+      // RDF can only provide a single timestamp, which we assume to be publish time, instead of modified time
+      const jsonFeed = await parseXmlFixture(filename);
+      await expect(jsonFeed._ext?.date_modified).toEqual("2000-12-12T12:12:12.000Z");
+    });
+  });
+
   it("Parse empty items", async () => {
     await runMatrix(["empty-atom.xml", "empty-rss.xml", "empty-rdf.xml"], async (filename) => {
       const jsonFeed = await parseXmlFixture(filename);

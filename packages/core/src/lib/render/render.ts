@@ -26,6 +26,8 @@ function renderFeed(feed: JsonFeed) {
 		<h1 class="feed-title-group">
 			<img class="feed-icon" src="${feed.icon}" width="32" height="32" onError="this.remove()">
 			<a class="reset-link" href="${feed.feed_url}">${feed.title}</a>
+      <time datetime="${feed._ext?.date_published}">${feed._ext?.date_published}</time>
+      <time datetime="${feed._ext?.date_modified}">${feed._ext?.date_modified}</time>
 		</h1>
 		<div class="article-list">
 			${feed.items.map(renderArticle).join("\n")}
@@ -41,6 +43,7 @@ function renderArticle(item: JsonFeedItem) {
 		<img class="article__image" src="${item.image}" onError="this.remove()">
 		<h2 class="article__title">${item.title}</h2>
     <time datetime="${item.date_published}">${item.date_published}</time>
+    <time datetime="${item.date_modified}">${item.date_modified}</time>
 		<p class="article__summary">${item.summary}</p>
 	</a>
 </article>
