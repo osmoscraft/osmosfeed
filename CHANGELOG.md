@@ -1,3 +1,7 @@
+# v1.11.1
+
+- Fixed: Unexpected nested element in `author` field crashes the parser
+
 # v1.11.0
 
 - Changed: Default HTML template meta tag adjusted to match convention
