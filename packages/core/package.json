@@ -7,7 +7,7 @@
     "start": "ts-node-dev --project tsconfig.json --respawn --watch src/**/*.css --transpile-only src/run-e2e.ts",
     "build": "node scripts/build.js",
     "build:types": "tsc --declaration --emitDeclarationOnly",
-    "clean": "rm -rf dist",
+    "clean": "rm -rf dist src/__tests__/cache-output src/__tests__/render-output",
     "format": "prettier --write .",
     "test": "ts-node-dev --project tsconfig.json --transpile-only src/run-test.ts",
     "test:watch": "ts-node-dev --project tsconfig.json --respawn --watch --transpile-only src/run-test.ts"

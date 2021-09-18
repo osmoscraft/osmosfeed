@@ -12,6 +12,8 @@
     <title>Mock item title 1</title>
     <link>http://mock-domain.com/item/1</link>
     <description>Mock item description 1</description>
+		<enc:enclosre rdf:resource="http://mock-domain.com/item-image-1.png" enc:type="image/png" enc:length="1000" />
+    <dc:date>2000-01-01T00:00:00Z</dc:date>
   </item>
   <item rdf:about="http://mock-domain.com/item/2">
     <title>Mock item title 2</title>
