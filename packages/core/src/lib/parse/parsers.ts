@@ -1,0 +1,116 @@
+import type { Element, Node } from "cheerio";
+import cheerio, { Cheerio } from "cheerio";
+import { ElementType } from "htmlparser2";
+import type { XmlFeedParser } from "./parse-feed";
+
+export const rssParser: XmlFeedParser = {
+  isMatch: (root) => root.find("channel").length > 0,
+  selectChannel: (root) => root.find("channel"),
+  selectItems: (root) => root.find("item"),
+  resolveChannel: (channel) => {
+    return {
+      version: "https://jsonfeed.org/version/1.1",
+      title: decodeXmlText(channel.find("title")).text(),
+      description: decodeXmlText(channel.find("description")).text(),
+      home_page_url: coerceEmptyString(channel.find("link").text()),
+    };
+  },
+  resolveItem: (item, _channel) => {
+    const decodedTitle = decodeXmlText(item.find("title"));
+    const decodedSummary = decodeXmlText(item.find("description"));
+    const decodedContent = decodeXmlText(item.find("content\\:encoded"));
+
+    return {
+      id: "", // TODO
+      title: decodedTitle.text(),
+      summary: coerceEmptyString(decodedSummary.text()) ?? coerceEmptyString(decodedContent.text()),
+      content_html: coerceEmptyString(decodedContent.html()) ?? coerceEmptyString(decodedSummary.html()),
+      content_text: coerceEmptyString(decodedContent.text()) ?? coerceEmptyString(decodedSummary.text()),
+    };
+  },
+};
+
+export const atomParser: XmlFeedParser = {
+  isMatch: (root) => root.find("feed").length > 0,
+  selectChannel: (root) => root.find("feed"),
+  selectItems: (root) => root.find("entry"),
+  resolveChannel: (channel) => {
+    return {
+      version: "https://jsonfeed.org/version/1.1",
+      title: decodeAtomText(channel.find("title")).text(),
+      description: decodeAtomText(channel.find("subtitle")).text(),
+      home_page_url: channel.find("link").attr("href"),
+    };
+  },
+  resolveItem: (item: Cheerio<Element>, _channel: Cheerio<Element>) => {
+    const decodedTitle = decodeAtomText(item.find("title"));
+    const decodedSummary = decodeAtomText(item.find("summary"));
+    const decodedContent = decodeAtomText(item.find("content"));
+
+    return {
+      id: "", // TODO
+      title: decodedTitle.text(),
+      summary: coerceEmptyString(decodedSummary.text()) ?? coerceEmptyString(decodedContent.text()),
+      content_html: coerceEmptyString(decodedContent.html()) ?? coerceEmptyString(decodedSummary.html()),
+      content_text: coerceEmptyString(decodedContent.text()) ?? coerceEmptyString(decodedSummary.text()),
+    };
+  },
+};
+
+function coerceEmptyString(maybeEmptyString: string, coerceTo = undefined) {
+  if (!maybeEmptyString) return coerceTo;
+  return maybeEmptyString;
+}
+
+function $hasCdata($: Cheerio<Node>) {
+  return $.toArray().some(elementHasCdata);
+}
+
+function elementHasCdata(node: Node) {
+  return (node as Element)?.children.some((c) => c.type === ElementType.CDATA);
+}
+
+function decodeAtomText($: Cheerio<Node>) {
+  const type = $.attr("type");
+  switch (type) {
+    case "html":
+      return decodeXmlText($);
+    case "xhtml":
+      return decodeXmlText($.find("div").first());
+    case "text":
+    default:
+      return {
+        html: () => escapeXmlText($.html()?.trim() ?? ""),
+        text: () => $.html()?.trim() ?? "",
+      };
+  }
+}
+
+function decodeXmlText($: Cheerio<Node>): { html: () => string; text: () => string } {
+  const _getHtml = () => ($hasCdata($) ? $.text().trim() : $.html()?.trim() ?? "");
+  const _getText = () => cheerio.load(_getHtml()).text();
+
+  return {
+    html: _getHtml,
+    text: _getText,
+  };
+}
+
+function escapeXmlText(input: string): string {
+  return input.replace(/[<>&'"]/g, (c: string) => {
+    switch (c) {
+      case "<":
+        return "&lt;";
+      case ">":
+        return "&gt;";
+      case "&":
+        return "&amp;";
+      case "'":
+        return "&apos;";
+      case '"':
+        return "&quot;";
+      default:
+        return ""; // unreachable
+    }
+  });
+}

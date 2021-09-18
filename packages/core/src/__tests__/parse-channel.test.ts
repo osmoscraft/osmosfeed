@@ -1,5 +1,6 @@
 import { describe, it, expect } from "@osmosframe/test-utils";
-import { parseFeed, atomParser, rssParser } from "../lib/parse/parse-feed";
+import { parseFeed } from "../lib/parse/parse-feed";
+import { atomParser, rssParser } from "../lib/parse/parsers";
 
 describe("Parse channel", () => {
   it("JSON Feed version", async () => {

@@ -1,5 +1,6 @@
 import { describe, it, expect } from "@osmosframe/test-utils";
-import { atomParser, parseFeed, rssParser } from "../lib/parse/parse-feed";
+import { parseFeed } from "../lib/parse/parse-feed";
+import { atomParser, rssParser } from "../lib/parse/parsers";
 
 describe("Parse items", () => {
   it("Empty", async () => {
