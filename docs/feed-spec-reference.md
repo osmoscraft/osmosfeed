@@ -1,5 +1,6 @@
 # RDF
 
+https://validator.w3.org/feed/docs/rss1.html
 https://www.xul.fr/rss-1.0.php
 
 # RSS

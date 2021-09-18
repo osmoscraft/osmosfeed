@@ -31,7 +31,7 @@ export const rssParser: XmlFeedParser = {
     const date = coerceEmptyString(item.find("pubDate,dc\\:date").first().text());
 
     return {
-      id: "", // TODO
+      id: coerceEmptyString(item.find("guid").text()) ?? coerceEmptyString(item.find("link").text()) ?? "",
       url: coerceEmptyString(item.find("link").text()),
       title: coerceEmptyString(decodedTitle.text()),
       summary: coerceEmptyString(decodedSummary.text()) ?? coerceEmptyString(decodedContent.text()),
@@ -72,7 +72,7 @@ export const atomParser: XmlFeedParser = {
     const modifedDate = coerceEmptyString(item.find("updated").text());
 
     return {
-      id: "", // TODO
+      id: coerceEmptyString(item.find("id").text()) ?? item.find("link").attr("href") ?? "",
       url: item.find("link").attr("href"),
       title: coerceEmptyString(decodedTitle.text()),
       summary: coerceEmptyString(decodedSummary.text()) ?? coerceEmptyString(decodedContent.text()),

@@ -54,6 +54,107 @@ describe("Parse items", () => {
     ).toEqual(["content_html", "content_text", "id"]);
   });
 
+  it("Id/LinkOnly/RSS2", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <rss>
+        <channel>
+          <item>
+            <link>http://mock-domain.com/item/1</link>
+          </item>
+        </channel>
+      </rss>
+    `);
+
+    await expect(result.items[0].id).toEqual("http://mock-domain.com/item/1");
+  });
+
+  it("Id/GuidOnly/RSS2", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <rss>
+        <channel>
+          <item>
+            <guid>1234-abcd</guid>
+          </item>
+        </channel>
+      </rss>
+    `);
+
+    await expect(result.items[0].id).toEqual("1234-abcd");
+  });
+
+  it("Id/GuidAndLink/RSS2", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <rss>
+        <channel>
+          <item>
+            <link>http://mock-domain.com/item/1</link>
+            <guid>1234-abcd</guid>
+          </item>
+        </channel>
+      </rss>
+    `);
+
+    await expect(result.items[0].id).toEqual("1234-abcd");
+  });
+
+  it("Id/RDF", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <rdf:RDF>
+        <channel>
+        </channel>
+        <item>
+          <link>http://mock-domain.com/item/1</link>
+        </item>
+      <rdf:RDF>
+    `);
+
+    await expect(result.items[0].id).toEqual("http://mock-domain.com/item/1");
+  });
+
+  it("Id/IdOnly/Atom", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <feed>
+        <entry>
+          <id>1234-abcd</id>
+        </entry>
+      </rss>
+    `);
+
+    await expect(result.items[0].id).toEqual("1234-abcd");
+  });
+
+  it("Id/LinkOnly/Atom", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <feed>
+        <entry>
+          <link href="http://mock-domain.com/item/1"/>
+        </entry>
+      </rss>
+    `);
+
+    await expect(result.items[0].id).toEqual("http://mock-domain.com/item/1");
+  });
+
+  it("Id/IdAndLink/Atom", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <feed>
+        <entry>
+          <id>1234-abcd</id>
+          <link href="http://mock-domain.com/item/1"/>
+        </entry>
+      </rss>
+    `);
+
+    await expect(result.items[0].id).toEqual("1234-abcd");
+  });
+
   it("Url/RSS2", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
@@ -72,13 +173,13 @@ describe("Parse items", () => {
   it("Url/RDF", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <rss>
+      <rdf:RDF>
         <channel>
         </channel>
         <item>
           <link>http://mock-domain.com/item/1</link>
         </item>
-      </rss>
+      <rdf:RDF>
     `);
 
     await expect(result.items[0].url).toEqual("http://mock-domain.com/item/1");
