@@ -1,4 +1,4 @@
-import type { JsonFeed, JsonFeedItem } from "../parse/parse-xml-feed";
+import type { JsonFeed, JsonFeedItem } from "../parse/json-feed";
 
 export function render(jsonFeeds: JsonFeed[], css: string) {
   return `
@@ -26,8 +26,8 @@ function renderFeed(feed: JsonFeed) {
 		<h1 class="feed-title-group">
 			<img class="feed-icon" src="${feed.icon}" width="32" height="32" onError="this.remove()">
 			<a class="reset-link" href="${feed.feed_url}">${feed.title}</a>
-      <time datetime="${feed._ext?.date_published}">${feed._ext?.date_published}</time>
-      <time datetime="${feed._ext?.date_modified}">${feed._ext?.date_modified}</time>
+      <time datetime="${feed._date_published}">${feed._date_published}</time>
+      <time datetime="${feed._date_modified}">${feed._date_modified}</time>
 		</h1>
 		<div class="article-list">
 			${feed.items.map(renderArticle).join("\n")}
