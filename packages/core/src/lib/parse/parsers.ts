@@ -31,10 +31,15 @@ export const rssParser: XmlFeedParser = {
 
     return {
       id: "", // TODO
+      url: coerceEmptyString(item.find("link").text()),
       title: decodedTitle.text(),
       summary: coerceEmptyString(decodedSummary.text()) ?? coerceEmptyString(decodedContent.text()),
       content_html: coerceEmptyString(decodedContent.html()) ?? coerceEmptyString(decodedSummary.html()),
       content_text: coerceEmptyString(decodedContent.text()) ?? coerceEmptyString(decodedSummary.text()),
+      image:
+        item.find(`enclosure[type^="image"]`).attr("url") ??
+        item.find(`enc\\:enclosre[enc\\:type^="image"]`).attr("rdf:resource") ??
+        undefined,
     };
   },
 };
@@ -63,10 +68,12 @@ export const atomParser: XmlFeedParser = {
 
     return {
       id: "", // TODO
+      url: item.find("link").attr("href"),
       title: decodedTitle.text(),
       summary: coerceEmptyString(decodedSummary.text()) ?? coerceEmptyString(decodedContent.text()),
       content_html: coerceEmptyString(decodedContent.html()) ?? coerceEmptyString(decodedSummary.html()),
       content_text: coerceEmptyString(decodedContent.text()) ?? coerceEmptyString(decodedSummary.text()),
+      image: item.find(`link[rel="enclosure"][type^="image"]`).attr("href"),
     };
   },
 };

@@ -96,7 +96,7 @@ describe("Parse channel", () => {
     await expect(result.description).toEqual("Mock channel description");
   });
 
-  it("HomePageUrl/RSS", async () => {
+  it("HomePageUrl/RSS2", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>
@@ -120,7 +120,7 @@ describe("Parse channel", () => {
     await expect(result.home_page_url).toEqual("http://mock-domain.com");
   });
 
-  it("ChannelIcon/RSS", async () => {
+  it("ChannelIcon/RSS2", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>
@@ -166,7 +166,7 @@ describe("Parse channel", () => {
     await expect(result.icon).toEqual("http://mock-domain.com/channel-image.png");
   });
 
-  it("ChannelTimestamps/NoDate/RSS", async () => {
+  it("ChannelTimestamps/NoDate/RSS2", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>
@@ -179,7 +179,7 @@ describe("Parse channel", () => {
     await expect(result._date_modified).toEqual(undefined);
   });
 
-  it("ChannelTimestamps/PublishOnly/RSS", async () => {
+  it("ChannelTimestamps/PublishOnly/RSS2", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>
@@ -207,7 +207,7 @@ describe("Parse channel", () => {
     await expect(result._date_modified).toEqual("2000-12-12T12:12:12.000Z");
   });
 
-  it("ChannelTimestamps/PublishAndUpdate/RSS", async () => {
+  it("ChannelTimestamps/PublishAndUpdate/RSS2", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>

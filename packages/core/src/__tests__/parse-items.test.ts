@@ -14,6 +14,49 @@ describe("Parse items", () => {
     await expect(result.items).toEqual([]);
   });
 
+  it("Url/RSS2", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <rss>
+        <channel>
+          <item>
+            <link>http://mock-domain.com/item/1</link>
+          </item>
+        </channel>
+      </rss>
+    `);
+
+    await expect(result.items[0].url).toEqual("http://mock-domain.com/item/1");
+  });
+
+  it("Url/RDF", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <rss>
+        <channel>
+        </channel>
+        <item>
+          <link>http://mock-domain.com/item/1</link>
+        </item>
+      </rss>
+    `);
+
+    await expect(result.items[0].url).toEqual("http://mock-domain.com/item/1");
+  });
+
+  it("Url/Atom", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <feed>
+        <entry>
+          <link href="http://mock-domain.com/item/1"/>
+        </entry>
+      </rss>
+    `);
+
+    await expect(result.items[0].url).toEqual("http://mock-domain.com/item/1");
+  });
+
   it("Title/RSS2", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
@@ -305,7 +348,7 @@ describe("Parse items", () => {
     await expect(result.items[0].content_text).toEqual("content");
   });
 
-  it("SummaryAndContent/Both/RSS", async () => {
+  it("SummaryAndContent/Both/RSS2", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>
@@ -335,6 +378,49 @@ describe("Parse items", () => {
 
     await expect(result.items[0].summary).toEqual("summary");
     await expect(result.items[0].content_text).toEqual("content");
+  });
+
+  it("Image/RSS2", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <rss>
+        <channel>
+          <item>
+            <enclosure url="http://mock-domain.com/item-image-1.png" length="1000" type="image/png" />
+          </item>
+        </channel>
+      </rss>
+    `);
+
+    await expect(result.items[0].image).toEqual("http://mock-domain.com/item-image-1.png");
+  });
+
+  it("Image/RDF", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <rss>
+        <channel>
+          <item>
+            <enc:enclosre rdf:resource="http://mock-domain.com/item-image-1.png" enc:type="image/png" enc:length="1000" />
+          </item>
+        </channel>
+      </rss>
+    `);
+
+    await expect(result.items[0].image).toEqual("http://mock-domain.com/item-image-1.png");
+  });
+
+  it("Image/Atom", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <feed>
+        <entry>
+          <link rel="enclosure" type="image/png" href="http://mock-domain.com/item-image-1.png" />
+        </entry>
+      </feed>
+    `);
+
+    await expect(result.items[0].image).toEqual("http://mock-domain.com/item-image-1.png");
   });
 });
 
