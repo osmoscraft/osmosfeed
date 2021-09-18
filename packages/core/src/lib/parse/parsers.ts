@@ -13,6 +13,9 @@ export const rssParser: XmlFeedParser = {
       title: decodeXmlText(channel.find("title")).text(),
       description: decodeXmlText(channel.find("description")).text(),
       home_page_url: coerceEmptyString(channel.find("link").text()),
+      icon:
+        coerceEmptyString(channel.find("image url").text()) ??
+        channel.find("image[rdf\\:resource]").attr("rdf:resource"),
     };
   },
   resolveItem: (item, _channel) => {
@@ -40,6 +43,7 @@ export const atomParser: XmlFeedParser = {
       title: decodeAtomText(channel.find("title")).text(),
       description: decodeAtomText(channel.find("subtitle")).text(),
       home_page_url: channel.find("link").attr("href"),
+      icon: coerceEmptyString(channel.find("icon").text()),
     };
   },
   resolveItem: (item: Cheerio<Element>, _channel: Cheerio<Element>) => {

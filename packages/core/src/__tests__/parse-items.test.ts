@@ -5,7 +5,10 @@ import { atomParser, rssParser } from "../lib/parse/parsers";
 describe("Parse items", () => {
   it("Empty", async () => {
     const result = myParseFeed(`
-      <channel></channel>
+      <?xml version="1.0"?>
+      <rss>
+        <channel></channel>
+      </rss>
     `);
 
     await expect(result.items).toEqual([]);
@@ -13,11 +16,14 @@ describe("Parse items", () => {
 
   it("Title/RSS2", async () => {
     const result = myParseFeed(`
-      <channel>
-        <item>
-          <title>Mock item title 1</title>
-        </item>
-      </channel>
+      <?xml version="1.0"?>
+      <rss>
+        <channel>
+          <item>
+            <title>Mock item title 1</title>
+          </item>
+        </channel>
+      </rss>
     `);
 
     await expect(result.items[0].title).toEqual("Mock item title 1");
@@ -25,11 +31,14 @@ describe("Parse items", () => {
 
   it("Title/RDF", async () => {
     const result = myParseFeed(`
-      <channel>
-      </channel>
-      <item>
-        <title>Mock item title 1</title>
-      </item>
+      <?xml version="1.0"?>
+      <rdf:RDF>
+        <channel>
+        </channel>
+        <item>
+          <title>Mock item title 1</title>
+        </item>
+      <rdf:RDF>
     `);
 
     await expect(result.items[0].title).toEqual("Mock item title 1");
@@ -37,6 +46,7 @@ describe("Parse items", () => {
 
   it("Title/Atom", async () => {
     const result = myParseFeed(`
+      <?xml version="1.0"?>
       <feed>
         <entry>
           <title>Mock item title 1</title>
@@ -49,23 +59,46 @@ describe("Parse items", () => {
 
   it("Content/Plaintext", async () => {
     const result = myParseFeed(`
-      <channel>
-        <item>
-          <description>Plaintext description</description>
-        </item>
-      </channel>
+      <?xml version="1.0"?>
+      <rss>
+        <channel>
+          <item>
+            <description>Plaintext description</description>
+          </item>
+        </channel>
+      </rss>
     `);
 
     await expect(result.items[0].content_text).toEqual("Plaintext description");
+    await expect(result.items[0].content_html).toEqual("Plaintext description");
+  });
+
+  it("Content/SpaceTrimming", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <rss>
+        <channel>
+          <item>
+            <description> \r\n\t Plaintext description \r\n\t </description>
+          </item>
+        </channel>
+      </rss>
+    `);
+
+    await expect(result.items[0].content_text).toEqual("Plaintext description");
+    await expect(result.items[0].content_html).toEqual("Plaintext description");
   });
 
   it("Content/EscapeXmlEntity", async () => {
     const result = myParseFeed(`
-      <channel>
-        <item>
-          <description>&amp;</description>
-        </item>
-      </channel>
+      <?xml version="1.0"?>
+      <rss>
+        <channel>
+          <item>
+            <description>&amp;</description>
+          </item>
+        </channel>
+      </rss>
     `);
 
     await expect(result.items[0].content_text).toEqual("&");
@@ -74,11 +107,14 @@ describe("Parse items", () => {
 
   it("Content/EscapeHtmlEntity", async () => {
     const result = myParseFeed(`
-      <channel>
-        <item>
-          <description>&lt;b&gt;bold&lt;/b&gt;</description>
-        </item>
-      </channel>
+      <?xml version="1.0"?>
+      <rss>
+        <channel>
+          <item>
+            <description>&lt;b&gt;bold&lt;/b&gt;</description>
+          </item>
+        </channel>
+      </rss>
     `);
 
     await expect(result.items[0].content_text).toEqual("bold");
@@ -87,11 +123,14 @@ describe("Parse items", () => {
 
   it("Content/DoubleEscapedEntities", async () => {
     const result = myParseFeed(`
-      <channel>
-        <item>
-          <description>&amp;lt;b&amp;gt;bold&amp;lt;/b&amp;gt;</description>
-        </item>
-      </channel>
+      <?xml version="1.0"?>
+      <rss>
+        <channel>
+          <item>
+            <description>&amp;lt;b&amp;gt;bold&amp;lt;/b&amp;gt;</description>
+          </item>
+        </channel>
+      </rss>
     `);
 
     await expect(result.items[0].content_text).toEqual("<b>bold</b>");
@@ -100,11 +139,14 @@ describe("Parse items", () => {
 
   it("Content/CDATANoEscape", async () => {
     const result = myParseFeed(`
-      <channel>
-        <item>
-          <description><![CDATA[<b>bold</b>]]></description>
-        </item>
-      </channel>
+      <?xml version="1.0"?>
+      <rss>
+        <channel>
+          <item>
+            <description><![CDATA[<b>bold</b>]]></description>
+          </item>
+        </channel>
+      </rss>
     `);
 
     await expect(result.items[0].content_text).toEqual("bold");
@@ -113,11 +155,14 @@ describe("Parse items", () => {
 
   it("Content/CDATAEscaped", async () => {
     const result = myParseFeed(`
-      <channel>
-        <item>
-          <description><![CDATA[&lt;b&gt;bold&lt;/b&gt;]]></description>
-        </item>
-      </channel>
+      <?xml version="1.0"?>
+      <rss>
+        <channel>
+          <item>
+            <description><![CDATA[&lt;b&gt;bold&lt;/b&gt;]]></description>
+          </item>
+        </channel>
+      </rss>
     `);
 
     await expect(result.items[0].content_text).toEqual("<b>bold</b>");
@@ -126,11 +171,14 @@ describe("Parse items", () => {
 
   it("Content/HTML", async () => {
     const result = myParseFeed(`
-      <channel>
-        <item>
-          <description><b>bold</b></description>
-        </item>
-      </channel>
+      <?xml version="1.0"?>
+      <rss>
+        <channel>
+          <item>
+            <description><b>bold</b></description>
+          </item>
+        </channel>
+      </rss>
     `);
 
     await expect(result.items[0].content_text).toEqual("bold");
@@ -139,6 +187,7 @@ describe("Parse items", () => {
 
   it("Content/Atom/DefaultType", async () => {
     const result = myParseFeed(`
+      <?xml version="1.0"?>
       <feed>
         <entry>
           <summary>&lt;b&gt;bold&lt;/b&gt;</summary>
@@ -152,6 +201,7 @@ describe("Parse items", () => {
 
   it("Content/Atom/textType", async () => {
     const result = myParseFeed(`
+      <?xml version="1.0"?>
       <feed>
         <entry>
           <summary type="text">&lt;b&gt;bold&lt;/b&gt;</summary>
@@ -165,6 +215,7 @@ describe("Parse items", () => {
 
   it("Content/Atom/htmlType", async () => {
     const result = myParseFeed(`
+      <?xml version="1.0"?>
       <feed>
         <entry>
           <summary type="html">&lt;b&gt;bold&lt;/b&gt;</summary>
@@ -178,6 +229,7 @@ describe("Parse items", () => {
 
   it("Content/Atom/xhtmlType", async () => {
     const result = myParseFeed(`
+      <?xml version="1.0"?>
       <feed>
         <entry>
           <summary type="xhtml">
@@ -195,11 +247,14 @@ describe("Parse items", () => {
 
   it("SummaryAndContent/SummaryOnly/RSS", async () => {
     const result = myParseFeed(`
-      <channel>
-        <item>
-          <description>summary</description>
-        </item>
-      </channel>
+      <?xml version="1.0"?>
+      <rss>
+        <channel>
+          <item>
+            <description>summary</description>
+          </item>
+        </channel>
+      </rss>
     `);
 
     await expect(result.items[0].summary).toEqual("summary");
@@ -208,6 +263,7 @@ describe("Parse items", () => {
 
   it("SummaryAndContent/SummaryOnly/Atom", async () => {
     const result = myParseFeed(`
+      <?xml version="1.0"?>
       <feed>
         <entry>
           <summary>summary</summary>
@@ -221,11 +277,14 @@ describe("Parse items", () => {
 
   it("SummaryAndContent/ContentOnly/RSS", async () => {
     const result = myParseFeed(`
-      <channel>
-        <item>
-          <content:encoded>content</content:encoded>
-        </item>
-      </channel>
+      <?xml version="1.0"?>
+      <rss>
+        <channel>
+          <item>
+            <content:encoded>content</content:encoded>
+          </item>
+        </channel>
+      </rss>
     `);
 
     await expect(result.items[0].summary).toEqual("content");
@@ -234,6 +293,7 @@ describe("Parse items", () => {
 
   it("SummaryAndContent/ContentOnly/Atom", async () => {
     const result = myParseFeed(`
+      <?xml version="1.0"?>
       <feed>
         <entry>
           <content>content</content>
@@ -247,12 +307,15 @@ describe("Parse items", () => {
 
   it("SummaryAndContent/Both/RSS", async () => {
     const result = myParseFeed(`
-      <channel>
-        <item>
-          <description>summary</description>
-          <content:encoded>content</content:encoded>
-        </item>
-      </channel>
+      <?xml version="1.0"?>
+      <rss>
+        <channel>
+          <item>
+            <description>summary</description>
+            <content:encoded>content</content:encoded>
+          </item>
+        </channel>
+      </rss>
     `);
 
     await expect(result.items[0].summary).toEqual("summary");
@@ -261,6 +324,7 @@ describe("Parse items", () => {
 
   it("SummaryAndContent/Both/Atom", async () => {
     const result = myParseFeed(`
+      <?xml version="1.0"?>
       <feed>
         <entry>
           <summary>summary</summary>
