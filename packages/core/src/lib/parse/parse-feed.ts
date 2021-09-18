@@ -1,7 +1,7 @@
 import type { Document, Element } from "cheerio";
 import cheerio, { Cheerio } from "cheerio";
 import * as htmlparser2 from "htmlparser2";
-import type { JsonFeed, JsonFeedChannel, JsonFeedItem } from "./json-feed";
+import type { JsonFeed, JsonFeedChannel, JsonFeedItem } from "../json-feed";
 
 export interface XmlFeedParser {
   isMatch: (root: Cheerio<Document>) => boolean;

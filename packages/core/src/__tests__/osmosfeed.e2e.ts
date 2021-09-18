@@ -4,7 +4,7 @@ import path from "path";
 import { localJsonFeedCacheProvider } from "../lib/cache/local-cache-provider";
 import { httpGet } from "../lib/http/http-get";
 import { mergeJsonFeeds } from "../lib/merge/merge-json-feeds";
-import type { JsonFeed } from "../lib/parse/json-feed";
+import type { JsonFeed } from "../lib/json-feed";
 import { parseFeed } from "../lib/parse/parse-feed";
 import { atomParser, rssParser } from "../lib/parse/parsers";
 import { render } from "../lib/render/render";

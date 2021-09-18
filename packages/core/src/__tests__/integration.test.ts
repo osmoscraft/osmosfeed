@@ -1,5 +1,5 @@
 import { describe, expect, it } from "@osmosframe/test-utils";
-import type { JsonFeed } from "../lib/parse/json-feed";
+import type { JsonFeed } from "../lib/json-feed";
 import { parseFeed } from "../lib/parse/parse-feed";
 import { atomParser, rssParser } from "../lib/parse/parsers";
 import { loadXmlFixture } from "../__fixtures__/test-helper/load-fixture";

@@ -1,4 +1,4 @@
-import type { JsonFeed, JsonFeedItem } from "../parse/json-feed";
+import type { JsonFeed, JsonFeedItem } from "../json-feed";
 
 export function render(jsonFeeds: JsonFeed[], css: string) {
   return `
