@@ -18,12 +18,6 @@ jobs:
         with:
           node-version: 16.x
           registry-url: https://registry.npmjs.org/
-      - name: Install cli package
-        run: npm install
-        working-directory: packages/cli
-      - name: Build cli package
-        run: npm run build
-        working-directory: packages/cli
       - name: Install root
         run: npm install
       - name: Test
