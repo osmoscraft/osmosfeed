@@ -165,6 +165,88 @@ describe("Parse channel", () => {
 
     await expect(result.icon).toEqual("http://mock-domain.com/channel-image.png");
   });
+
+  it("ChannelTimestamps/NoDate/RSS", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <rss>
+        <channel>
+        </channel>
+      </rss>
+    `);
+
+    await expect(result._date_published).toEqual(undefined);
+    await expect(result._date_modified).toEqual(undefined);
+  });
+
+  it("ChannelTimestamps/PublishOnly/RSS", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <rss>
+        <channel>
+          <pubDate>Sat, 01 Jan 2000 00:00:00 GMT</pubDate>
+        </channel>
+      </rss>
+    `);
+
+    await expect(result._date_published).toEqual("2000-01-01T00:00:00.000Z");
+    await expect(result._date_modified).toEqual("2000-01-01T00:00:00.000Z");
+  });
+
+  it("ChannelTimestamps/UpdateOnly/RSS", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <rss>
+        <channel>
+          <lastBuildDate>Tue, 12 Dec 2000 12:12:12 GMT</lastBuildDate>
+        </channel>
+      </rss>
+    `);
+
+    await expect(result._date_published).toEqual("2000-12-12T12:12:12.000Z");
+    await expect(result._date_modified).toEqual("2000-12-12T12:12:12.000Z");
+  });
+
+  it("ChannelTimestamps/PublishAndUpdate/RSS", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <rss>
+        <channel>
+          <pubDate>Sat, 01 Jan 2000 00:00:00 GMT</pubDate>
+          <lastBuildDate>Tue, 12 Dec 2000 12:12:12 GMT</lastBuildDate>
+        </channel>
+      </rss>
+    `);
+
+    await expect(result._date_published).toEqual("2000-01-01T00:00:00.000Z");
+    await expect(result._date_modified).toEqual("2000-12-12T12:12:12.000Z");
+  });
+
+  it("ChannelTimestamps/RDF", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <rdf:RDF>
+        <channel rdf:about="http://mock-domain.com/rss">
+          <dc:date>2000-12-12T12:12:12Z</dc:date>
+        </channel>
+      </rdf:RDF>
+    `);
+
+    await expect(result._date_published).toEqual("2000-12-12T12:12:12.000Z");
+    await expect(result._date_modified).toEqual("2000-12-12T12:12:12.000Z");
+  });
+
+  it("ChannelTimestamps/Atom", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <feed>
+        <updated>2000-12-12T12:12:12Z</updated>
+      </feed>
+    `);
+
+    await expect(result._date_published).toEqual("2000-12-12T12:12:12.000Z");
+    await expect(result._date_modified).toEqual("2000-12-12T12:12:12.000Z");
+  });
 });
 
 function myParseFeed(input: string) {

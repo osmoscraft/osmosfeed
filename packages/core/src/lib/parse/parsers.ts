@@ -8,6 +8,10 @@ export const rssParser: XmlFeedParser = {
   selectChannel: (root) => root.find("channel"),
   selectItems: (root) => root.find("item"),
   resolveChannel: (channel) => {
+    const publishDate = coerceEmptyString(channel.find("pubDate,dc\\:date").first().text());
+    const modifiedhDate = coerceEmptyString(channel.find("lastBuildDate,dc\\:date").first().text());
+    const hasDate = publishDate || modifiedhDate;
+
     return {
       version: "https://jsonfeed.org/version/1.1",
       title: decodeXmlText(channel.find("title")).text(),
@@ -16,6 +20,8 @@ export const rssParser: XmlFeedParser = {
       icon:
         coerceEmptyString(channel.find("image url").text()) ??
         channel.find("image[rdf\\:resource]").attr("rdf:resource"),
+      _date_published: hasDate ? coerceError(() => new Date(publishDate ?? modifiedhDate!).toISOString()) : undefined,
+      _date_modified: hasDate ? coerceError(() => new Date(modifiedhDate ?? publishDate!).toISOString()) : undefined,
     };
   },
   resolveItem: (item, _channel) => {
@@ -38,12 +44,16 @@ export const atomParser: XmlFeedParser = {
   selectChannel: (root) => root.find("feed"),
   selectItems: (root) => root.find("entry"),
   resolveChannel: (channel) => {
+    const date = coerceEmptyString(channel.find("updated").text());
+
     return {
       version: "https://jsonfeed.org/version/1.1",
       title: decodeAtomText(channel.find("title")).text(),
       description: decodeAtomText(channel.find("subtitle")).text(),
       home_page_url: channel.find("link").attr("href"),
       icon: coerceEmptyString(channel.find("icon").text()),
+      _date_published: date ? coerceError(() => new Date(date).toISOString()) : undefined,
+      _date_modified: date ? coerceError(() => new Date(date).toISOString()) : undefined,
     };
   },
   resolveItem: (item: Cheerio<Element>, _channel: Cheerio<Element>) => {
@@ -60,11 +70,6 @@ export const atomParser: XmlFeedParser = {
     };
   },
 };
-
-function coerceEmptyString(maybeEmptyString: string, coerceTo = undefined) {
-  if (!maybeEmptyString) return coerceTo;
-  return maybeEmptyString;
-}
 
 function $hasCdata($: Cheerio<Node>) {
   return $.toArray().some(elementHasCdata);
@@ -117,4 +122,17 @@ function escapeXmlText(input: string): string {
         return ""; // unreachable
     }
   });
+}
+
+function coerceEmptyString(maybeEmptyString: string, coerceTo = undefined) {
+  if (!maybeEmptyString) return coerceTo;
+  return maybeEmptyString;
+}
+
+function coerceError<T>(fn: () => T, coerceTo = undefined) {
+  try {
+    return fn();
+  } catch {
+    return coerceTo;
+  }
 }
