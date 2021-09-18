@@ -11,6 +11,49 @@ describe("Parse channel", () => {
     ).toThrow();
   });
 
+  it("MissingFields/RSS2", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <rss>
+        <channel></channel>
+      </rss>
+    `);
+
+    await expect(result.title).toEqual("");
+    await expect(result.items).toEqual([]);
+    await expect(
+      Object.keys(Object.fromEntries(Object.entries(result).filter((entry) => entry[1] !== undefined))).sort()
+    ).toEqual(["items", "title", "version"]);
+  });
+
+  it("MissingFields/RDF", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <rdf:RDF>
+        <channel></channel>
+      </rdf:RDF>
+    `);
+
+    await expect(result.title).toEqual("");
+    await expect(result.items).toEqual([]);
+    await expect(
+      Object.keys(Object.fromEntries(Object.entries(result).filter((entry) => entry[1] !== undefined))).sort()
+    ).toEqual(["items", "title", "version"]);
+  });
+
+  it("MissingFields/Atom", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <feed></feed>
+    `);
+
+    await expect(result.title).toEqual("");
+    await expect(result.items).toEqual([]);
+    await expect(
+      Object.keys(Object.fromEntries(Object.entries(result).filter((entry) => entry[1] !== undefined))).sort()
+    ).toEqual(["items", "title", "version"]);
+  });
+
   it("JSON Feed version/RSS", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
@@ -72,7 +115,7 @@ describe("Parse channel", () => {
     await expect(result.title).toEqual("Mock channel title");
   });
 
-  it("Summary/RSS", async () => {
+  it("Summary/RSS2", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>

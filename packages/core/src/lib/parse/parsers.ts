@@ -1,3 +1,4 @@
+import { it } from "@osmoscraft/test-utils";
 import type { Element, Node } from "cheerio";
 import cheerio, { Cheerio } from "cheerio";
 import { ElementType } from "htmlparser2";
@@ -14,7 +15,7 @@ export const rssParser: XmlFeedParser = {
     return {
       version: "https://jsonfeed.org/version/1.1",
       title: decodeXmlText(channel.find("title")).text(),
-      description: decodeXmlText(channel.find("description")).text(),
+      description: coerceEmptyString(decodeXmlText(channel.find("description")).text()),
       home_page_url: coerceEmptyString(channel.find("link").text()),
       icon:
         coerceEmptyString(channel.find("image url").text()) ??
@@ -32,10 +33,10 @@ export const rssParser: XmlFeedParser = {
     return {
       id: "", // TODO
       url: coerceEmptyString(item.find("link").text()),
-      title: decodedTitle.text(),
+      title: coerceEmptyString(decodedTitle.text()),
       summary: coerceEmptyString(decodedSummary.text()) ?? coerceEmptyString(decodedContent.text()),
-      content_html: coerceEmptyString(decodedContent.html()) ?? coerceEmptyString(decodedSummary.html()),
-      content_text: coerceEmptyString(decodedContent.text()) ?? coerceEmptyString(decodedSummary.text()),
+      content_html: coerceEmptyString(decodedContent.html()) ?? coerceEmptyString(decodedSummary.html(), ""),
+      content_text: coerceEmptyString(decodedContent.text()) ?? coerceEmptyString(decodedSummary.text(), ""),
       image:
         item.find(`enclosure[type^="image"]`).attr("url") ??
         item.find(`enc\\:enclosre[enc\\:type^="image"]`).attr("rdf:resource") ??
@@ -56,7 +57,7 @@ export const atomParser: XmlFeedParser = {
     return {
       version: "https://jsonfeed.org/version/1.1",
       title: decodeAtomText(channel.find("title")).text(),
-      description: decodeAtomText(channel.find("subtitle")).text(),
+      description: coerceEmptyString(decodeAtomText(channel.find("subtitle")).text()),
       home_page_url: channel.find("link").attr("href"),
       icon: coerceEmptyString(channel.find("icon").text()),
       _date_published: date ? coerceError(() => new Date(date).toISOString()) : undefined,
@@ -73,10 +74,10 @@ export const atomParser: XmlFeedParser = {
     return {
       id: "", // TODO
       url: item.find("link").attr("href"),
-      title: decodedTitle.text(),
+      title: coerceEmptyString(decodedTitle.text()),
       summary: coerceEmptyString(decodedSummary.text()) ?? coerceEmptyString(decodedContent.text()),
-      content_html: coerceEmptyString(decodedContent.html()) ?? coerceEmptyString(decodedSummary.html()),
-      content_text: coerceEmptyString(decodedContent.text()) ?? coerceEmptyString(decodedSummary.text()),
+      content_html: coerceEmptyString(decodedContent.html()) ?? coerceEmptyString(decodedSummary.html(), ""),
+      content_text: coerceEmptyString(decodedContent.text()) ?? coerceEmptyString(decodedSummary.text(), ""),
       image: item.find(`link[rel="enclosure"][type^="image"]`).attr("href"),
       date_published: coerceError(() => new Date(publishedDate ?? modifedDate ?? "").toISOString()),
       date_modified: coerceError(() => new Date(modifedDate ?? publishedDate ?? "").toISOString()),
@@ -137,8 +138,8 @@ function escapeXmlText(input: string): string {
   });
 }
 
-function coerceEmptyString(maybeEmptyString: string, coerceTo = undefined) {
-  if (!maybeEmptyString) return coerceTo;
+function coerceEmptyString<T = undefined>(maybeEmptyString: string, coerceTo?: T): string | T {
+  if (!maybeEmptyString) return coerceTo as T;
   return maybeEmptyString;
 }
 

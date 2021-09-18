@@ -3,15 +3,55 @@ import { parseFeed } from "../lib/parse/parse-feed";
 import { atomParser, rssParser } from "../lib/parse/parsers";
 
 describe("Parse items", () => {
-  it("Empty", async () => {
+  it("MissingFields/RSS2", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>
-        <channel></channel>
+        <channel>
+          <item></item>
+        </channel>
       </rss>
     `);
 
-    await expect(result.items).toEqual([]);
+    await expect(result.items[0].id).toEqual("");
+    await expect(result.items[0].content_text).toEqual("");
+    await expect(result.items[0].content_html).toEqual("");
+    await expect(
+      Object.keys(Object.fromEntries(Object.entries(result.items[0]).filter((entry) => entry[1] !== undefined))).sort()
+    ).toEqual(["content_html", "content_text", "id"]);
+  });
+
+  it("MissingFields/RDF", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <rdf:RDF>
+        <channel></channel>
+        <item></item>
+      </rdf:RDF>
+    `);
+
+    await expect(result.items[0].id).toEqual("");
+    await expect(result.items[0].content_text).toEqual("");
+    await expect(result.items[0].content_html).toEqual("");
+    await expect(
+      Object.keys(Object.fromEntries(Object.entries(result.items[0]).filter((entry) => entry[1] !== undefined))).sort()
+    ).toEqual(["content_html", "content_text", "id"]);
+  });
+
+  it("MissingFields/Atom", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <feed>
+        <entry></entry>
+      </feed>
+    `);
+
+    await expect(result.items[0].id).toEqual("");
+    await expect(result.items[0].content_text).toEqual("");
+    await expect(result.items[0].content_html).toEqual("");
+    await expect(
+      Object.keys(Object.fromEntries(Object.entries(result.items[0]).filter((entry) => entry[1] !== undefined))).sort()
+    ).toEqual(["content_html", "content_text", "id"]);
   });
 
   it("Url/RSS2", async () => {
