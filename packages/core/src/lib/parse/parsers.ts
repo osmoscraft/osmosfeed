@@ -1,4 +1,3 @@
-import { it } from "@osmoscraft/test-utils";
 import type { Element, Node } from "cheerio";
 import cheerio, { Cheerio } from "cheerio";
 import { ElementType } from "htmlparser2";
