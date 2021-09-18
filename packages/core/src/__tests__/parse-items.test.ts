@@ -1,4 +1,4 @@
-import { describe, it, expect } from "@osmosframe/test-utils";
+import { describe, expect, it } from "@osmosframe/test-utils";
 import { parseFeed } from "../lib/parse/parse-feed";
 import { atomParser, rssParser } from "../lib/parse/parsers";
 
@@ -273,7 +273,7 @@ describe("Parse items", () => {
     await expect(result.items[0].content_html).toEqual("Plaintext description");
   });
 
-  it("Content/EscapeXmlEntity", async () => {
+  it("Content/Ampersand", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>
@@ -289,7 +289,23 @@ describe("Parse items", () => {
     await expect(result.items[0].content_html).toEqual("&");
   });
 
-  it("Content/EscapeHtmlEntity", async () => {
+  it("Content/AngleBracket", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <rss>
+        <channel>
+          <item>
+            <description>&amp;lt;</description>
+          </item>
+        </channel>
+      </rss>
+    `);
+
+    await expect(result.items[0].content_text).toEqual("<");
+    await expect(result.items[0].content_html).toEqual("&lt;");
+  });
+
+  it("Content/HtmlTags", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>

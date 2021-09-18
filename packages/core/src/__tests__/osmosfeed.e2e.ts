@@ -1,14 +1,12 @@
-import { localJsonFeedCacheProvider } from "../lib/cache/local-cache-provider";
-import { mergeJsonFeeds } from "../lib/merge/merge-json-feeds";
-import { atomParser } from "../lib/parse/atom-parser";
-import type { JsonFeed } from "../lib/parse/parse-xml-feed";
-import { parseXmlFeed } from "../lib/parse/parse-xml-feed";
-import { rssParser } from "../lib/parse/rss-parser";
-import { httpGet } from "../lib/http/http-get";
-import { describe, beforeEach, it, expect } from "@osmosframe/test-utils";
-
-import { readdir, rm, access, writeFile, mkdir, readFile } from "fs/promises";
+import { beforeEach, describe, expect, it } from "@osmosframe/test-utils";
+import { access, mkdir, readdir, readFile, rm, writeFile } from "fs/promises";
 import path from "path";
+import { localJsonFeedCacheProvider } from "../lib/cache/local-cache-provider";
+import { httpGet } from "../lib/http/http-get";
+import { mergeJsonFeeds } from "../lib/merge/merge-json-feeds";
+import type { JsonFeed } from "../lib/parse/json-feed";
+import { parseFeed } from "../lib/parse/parse-feed";
+import { atomParser, rssParser } from "../lib/parse/parsers";
 import { render } from "../lib/render/render";
 
 const cacheOutputDir = path.join(process.cwd(), "src/__tests__/cache-output");
@@ -41,9 +39,9 @@ describe("E2E", () => {
     );
 
     const jsonFeeds: JsonFeed[] = rawFeeds.map((rawFeed) => ({
-      ...parseXmlFeed({
-        rawString: rawFeed.textResponse,
-        xmlParsers: [rssParser, atomParser],
+      ...parseFeed({
+        xml: rawFeed.textResponse,
+        parsers: [rssParser, atomParser],
       }),
       feed_url: rawFeed.feedUrl,
     }));

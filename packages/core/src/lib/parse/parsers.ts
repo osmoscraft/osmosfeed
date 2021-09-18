@@ -13,32 +13,32 @@ export const rssParser: XmlFeedParser = {
 
     return {
       version: "https://jsonfeed.org/version/1.1",
-      title: decodeXmlText(channel.find("title")).text(),
-      description: coerceEmptyString(decodeXmlText(channel.find("description")).text()),
-      home_page_url: coerceEmptyString(channel.find("link").text()),
+      title: decodeXmlText(channel.find("> title")).text(),
+      description: coerceEmptyString(decodeXmlText(channel.find("> description")).text()),
+      home_page_url: coerceEmptyString(channel.find("> link").text()),
       icon:
-        coerceEmptyString(channel.find("image url").text()) ??
+        coerceEmptyString(channel.find("> image url").text()) ??
         channel.find("image[rdf\\:resource]").attr("rdf:resource"),
       _date_published: coerceError(() => new Date(publishDate ?? modifiedhDate ?? "").toISOString()),
       _date_modified: coerceError(() => new Date(modifiedhDate ?? publishDate ?? "").toISOString()),
     };
   },
   resolveItem: (item, _channel) => {
-    const decodedTitle = decodeXmlText(item.find("title"));
-    const decodedSummary = decodeXmlText(item.find("description"));
-    const decodedContent = decodeXmlText(item.find("content\\:encoded"));
-    const date = coerceEmptyString(item.find("pubDate,dc\\:date").first().text());
+    const decodedTitle = decodeXmlText(item.find("> title"));
+    const decodedSummary = decodeXmlText(item.find("> description"));
+    const decodedContent = decodeXmlText(item.find("> content\\:encoded"));
+    const date = coerceEmptyString(item.find("> pubDate,> dc\\:date").first().text());
 
     return {
-      id: coerceEmptyString(item.find("guid").text()) ?? coerceEmptyString(item.find("link").text()) ?? "",
-      url: coerceEmptyString(item.find("link").text()),
+      id: coerceEmptyString(item.find("> guid").text()) ?? coerceEmptyString(item.find("> link").text()) ?? "",
+      url: coerceEmptyString(item.find("> link").text()),
       title: coerceEmptyString(decodedTitle.text()),
       summary: coerceEmptyString(decodedSummary.text()) ?? coerceEmptyString(decodedContent.text()),
       content_html: coerceEmptyString(decodedContent.html()) ?? coerceEmptyString(decodedSummary.html(), ""),
       content_text: coerceEmptyString(decodedContent.text()) ?? coerceEmptyString(decodedSummary.text(), ""),
       image:
-        item.find(`enclosure[type^="image"]`).attr("url") ??
-        item.find(`enc\\:enclosre[enc\\:type^="image"]`).attr("rdf:resource") ??
+        item.find(`> enclosure[type^="image"]`).attr("url") ??
+        item.find(`> enc\\:enclosre[enc\\:type^="image"]`).attr("rdf:resource") ??
         undefined,
       date_published: coerceError(() => new Date(date ?? "").toISOString()),
       date_modified: coerceError(() => new Date(date ?? "").toISOString()),
@@ -51,33 +51,33 @@ export const atomParser: XmlFeedParser = {
   selectChannel: (root) => root.find("feed"),
   selectItems: (root) => root.find("entry"),
   resolveChannel: (channel) => {
-    const date = coerceEmptyString(channel.find("updated").text());
+    const date = coerceEmptyString(channel.find("> updated").text());
 
     return {
       version: "https://jsonfeed.org/version/1.1",
-      title: decodeAtomText(channel.find("title")).text(),
-      description: coerceEmptyString(decodeAtomText(channel.find("subtitle")).text()),
-      home_page_url: channel.find("link").attr("href"),
-      icon: coerceEmptyString(channel.find("icon").text()),
+      title: decodeAtomText(channel.find("> title")).text(),
+      description: coerceEmptyString(decodeAtomText(channel.find("> subtitle")).text()),
+      home_page_url: channel.find("> link").attr("href"),
+      icon: coerceEmptyString(channel.find("> icon").text()),
       _date_published: date ? coerceError(() => new Date(date).toISOString()) : undefined,
       _date_modified: date ? coerceError(() => new Date(date).toISOString()) : undefined,
     };
   },
   resolveItem: (item: Cheerio<Element>, _channel: Cheerio<Element>) => {
-    const decodedTitle = decodeAtomText(item.find("title"));
-    const decodedSummary = decodeAtomText(item.find("summary"));
-    const decodedContent = decodeAtomText(item.find("content"));
-    const publishedDate = coerceEmptyString(item.find("published").text());
-    const modifedDate = coerceEmptyString(item.find("updated").text());
+    const decodedTitle = decodeAtomText(item.find("> title"));
+    const decodedSummary = decodeAtomText(item.find("> summary"));
+    const decodedContent = decodeAtomText(item.find("> content"));
+    const publishedDate = coerceEmptyString(item.find("> published").text());
+    const modifedDate = coerceEmptyString(item.find("> updated").text());
 
     return {
-      id: coerceEmptyString(item.find("id").text()) ?? item.find("link").attr("href") ?? "",
-      url: item.find("link").attr("href"),
+      id: coerceEmptyString(item.find("> id").text()) ?? item.find("> link").attr("href") ?? "",
+      url: item.find("> link").attr("href"),
       title: coerceEmptyString(decodedTitle.text()),
       summary: coerceEmptyString(decodedSummary.text()) ?? coerceEmptyString(decodedContent.text()),
       content_html: coerceEmptyString(decodedContent.html()) ?? coerceEmptyString(decodedSummary.html(), ""),
       content_text: coerceEmptyString(decodedContent.text()) ?? coerceEmptyString(decodedSummary.text(), ""),
-      image: item.find(`link[rel="enclosure"][type^="image"]`).attr("href"),
+      image: item.find(`> link[rel="enclosure"][type^="image"]`).attr("href"),
       date_published: coerceError(() => new Date(publishedDate ?? modifedDate ?? "").toISOString()),
       date_modified: coerceError(() => new Date(modifedDate ?? publishedDate ?? "").toISOString()),
     };
