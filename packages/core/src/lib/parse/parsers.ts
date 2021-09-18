@@ -4,13 +4,12 @@ import { ElementType } from "htmlparser2";
 import type { XmlFeedParser } from "./parse-feed";
 
 export const rssParser: XmlFeedParser = {
-  isMatch: (root) => root.find("channel").length > 0,
+  isMatch: (root) => root.find("rss,rdf\\:RDF").length > 0,
   selectChannel: (root) => root.find("channel"),
   selectItems: (root) => root.find("item"),
   resolveChannel: (channel) => {
     const publishDate = coerceEmptyString(channel.find("pubDate,dc\\:date").first().text());
     const modifiedhDate = coerceEmptyString(channel.find("lastBuildDate,dc\\:date").first().text());
-    const hasDate = publishDate || modifiedhDate;
 
     return {
       version: "https://jsonfeed.org/version/1.1",
@@ -20,14 +19,15 @@ export const rssParser: XmlFeedParser = {
       icon:
         coerceEmptyString(channel.find("image url").text()) ??
         channel.find("image[rdf\\:resource]").attr("rdf:resource"),
-      _date_published: hasDate ? coerceError(() => new Date(publishDate ?? modifiedhDate!).toISOString()) : undefined,
-      _date_modified: hasDate ? coerceError(() => new Date(modifiedhDate ?? publishDate!).toISOString()) : undefined,
+      _date_published: coerceError(() => new Date(publishDate ?? modifiedhDate ?? "").toISOString()),
+      _date_modified: coerceError(() => new Date(modifiedhDate ?? publishDate ?? "").toISOString()),
     };
   },
   resolveItem: (item, _channel) => {
     const decodedTitle = decodeXmlText(item.find("title"));
     const decodedSummary = decodeXmlText(item.find("description"));
     const decodedContent = decodeXmlText(item.find("content\\:encoded"));
+    const date = coerceEmptyString(item.find("pubDate,dc\\:date").first().text());
 
     return {
       id: "", // TODO
@@ -40,6 +40,8 @@ export const rssParser: XmlFeedParser = {
         item.find(`enclosure[type^="image"]`).attr("url") ??
         item.find(`enc\\:enclosre[enc\\:type^="image"]`).attr("rdf:resource") ??
         undefined,
+      date_published: coerceError(() => new Date(date ?? "").toISOString()),
+      date_modified: coerceError(() => new Date(date ?? "").toISOString()),
     };
   },
 };
@@ -65,6 +67,8 @@ export const atomParser: XmlFeedParser = {
     const decodedTitle = decodeAtomText(item.find("title"));
     const decodedSummary = decodeAtomText(item.find("summary"));
     const decodedContent = decodeAtomText(item.find("content"));
+    const publishedDate = coerceEmptyString(item.find("published").text());
+    const modifedDate = coerceEmptyString(item.find("updated").text());
 
     return {
       id: "", // TODO
@@ -74,6 +78,8 @@ export const atomParser: XmlFeedParser = {
       content_html: coerceEmptyString(decodedContent.html()) ?? coerceEmptyString(decodedSummary.html()),
       content_text: coerceEmptyString(decodedContent.text()) ?? coerceEmptyString(decodedSummary.text()),
       image: item.find(`link[rel="enclosure"][type^="image"]`).attr("href"),
+      date_published: coerceError(() => new Date(publishedDate ?? modifedDate ?? "").toISOString()),
+      date_modified: coerceError(() => new Date(modifedDate ?? publishedDate ?? "").toISOString()),
     };
   },
 };

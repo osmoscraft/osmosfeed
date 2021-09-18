@@ -422,6 +422,81 @@ describe("Parse items", () => {
 
     await expect(result.items[0].image).toEqual("http://mock-domain.com/item-image-1.png");
   });
+
+  it("Timestamps/RSS2", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <rss>
+        <channel>
+          <item>
+            <pubDate>Sat, 01 Jan 2000 00:00:00 GMT</pubDate>
+          </item>
+        </channel>
+      </rss>
+    `);
+
+    await expect(result.items[0].date_published).toEqual("2000-01-01T00:00:00.000Z");
+    await expect(result.items[0].date_modified).toEqual("2000-01-01T00:00:00.000Z");
+  });
+
+  it("Timestamps/RDF", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <rss>
+        <channel>
+          <item>
+            <dc:date>2000-01-01T00:00:00Z</dc:date>
+          </item>
+        </channel>
+      </rss>
+    `);
+
+    await expect(result.items[0].date_published).toEqual("2000-01-01T00:00:00.000Z");
+    await expect(result.items[0].date_modified).toEqual("2000-01-01T00:00:00.000Z");
+  });
+
+  it("Timestamps/PublishOnly/Atom", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <feed>
+        <entry>
+          <published>2000-01-01T00:00:00Z</published>
+        </entry>
+      </feed>
+    `);
+
+    await expect(result.items[0].date_published).toEqual("2000-01-01T00:00:00.000Z");
+    await expect(result.items[0].date_modified).toEqual("2000-01-01T00:00:00.000Z");
+  });
+
+  it("Timestamps/UpdateOnly/Atom", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <feed>
+        <entry>
+          <updated>2000-12-12T12:12:12Z</updated>
+        </entry>
+      </feed>
+    `);
+
+    await expect(result.items[0].date_published).toEqual("2000-12-12T12:12:12.000Z");
+    await expect(result.items[0].date_modified).toEqual("2000-12-12T12:12:12.000Z");
+  });
+
+  it("Timestamps/PublishAndUpdate/Atom", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <feed>
+        <entry>
+          <published>2000-01-01T00:00:00Z</published>
+          <updated>2000-12-12T12:12:12Z</updated>
+        </entry>
+      </feed>
+    `);
+
+    await expect(result.items[0].date_published).toEqual("2000-01-01T00:00:00.000Z");
+    await expect(result.items[0].date_modified).toEqual("2000-12-12T12:12:12.000Z");
+  });
 });
 
 function myParseFeed(input: string) {

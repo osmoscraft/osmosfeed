@@ -4,6 +4,7 @@ https://www.xul.fr/rss-1.0.php
 
 # RSS
 
+https://validator.w3.org/feed/docs/rss2.html
 https://cyber.harvard.edu/rss/encodingDescriptions.html
 https://www.w3.org/wiki/RssContent
 
