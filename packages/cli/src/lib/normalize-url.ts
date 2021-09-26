@@ -1,7 +1,7 @@
 /**
  * Encode any unicode characters in the URL
  */
-export function encodeUrl(url: string): string {
+export function normalizeUrl(url: string): string {
   return isEncoded(url) ? url : encodeURI(url);
 }
 

@@ -1,5 +1,6 @@
 import type { ParsableFile } from "./discover-files";
 import yaml from "js-yaml";
+import { normalizeUrl } from "./normalize-url";
 
 export interface Source {
   href: string;
@@ -14,7 +15,14 @@ export interface Config {
 
 export async function getConfig(configFile: ParsableFile | null): Promise<Config> {
   const userConfig = configFile ? parseUserConfig(configFile.rawText) : {};
-  const effectiveConfig = { ...getDefaultConfig(), ...userConfig };
+  const mergedConfig: Config = { ...getDefaultConfig(), ...userConfig };
+  const effectiveConfig: Config = {
+    ...mergedConfig,
+    sources: mergedConfig.sources.map((source) => ({
+      ...source,
+      href: normalizeUrl(source.href),
+    })),
+  };
   console.log(`[load-config] Effective config: `, effectiveConfig);
   return effectiveConfig;
 }

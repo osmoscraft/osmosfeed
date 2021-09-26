@@ -1,9 +1,9 @@
 # v1.11.2
 
-- TODO: Fix unicode URL handling
-- TODO: Dependency updates
-- Added: unit test library
+- Fixed: unicode characters in URL caused download error
 - Fixed: project root npm install error
+- Added: unit test library
+- Chore: Dependency updates
 
 # v1.11.1
 

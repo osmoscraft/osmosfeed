@@ -9,13 +9,7 @@
 ### First-time install
 
 ```bash
-# --- Step start (This step is temporarily added, due to [this npm bug](https://github.com/npm/cli/issues/2632)).
-cd packages/cli
-npm install
-npm run build
-# --- Step end
-
-cd ../../ # back to repo root
+# At the root of the repo
 npm install
 ```
 
@@ -37,7 +31,8 @@ npm install
 ## Test
 
 - `cd` to the root of the repo. Then `npm run test`.
-- Tests are located in `packages/test`.
+- Unit tests are co-located with the source code in `__tests__` folders
+- E2E tests are located in `packages/test`.
   - Each test scenario simulates a unique configuration of a repo. Add new new scenarios in `packages/test/scenarios`.
   - Each spec validates a single behavior under a senario. Add new specs in `packages/test/test.js`.
 - To debug with breakpoints
