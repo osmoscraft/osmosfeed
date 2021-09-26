@@ -1,9 +1,9 @@
 # v1.11.2
 
 - TODO: Fix unicode URL handling
-- TODO: Fix project root npm install error
-- TODO: Dependencyupdates
+- TODO: Dependency updates
 - TODO: Unit test library
+- Fixed: project root npm install error
 
 # v1.11.1
 
