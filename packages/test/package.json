@@ -11,6 +11,6 @@
   "author": "osmoscraft",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^15.6.1"
+    "@types/node": "^16.10.1"
   }
 }

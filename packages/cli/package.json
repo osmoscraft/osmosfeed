@@ -36,10 +36,9 @@
     "rss-parser": "^3.12.0"
   },
   "devDependencies": {
-    "@osmoscraft/typescript-testing-library": "^0.0.3",
+    "@osmoscraft/typescript-testing-library": "^0.0.4",
     "@types/js-yaml": "^4.0.3",
     "@types/node": "^16.10.1",
-    "esbuild": "^0.13.2",
-    "ts-node-dev": "^1.1.8"
+    "esbuild": "^0.13.2"
   }
 }
