@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "node scripts/build.js",
     "build": "npm run clean && node scripts/build.js",
+    "test": "ts-node-dev --quiet --project tsconfig.json --transpile-only run-test.ts",
+    "test:watch": "ts-node-dev --respawn --watch --transpile-only run-test.ts",
     "clean": "rm -rf bin"
   },
   "main": "main.js",
@@ -26,16 +28,18 @@
   },
   "homepage": "https://osmoscraft.org",
   "dependencies": {
-    "axios": "^0.21.1",
-    "cheerio": "^1.0.0-rc.9",
+    "axios": "^0.21.4",
+    "cheerio": "^1.0.0-rc.10",
     "feed": "^4.2.2",
     "handlebars": "^4.7.7",
-    "js-yaml": "^4.0.0",
+    "js-yaml": "^4.1.0",
     "rss-parser": "^3.12.0"
   },
   "devDependencies": {
-    "@types/js-yaml": "^4.0.0",
-    "@types/node": "^15.0.2",
-    "esbuild": "^0.11.23"
+    "@osmoscraft/typescript-testing-library": "^0.0.3",
+    "@types/js-yaml": "^4.0.3",
+    "@types/node": "^16.10.1",
+    "esbuild": "^0.13.2",
+    "ts-node-dev": "^1.1.8"
   }
 }

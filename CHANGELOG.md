@@ -2,7 +2,7 @@
 
 - TODO: Fix unicode URL handling
 - TODO: Dependency updates
-- TODO: Unit test library
+- Added: unit test library
 - Fixed: project root npm install error
 
 # v1.11.1
