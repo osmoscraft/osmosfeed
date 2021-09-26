@@ -4,6 +4,7 @@
 - Fixed: project root npm install error
 - Added: unit test library
 - Chore: Dependency updates
+- Thank you: @CaptNo1
 
 # v1.11.1
 
