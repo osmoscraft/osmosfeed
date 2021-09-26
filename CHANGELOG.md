@@ -1,3 +1,11 @@
+# v1.11.2
+
+- Fixed: unicode characters in URL caused download error
+- Fixed: project root npm install error
+- Added: unit test library
+- Chore: Dependency updates
+- Thank you: @CaptNo1
+
 # v1.11.1
 
 - Fixed: Unexpected nested element in `author` field crashes the parser

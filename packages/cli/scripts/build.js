@@ -11,8 +11,7 @@ require("esbuild")
     entryPoints: ["src/main.ts"],
     sourcemap: true,
     bundle: true,
-    /** TODO Although demo template and examples are using node 16 in GitHub Action, earlier users are still using 14. Upgrade requires major release */ 
-    target: "node14",
+    target: "node16",
     outfile: "bin/main.js",
   })
   .catch(() => process.exit(1));

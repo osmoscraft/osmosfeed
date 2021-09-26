@@ -7,9 +7,9 @@
     "doc": "docs"
   },
   "scripts": {
-    "start": "npm run dev -w @osmoscraft/osmosfeed -w osmosfeed-sandbox",
-    "build": "npm run build -w @osmoscraft/osmosfeed",
-    "test": "npm run test -w osmosfeed-test",
+    "start": "npm run dev -w packages/cli -w packages/sandbox",
+    "build": "npm run build -w packages/cli",
+    "test": "npm run test -w osmosfeed-test -w packages/cli",
     "clean": "npm run clean --workspaces=true"
   },
   "repository": {
