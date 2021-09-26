@@ -1,3 +1,10 @@
+# v1.11.2
+
+- TODO: Fix unicode URL handling
+- TODO: Fix project root npm install error
+- TODO: Dependencyupdates
+- TODO: Unit test library
+
 # v1.11.1
 
 - Fixed: Unexpected nested element in `author` field crashes the parser
