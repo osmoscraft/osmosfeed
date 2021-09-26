@@ -1,19 +1,19 @@
 import path from "path";
 import { ENTRY_DIR } from "../utils/entry-dir";
 import { readDirAsync, readDirDeepAsync, readFileAsync } from "../utils/fs";
+import {
+  CACHE_FILENAME,
+  CONFIG_FILENAME,
+  PUBLIC_ROOT_DIR,
+  SYSTEM_STATIC_DIR,
+  SYSTEM_TEMPLATE_DIR,
+  USER_SNIPPET_DIR,
+  USER_STATIC_DIR,
+  USER_TEMPLATE_DIR,
+} from "./path-constants";
 
-const CONFIG_FILENAME = "osmosfeed.yaml";
-const SYSTEM_TEMPLATE_DIR = "system-templates";
-const SYSTEM_STATIC_DIR = "system-static";
-
-const USER_STATIC_DIR = "static";
-const USER_TEMPLATE_DIR = "includes";
 const USER_TEMPLATE_EXTENSIONS = [".hbs"];
-const USER_SNIPPET_DIR = "includes";
 const USER_SNIPPET_EXTENSIONS = [".html"];
-
-const CACHE_FILENAME = "cache.json";
-const PUBLIC_ROOT_DIR = "public";
 
 export interface SystemFiles {
   configFile: ParsableFile | null;
