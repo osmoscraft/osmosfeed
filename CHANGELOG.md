@@ -1,3 +1,9 @@
+# v1.11.3
+
+- Fixed: broken links in documentation
+- Chore: Dependency updates
+- Thank you: @hirdot
+
 # v1.11.2
 
 - Fixed: unicode characters in URL caused download error
