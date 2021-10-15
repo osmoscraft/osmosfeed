@@ -22,7 +22,7 @@
 ### Steps
 
 1. Create `includes/before-head-end.html` in your repo.
-2. Copy the `:root` block from the [default css file](https://github.com/osmoscraft/osmosfeed/blob/v1.6.0/src/system-static/styles.css) into `before-head-end.html`.
+2. Copy the `:root` block from the [default css file](https://github.com/osmoscraft/osmosfeed/blob/master/packages/cli/src/system-static/index.css) into `before-head-end.html`.
    ```css
    <style>
    :root {
@@ -60,8 +60,8 @@ Template allows you to fully customize the output of the HTML. Unlike the [themi
    1. A flat list of articles, sorted by publish time. [Demo](https://osmoscraft.github.io/osmosfeed-examples/articles-unstyled/) | [Source](https://github.com/osmoscraft/osmosfeed-examples/blob/main/examples/articles-unstyled/includes/index.hbs)
    2. A list of dates, with articles inside each date. [Demo](https://osmoscraft.github.io/osmosfeed-examples/articles-daily-unstyled/) | [Source](https://github.com/osmoscraft/osmosfeed-examples/blob/main/examples/articles-daily-unstyled/includes/index.hbs)
    3. A list of dates, with a list of sources inside each date, with a list of articles inside each source. [Demo](https://osmoscraft.github.io/osmosfeed-examples/sources-daily-unstyled/) | [Source](https://github.com/osmoscraft/osmosfeed-examples/blob/main/examples/sources-daily-unstyled/includes/index.hbs)
-3. Alternatively, you can start with the [default template](https://github.com/osmoscraft/osmosfeed/blob/master/src/system-templates/index.hbs).
-4. Refer to [source code](https://github.com/osmoscraft/osmosfeed/blob/master/src/lib/get-template-data.ts) for all the data available to the template.
+3. Alternatively, you can start with the [default template](https://github.com/osmoscraft/osmosfeed/blob/master/packages/cli/src/system-templates/index.hbs).
+4. Refer to [source code](https://github.com/osmoscraft/osmosfeed/blob/master/packages/cli/src/lib/get-template-data.ts) for all the data available to the template.
 5. If you reference any `css` or `js` files in your template, make sure to add them to the `static` folder. Conventions for [adding static files](#add-static-files) also apply to your customized template. Example `index.hbs`:
 
    ```hbs
