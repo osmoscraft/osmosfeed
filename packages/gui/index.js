@@ -1,6 +1,6 @@
 const { Plato } = require("./dist/templates/Plato");
 const { Asimov } = require("./dist/templates/Asimov");
-const { render } = require("@osmoscraft/osmosfeed-gui");
+const { render } = require("./dist/lib/render");
 
 module.exports = {
   Plato,

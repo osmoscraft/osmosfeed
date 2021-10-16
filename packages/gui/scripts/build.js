@@ -1,9 +1,19 @@
 const path = require("path");
+const fs = require("fs/promises");
 const { build } = require("vite");
 
-const templateNames = ["Asimov", "Plato"];
+async function main() {
+  const templateNames = await getTemplateNames();
+  console.log(`[build] found ${templateNames.length} templatings`, templateNames);
+  await buildTemplates(templateNames);
+  await buildLib();
+}
 
-async function buildTemplates() {
+async function getTemplateNames() {
+  return fs.readdir(path.resolve(__dirname, "../src/templates"));
+}
+
+async function buildTemplates(templateNames) {
   const buildsAsync = templateNames.map(async (templateName) => {
     await build({
       clearScreen: false,
@@ -34,9 +44,9 @@ async function buildLib() {
         name: "osmosfeed-gui-lib",
         formats: ["cjs"],
       },
-      outDir: path.resolve(__dirname, "../dist/"),
+      outDir: path.resolve(__dirname, "../dist/lib"),
     },
   });
 }
 
-buildLib().then(() => buildTemplates());
+main();
