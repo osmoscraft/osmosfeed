@@ -16,7 +16,6 @@
   "license": "MIT",
   "dependencies": {
     "cheerio": "^1.0.0-rc.10",
-    "entities": "^2.2.0",
     "got": "^11.8.2",
     "htmlparser2": "^6.1.0",
     "uuid": "^8.3.2"
