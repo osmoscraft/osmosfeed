@@ -7,7 +7,7 @@ module.exports = {
     "@storybook/addon-links",
     "@storybook/addon-essentials"
   ],
-  "core": {
-    "builder": "storybook-builder-vite"
-  }
+  // "core": {
+  //   "builder": "storybook-builder-vite"
+  // }
 }
