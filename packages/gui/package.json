@@ -2,11 +2,10 @@
   "name": "@osmoscraft/osmosfeed-gui",
   "version": "0.0.1-alpha.0",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "serve": "vite preview",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "dev": "start-storybook -p 6006",
+    "build": "npm run build:storybook && npm run build:lib",
+    "build:lib": "tsc && vite build",
+    "build:storybook": "build-storybook"
   },
   "dependencies": {
     "react": "^17.0.0",
