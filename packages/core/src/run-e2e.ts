@@ -1,4 +1,4 @@
-import { getTests, runTests } from "@osmoscraft/test-utils";
+import { getTests, runTests } from "@osmoscraft/typescript-testing-library"
 
 import "./__tests__/osmosfeed.e2e"; // to trigger ts-node-dev watcher
 

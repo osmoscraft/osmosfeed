@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "@osmosframe/test-utils";
+import { beforeEach, describe, expect, it } from "@osmoscraft/typescript-testing-library";
 import { access, mkdir, readdir, readFile, rm, writeFile } from "fs/promises";
 import path from "path";
 import { localJsonFeedCacheProvider } from "../lib/cache/local-cache-provider";

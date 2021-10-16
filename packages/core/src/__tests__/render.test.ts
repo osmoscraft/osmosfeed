@@ -1,4 +1,4 @@
-import { describe, expect, it } from "@osmoscraft/test-utils";
+import { describe, expect, it } from "@osmoscraft/typescript-testing-library";
 import { render } from "../lib/render/render";
 
 describe("Render", () => {

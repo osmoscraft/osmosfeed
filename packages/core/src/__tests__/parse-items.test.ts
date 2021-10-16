@@ -1,4 +1,4 @@
-import { describe, expect, it } from "@osmosframe/test-utils";
+import { describe, expect, it } from "@osmoscraft/typescript-testing-library";
 import { parseFeed } from "../lib/parse/parse-feed";
 import { atomParser, rssParser } from "../lib/parse/parsers";
 
