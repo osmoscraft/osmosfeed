@@ -1,13 +1,12 @@
+import { Asimov, render } from "@osmoscraft/osmosfeed-gui";
 import { Meta } from "@storybook/react";
-import { Header } from "../../components/Header";
-import { Asimov } from "./Asimov";
+import { ServerPreivew } from "../../dev-tools/ServerPreview";
 
 export default {
   title: "Templates/Asimov",
 } as Meta;
 
-export const Default = () => (
-  <Asimov>
-    <Header>Hello Plato</Header>
-  </Asimov>
-);
+export const Default = () => {
+  const ssrHtml = render(Asimov);
+  return <ServerPreivew html={ssrHtml} cssPath="templates/Asimov/style.css" />;
+};

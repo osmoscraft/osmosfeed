@@ -2,12 +2,17 @@
   "name": "@osmoscraft/osmosfeed-gui",
   "version": "0.0.1-alpha.0",
   "scripts": {
-    "dev": "start-storybook -p 6006",
-    "build": "npm run build:storybook && npm run build:lib",
-    "build:lib": "node ./scripts/build.js && tsc",
-    "build:storybook": "build-storybook"
+    "dev": "concurrently npm:dev:*",
+    "dev:lib": "node ./scripts/build.js --watch",
+    "dev:storybook": "start-storybook -s dist -p 6006",
+    "dev:tsc": "tsc --noEmit -w",
+    "build": "concurrently npm:build:*",
+    "build:lib": "node ./scripts/build.js",
+    "build:storybook": "build-storybook",
+    "build:tsc": "tsc --emitDeclarationOnly"
   },
   "main": "index.js",
+  "types": "index.d.ts",
   "dependencies": {
     "react": "^17.0.0",
     "react-dom": "^17.0.0"

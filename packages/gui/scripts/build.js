@@ -2,11 +2,12 @@ const path = require("path");
 const fs = require("fs/promises");
 const { build } = require("vite");
 
+const isWatch = process.argv.includes("--watch");
+
 async function main() {
   const templateNames = await getTemplateNames();
   console.log(`[build] found ${templateNames.length} templatings`, templateNames);
-  await buildTemplates(templateNames);
-  await buildLib();
+  await Promise.all([buildTemplates(templateNames), buildLib()]);
 }
 
 async function getTemplateNames() {
@@ -18,6 +19,8 @@ async function buildTemplates(templateNames) {
     await build({
       clearScreen: false,
       build: {
+        watch: isWatch,
+        emptyOutDir: !isWatch,
         ssr: true,
         target: "node16",
         lib: {
@@ -37,6 +40,8 @@ async function buildLib() {
   await build({
     clearScreen: false,
     build: {
+      watch: isWatch,
+      emptyOutDir: !isWatch,
       ssr: true,
       target: "node16",
       lib: {
