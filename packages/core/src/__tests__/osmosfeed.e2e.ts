@@ -1,13 +1,8 @@
 import { beforeEach, describe, expect, it } from "@osmoscraft/typescript-testing-library";
 import { access, mkdir, readdir, readFile, rm, writeFile } from "fs/promises";
 import path from "path";
-import { localJsonFeedCacheProvider } from "../lib/cache/local-cache-provider";
-import { httpGet } from "../lib/http/http-get";
-import { mergeJsonFeeds } from "../lib/merge/merge-json-feeds";
-import type { JsonFeed } from "../lib/json-feed";
-import { parseFeed } from "../lib/parse/parse-feed";
-import { atomParser, rssParser } from "../lib/parse/parsers";
-import { render } from "../lib/render/render";
+import type { JsonFeed } from "../lib";
+import { atomParser, localJsonFeedCacheProvider, mergeJsonFeeds, parseFeed, render, request, rssParser } from "../lib";
 
 const cacheOutputDir = path.join(process.cwd(), "src/__tests__/cache-output");
 
@@ -30,7 +25,7 @@ describe("E2E", () => {
 
     const rawFeeds = await Promise.all(
       feedUrls.map(async (feedUrl) => {
-        const { raw } = await httpGet(feedUrl);
+        const { raw } = await request(feedUrl);
         return {
           feedUrl,
           textResponse: raw, // TODO error status handling

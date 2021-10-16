@@ -6,7 +6,7 @@ export interface HttpResponse {
   raw: string;
 }
 
-export function httpGet(url: string): Promise<HttpResponse> {
+export function request(url: string): Promise<HttpResponse> {
   const req = got.get(url);
 
   return Promise.all([req, req.text()]).then(([req, raw]) => {

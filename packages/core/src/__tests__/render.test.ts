@@ -1,5 +1,5 @@
 import { describe, expect, it } from "@osmoscraft/typescript-testing-library";
-import { render } from "../lib/render/render";
+import { render } from "../lib";
 
 describe("Render", () => {
   it("Renders empty feed", async () => {

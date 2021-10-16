@@ -1,7 +1,7 @@
 import { describe, expect, it } from "@osmoscraft/typescript-testing-library";
 import type { JsonFeed } from "../lib/json-feed";
 import { parseFeed } from "../lib/parse/parse-feed";
-import { atomParser, rssParser } from "../lib/parse/parsers";
+import { atomParser, rssParser } from "../lib";
 import { loadXmlFixture } from "../__fixtures__/test-helper/load-fixture";
 
 describe("Integration", () => {
