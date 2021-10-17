@@ -1,6 +1,6 @@
 {
-  "name": "html",
-  "version": "1.0.0",
+  "name": "@osmoscraft/osmosfeed-web",
+  "version": "0.0.1-alpha.0",
   "description": "",
   "main": "index.js",
   "scripts": {
