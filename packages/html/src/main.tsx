@@ -1,22 +1,17 @@
-import React from "react";
-import ReactDOMServer from "react-dom/server";
-import { ServerStyleSheet } from "styled-components";
-import { App } from "./components/App/App";
 import fs from "fs/promises";
 import path from "path";
 import { build } from "vite";
+import { Header } from "./components/header/header.server";
 
 render();
 
 async function render() {
   await buildClient();
 
-  const sheet = new ServerStyleSheet();
-  const mainHtml = ReactDOMServer.renderToStaticMarkup(sheet.collectStyles(<App />));
-  const stylesHtml = sheet.getStyleTags();
+  const mainHtml = Header.child("hello world").toString();
 
   const template = await fs.readFile(path.resolve(__dirname, "client/index.html"), "utf8");
-  const hydratedIndexHtml = template.replace("<!--SSG_MAIN-->", mainHtml).replace("<!--SSG_STYLES-->", stylesHtml);
+  const hydratedIndexHtml = template.replace("<!--SSG_MAIN-->", mainHtml);
 
   await fs.writeFile(path.resolve(__dirname, "client/index.html"), hydratedIndexHtml);
 }

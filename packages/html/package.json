@@ -1,0 +1,26 @@
+{
+  "name": "html",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npm run storybook",
+    "start": "npm run build && node dist/main.js",
+    "build": "vite build --ssr src/main.tsx --outDir dist",
+    "serve": "vite preview",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.15.8",
+    "@storybook/addon-essentials": "^6.3.12",
+    "@storybook/html": "^6.3.12",
+    "babel-loader": "^8.2.2"
+  },
+  "dependencies": {
+    "vite": "^2.6.7"
+  }
+}
