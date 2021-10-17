@@ -1,12 +1,13 @@
 import React from "react";
 import { useState } from "react";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 
 export function App() {
   const [count, setCount] = useState(0);
 
   return (
     <StyledApp className="App">
+      <GlobalStyles />
       <header className="App-header">
         <p>Hello Vite + React!</p>
         <p>
@@ -79,4 +80,20 @@ const StyledApp = styled.div`
   button {
     font-size: calc(10px + 2vmin);
   }
+`;
+
+const GlobalStyles = createGlobalStyle`
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
 `;

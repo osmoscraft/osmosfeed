@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOMServer from "react-dom/server";
 import { ServerStyleSheet } from "styled-components";
-import { App } from "./App";
+import { App } from "./components/App/App";
 import fs from "fs/promises";
 import path from "path";
 import { build } from "vite";
