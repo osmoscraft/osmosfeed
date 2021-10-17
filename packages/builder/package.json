@@ -2,10 +2,12 @@
   "name": "@osmoscraft/osmosfeed-builder",
   "version": "0.0.1-alpha.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "npm run storybook",
     "start": "npm run build && node dist/main.js",
     "build": "vite build --ssr src/main.tsx --outDir dist",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "main": "dist/main.js",
   "dependencies": {
@@ -15,9 +17,15 @@
     "vite": "^2.6.7"
   },
   "devDependencies": {
+    "@babel/core": "^7.15.8",
+    "@storybook/addon-actions": "^6.3.12",
+    "@storybook/addon-essentials": "^6.3.12",
+    "@storybook/addon-links": "^6.3.12",
+    "@storybook/react": "^6.3.12",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/styled-components": "^5.1.15",
+    "babel-loader": "^8.2.2",
     "styled-components": "^5.3.1",
     "typescript": "^4.3.2"
   }
