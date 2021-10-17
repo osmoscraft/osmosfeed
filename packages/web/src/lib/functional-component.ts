@@ -6,8 +6,8 @@ class FunctionalComponent<AttrType> {
   constructor(private renderFn: RenderFn<AttrType>) {
     this.renderFn = renderFn.bind(this);
   }
-  private _attr = new AttrDict();
-  private _child: string;
+  private _attr = new AttrDict() as Record<string, any>;
+  private _child?: string;
 
   class(classString: string) {
     this._attr["class"] = classString;
@@ -28,7 +28,7 @@ class FunctionalComponent<AttrType> {
   toString() {
     return this.renderFn({
       attr: this._attr as AttrType,
-      child: this._child,
+      child: this._child ?? "",
     });
   }
 }
@@ -47,7 +47,7 @@ export interface RenderFn<T> {
 class AttrDict {
   toString() {
     return Object.getOwnPropertyNames(this)
-      .map((name) => `${name}="${this[name]}"`)
+      .map((name) => `${name}="${(this as any)[name]}"`)
       .join(" ");
   }
 }

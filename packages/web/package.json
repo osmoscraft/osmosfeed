@@ -7,6 +7,7 @@
     "dev": "npm run storybook",
     "start": "npm run build && node dist/main.js",
     "build": "vite build --ssr src/main.tsx --outDir dist",
+    "check:type": "tsc",
     "serve": "vite preview",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
