@@ -1,5 +1,5 @@
 import { Header } from "./header.server";
-import "./header.client";
+import "../../client";
 
 export default {
   title: "Components/Header",
