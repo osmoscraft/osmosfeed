@@ -28,10 +28,6 @@
     "./packages/*"
   ],
   "devDependencies": {
-    "concurrently": "^6.3.0",
     "prettier": "^2.3.2"
-  },
-  "dependencies": {
-    "@types/styled-components": "^5.1.15"
   }
 }
