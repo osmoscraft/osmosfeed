@@ -1,10 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyles = createGlobalStyle`
-:root {
-  --pageBackground: #e9e7e7;
-}
-
 body {
   margin: 0;
   min-height: 100vh;
@@ -14,11 +10,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   
+  color: var(--defaultTextColor);
   background-color: var(--pageBackground);
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
 }
 `;

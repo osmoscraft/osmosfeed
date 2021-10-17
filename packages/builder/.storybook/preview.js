@@ -7,4 +7,10 @@ export const parameters = {
     },
   },
   layout: "fullscreen",
+  options: {
+    storySort: {
+      method: "alphabetical",
+      order: ["Themes", "Components"],
+    },
+  },
 };
