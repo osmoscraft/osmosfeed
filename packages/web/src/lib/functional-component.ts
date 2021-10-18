@@ -1,6 +1,12 @@
-class FunctionalComponentV2<AttrType> {
-  static createComponent<AttrType = any>(tagName: string) {
-    return new FunctionalComponentV2<AttrType>(tagName);
+class FunctionalComponent<AttrType> {
+  static createComponent<AttrType = any>(tagName: string, baseComponent?: FunctionalComponent<any>) {
+    if (baseComponent) {
+      const newInstance = baseComponent.clone() as FunctionalComponent<AttrType>;
+      newInstance._tagName = tagName;
+      return newInstance;
+    }
+
+    return new FunctionalComponent<AttrType>(tagName);
   }
 
   constructor(private _tagName: string) {
@@ -47,7 +53,7 @@ class FunctionalComponentV2<AttrType> {
   }
 
   private clone() {
-    const newInstnace = FunctionalComponentV2.createComponent<AttrType>(this._tagName);
+    const newInstnace = FunctionalComponent.createComponent<AttrType>(this._tagName);
     newInstnace._tagName = this._tagName;
     newInstnace._attr = this._attr.clone();
     newInstnace._innerHTML = this._innerHTML;
@@ -57,7 +63,7 @@ class FunctionalComponentV2<AttrType> {
   }
 }
 
-export const fxc = FunctionalComponentV2.createComponent;
+export const fxc = FunctionalComponent.createComponent;
 
 export interface RenderFnProps<T> {
   attr: T & Record<string, any>;
