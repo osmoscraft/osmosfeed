@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "@osmoscraft/typescript-testing-library";
+import { describe, expect, it } from "@osmoscraft/typescript-testing-library";
 import { fxc } from "../functional-component";
 
 describe("fxc", () => {
