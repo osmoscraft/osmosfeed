@@ -12,7 +12,7 @@ class FunctionalComponentV2<AttrType> {
 
   class(...classList: string[]) {
     const newInstance = this.clone();
-    newInstance._attr["class"] = [...(this._attr["class"] ?? "").split(" "), ...classList].join(" ");
+    newInstance._attr["class"] = [...((this._attr["class"] as string)?.split(" ") ?? []), ...classList].join(" "); // TODO dedupe
     return newInstance;
   }
   attr(attrObj: Record<string, any>) {
@@ -33,7 +33,9 @@ class FunctionalComponentV2<AttrType> {
     return newInstance;
   }
   toString() {
-    return `<${this._tagName} ${this._attr}>${
+    const hasAttr = Object.keys(this._attr).length > 0;
+
+    return `<${this._tagName}${hasAttr ? ` ${this._attr}` : ""}>${
       this._renderChild?.({
         attr: this._attr as AttrType,
       }) ?? ""
@@ -41,7 +43,6 @@ class FunctionalComponentV2<AttrType> {
   }
 
   private _renderChild(_props: RenderFnProps<AttrType>) {
-    console.log(this._innerHTML);
     return this._innerHTML;
   }
 

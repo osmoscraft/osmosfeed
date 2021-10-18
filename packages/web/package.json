@@ -10,13 +10,16 @@
     "check:type": "tsc",
     "serve": "vite preview",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "test": "ts-node-dev --project tsconfig.test.json --transpile-only src/run-test.ts",
+    "test:watch": "ts-node-dev --project tsconfig.test.json --respawn --watch --transpile-only src/run-test.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.15.8",
+    "@osmoscraft/typescript-testing-library": "^0.0.4",
     "@storybook/addon-essentials": "^6.3.12",
     "@storybook/html": "^6.3.12",
     "babel-loader": "^8.2.2"
