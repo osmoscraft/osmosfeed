@@ -50,6 +50,10 @@ describe("fxc", () => {
     const component = fxc("my-component").renderChild(() => "hello");
     await expect(component.renderChild(() => "world").toString()).toEqual(`<my-component>world</my-component>`);
   });
+  it("provides innerHTML in render function", async () => {
+    const component = fxc("my-component").renderChild(({ innerHTML }) => `<div>${innerHTML}</div>`);
+    await expect(component.innerHTML("hello").toString()).toEqual(`<my-component><div>hello</div></my-component>`);
+  });
 
   it("extends other component", async () => {
     const base = fxc("my-base-component").class("hello").innerHTML("world");

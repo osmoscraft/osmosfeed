@@ -1,4 +1,5 @@
-import "../client";
+import ".";
+import { AppLayout } from "../components/app-layout/app-layout.server";
 import { Header } from "../components/header/header.server";
 
 export default {
@@ -8,7 +9,7 @@ export default {
 export const Default = () => {
   document.body.dataset.theme = "plato";
 
-  return `${Header.class("big").attr({ foo: 42 }).innerHTML(`
-    hello header
-`)}`;
+  return `${AppLayout.innerHTML(`
+    ${Header.innerHTML(`osmoscraft / plato theme`)}
+  `)}`;
 };

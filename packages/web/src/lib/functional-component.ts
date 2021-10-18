@@ -44,6 +44,7 @@ class FunctionalComponent<AttrType> {
     return `<${this._tagName}${hasAttr ? ` ${this._attr}` : ""}>${
       this._renderChild?.({
         attr: this._attr as AttrType,
+        innerHTML: this._innerHTML,
       }) ?? ""
     }</${this._tagName}>`;
   }
@@ -67,6 +68,7 @@ export const fxc = FunctionalComponent.createComponent;
 
 export interface RenderFnProps<T> {
   attr: T & Record<string, any>;
+  innerHTML: string;
 }
 
 export interface RenderFn<T> {
