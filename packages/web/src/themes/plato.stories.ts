@@ -8,7 +8,7 @@ export default {
 export const Default = () => {
   document.body.dataset.theme = "plato";
 
-  return `${Header.class("big").attr({ foo: 42 }).child(`
+  return `${Header.class("big").attr({ foo: 42 }).innerHTML(`
     hello header
 `)}`;
 };

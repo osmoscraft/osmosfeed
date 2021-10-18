@@ -5,7 +5,4 @@ export default {
   title: "Components/Header",
 };
 
-export const defaultHeader = () =>
-  `${Header.class("big").attr({ foo: 42 }).child(`
-    hello header
-`)}`;
+export const Default = () => `${Header.innerHTML("hello world")}`;

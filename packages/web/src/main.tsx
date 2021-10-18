@@ -8,7 +8,7 @@ render();
 async function render() {
   await buildClient();
 
-  const mainHtml = Header.child("hello world").toString();
+  const mainHtml = Header.toString();
 
   const template = await fs.readFile(path.resolve(__dirname, "client/index.html"), "utf8");
   const hydratedIndexHtml = template.replace("<!--SSG_MAIN-->", mainHtml);

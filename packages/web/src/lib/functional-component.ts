@@ -1,43 +1,65 @@
-class FunctionalComponent<AttrType> {
-  static createComponent<AttrType = any>(renderFn: RenderFn<AttrType>) {
-    return new FunctionalComponent<AttrType>(renderFn);
+class FunctionalComponentV2<AttrType> {
+  static createComponent<AttrType = any>(tagName: string) {
+    return new FunctionalComponentV2<AttrType>(tagName);
   }
 
-  constructor(private renderFn: RenderFn<AttrType>) {
-    this.renderFn = renderFn.bind(this);
+  constructor(private _tagName: string) {
+    this._tagName = _tagName;
   }
-  private _attr = new AttrDict() as Record<string, any>;
-  private _child?: string;
 
-  class(classString: string) {
-    this._attr["class"] = classString;
-    return this;
+  private _attr = new AttrDict() as AttrDict & Record<string, any>;
+  private _innerHTML = "";
+
+  class(...classList: string[]) {
+    const newInstance = this.clone();
+    newInstance._attr["class"] = [...(this._attr["class"] ?? "").split(" "), ...classList].join(" ");
+    return newInstance;
   }
   attr(attrObj: Record<string, any>) {
+    const newInstance = this.clone();
     Object.entries(attrObj).forEach(([key, value]) => {
-      this._attr[key] = value;
+      newInstance._attr[key] = value;
     });
-    return this;
+    return newInstance;
   }
-
-  child(html: string) {
-    this._child = html;
-    return this;
+  renderChild(renderFn: RenderFn<AttrType>) {
+    const newInstance = this.clone();
+    newInstance._renderChild = renderFn;
+    return newInstance;
   }
-
+  innerHTML(innerHTML: string) {
+    const newInstance = this.clone();
+    newInstance._innerHTML = innerHTML;
+    return newInstance;
+  }
   toString() {
-    return this.renderFn({
-      attr: this._attr as AttrType,
-      child: this._child ?? "",
-    });
+    return `<${this._tagName} ${this._attr}>${
+      this._renderChild?.({
+        attr: this._attr as AttrType,
+      }) ?? ""
+    }</${this._tagName}>`;
+  }
+
+  private _renderChild(_props: RenderFnProps<AttrType>) {
+    console.log(this._innerHTML);
+    return this._innerHTML;
+  }
+
+  private clone() {
+    const newInstnace = FunctionalComponentV2.createComponent<AttrType>(this._tagName);
+    newInstnace._tagName = this._tagName;
+    newInstnace._attr = this._attr.clone();
+    newInstnace._innerHTML = this._innerHTML;
+    newInstnace._renderChild = this._renderChild;
+
+    return newInstnace;
   }
 }
 
-export const fxc = FunctionalComponent.createComponent;
+export const fxc = FunctionalComponentV2.createComponent;
 
 export interface RenderFnProps<T> {
   attr: T & Record<string, any>;
-  child: string;
 }
 
 export interface RenderFn<T> {
@@ -45,6 +67,12 @@ export interface RenderFn<T> {
 }
 
 class AttrDict {
+  clone() {
+    const newInstance = new AttrDict();
+    Object.assign(newInstance, Object.fromEntries(Object.entries(this)));
+    return newInstance;
+  }
+
   toString() {
     return Object.getOwnPropertyNames(this)
       .map((name) => `${name}="${(this as any)[name]}"`)
