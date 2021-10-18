@@ -21,7 +21,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@osmoscraft/typescript-testing-library": "^0.0.4",
+    "@osmoscraft/typescript-testing-library": "^0.0.5",
     "@types/node": "^16.7.10",
     "@types/uuid": "^8.3.1",
     "esbuild": "^0.12.15",

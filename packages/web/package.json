@@ -19,7 +19,7 @@
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.15.8",
-    "@osmoscraft/typescript-testing-library": "^0.0.4",
+    "@osmoscraft/typescript-testing-library": "^0.0.5",
     "@storybook/addon-essentials": "^6.3.12",
     "@storybook/html": "^6.3.12",
     "babel-loader": "^8.2.2"
