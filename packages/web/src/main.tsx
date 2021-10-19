@@ -1,7 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
 import { build } from "vite";
-import { Header } from "./components/header/header.server";
+import { Header } from "./components/header/header";
 
 render();
 

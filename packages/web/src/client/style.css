@@ -1,3 +1,7 @@
+@import url("../components/app-layout/app-layout.css");
+@import url("../components/article-card/article-card.css");
+@import url("../components//articles-row//articles-row.css");
+
 body[data-theme="carbon"] {
   --defaultTextColor: #fff;
   --pageBackground: #333231;

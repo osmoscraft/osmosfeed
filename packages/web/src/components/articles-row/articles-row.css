@@ -1,0 +1,5 @@
+osmos-articles-row {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 16px;
+}

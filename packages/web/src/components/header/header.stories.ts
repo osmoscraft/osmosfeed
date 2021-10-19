@@ -1,4 +1,4 @@
-import { Header } from "./header.server";
+import { Header } from "./header";
 import "../../client";
 
 export default {

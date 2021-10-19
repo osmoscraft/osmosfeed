@@ -1,0 +1,4 @@
+osmos-article-card {
+  display: inline-grid;
+  background-color: var(--cardBackground);
+}

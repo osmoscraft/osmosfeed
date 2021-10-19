@@ -64,7 +64,7 @@ class FunctionalComponent<AttrType> {
   }
 }
 
-export const fxc = FunctionalComponent.createComponent;
+export const fc = FunctionalComponent.createComponent;
 
 export interface RenderFnProps<T> {
   attr: T & Record<string, any>;

@@ -1,5 +1,5 @@
 import { mockText } from "../../dev-tools/mock-text";
-import { AppLayout } from "./app-layout.server";
+import { AppLayout } from "./app-layout";
 
 export default {
   title: "Components/AppLayout",
