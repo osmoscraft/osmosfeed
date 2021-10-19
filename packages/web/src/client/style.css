@@ -6,12 +6,18 @@ body[data-theme="carbon"] {
   --defaultTextColor: #fff;
   --pageBackground: #333231;
   --cardBackground: #333231;
+  --cardBorderWidth: 1px;
+  --cardBorderColor: pink;
+  --cardBorderRadius: 0px;
 }
 
 body[data-theme="plato"] {
   --defaultTextColor: #333231;
   --pageBackground: #e9e7e7;
   --cardBackground: #ffffff;
+  --cardBorderWidth: 1px;
+  --cardBorderColor: #d8d7d6;
+  --cardBorderRadius: 8px;
 }
 
 body {

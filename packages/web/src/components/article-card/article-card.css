@@ -1,4 +1,6 @@
 osmos-article-card {
   display: inline-grid;
+  border: var(--cardBorderWidth) solid var(--cardBorderColor);
   background-color: var(--cardBackground);
+  border-radius: var(--cardBorderRadius);
 }
