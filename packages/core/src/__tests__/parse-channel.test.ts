@@ -2,15 +2,11 @@ import { describe, expect, it } from "@osmoscraft/typescript-testing-library";
 import { atomParser, parseFeed, rssParser } from "../lib";
 
 describe("Parse channel", () => {
-  it("Throws for non-feed xml", async () => {
-    await expect(() =>
-      myParseFeed(`
-      <?xml version="1.0"?>
-    `)
-    ).toThrow();
+  it("Throws for Non-feed XML", async () => {
+    await expect(() => myParseFeed(`<?xml version="1.0"?>`)).toThrow();
   });
 
-  it("MissingFields/RSS2", async () => {
+  it("Missings fields/RSS2", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>
@@ -25,10 +21,10 @@ describe("Parse channel", () => {
     ).toEqual(["items", "title", "version"]);
   });
 
-  it("MissingFields/RDF", async () => {
+  it("Missing fields/RDF", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <rdf:RDF>
+      <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
         <channel></channel>
       </rdf:RDF>
     `);
@@ -40,10 +36,10 @@ describe("Parse channel", () => {
     ).toEqual(["items", "title", "version"]);
   });
 
-  it("MissingFields/Atom", async () => {
+  it("Missing fields/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <feed></feed>
+      <feed xmlns="http://www.w3.org/2005/Atom"></feed>
     `);
 
     await expect(result.title).toEqual("");
@@ -69,7 +65,7 @@ describe("Parse channel", () => {
   it("JSON Feed version/RDF", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <rdf:RDF>
+      <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
         <channel>
           <title></title>
         </channel>
@@ -82,7 +78,7 @@ describe("Parse channel", () => {
   it("JSON Feed version/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <feed>
+      <feed xmlns="http://www.w3.org/2005/Atom">
         <title></title>
       </feed>
     `);
@@ -106,7 +102,7 @@ describe("Parse channel", () => {
   it("Title/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <feed>
+      <feed xmlns="http://www.w3.org/2005/Atom">
         <title>Mock channel title</title>
       </feed>
     `);
@@ -130,7 +126,7 @@ describe("Parse channel", () => {
   it("Summary/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <feed>
+      <feed xmlns="http://www.w3.org/2005/Atom">
         <subtitle>Mock channel description</subtitle>
       </feed>
     `);
@@ -138,7 +134,7 @@ describe("Parse channel", () => {
     await expect(result.description).toEqual("Mock channel description");
   });
 
-  it("HomePageUrl/RSS2", async () => {
+  it("Home page url/RSS2", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>
@@ -151,10 +147,10 @@ describe("Parse channel", () => {
     await expect(result.home_page_url).toEqual("http://mock-domain.com");
   });
 
-  it("HomePageUrl/Atom", async () => {
+  it("Home page url/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <feed>
+      <feed xmlns="http://www.w3.org/2005/Atom">
         <link href="http://mock-domain.com"/>
       </feed>
     `);
@@ -162,7 +158,7 @@ describe("Parse channel", () => {
     await expect(result.home_page_url).toEqual("http://mock-domain.com");
   });
 
-  it("ChannelIcon/RSS2", async () => {
+  it("Channel icon/RSS2", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>
@@ -179,10 +175,10 @@ describe("Parse channel", () => {
     await expect(result.icon).toEqual("http://mock-domain.com/channel-image.png");
   });
 
-  it("ChannelIcon/RDF", async () => {
+  it("Channel icon/RDF", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <rdf:RDF>
+      <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
         <channel rdf:about="http://mock-domain.com/rss">
           <image rdf:resource="http://mock-domain.com/channel-image.png" />
         </channel>
@@ -197,10 +193,10 @@ describe("Parse channel", () => {
     await expect(result.icon).toEqual("http://mock-domain.com/channel-image.png");
   });
 
-  it("ChannelIcon/Atom", async () => {
+  it("Channel icon/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <feed>
+      <feed xmlns="http://www.w3.org/2005/Atom">
         <icon>http://mock-domain.com/channel-image.png</icon>
       </feed>
     `);
@@ -208,7 +204,7 @@ describe("Parse channel", () => {
     await expect(result.icon).toEqual("http://mock-domain.com/channel-image.png");
   });
 
-  it("ChannelTimestamps/NoDate/RSS2", async () => {
+  it("Channel timestamps/No date/RSS2", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>
@@ -221,7 +217,7 @@ describe("Parse channel", () => {
     await expect(result._date_modified).toEqual(undefined);
   });
 
-  it("ChannelTimestamps/PublishOnly/RSS2", async () => {
+  it("Channel timestamps/Publish only/RSS2", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>
@@ -235,7 +231,7 @@ describe("Parse channel", () => {
     await expect(result._date_modified).toEqual("2000-01-01T00:00:00.000Z");
   });
 
-  it("ChannelTimestamps/UpdateOnly/RSS", async () => {
+  it("Channel timestamps/Update only/RSS", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>
@@ -249,7 +245,7 @@ describe("Parse channel", () => {
     await expect(result._date_modified).toEqual("2000-12-12T12:12:12.000Z");
   });
 
-  it("ChannelTimestamps/PublishAndUpdate/RSS2", async () => {
+  it("Channel timestamps/Publish and update/RSS2", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>
@@ -264,10 +260,10 @@ describe("Parse channel", () => {
     await expect(result._date_modified).toEqual("2000-12-12T12:12:12.000Z");
   });
 
-  it("ChannelTimestamps/RDF", async () => {
+  it("Channel timestamps/RDF", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <rdf:RDF>
+      <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
         <channel rdf:about="http://mock-domain.com/rss">
           <dc:date>2000-12-12T12:12:12Z</dc:date>
         </channel>
@@ -278,10 +274,10 @@ describe("Parse channel", () => {
     await expect(result._date_modified).toEqual("2000-12-12T12:12:12.000Z");
   });
 
-  it("ChannelTimestamps/Atom", async () => {
+  it("Channel timestamps/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <feed>
+      <feed xmlns="http://www.w3.org/2005/Atom">
         <updated>2000-12-12T12:12:12Z</updated>
       </feed>
     `);
