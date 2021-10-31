@@ -38,7 +38,7 @@ export const rssParser: XmlFeedParser = {
       content_text: coerceEmptyString(decodedContent.text()) ?? coerceEmptyString(decodedSummary.text(), ""),
       image:
         item.find(`> enclosure[type^="image"]`).attr("url") ??
-        item.find(`> enc\\:enclosre[enc\\:type^="image"]`).attr("rdf:resource") ??
+        item.find(`> enc\\:enclosure[enc\\:type^="image"]`).attr("rdf:resource") ??
         undefined,
       date_published: coerceError(() => new Date(date ?? "").toISOString()),
       date_modified: coerceError(() => new Date(date ?? "").toISOString()),
