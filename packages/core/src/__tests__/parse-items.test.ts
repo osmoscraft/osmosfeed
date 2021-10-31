@@ -23,7 +23,7 @@ describe("Parse items", () => {
   it("MissingFields/RDF", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <rdf:RDF>
+      <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
         <channel></channel>
         <item></item>
       </rdf:RDF>
@@ -102,7 +102,7 @@ describe("Parse items", () => {
   it("Id/RDF", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <rdf:RDF>
+      <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
         <channel>
         </channel>
         <item>
@@ -172,7 +172,7 @@ describe("Parse items", () => {
   it("Url/RDF", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <rdf:RDF>
+      <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
         <channel>
         </channel>
         <item>
@@ -215,7 +215,7 @@ describe("Parse items", () => {
   it("Title/RDF", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <rdf:RDF>
+      <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
         <channel>
         </channel>
         <item>
@@ -554,13 +554,13 @@ describe("Parse items", () => {
   it("Image/RDF", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <rss>
+      <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
         <channel>
-          <item>
-            <enc:enclosre rdf:resource="http://mock-domain.com/item-image-1.png" enc:type="image/png" enc:length="1000" />
-          </item>
         </channel>
-      </rss>
+        <item>
+          <enc:enclosure rdf:resource="http://mock-domain.com/item-image-1.png" enc:type="image/png" enc:length="1000" />
+        </item>
+      </rdf:RDF>
     `);
 
     await expect(result.items[0].image).toEqual("http://mock-domain.com/item-image-1.png");
