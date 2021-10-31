@@ -2,7 +2,7 @@ import { describe, expect, it } from "@osmoscraft/typescript-testing-library";
 import { atomParser, parseFeed, rssParser } from "../lib";
 
 describe("Parse items", () => {
-  it("MissingFields/RSS2", async () => {
+  it("Missing fields/RSS2", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>
@@ -20,7 +20,7 @@ describe("Parse items", () => {
     ).toEqual(["content_html", "content_text", "id"]);
   });
 
-  it("MissingFields/RDF", async () => {
+  it("Missing fields/RDF", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -37,7 +37,7 @@ describe("Parse items", () => {
     ).toEqual(["content_html", "content_text", "id"]);
   });
 
-  it("MissingFields/Atom", async () => {
+  it("Missing fields/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
@@ -53,7 +53,7 @@ describe("Parse items", () => {
     ).toEqual(["content_html", "content_text", "id"]);
   });
 
-  it("Id/LinkOnly/RSS2", async () => {
+  it("Id/Link only/RSS2", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>
@@ -68,7 +68,7 @@ describe("Parse items", () => {
     await expect(result.items[0].id).toEqual("http://mock-domain.com/item/1");
   });
 
-  it("Id/GuidOnly/RSS2", async () => {
+  it("Id/Guid only/RSS2", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>
@@ -83,7 +83,7 @@ describe("Parse items", () => {
     await expect(result.items[0].id).toEqual("1234-abcd");
   });
 
-  it("Id/GuidAndLink/RSS2", async () => {
+  it("Id/Guid and link/RSS2", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>
@@ -114,7 +114,7 @@ describe("Parse items", () => {
     await expect(result.items[0].id).toEqual("http://mock-domain.com/item/1");
   });
 
-  it("Id/IdOnly/Atom", async () => {
+  it("Id/Id only/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
@@ -127,7 +127,7 @@ describe("Parse items", () => {
     await expect(result.items[0].id).toEqual("1234-abcd");
   });
 
-  it("Id/LinkOnly/Atom", async () => {
+  it("Id/Link only/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
@@ -140,7 +140,7 @@ describe("Parse items", () => {
     await expect(result.items[0].id).toEqual("http://mock-domain.com/item/1");
   });
 
-  it("Id/IdAndLink/Atom", async () => {
+  it("Id/Id and link/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
@@ -554,7 +554,10 @@ describe("Parse items", () => {
   it("Image/RDF", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:RDF
+        xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+        xmlns:enc="http://purl.oclc.org/net/rss_2.0/enc#"
+      >
         <channel>
         </channel>
         <item>
