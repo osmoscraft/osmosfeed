@@ -40,7 +40,7 @@ describe("Parse items", () => {
   it("MissingFields/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <feed>
+      <feed xmlns="http://www.w3.org/2005/Atom">
         <entry></entry>
       </feed>
     `);
@@ -108,7 +108,7 @@ describe("Parse items", () => {
         <item>
           <link>http://mock-domain.com/item/1</link>
         </item>
-      <rdf:RDF>
+      </rdf:RDF>
     `);
 
     await expect(result.items[0].id).toEqual("http://mock-domain.com/item/1");
@@ -117,7 +117,7 @@ describe("Parse items", () => {
   it("Id/IdOnly/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <feed>
+      <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
           <id>1234-abcd</id>
         </entry>
@@ -130,7 +130,7 @@ describe("Parse items", () => {
   it("Id/LinkOnly/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <feed>
+      <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
           <link href="http://mock-domain.com/item/1"/>
         </entry>
@@ -143,7 +143,7 @@ describe("Parse items", () => {
   it("Id/IdAndLink/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <feed>
+      <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
           <id>1234-abcd</id>
           <link href="http://mock-domain.com/item/1"/>
@@ -178,7 +178,7 @@ describe("Parse items", () => {
         <item>
           <link>http://mock-domain.com/item/1</link>
         </item>
-      <rdf:RDF>
+      </rdf:RDF>
     `);
 
     await expect(result.items[0].url).toEqual("http://mock-domain.com/item/1");
@@ -187,7 +187,7 @@ describe("Parse items", () => {
   it("Url/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <feed>
+      <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
           <link href="http://mock-domain.com/item/1"/>
         </entry>
@@ -221,7 +221,7 @@ describe("Parse items", () => {
         <item>
           <title>Mock item title 1</title>
         </item>
-      <rdf:RDF>
+      </rdf:RDF>
     `);
 
     await expect(result.items[0].title).toEqual("Mock item title 1");
@@ -230,7 +230,7 @@ describe("Parse items", () => {
   it("Title/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <feed>
+      <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
           <title>Mock item title 1</title>
         </entry>
@@ -387,7 +387,7 @@ describe("Parse items", () => {
   it("Content/Atom/DefaultType", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <feed>
+      <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
           <summary>&lt;b&gt;bold&lt;/b&gt;</summary>
         </entry>
@@ -401,7 +401,7 @@ describe("Parse items", () => {
   it("Content/Atom/textType", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <feed>
+      <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
           <summary type="text">&lt;b&gt;bold&lt;/b&gt;</summary>
         </entry>
@@ -415,7 +415,7 @@ describe("Parse items", () => {
   it("Content/Atom/htmlType", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <feed>
+      <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
           <summary type="html">&lt;b&gt;bold&lt;/b&gt;</summary>
         </entry>
@@ -429,7 +429,7 @@ describe("Parse items", () => {
   it("Content/Atom/xhtmlType", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <feed>
+      <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
           <summary type="xhtml">
             <div xmlns="http://www.w3.org/1999/xhtml">
@@ -463,7 +463,7 @@ describe("Parse items", () => {
   it("SummaryAndContent/SummaryOnly/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <feed>
+      <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
           <summary>summary</summary>
         </entry>
@@ -493,7 +493,7 @@ describe("Parse items", () => {
   it("SummaryAndContent/ContentOnly/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <feed>
+      <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
           <content>content</content>
         </entry>
@@ -524,7 +524,7 @@ describe("Parse items", () => {
   it("SummaryAndContent/Both/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <feed>
+      <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
           <summary>summary</summary>
           <content>content</content>
@@ -569,7 +569,7 @@ describe("Parse items", () => {
   it("Image/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <feed>
+      <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
           <link rel="enclosure" type="image/png" href="http://mock-domain.com/item-image-1.png" />
         </entry>
@@ -614,7 +614,7 @@ describe("Parse items", () => {
   it("Timestamps/PublishOnly/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <feed>
+      <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
           <published>2000-01-01T00:00:00Z</published>
         </entry>
@@ -628,7 +628,7 @@ describe("Parse items", () => {
   it("Timestamps/UpdateOnly/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <feed>
+      <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
           <updated>2000-12-12T12:12:12Z</updated>
         </entry>
@@ -642,7 +642,7 @@ describe("Parse items", () => {
   it("Timestamps/PublishAndUpdate/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
-      <feed>
+      <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
           <published>2000-01-01T00:00:00Z</published>
           <updated>2000-12-12T12:12:12Z</updated>
