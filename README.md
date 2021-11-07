@@ -87,7 +87,7 @@ Browse all [sources and more examples](https://github.com/osmoscraft/osmosfeed-e
 
 ### Can I make the site private so only I can see it?
 
-> It is not possible with GitHub Pages. However, if you move the site to a different hosting service, you should be able to set up authorization on the host level. For example, if you [deploy to Netlify](./docs/how-to-deploy-to-other-hosts#netlify), there is a paid plan for [password protection](https://docs.netlify.com/visitor-access/password-protection/).
+> It is not possible with GitHub Pages. However, if you move the site to a different hosting service, you should be able to set up authorization on the host level. For example, if you [deploy to Netlify](./docs/how-to-deploy-to-other-hosts.md#netlify), there is a paid plan for [password protection](https://docs.netlify.com/visitor-access/password-protection/).
 
 ### Do I have to type `index.html` at the end of the URL?
 
