@@ -57,7 +57,7 @@ export const atomParser: XmlFeedParser = {
       version: "https://jsonfeed.org/version/1.1",
       title: decodeAtomText(channel.find("> title")).text(),
       description: coerceEmptyString(decodeAtomText(channel.find("> subtitle")).text()),
-      home_page_url: channel.find("> link").attr("href"),
+      home_page_url: channel.find(`> link:not([rel="self"])`).attr("href"),
       icon: coerceEmptyString(channel.find("> icon").text()),
       _date_published: date ? coerceError(() => new Date(date).toISOString()) : undefined,
       _date_modified: date ? coerceError(() => new Date(date).toISOString()) : undefined,

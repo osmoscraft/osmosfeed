@@ -256,7 +256,7 @@ describe("Parse items", () => {
     await expect(result.items[0].content_html).toEqual("Plaintext description");
   });
 
-  it("Content/SpaceTrimming", async () => {
+  it("Content/Space trimming", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>
@@ -288,7 +288,7 @@ describe("Parse items", () => {
     await expect(result.items[0].content_html).toEqual("&");
   });
 
-  it("Content/AngleBracket", async () => {
+  it("Content/Angle bracket", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>
@@ -304,7 +304,7 @@ describe("Parse items", () => {
     await expect(result.items[0].content_html).toEqual("&lt;");
   });
 
-  it("Content/HtmlTags", async () => {
+  it("Content/HTML tags", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>
@@ -320,7 +320,7 @@ describe("Parse items", () => {
     await expect(result.items[0].content_html).toEqual("<b>bold</b>");
   });
 
-  it("Content/DoubleEscapedEntities", async () => {
+  it("Content/Double-escaped entities", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>
@@ -336,7 +336,7 @@ describe("Parse items", () => {
     await expect(result.items[0].content_html).toEqual("&lt;b&gt;bold&lt;/b&gt;");
   });
 
-  it("Content/CDATANoEscape", async () => {
+  it("Content/CDATA without escape", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>
@@ -352,7 +352,7 @@ describe("Parse items", () => {
     await expect(result.items[0].content_html).toEqual("<b>bold</b>");
   });
 
-  it("Content/CDATAEscaped", async () => {
+  it("Content/CDATA with escape", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>
@@ -384,7 +384,7 @@ describe("Parse items", () => {
     await expect(result.items[0].content_html).toEqual("<b>bold</b>");
   });
 
-  it("Content/Atom/DefaultType", async () => {
+  it("Content/Atom/Default type", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
@@ -398,7 +398,7 @@ describe("Parse items", () => {
     await expect(result.items[0].content_html).toEqual("&lt;b&gt;bold&lt;/b&gt;");
   });
 
-  it("Content/Atom/textType", async () => {
+  it("Content/Atom/text type", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
@@ -412,7 +412,7 @@ describe("Parse items", () => {
     await expect(result.items[0].content_html).toEqual("&lt;b&gt;bold&lt;/b&gt;");
   });
 
-  it("Content/Atom/htmlType", async () => {
+  it("Content/Atom/html type", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
@@ -426,7 +426,7 @@ describe("Parse items", () => {
     await expect(result.items[0].content_html).toEqual("<b>bold</b>");
   });
 
-  it("Content/Atom/xhtmlType", async () => {
+  it("Content/Atom/xhtml type", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
@@ -444,7 +444,7 @@ describe("Parse items", () => {
     await expect(result.items[0].content_html).toEqual("AT&T bought <b>by SBC</b>");
   });
 
-  it("SummaryAndContent/SummaryOnly/RSS", async () => {
+  it("Summary and content/Summary only/RSS", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>
@@ -460,7 +460,7 @@ describe("Parse items", () => {
     await expect(result.items[0].content_text).toEqual("summary");
   });
 
-  it("SummaryAndContent/SummaryOnly/Atom", async () => {
+  it("Summary and content/Summary only/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
@@ -474,7 +474,7 @@ describe("Parse items", () => {
     await expect(result.items[0].content_text).toEqual("summary");
   });
 
-  it("SummaryAndContent/ContentOnly/RSS", async () => {
+  it("Summary and content/Content only/RSS", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>
@@ -490,7 +490,7 @@ describe("Parse items", () => {
     await expect(result.items[0].content_text).toEqual("content");
   });
 
-  it("SummaryAndContent/ContentOnly/Atom", async () => {
+  it("Summary and content/Content only/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
@@ -504,7 +504,7 @@ describe("Parse items", () => {
     await expect(result.items[0].content_text).toEqual("content");
   });
 
-  it("SummaryAndContent/Both/RSS2", async () => {
+  it("Summary and content/Both/RSS2", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <rss>
@@ -521,7 +521,7 @@ describe("Parse items", () => {
     await expect(result.items[0].content_text).toEqual("content");
   });
 
-  it("SummaryAndContent/Both/Atom", async () => {
+  it("Summary and content/Both/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
@@ -614,7 +614,7 @@ describe("Parse items", () => {
     await expect(result.items[0].date_modified).toEqual("2000-01-01T00:00:00.000Z");
   });
 
-  it("Timestamps/PublishOnly/Atom", async () => {
+  it("Timestamps/Publish only/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
@@ -628,7 +628,7 @@ describe("Parse items", () => {
     await expect(result.items[0].date_modified).toEqual("2000-01-01T00:00:00.000Z");
   });
 
-  it("Timestamps/UpdateOnly/Atom", async () => {
+  it("Timestamps/Update only/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
@@ -642,7 +642,7 @@ describe("Parse items", () => {
     await expect(result.items[0].date_modified).toEqual("2000-12-12T12:12:12.000Z");
   });
 
-  it("Timestamps/PublishAndUpdate/Atom", async () => {
+  it("Timestamps/Publish and update/Atom", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">

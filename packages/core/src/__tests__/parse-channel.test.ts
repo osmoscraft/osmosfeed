@@ -158,6 +158,18 @@ describe("Parse channel", () => {
     await expect(result.home_page_url).toEqual("http://mock-domain.com");
   });
 
+  it("Home page url with self/Atom", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <feed xmlns="http://www.w3.org/2005/Atom">
+        <link rel="self" href="http://mock-domain.com/feed.xml"/>
+        <link rel="alternate" href="http://mock-domain.com"/>
+      </feed>
+    `);
+
+    await expect(result.home_page_url).toEqual("http://mock-domain.com");
+  });
+
   it("Channel icon/RSS2", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>
