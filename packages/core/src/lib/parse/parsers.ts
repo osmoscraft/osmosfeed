@@ -13,8 +13,8 @@ export const rssParser: XmlFeedParser = {
 
     return {
       version: "https://jsonfeed.org/version/1.1",
-      title: decodeXmlText(channel.find("> title")).text(),
-      description: coerceEmptyString(decodeXmlText(channel.find("> description")).text()),
+      title: parseXmlNode(channel.find("> title")).text(),
+      description: coerceEmptyString(parseXmlNode(channel.find("> description")).text()),
       home_page_url: coerceEmptyString(channel.find("> link").text()),
       icon:
         coerceEmptyString(channel.find("> image url").text()) ??
@@ -24,9 +24,9 @@ export const rssParser: XmlFeedParser = {
     };
   },
   resolveItem: (item, _channel) => {
-    const decodedTitle = decodeXmlText(item.find("> title"));
-    const decodedSummary = decodeXmlText(item.find("> description"));
-    const decodedContent = decodeXmlText(item.find("> content\\:encoded"));
+    const decodedTitle = parseXmlNode(item.find("> title"));
+    const decodedSummary = parseXmlNode(item.find("> description"));
+    const decodedContent = parseXmlNode(item.find("> content\\:encoded"));
     const date = coerceEmptyString(item.find("> pubDate,> dc\\:date").first().text());
 
     return {
@@ -55,8 +55,8 @@ export const atomParser: XmlFeedParser = {
 
     return {
       version: "https://jsonfeed.org/version/1.1",
-      title: decodeAtomText(channel.find("> title")).text(),
-      description: coerceEmptyString(decodeAtomText(channel.find("> subtitle")).text()),
+      title: parseAtomNode(channel.find("> title")).text(),
+      description: coerceEmptyString(parseAtomNode(channel.find("> subtitle")).text()),
       home_page_url: channel.find(`> link:not([rel="self"])`).attr("href"),
       icon: coerceEmptyString(channel.find("> icon").text()),
       _date_published: date ? coerceError(() => new Date(date).toISOString()) : undefined,
@@ -64,9 +64,9 @@ export const atomParser: XmlFeedParser = {
     };
   },
   resolveItem: (item: Cheerio<Element>, _channel: Cheerio<Element>) => {
-    const decodedTitle = decodeAtomText(item.find("> title"));
-    const decodedSummary = decodeAtomText(item.find("> summary"));
-    const decodedContent = decodeAtomText(item.find("> content"));
+    const decodedTitle = parseAtomNode(item.find("> title"));
+    const decodedSummary = parseAtomNode(item.find("> summary"));
+    const decodedContent = parseAtomNode(item.find("> content"));
     const publishedDate = coerceEmptyString(item.find("> published").text());
     const modifedDate = coerceEmptyString(item.find("> updated").text());
 
@@ -92,13 +92,13 @@ function elementHasCdata(node: Node) {
   return (node as Element)?.children.some((c) => c.type === ElementType.CDATA);
 }
 
-function decodeAtomText($: Cheerio<Node>) {
+function parseAtomNode($: Cheerio<Node>) {
   const type = $.attr("type");
   switch (type) {
     case "html":
-      return decodeXmlText($);
+      return parseXmlNode($);
     case "xhtml":
-      return decodeXmlText($.find("div").first());
+      return parseXmlNode($.find("div").first());
     case "text":
     default:
       return {
@@ -108,7 +108,7 @@ function decodeAtomText($: Cheerio<Node>) {
   }
 }
 
-function decodeXmlText($: Cheerio<Node>): { html: () => string; text: () => string } {
+function parseXmlNode($: Cheerio<Node>): ParsedXmlNode {
   const _getHtml = () => ($hasCdata($) ? $.text().trim() : $.html()?.trim() ?? "");
   const _getText = () => cheerio.load(_getHtml()).text();
 
@@ -116,6 +116,11 @@ function decodeXmlText($: Cheerio<Node>): { html: () => string; text: () => stri
     html: _getHtml,
     text: _getText,
   };
+}
+
+interface ParsedXmlNode {
+  text: () => string;
+  html: () => string;
 }
 
 function escapeXmlText(input: string): string {
