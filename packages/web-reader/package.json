@@ -2,11 +2,17 @@
   "name": "@osmoscraft/osmosfeed-web-reader",
   "version": "0.0.1-alpha.0",
   "description": "Client TypeScript files, pre-compiled into javascript, installable by the CLI.",
-  "main": "index.js",
+  "main": "dist/lib.js",
+  "types": "src/lib.ts",
+  "type": "module",
   "scripts": {
+    "build": "node scripts/build.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "esbuild": "^0.13.15"
+  }
 }

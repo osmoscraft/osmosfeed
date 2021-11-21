@@ -3,7 +3,10 @@ import { renderSite } from "../lib";
 
 describe("Render", () => {
   it("Renders empty feed", async () => {
-    const result = renderSite([], "");
+    const result = renderSite({
+      assets: [],
+      data: [],
+    });
     expect(result.includes("<!DOCTYPE html>")).toEqual(true);
   });
 });

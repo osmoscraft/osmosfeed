@@ -9,7 +9,7 @@ export interface JsonFeedChannelMetadata {
   home_page_url?: string;
   icon?: string;
   feed_url?: string;
-  _date_published?: string;
+  _date_published?: string; // TODO scope this under `osmosfeedV1` property
   _date_modified?: string;
 }
 

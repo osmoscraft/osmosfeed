@@ -1,0 +1,24 @@
+.u-reset:where(h1, h2, h3, h4, h5, h6) {
+  margin: 0;
+}
+
+.u-reset:where(ul, ol) {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.u-reset:where(a) {
+  text-decoration: none;
+  color: currentColor;
+}
+.u-reset:where(a):hover {
+  text-decoration: underline;
+}
+
+.u-hide-scrollbar {
+  scrollbar-width: none;
+}
+.u-hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
