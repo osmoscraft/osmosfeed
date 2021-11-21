@@ -1,0 +1,12 @@
+{
+  "name": "@osmoscraft/osmosfeed-web-reader",
+  "version": "0.0.1-alpha.0",
+  "description": "Client TypeScript files, pre-compiled into javascript, installable by the CLI.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
