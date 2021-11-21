@@ -1,51 +1,85 @@
-import type { JsonFeed, JsonFeedItem } from "../json-feed";
+import type { JsonFeedChannel, JsonFeedItem } from "../json-feed";
+import { sanitizeHtml } from "./sanitize";
 
-export function render(jsonFeeds: JsonFeed[], css: string) {
+export interface SiteModel {
+  data: JsonFeedChannel[];
+  assets: Asset[];
+}
+
+export interface Asset {
+  type: "script" | "stylesheet";
+  href: string;
+}
+
+export function renderSite(model: SiteModel) {
   return `
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
 		<title>osmos::feed</title>
-		<link rel="stylesheet" href="style.css">
-		<script src="script.js"></script>
+    ${model.assets
+      .filter((asset) => asset.type === "stylesheet")
+      .map((asset) => `<link rel="stylesheet" href="${asset.href}">`)
+      .join("\n")}
 	</head>
 	<body>
-		<style>${css}</style>
-		<div class="feed-list">
-			${jsonFeeds.map((feed) => renderFeed(feed)).join("\n")}
-		</div>
+    <osmos-app>
+      <div class="c-feed-list">
+      ${model.data.map((channel) => renderChannel({ parent: model, data: channel })).join("\n")}
+      </div>
+    </osmos-app>
+    ${model.assets
+      .filter((asset) => asset.type === "script")
+      .map((asset) => `<script type="module" src="${asset.href}"></script>`)
+      .join("\n")}
 	</body>
 </html>
 `.trim();
 }
 
-function renderFeed(feed: JsonFeed) {
+export interface ChannelModel {
+  data: JsonFeedChannel;
+  parent: SiteModel;
+}
+export function renderChannel(model: ChannelModel) {
   return `
-	<section class="feed">
-		<h1 class="feed-title-group">
-			<img class="feed-icon" src="${feed.icon}" width="32" height="32" onError="this.remove()">
-			<a class="reset-link" href="${feed.feed_url}">${feed.title}</a>
-      <time datetime="${feed._date_published}">${feed._date_published}</time>
-      <time datetime="${feed._date_modified}">${feed._date_modified}</time>
-		</h1>
-		<div class="article-list">
-			${feed.items.map(renderArticle).join("\n")}
-		</div>
-	</section>
-`.trim();
+<osmos-channel>
+  <section class="feed js-horizontal-scroll">
+    <h1 class="feed-title-group">
+      ${model.data.icon ? `<img class="feed-icon" src="${model.data.icon}" width="32" height="32">` : ``}
+      <a class="u-reset" href="${model.data.home_page_url}">${sanitizeHtml(model.data.title)}</a>
+    </h1>
+    <button class="js-horizontal-scroll__backward">&lt;</button>
+    <button class="js-horizontal-scroll__forward">&gt;</button>
+    <div class="u-hide-scrollbar article-list js-horizontal-scroll__list">
+      ${model.data.items.map((item) => renderItem({ data: item, parent: model })).join("\n")}
+    </div>
+  </section>
+</osmos-channel>
+  `.trim();
 }
 
-function renderArticle(item: JsonFeedItem) {
+export interface ItemModel {
+  data: JsonFeedItem;
+  parent: ChannelModel;
+}
+export function renderItem(model: ItemModel) {
+  const sensibleTimestamp = model.data.date_modified ?? model.data.date_published;
+
   return `
-<article class="article">
-	<a class="reset-link" href="${item.url}">
-		<img class="article__image" src="${item.image}" onError="this.remove()">
-		<h2 class="article__title">${item.title}</h2>
-    <time datetime="${item.date_published}">${item.date_published}</time>
-    <time datetime="${item.date_modified}">${item.date_modified}</time>
-		<p class="article__summary">${item.summary}</p>
-	</a>
-</article>
-`.trim();
+<osmos-article>
+  <article class="article js-horizontal-scroll__item">
+    ${model.data.image ? `<img class="article__image" src="${model.data.image}">` : ""}
+    <a class="u-reset" href="#" data-read-url="${model.data.url}">
+      <h2 class="article__title">${sanitizeHtml(model.data.title)}</h2>
+    </a>
+    ${sensibleTimestamp ? `<time class="js-datetime" datetime="${sensibleTimestamp}">${sensibleTimestamp}</time>` : ""}
+    <a class="u-reset" href="#" data-read-url="${model.data.url}">
+      <p class="article__summary">${sanitizeHtml(model.data.summary)}</p>
+    </a>
+    <a class="u-reset" href="${model.data.url}">Open original</a>
+  </article>
+</osmos-article>
+  `.trim();
 }

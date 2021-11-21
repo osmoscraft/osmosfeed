@@ -1,8 +1,16 @@
 import { beforeEach, describe, expect, it } from "@osmoscraft/typescript-testing-library";
-import { access, mkdir, readdir, readFile, rm, writeFile } from "fs/promises";
+import { access, mkdir, copyFile, readdir, readFile, rm, writeFile } from "fs/promises";
 import path from "path";
-import type { JsonFeed } from "../lib";
-import { atomParser, localJsonFeedCacheProvider, mergeJsonFeeds, parseFeed, render, request, rssParser } from "../lib";
+import type { JsonFeedChannel } from "../lib";
+import {
+  atomParser,
+  localJsonFeedCacheProvider,
+  mergeJsonFeeds,
+  parseFeed,
+  renderSite,
+  request,
+  rssParser,
+} from "../lib";
 
 const cacheOutputDir = path.join(process.cwd(), "src/__tests__/cache-output");
 
@@ -33,7 +41,7 @@ describe("E2E", () => {
       })
     );
 
-    const jsonFeeds: JsonFeed[] = rawFeeds.map((rawFeed) => ({
+    const jsonFeeds: JsonFeedChannel[] = rawFeeds.map((rawFeed) => ({
       ...parseFeed({
         xml: rawFeed.textResponse,
         parsers: [rssParser, atomParser],
@@ -54,9 +62,16 @@ describe("E2E", () => {
     const jsonFiles = cacheOutputFiles.filter((filename) => filename.includes(".json"));
     await expect(jsonFiles.length > 0).toEqual(true);
 
-    const css = await readFile("src/lib/render/style.css", "utf-8");
-    const html = render(mergedJsonFeeds, css);
-    await mkdir("src/__tests__/render-output", { recursive: true });
+    const html = renderSite({
+      data: mergedJsonFeeds,
+      assets: [
+        { type: "script", href: "assets/app.js" },
+        { type: "stylesheet", href: "assets/styles.css" },
+      ],
+    });
+    await mkdir("src/__tests__/render-output/assets", { recursive: true });
     await writeFile("src/__tests__/render-output/index.html", html);
+    await copyFile("src/lib/render/assets/styles.css", "src/__tests__/render-output/assets/styles.css");
+    await copyFile("src/lib/render/assets/app.js", "src/__tests__/render-output/assets/slide-control.js");
   });
 });

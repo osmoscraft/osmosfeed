@@ -1,8 +1,8 @@
-export interface JsonFeed extends JsonFeedChannel {
+export interface JsonFeedChannel extends JsonFeedChannelMetadata {
   items: JsonFeedItem[];
 }
 
-export interface JsonFeedChannel {
+export interface JsonFeedChannelMetadata {
   version: string;
   title: string;
   description?: string;

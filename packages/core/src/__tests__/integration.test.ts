@@ -1,5 +1,5 @@
 import { describe, expect, it } from "@osmoscraft/typescript-testing-library";
-import type { JsonFeed } from "../lib/json-feed";
+import type { JsonFeedChannel } from "../lib/json-feed";
 import { parseFeed } from "../lib/parse/parse-feed";
 import { atomParser, rssParser } from "../lib";
 import { loadXmlFixture } from "../__fixtures__/test-helper/load-fixture";
@@ -23,7 +23,7 @@ describe("Integration", () => {
   });
 });
 
-async function parseXmlFixture(fixtureFilename: string): Promise<JsonFeed> {
+async function parseXmlFixture(fixtureFilename: string): Promise<JsonFeedChannel> {
   const feedContent = await loadXmlFixture(fixtureFilename);
   return parseFeed({
     xml: feedContent,

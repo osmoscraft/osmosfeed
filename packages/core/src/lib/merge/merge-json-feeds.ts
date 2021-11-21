@@ -1,10 +1,10 @@
-import type { JsonFeed } from "../json-feed";
+import type { JsonFeedChannel } from "../json-feed";
 
-export function mergeJsonFeeds(newFeeds: JsonFeed[], existingFeeds: JsonFeed[]): JsonFeed[] {
+export function mergeJsonFeeds(newFeeds: JsonFeedChannel[], existingFeeds: JsonFeedChannel[]): JsonFeedChannel[] {
   return [...existingFeeds, ...newFeeds]; // TODO implement actual merge with TDD
 }
 
-function mergeJsonFeed(newFeed: JsonFeed, existingFeed: JsonFeed): JsonFeed {
+function mergeJsonFeed(newFeed: JsonFeedChannel, existingFeed: JsonFeedChannel): JsonFeedChannel {
   return {
     ...existingFeed,
     ...newFeed,
