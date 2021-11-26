@@ -3,6 +3,7 @@
   "version": "0.0.1-alpha.0",
   "description": "",
   "type": "module",
+  "main": "dist/lib/index.js",
   "types": "index.d.ts",
   "scripts": {
     "start": "ts-node-dev --project tsconfig.json --respawn --watch src/**/*.css --transpile-only src/run-e2e.ts",

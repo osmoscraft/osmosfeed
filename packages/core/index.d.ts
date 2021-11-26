@@ -1,1 +1,1 @@
-export * from "./src/lib/json-feed";
+export * from "./src/lib";

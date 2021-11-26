@@ -8,5 +8,9 @@
   },
   "keywords": [],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@osmoscraft/osmosfeed-core": "file:../core",
+    "@osmoscraft/osmosfeed-web-reader": "file:../web-reader"
+  }
 }
