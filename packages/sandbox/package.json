@@ -1,0 +1,15 @@
+{
+  "name": "sandbox",
+  "version": "1.0.0",
+  "description": "",
+  "private": "true",
+  "scripts": {
+    "start": "osmosfeed"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@osmoscraft/osmosfeed": "file:../osmosfeed"
+  }
+}

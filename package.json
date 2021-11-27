@@ -7,10 +7,11 @@
     "doc": "docs"
   },
   "scripts": {
-    "build": "npm run build -w ./packages/cli",
-    "test": "npm run test -w ./packages/core",
-    "test:watch": "npm run test:watch -w ./packages/core",
-    "clean": "npm run clean -w ./packages/core"
+    "dev": "npm run build -w ./packages/osmosfeed && npm start -w ./packages/sandbox",
+    "build": "npm run build -w ./packages/osmosfeed",
+    "test": "npm run test -w ./packages/feed-parser",
+    "test:watch": "npm run test:watch -w ./packages/feed-parser",
+    "clean": "npm run clean -w ./packages/feed-parser"
   },
   "repository": {
     "type": "git",
