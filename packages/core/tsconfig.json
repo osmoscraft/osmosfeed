@@ -1,11 +1,9 @@
 {
   "compilerOptions": {
-    "target": "es2019",
+    "target": "esnext",
     "moduleResolution": "node",
-    "module": "CommonJS",
-    "importsNotUsedAsValues": "error",
     "strict": true,
     "esModuleInterop": true,
-    "outDir": "dist"
+    "noEmit": true
   }
 }

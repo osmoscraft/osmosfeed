@@ -1,8 +1,8 @@
-import { build } from "esbuild";
+const { build } = require("esbuild");
 
 async function buildClient() {
   build({
-    entryPoints: ["./src/client/index.ts"],
+    entryPoints: [require.resolve("@osmoscraft/osmosfeed-web-reader/src/client/index.ts")],
     sourcemap: true,
     bundle: true,
     format: "esm",
@@ -10,10 +10,12 @@ async function buildClient() {
   }).catch(() => process.exit(1));
 }
 
+buildClient();
+
 async function buildServer() {
   build({
     platform: "node",
-    entryPoints: ["./src/lib.ts"],
+    entryPoints: ["./src/main.ts"],
     sourcemap: true,
     bundle: true,
     format: "cjs",
@@ -23,4 +25,3 @@ async function buildServer() {
 }
 
 buildServer();
-buildClient();

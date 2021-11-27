@@ -4,13 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "node scripts/build.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
-  "dependencies": {
+  "devDependencies": {
     "@osmoscraft/osmosfeed-core": "file:../core",
-    "@osmoscraft/osmosfeed-web-reader": "file:../web-reader"
+    "@osmoscraft/osmosfeed-web-reader": "file:../web-reader",
+    "esbuild": "^0.14.0"
   }
 }
