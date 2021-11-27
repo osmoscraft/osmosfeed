@@ -16,3 +16,15 @@ async function buildCli() {
 }
 
 buildCli();
+
+async function buildClient() {
+  build({
+    entryPoints: [require.resolve("@osmoscraft/osmosfeed-web-reader/src/client/index.ts")],
+    sourcemap: true,
+    bundle: true,
+    format: "esm",
+    outdir: "dist/client",
+  }).catch(() => process.exit(1));
+}
+
+buildClient();

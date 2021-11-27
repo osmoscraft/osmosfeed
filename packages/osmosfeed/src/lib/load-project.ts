@@ -1,7 +1,7 @@
-import { ProjectConfig } from "../typings/config";
-import { DirectorySummary, FileMetadata, scanDir } from "./scan-dir";
 import { readFile } from "fs/promises";
 import yaml from "js-yaml";
+import { ProjectConfig } from "../typings/config";
+import { FileMetadata } from "./scan-dir";
 
 export interface LoadedProject {
   config: VirtualFile<ProjectConfig>;

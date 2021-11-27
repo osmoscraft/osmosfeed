@@ -9,8 +9,5 @@
   },
   "keywords": [],
   "author": "",
-  "license": "MIT",
-  "devDependencies": {
-    "esbuild": "^0.14.0"
-  }
+  "license": "MIT"
 }
