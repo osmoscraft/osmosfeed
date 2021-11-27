@@ -2,10 +2,10 @@ import { readDirRecursive } from "./fs-utils";
 import path from "path";
 
 export interface DirectorySummary {
-  fileRecords: FileMetadata[];
+  files: FileMetadata[];
 }
 
-export interface FileMetadata<T = any> {
+export interface FileMetadata {
   path: string;
   filename: string;
   extension: string;
@@ -23,6 +23,6 @@ export async function scanDir(dir: string): Promise<DirectorySummary> {
   }));
 
   return {
-    fileRecords,
+    files: fileRecords,
   };
 }

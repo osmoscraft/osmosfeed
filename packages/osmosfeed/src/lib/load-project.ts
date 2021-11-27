@@ -1,5 +1,5 @@
 import { ProjectConfig } from "../typings/config";
-import { FileMetadata, scanDir } from "./scan-dir";
+import { DirectorySummary, FileMetadata, scanDir } from "./scan-dir";
 import { readFile } from "fs/promises";
 import yaml from "js-yaml";
 
@@ -15,10 +15,8 @@ export interface VirtualFile<T = string> {
 /**
  * Read all project related files into the memory
  */
-export async function loadProject(projectDir: string): Promise<LoadedProject> {
-  const dirSummary = await scanDir(projectDir);
-
-  const configMeta = dirSummary.fileRecords.find((file) => ["osmosfeed.yml", "osmosfeed.yaml"].includes(file.filename));
+export async function loadProject(files: FileMetadata[]): Promise<LoadedProject> {
+  const configMeta = files.find((file) => ["osmosfeed.yml", "osmosfeed.yaml"].includes(file.filename));
   if (!configMeta) throw new Error("Config file not found");
 
   const configFileContent = yaml.load(await readFile(configMeta.path, "utf8")) as ProjectConfig;
