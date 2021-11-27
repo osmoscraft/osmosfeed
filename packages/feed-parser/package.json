@@ -1,5 +1,5 @@
 {
-  "name": "@osmoscraft/osmosfeed-core",
+  "name": "@osmoscraft/feed-parser",
   "version": "0.0.1-alpha.0",
   "description": "",
   "main": "src/index.ts",

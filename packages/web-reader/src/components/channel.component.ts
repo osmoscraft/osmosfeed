@@ -1,4 +1,4 @@
-import { JsonFeedChannel } from "@osmoscraft/osmosfeed-core";
+import { JsonFeedChannel } from "@osmoscraft/feed-parser";
 import { sanitizeHtml } from "../utils/sanitize";
 import { Article } from "./article.component";
 import { AppModel } from "./app.component";

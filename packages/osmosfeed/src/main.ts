@@ -1,4 +1,4 @@
-import { atomParser, JsonFeedChannel, parseFeed, renderSite, request, rssParser } from "@osmoscraft/osmosfeed-core";
+import { atomParser, JsonFeedChannel, parseFeed, renderSite, request, rssParser } from "@osmoscraft/feed-parser";
 import { copyFile, mkdir, writeFile } from "fs/promises";
 
 async function run() {
@@ -35,10 +35,10 @@ async function run() {
       { type: "stylesheet", href: "assets/index.css" },
     ],
   });
-  await mkdir("test-output/assets", { recursive: true });
-  await writeFile("test-output/index.html", html);
-  await copyFile("dist/client/index.css", "test-output/assets/index.css");
-  await copyFile("dist/client/index.js", "test-output/assets/index.js");
+  await mkdir("__test__/output/assets", { recursive: true });
+  await writeFile("__test__/output/index.html", html);
+  await copyFile("dist/client/index.css", "__test__/output/assets/index.css");
+  await copyFile("dist/client/index.js", "__test__/output/assets/index.js");
 }
 
 run();
