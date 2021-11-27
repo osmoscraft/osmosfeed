@@ -1,0 +1,5 @@
+channels:
+  - url: https://www.youtube.com/feeds/videos.xml?channel_id=UCHugE6eRhqB9_AZQh4DDbIw # Atom, YouTube
+  - url: https://css-tricks.com/feed/ # RSS 2.0
+  - url: https://www.smashingmagazine.com/feed # RSS 2.0, enclosure
+  - url: http://export.arxiv.org/rss/cs # RSS 1.0 (rdf)

@@ -19,6 +19,9 @@
     "@osmoscraft/feed-parser": "file:../feed-parser",
     "@osmoscraft/osmosfeed-web-reader": "file:../web-reader",
     "@osmoscraft/typescript-testing-library": "^0.0.5",
-    "esbuild": "^0.14.0"
+    "@types/js-yaml": "^4.0.5",
+    "esbuild": "^0.14.0",
+    "got": "^11.8.3",
+    "js-yaml": "^4.1.0"
   }
 }

@@ -17,7 +17,7 @@ export interface FileMetadata<T = any> {
 export async function scanDir(dir: string): Promise<DirectorySummary> {
   const files = await readDirRecursive(dir);
   const fileRecords = files.map((file) => ({
-    path: file,
+    path: path.join(dir, file),
     filename: path.basename(file),
     extension: path.extname(file),
   }));
