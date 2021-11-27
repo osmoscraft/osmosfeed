@@ -2,8 +2,9 @@
   "name": "@osmoscraft/osmosfeed-cli",
   "version": "0.0.1-alpha.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
+    "start": "node main.js",
     "build": "node scripts/build.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

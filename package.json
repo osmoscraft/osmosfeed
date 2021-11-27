@@ -7,8 +7,7 @@
     "doc": "docs"
   },
   "scripts": {
-    "start": "npm run start -w ./packages/core",
-    "build": "npm run build -w ./packages/core",
+    "build": "npm run build -w ./packages/cli",
     "test": "npm run test -w ./packages/core",
     "test:watch": "npm run test:watch -w ./packages/core",
     "clean": "npm run clean -w ./packages/core"

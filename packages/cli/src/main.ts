@@ -12,6 +12,7 @@ async function run() {
   const rawFeeds = await Promise.all(
     feedUrls.map(async (feedUrl) => {
       const { raw } = await request(feedUrl);
+      console.log(`Fetched: ${feedUrl}`);
       return {
         feedUrl,
         textResponse: raw, // TODO error status handling
@@ -30,14 +31,14 @@ async function run() {
   const html = renderSite({
     data: jsonFeeds,
     assets: [
-      { type: "script", href: "assets/app.js" },
-      { type: "stylesheet", href: "assets/styles.css" },
+      { type: "script", href: "assets/index.js" },
+      { type: "stylesheet", href: "assets/index.css" },
     ],
   });
-  await mkdir("src/__tests__/render-output/assets", { recursive: true });
-  await writeFile("src/__tests__/render-output/index.html", html);
-  await copyFile("src/lib/render/assets/styles.css", "src/__tests__/render-output/assets/styles.css");
-  await copyFile("src/lib/render/assets/app.js", "src/__tests__/render-output/assets/slide-control.js");
+  await mkdir("test-output/assets", { recursive: true });
+  await writeFile("test-output/index.html", html);
+  await copyFile("dist/client/index.css", "test-output/assets/index.css");
+  await copyFile("dist/client/index.js", "test-output/assets/index.js");
 }
 
 run();
