@@ -8,7 +8,7 @@
   "main": "main.js",
   "scripts": {
     "dev": "node scripts/build.js --watch",
-    "build": "node scripts/build.js",
+    "build": "npm run clean && ts-node-dev scripts/build.ts",
     "test": "ts-node-dev --project tsconfig.json --transpile-only src/run-test.ts",
     "test:watch": "ts-node-dev --project tsconfig.json --respawn --watch --transpile-only src/run-test.ts",
     "clean": "rm -rf dist"

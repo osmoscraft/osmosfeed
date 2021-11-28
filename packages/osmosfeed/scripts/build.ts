@@ -1,6 +1,18 @@
-const { build } = require("esbuild");
+import { build } from "esbuild";
+import path from "path";
+import { copyDirRecursive } from "../src/lib/fs-utils";
 
 const isWatchMode = process.argv.includes("--watch");
+
+main();
+
+async function main() {
+  await Promise.all([buildCli(), buildClient(), copyAssets()]);
+}
+
+async function copyAssets() {
+  copyDirRecursive(path.join(__dirname, "../src/assets"), path.join(__dirname, "../dist/client"));
+}
 
 async function buildCli() {
   build({
@@ -15,8 +27,6 @@ async function buildCli() {
   }).catch(() => process.exit(1));
 }
 
-buildCli();
-
 async function buildClient() {
   build({
     entryPoints: [require.resolve("@osmoscraft/osmosfeed-web-reader/src/client/index.ts")],
@@ -26,5 +36,3 @@ async function buildClient() {
     outdir: "dist/client",
   }).catch(() => process.exit(1));
 }
-
-buildClient();
