@@ -7,4 +7,5 @@ export interface FileMetadata {
   path: string;
   filename: string;
   extension: string;
+  mime?: string;
 }

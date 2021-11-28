@@ -5,10 +5,11 @@ export interface AppModel {
   data: JsonFeedChannel[];
   embeddedScripts: EmbeddedResource[];
   embeddedStylesheets: EmbeddedResource[];
-  favicon?: EmbeddedResource; // TODO implement
+  embeddedFavicon?: EmbeddedResource; // TODO implement
 }
 
 export interface EmbeddedResource {
+  mime?: string;
   content: Buffer;
 }
 
@@ -20,6 +21,13 @@ export function App(model: AppModel) {
 		<meta charset="utf-8">
 		<title>osmos::feed</title>
     ${model.embeddedStylesheets.map((resource) => `<style>${resource.content}</style>`).join("\n")}
+    ${
+      model.embeddedFavicon
+        ? `<link rel="icon" type="${model.embeddedFavicon.mime}" href="data:${
+            model.embeddedFavicon.mime
+          };base64,${model.embeddedFavicon.content.toString("base64")}">`
+        : ""
+    }
 	</head>
 	<body>
     <osmos-app>

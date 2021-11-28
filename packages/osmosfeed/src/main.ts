@@ -5,7 +5,7 @@ import { loadClient } from "./lib/load-client";
 import { loadProject } from "./lib/load-project";
 import { requestFeeds } from "./lib/request-feeds";
 import { scanDir } from "./lib/scan-dir";
-import { FileWrite, writeProject } from "./lib/write-project";
+import { writeProject } from "./lib/write-project";
 
 async function run() {
   const clientDir = await scanDir(path.resolve(__dirname, "client/"));
@@ -42,6 +42,9 @@ async function run() {
     embeddedStylesheets: client.files
       .filter((file) => path.join("/", file.relativePath) === "/index.css")
       .map((file) => ({ content: file.content })),
+    embeddedFavicon: client.files
+      .filter((file) => path.join("/", file.relativePath) === "/favicon.png")
+      .map((file) => ({ content: file.content, mime: file.metadata.mime! }))?.[0],
   });
 
   await writeProject([{ fromMemory: html, toPath: path.join(cwd, "dist/index.html") }]);
