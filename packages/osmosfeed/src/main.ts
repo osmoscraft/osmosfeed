@@ -4,12 +4,14 @@ import path from "path";
 import { loadClient } from "./lib/load-client";
 import { loadProject } from "./lib/load-project";
 import { log } from "./lib/log";
-import { progress } from "./lib/progress-tracker";
+import { ProgressTracker } from "./lib/progress-tracker";
 import { requestFeeds } from "./lib/request-feeds";
 import { scanDir } from "./lib/scan-dir";
 import { writeProject } from "./lib/write-project";
 
 async function run() {
+  const downloadProgress = new ProgressTracker();
+
   log.heading("01 Load files");
 
   const clientDir = await scanDir(path.resolve(__dirname, "client/"));
@@ -26,15 +28,15 @@ async function run() {
   const project = await loadProject(projectDir.files);
   log.trace("config", project.config.content);
 
-  log.heading("02 Get content");
+  log.heading("02 Get feeds");
 
   const sourceUrls = project.config.content.sources.map((channel) => channel.url ?? channel.href);
-  progress.increaseTaskCount(sourceUrls.length);
+  downloadProgress.increaseTaskCount(sourceUrls.length);
   const feedResponses = await requestFeeds({
     requests: sourceUrls.map((url) => ({ url })),
-    onResponse: (req, res) => {
-      progress.increaseProgressCount();
-      log.info(`${progress} downloaded ${req.url}`);
+    onResponse: (req) => {
+      downloadProgress.increaseProgressCount();
+      log.info(`${downloadProgress} downloaded ${req.url}`);
     },
   });
   const jsonFeeds: JsonFeedChannel[] = feedResponses.map((rawFeed) => ({
@@ -45,11 +47,13 @@ async function run() {
     feed_url: rawFeed.url,
   }));
 
+  log.heading("03 Crawl links");
+
   // TODO add crawling logic
 
   // TODO add caching and merging logic
 
-  log.heading("03 Generate site");
+  log.heading("04 Generate site");
 
   const html = App({
     data: jsonFeeds,

@@ -3,7 +3,7 @@ export interface ProgressSummary {
   current: number;
 }
 
-class ProgressTracker {
+export class ProgressTracker {
   private total = 0;
   private progress = 0;
 
@@ -26,5 +26,3 @@ class ProgressTracker {
     this.progress += count;
   }
 }
-
-export const progress = new ProgressTracker();
