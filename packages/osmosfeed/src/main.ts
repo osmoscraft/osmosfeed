@@ -61,7 +61,7 @@ async function run() {
     const feedItemResponses = concurrentRequest({
       requests: feedItemRequests,
       onResponse: (req) => {
-        // TODO save crawled items
+        // TODO parse, transform, save crawled items
         downloadProgress.increaseProgressCount();
         log.info(`${downloadProgress} crawled ${req.url}`);
       },
@@ -73,8 +73,6 @@ async function run() {
   });
 
   await Promise.all(feedResponses);
-
-  // TODO add crawling logic
 
   // TODO add caching and merging logic
 
