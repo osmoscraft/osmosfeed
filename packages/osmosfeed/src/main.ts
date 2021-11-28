@@ -36,22 +36,15 @@ async function run() {
 
   const html = App({
     data: jsonFeeds,
-    entryScripts: client.files
+    embeddedScripts: client.files
       .filter((file) => path.join("/", file.relativePath) === "/index.js")
-      .map((file) => ({ href: file.relativePath })),
-    entryStylesheets: client.files
+      .map((file) => ({ content: file.content })),
+    embeddedStylesheets: client.files
       .filter((file) => path.join("/", file.relativePath) === "/index.css")
-      .map((file) => ({ href: file.relativePath })),
+      .map((file) => ({ content: file.content })),
   });
 
-  const fileWrites: FileWrite[] = [
-    { fromMemory: html, toPath: path.join(cwd, "dist/index.html") },
-    ...client.files.map((file) => ({
-      fromMemory: file.content,
-      toPath: path.join(cwd, "dist", file.relativePath),
-    })),
-  ];
-  await writeProject(fileWrites);
+  await writeProject([{ fromMemory: html, toPath: path.join(cwd, "dist/index.html") }]);
 }
 
 run();
