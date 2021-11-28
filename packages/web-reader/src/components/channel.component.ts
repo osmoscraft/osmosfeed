@@ -1,10 +1,10 @@
-import { JsonFeedChannel } from "@osmoscraft/feed-parser";
+import { JsonFeed } from "@osmoscraft/feed-parser";
 import { sanitizeHtml } from "../utils/sanitize";
 import { Article } from "./article.component";
 import { AppModel } from "./app.component";
 
 export interface ChannelModel {
-  data: JsonFeedChannel;
+  data: JsonFeed;
   parent: AppModel;
 }
 export function Channel(model: ChannelModel) {

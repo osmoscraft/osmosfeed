@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "@osmoscraft/typescript-testing-library";
 import { access, mkdir, copyFile, readdir, readFile, rm, writeFile } from "fs/promises";
 import path from "path";
-import type { JsonFeedChannel } from "../lib";
+import type { JsonFeed } from "../lib";
 import {
   atomParser,
   localJsonFeedCacheProvider,
@@ -41,7 +41,7 @@ describe("E2E", () => {
       })
     );
 
-    const jsonFeeds: JsonFeedChannel[] = rawFeeds.map((rawFeed) => ({
+    const jsonFeeds: JsonFeed[] = rawFeeds.map((rawFeed) => ({
       ...parseFeed({
         xml: rawFeed.textResponse,
         parsers: [rssParser, atomParser],

@@ -6,7 +6,7 @@ export interface HttpResponse {
   buffer: Buffer;
 }
 
-export function request(url: string): Promise<HttpResponse> {
+export function httpRequest(url: string): Promise<HttpResponse> {
   const req = got.get(url);
 
   return Promise.all([req, req.buffer()]).then(([req, buffer]) => {

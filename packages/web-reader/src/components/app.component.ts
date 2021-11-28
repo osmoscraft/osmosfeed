@@ -1,8 +1,8 @@
-import { JsonFeedChannel } from "@osmoscraft/feed-parser";
+import { JsonFeed } from "@osmoscraft/feed-parser";
 import { Channel } from "./channel.component";
 
 export interface AppModel {
-  data: JsonFeedChannel[];
+  data: JsonFeed[];
   embeddedScripts: EmbeddedResource[];
   embeddedStylesheets: EmbeddedResource[];
   embeddedFavicon?: EmbeddedResource; // TODO implement

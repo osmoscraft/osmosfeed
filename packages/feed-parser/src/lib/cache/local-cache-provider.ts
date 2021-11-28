@@ -1,4 +1,4 @@
-import type { JsonFeedChannel } from "../json-feed";
+import type { JsonFeed } from "../json-feed";
 
 import { readdir, readFile, writeFile, mkdir } from "fs/promises";
 import * as uuid from "uuid"; // TODO implement v5 without lib
@@ -7,8 +7,8 @@ import path from "path";
 
 export interface JsonFeedCacheProvider {
   (...args: any[]): {
-    read: () => Promise<JsonFeedChannel[]>;
-    write: (jsonFeeds: JsonFeedChannel[]) => Promise<void>;
+    read: () => Promise<JsonFeed[]>;
+    write: (jsonFeeds: JsonFeed[]) => Promise<void>;
   };
 }
 
@@ -20,7 +20,7 @@ export const localJsonFeedCacheProvider: JsonFeedCacheProvider = (cacheInputDir:
     const cacheFilenames = await getFilenamesSafe(cacheInputFullDir);
     const jsonFeedList = (
       await Promise.all(
-        cacheFilenames.map((filename) => readJsonSafe<JsonFeedChannel>(path.join(cacheInputFullDir, filename)))
+        cacheFilenames.map((filename) => readJsonSafe<JsonFeed>(path.join(cacheInputFullDir, filename)))
       )
     ).filter(ensureNotNull);
 
@@ -31,7 +31,7 @@ export const localJsonFeedCacheProvider: JsonFeedCacheProvider = (cacheInputDir:
   const cleanUrls = async (feedUrls: string[]) => {};
   const cleanAll = async () => {};
 
-  const write = async (jsonFeeds: JsonFeedChannel[]) => {
+  const write = async (jsonFeeds: JsonFeed[]) => {
     const filesToWrite = jsonFeeds.map((jsonFeed) => ({
       filename: uuid.v5(jsonFeed.feed_url!, uuid.v5.URL) + ".json",
       fileContent: JSON.stringify(jsonFeed),
