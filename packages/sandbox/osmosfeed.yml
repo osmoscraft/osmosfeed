@@ -1,5 +1,21 @@
-channels:
-  - url: https://www.youtube.com/feeds/videos.xml?channel_id=UCHugE6eRhqB9_AZQh4DDbIw # Atom, YouTube
-  - url: https://css-tricks.com/feed/ # RSS 2.0
-  - url: https://www.smashingmagazine.com/feed # RSS 2.0, enclosure
-  # - url: http://export.arxiv.org/rss/cs # RSS 1.0 (rdf)
+sources:
+  - url: https://christianheilmann.com/feed/
+  - url: https://daverupert.com/atom.xml
+  - url: https://www.taniarascia.com/rss.xml
+  - url: https://css-tricks.com/feed/
+  - url: https://www.smashingmagazine.com/feed/
+  - url: https://gomakethings.com/feed/index.xml
+  - url: https://logicmag.io/rss.xml
+  - url: https://increment.com/feed.xml
+  - url: https://ishadeed.com/feed.xml
+  - url: https://wdrl.info/feed
+  - url: https://alistapart.com/main/feed/
+  - url: https://developer.chrome.com/feeds/blog.xml
+  - url: https://webkit.org/feed/atom/
+  - url: https://hacks.mozilla.org/feed/
+  - url: https://www.baldurbjarnason.com/index.xml
+  - url: https://feeds.feedburner.com/logodesignlove
+  - url: https://stratechery.com/feed/
+  - url: https://ishadeed.com/feed.xml
+  - url: https://lea.verou.me/feed/
+  - url: https://tympanus.net/codrops/feed/

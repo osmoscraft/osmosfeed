@@ -1,7 +1,18 @@
-export const mimeMap = new Map([
-  [".js", "text/javascript"],
-  [".css", "text/css"],
-  [".html", "text/html"],
-  [".png", "image/png"],
-  [".ico", "image/x-icon"],
-]);
+export const mimeTypes: Record<string, string | undefined> = {
+  ".html": "text/html",
+  ".js": "text/javascript",
+  ".css": "text/css",
+  ".json": "application/json",
+  ".png": "image/png",
+  ".ico": "image/x-icon",
+  ".jpg": "image/jpg",
+  ".gif": "image/gif",
+  ".svg": "image/svg+xml",
+  ".wav": "audio/wav",
+  ".mp4": "video/mp4",
+  ".woff": "application/font-woff",
+  ".ttf": "application/font-ttf",
+  ".eot": "application/vnd.ms-fontobject",
+  ".otf": "application/font-otf",
+  ".wasm": "application/wasm",
+};

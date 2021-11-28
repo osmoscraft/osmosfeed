@@ -1,25 +1,38 @@
 import { request } from "./request";
 
+export interface RequestFeedsInput {
+  requests: FeedRequest[];
+  onResponse?: OnResponse;
+}
+
 export interface FeedRequest {
   url: string;
 }
 export interface FeedResponse {
   url: string;
-  rawResponse: Buffer;
-  textResponse: string;
+  buffer: Buffer;
+  text: string;
 }
 
-export async function requestFeeds(feedRequests: FeedRequest[]) {
+export type OnResponse = (req: FeedRequest, res: FeedResponse) => any;
+
+export async function requestFeeds(input: RequestFeedsInput) {
+  const { requests, onResponse } = input;
+
   return await Promise.all(
-    feedRequests.map(async (feedRequest) => {
-      const { raw } = await request(feedRequest.url);
-      return {
-        feedUrl: feedRequest.url,
-        raw,
-        get textResponse() {
+    requests.map(async (feedRequest) => {
+      const { buffer: raw } = await request(feedRequest.url);
+      const response = {
+        url: feedRequest.url,
+        buffer: raw,
+        get text() {
           return raw.toString("utf-8");
         },
       };
+
+      onResponse?.(feedRequest, response);
+
+      return response;
     })
   );
 }

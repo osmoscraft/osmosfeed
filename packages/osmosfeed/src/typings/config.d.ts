@@ -1,7 +1,9 @@
 export interface ProjectConfig {
-  channels: ChannelConfig[];
+  sources: SourceConfig[];
 }
 
-export interface ChannelConfig {
+export interface SourceConfig {
   url: string;
+  /** @deprecated use `url` instead */
+  href?: string;
 }
