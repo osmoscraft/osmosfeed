@@ -30,6 +30,10 @@ async function run() {
 
   console.log("downloaded: ", jsonFeeds.length);
 
+  // TODO add crawling logic
+
+  // TODO add caching and merging logic
+
   const html = App({
     data: jsonFeeds,
     entryScripts: client.files
