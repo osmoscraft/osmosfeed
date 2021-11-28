@@ -9,9 +9,11 @@
   "scripts": {
     "dev": "npm run build -w ./packages/osmosfeed && npm start -w ./packages/sandbox",
     "build": "npm run build -w ./packages/osmosfeed",
-    "test": "npm run test -w ./packages/feed-parser",
-    "test:watch": "npm run test:watch -w ./packages/feed-parser",
-    "clean": "npm run clean -w ./packages/feed-parser"
+    "test": "npm run test -w ./packages/feed-parser -w ./packages/osmosfeed",
+    "test:watch": "concurrently npm:test:watch:*",
+    "test:watch:feed-parser": "npm run test:watch -w ./packages/feed-parser",
+    "test:watch:osmosfeed": "npm run test:watch -w ./packages/osmosfeed",
+    "clean": "npm run clean -w ./packages/feed-parser -w ./packages/osmosfeed"
   },
   "repository": {
     "type": "git",
@@ -28,6 +30,7 @@
     "./packages/*"
   ],
   "devDependencies": {
+    "concurrently": "^6.4.0",
     "prettier": "^2.3.2"
   }
 }

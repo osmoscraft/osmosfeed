@@ -1,14 +1,10 @@
 import { readDirRecursive } from "./fs-utils";
 import path from "path";
+import { FileMetadata } from "./virtual-file";
 
 export interface DirectorySummary {
+  root: string;
   files: FileMetadata[];
-}
-
-export interface FileMetadata {
-  path: string;
-  filename: string;
-  extension: string;
 }
 
 /**
@@ -23,6 +19,7 @@ export async function scanDir(dir: string): Promise<DirectorySummary> {
   }));
 
   return {
+    root: dir,
     files: fileRecords,
   };
 }

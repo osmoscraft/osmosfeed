@@ -10,7 +10,8 @@
     "dev": "node scripts/build.js --watch",
     "build": "node scripts/build.js",
     "test": "ts-node-dev --project tsconfig.json --transpile-only src/run-test.ts",
-    "test:watch": "ts-node-dev --project tsconfig.json --respawn --watch --transpile-only src/run-test.ts"
+    "test:watch": "ts-node-dev --project tsconfig.json --respawn --watch --transpile-only src/run-test.ts",
+    "clean": "rm -rf dist"
   },
   "keywords": [],
   "author": "",

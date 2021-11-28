@@ -4,7 +4,7 @@
   "description": "",
   "private": "true",
   "scripts": {
-    "start": "osmosfeed"
+    "start": "rm -rf dist && osmosfeed"
   },
   "keywords": [],
   "author": "",

@@ -1,15 +1,10 @@
-import { readFile } from "fs/promises";
 import yaml from "js-yaml";
 import { ProjectConfig } from "../typings/config";
-import { FileMetadata } from "./scan-dir";
+import { loadTextFile } from "./load-file";
+import { FileMetadata, VirtualFile } from "./virtual-file";
 
 export interface LoadedProject {
   config: VirtualFile<ProjectConfig>;
-}
-
-export interface VirtualFile<T = string> {
-  metadata: FileMetadata;
-  content: T;
 }
 
 /**
@@ -19,7 +14,7 @@ export async function loadProject(files: FileMetadata[]): Promise<LoadedProject>
   const configMeta = files.find((file) => ["osmosfeed.yml", "osmosfeed.yaml"].includes(file.filename));
   if (!configMeta) throw new Error("Config file not found");
 
-  const configFileContent = yaml.load(await readFile(configMeta.path, "utf8")) as ProjectConfig;
+  const configFileContent = yaml.load((await loadTextFile(configMeta)).content) as ProjectConfig;
 
   return {
     config: {

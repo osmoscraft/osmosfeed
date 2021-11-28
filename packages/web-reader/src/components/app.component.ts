@@ -3,11 +3,12 @@ import { Channel } from "./channel.component";
 
 export interface AppModel {
   data: JsonFeedChannel[];
-  assets: Asset[];
+  entryScripts: Asset[];
+  entryStylesheets: Asset[];
+  favicon?: Asset; // TODO implement
 }
 
 export interface Asset {
-  type: "script" | "stylesheet";
   href: string;
 }
 
@@ -18,10 +19,7 @@ export function App(model: AppModel) {
 	<head>
 		<meta charset="utf-8">
 		<title>osmos::feed</title>
-    ${model.assets
-      .filter((asset) => asset.type === "stylesheet")
-      .map((asset) => `<link rel="stylesheet" href="${asset.href}">`)
-      .join("\n")}
+    ${model.entryScripts.map((asset) => `<link rel="stylesheet" href="${asset.href}">`).join("\n")}
 	</head>
 	<body>
     <osmos-app>
@@ -29,10 +27,7 @@ export function App(model: AppModel) {
       ${model.data.map((channel) => Channel({ parent: model, data: channel })).join("\n")}
       </div>
     </osmos-app>
-    ${model.assets
-      .filter((asset) => asset.type === "script")
-      .map((asset) => `<script type="module" src="${asset.href}"></script>`)
-      .join("\n")}
+    ${model.entryStylesheets.map((asset) => `<script type="module" src="${asset.href}"></script>`).join("\n")}
 	</body>
 </html>
 `.trim();
