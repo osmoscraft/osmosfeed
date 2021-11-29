@@ -9,7 +9,8 @@ export interface JsonFeedMetadata {
   home_page_url?: string;
   icon?: string;
   feed_url?: string;
-  _osmosfeed_v1: {
+  _ext: {
+    generator_version: string;
     date_published?: string;
     date_modified?: string;
   };

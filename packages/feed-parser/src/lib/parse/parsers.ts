@@ -3,6 +3,8 @@ import cheerio, { Cheerio } from "cheerio";
 import { ElementType } from "htmlparser2";
 import type { XmlFeedParser } from "./parse-feed";
 
+const pkg = require("../../../package.json");
+
 export const rssParser: XmlFeedParser = {
   isMatch: (root) => root.find("rss,rdf\\:RDF").length > 0,
   selectChannel: (root) => root.find("channel"),
@@ -19,7 +21,8 @@ export const rssParser: XmlFeedParser = {
       icon:
         coerceEmptyString(channel.find("> image url").text()) ??
         channel.find("image[rdf\\:resource]").attr("rdf:resource"),
-      _osmosfeed_v1: {
+      _ext: {
+        generator_version: pkg.version,
         date_published: coerceError(() => new Date(publishDate ?? modifiedhDate ?? "").toISOString()),
         date_modified: coerceError(() => new Date(modifiedhDate ?? publishDate ?? "").toISOString()),
       },
@@ -61,7 +64,8 @@ export const atomParser: XmlFeedParser = {
       description: coerceEmptyString(parseAtomNode(channel.find("> subtitle")).text()),
       home_page_url: channel.find(`> link:not([rel="self"])`).attr("href"),
       icon: coerceEmptyString(channel.find("> icon").text()),
-      _osmosfeed_v1: {
+      _ext: {
+        generator_version: pkg.version,
         date_published: date ? coerceError(() => new Date(date).toISOString()) : undefined,
         date_modified: date ? coerceError(() => new Date(date).toISOString()) : undefined,
       },
