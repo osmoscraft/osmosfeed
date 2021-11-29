@@ -3,7 +3,7 @@ import { scanDir } from "../scan-dir";
 import path from "path";
 import { access } from "fs/promises";
 
-describe("scan-dir", () => {
+describe("scanDir", () => {
   it("Throws when dir doesn't exist", async () => {
     await expect(() => scanDir("./non-exist-dir")).toThrow();
   });

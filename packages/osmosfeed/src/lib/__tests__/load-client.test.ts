@@ -2,7 +2,7 @@ import { describe, expect, it } from "@osmoscraft/typescript-testing-library";
 import path from "path";
 import { loadClient } from "../load-client";
 
-describe("load-client", () => {
+describe("loadClient", () => {
   it("Loads empty client", async () => {
     const client = await loadClient([], "/");
     await expect(client.files.length).toEqual(0);
@@ -68,11 +68,7 @@ describe("load-client", () => {
       path.resolve(__dirname, "../__fixtures__/clients/basic")
     );
 
-    await expect(
-      client.entryScripts[0].metadata.path === path.resolve(__dirname, "../__fixtures__/clients/basic/index.js")
-    );
-    await expect(
-      client.entryStylesheets[0].metadata.path === path.resolve(__dirname, "../__fixtures__/clients/basic/index.css")
-    );
+    await expect(client.files[0].metadata.path === path.resolve(__dirname, "../__fixtures__/clients/basic/index.js"));
+    await expect(client.files[1].metadata.path === path.resolve(__dirname, "../__fixtures__/clients/basic/index.css"));
   });
 });

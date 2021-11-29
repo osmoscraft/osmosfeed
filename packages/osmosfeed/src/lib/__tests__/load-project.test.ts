@@ -2,7 +2,7 @@ import { describe, expect, it } from "@osmoscraft/typescript-testing-library";
 import { loadProject } from "../load-project";
 import path from "path";
 
-describe("load-project", () => {
+describe("loadProject", () => {
   it("Throws when project has no config file", async () => {
     await expect(() => loadProject([])).toThrow();
   });
