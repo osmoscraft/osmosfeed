@@ -7,8 +7,10 @@ import { log } from "./lib/log";
 import { ProgressTracker } from "./lib/progress-tracker";
 import { concurrentRequest } from "./lib/concurrent-request";
 import { scanDir } from "./lib/scan-dir";
-import { writeProject } from "./lib/write-project";
+import { concurrentWrite } from "./lib/concurrent-write";
 import { isUrl } from "./lib/url";
+import { UrlMap } from "./lib/url-map";
+import { urlToFilename } from "./lib/url-to-filename";
 
 async function run() {
   const downloadProgress = new ProgressTracker();
@@ -27,14 +29,20 @@ async function run() {
 
   const projectDir = await scanDir(cwd);
   const project = await loadProject(projectDir.files);
-  log.trace("config", project.config.content);
+  const urlMap = new UrlMap(project.urlMapJson);
+  log.trace("config", project.config);
+  log.trace("url map size", urlMap.size);
 
   log.heading("02 Fetch and parse feeds");
 
-  const sourceUrls = project.config.content.sources.map((channel) => channel.url ?? channel.href);
+  const sourceUrls = project.config.sources.map((channel) => channel.url ?? channel.href);
   downloadProgress.increaseTaskCount(sourceUrls.length);
   const feedRequests = concurrentRequest({
     requests: sourceUrls.map((url) => ({ url })),
+    onError: (req) => {
+      downloadProgress.increaseProgressCount();
+      log.error(`${downloadProgress} error download ${req.url}`);
+    },
     onResponse: (req) => {
       downloadProgress.increaseProgressCount();
       log.info(`${downloadProgress} downloaded ${req.url}`);
@@ -43,12 +51,15 @@ async function run() {
 
   const jsonFeeds: JsonFeed[] = [];
   const feedResponses = feedRequests.map(async (download) => {
+    const feedData = await download;
+    if (!feedData) return;
+
     const feed: JsonFeed = {
       ...parseFeed({
-        xml: (await download).text,
+        xml: feedData.text,
         parsers: [rssParser, atomParser],
       }),
-      feed_url: (await download).url,
+      feed_url: feedData.url,
     };
 
     const feedItemRequests = feed.items
@@ -60,10 +71,12 @@ async function run() {
 
     const feedItemResponses = concurrentRequest({
       requests: feedItemRequests,
-      onResponse: (req) => {
+      onResponse: (req, res) => {
         // TODO parse, transform, save crawled items
         downloadProgress.increaseProgressCount();
         log.info(`${downloadProgress} crawled ${req.url}`);
+        const cacheFilename = urlToFilename(req.url);
+        urlMap.set(req.url, cacheFilename);
       },
     });
 
@@ -73,6 +86,8 @@ async function run() {
   });
 
   await Promise.all(feedResponses);
+
+  log.info("url map size", urlMap.size);
 
   // TODO add caching and merging logic
 
@@ -91,7 +106,10 @@ async function run() {
       .map((file) => ({ content: file.content, mime: file.metadata.mime! }))?.[0],
   });
 
-  await writeProject([{ fromMemory: html, toPath: path.join(cwd, "dist/index.html") }]);
+  await concurrentWrite([
+    { fromMemory: html, toPath: path.join(cwd, "index.html") },
+    { fromMemory: urlMap.toString(), toPath: path.join(cwd, "cache/url-map.json") },
+  ]);
 
   log.info(`Site successfully built`);
 }

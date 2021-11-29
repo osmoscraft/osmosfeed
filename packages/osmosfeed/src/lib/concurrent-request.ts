@@ -3,6 +3,7 @@ import { httpRequest } from "./http-request";
 export interface ConcurrentRequestInput {
   requests: Request[];
   onResponse?: OnResponse;
+  onError?: OnError;
 }
 
 export interface Request {
@@ -15,25 +16,31 @@ export interface Response {
 }
 
 export type OnResponse = (req: Request, res: Response) => any;
+export type OnError = (req: Request) => any;
 
 /**
  * Single-thread multiple-connection HTTP request
  */
 export function concurrentRequest(input: ConcurrentRequestInput) {
-  const { requests, onResponse } = input;
+  const { requests, onResponse, onError } = input;
 
   return requests.map(async (req) => {
-    const { buffer: raw } = await httpRequest(req.url);
-    const response = {
-      url: req.url,
-      buffer: raw,
-      get text() {
-        return raw.toString("utf-8");
-      },
-    };
+    try {
+      const { buffer: raw } = await httpRequest(req.url);
+      const response = {
+        url: req.url,
+        buffer: raw,
+        get text() {
+          return raw.toString("utf-8");
+        },
+      };
 
-    onResponse?.(req, response);
+      onResponse?.(req, response);
 
-    return response;
+      return response;
+    } catch {
+      onError?.(req);
+      return undefined;
+    }
   });
 }

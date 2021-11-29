@@ -5,7 +5,7 @@ export async function loadTextFile(metadata: FileMetadata): Promise<VirtualFile>
   const content = await readFile(metadata.path, "utf-8");
 
   return {
-    metadata: metadata,
+    metadata,
     content,
   };
 }
@@ -14,7 +14,16 @@ export async function loadBinaryFile(metadata: FileMetadata): Promise<VirtualFil
   const content = await readFile(metadata.path);
 
   return {
-    metadata: metadata,
+    metadata,
+    content,
+  };
+}
+
+export async function loadJsonFile<T = any>(metadata: FileMetadata): Promise<VirtualFile<T>> {
+  const content = require(metadata.path);
+
+  return {
+    metadata,
     content,
   };
 }

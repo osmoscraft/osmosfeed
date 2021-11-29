@@ -197,6 +197,49 @@ describe("Parse items", () => {
     await expect(result.items[0].url).toEqual("http://mock-domain.com/item/1");
   });
 
+  it("Url trimming/RSS2", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <rss>
+        <channel>
+          <item>
+            <link> \t\nhttp://mock-domain.com/item/1 \n\t </link>
+          </item>
+        </channel>
+      </rss>
+    `);
+
+    await expect(result.items[0].url).toEqual("http://mock-domain.com/item/1");
+  });
+
+  it("Url trimming/RDF", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+        <channel>
+        </channel>
+        <item>
+          <link> \t\n http://mock-domain.com/item/1 \n\t </link>
+        </item>
+      </rdf:RDF>
+    `);
+
+    await expect(result.items[0].url).toEqual("http://mock-domain.com/item/1");
+  });
+
+  it("Url trimming/Atom", async () => {
+    const result = myParseFeed(`
+      <?xml version="1.0"?>
+      <feed xmlns="http://www.w3.org/2005/Atom ">
+        <entry>
+          <link href=" \t\n http://mock-domain.com/item/1 \n\t "/>
+        </entry>
+      </rss>
+    `);
+
+    await expect(result.items[0].url).toEqual("http://mock-domain.com/item/1");
+  });
+
   it("Title/RSS2", async () => {
     const result = myParseFeed(`
       <?xml version="1.0"?>

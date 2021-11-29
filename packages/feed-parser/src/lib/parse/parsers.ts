@@ -31,7 +31,7 @@ export const rssParser: XmlFeedParser = {
 
     return {
       id: coerceEmptyString(item.find("> guid").text()) ?? coerceEmptyString(item.find("> link").text()) ?? "",
-      url: coerceEmptyString(item.find("> link").text()),
+      url: coerceEmptyString(item.find("> link").text().trim()),
       title: coerceEmptyString(decodedTitle.text()),
       summary: coerceEmptyString(decodedSummary.text()) ?? coerceEmptyString(decodedContent.text()),
       content_html: coerceEmptyString(decodedContent.html()) ?? coerceEmptyString(decodedSummary.html(), ""),
@@ -72,7 +72,7 @@ export const atomParser: XmlFeedParser = {
 
     return {
       id: coerceEmptyString(item.find("> id").text()) ?? item.find("> link").attr("href") ?? "",
-      url: item.find("> link").attr("href"),
+      url: item.find("> link").attr("href")?.trim(),
       title: coerceEmptyString(decodedTitle.text()),
       summary: coerceEmptyString(decodedSummary.text()) ?? coerceEmptyString(decodedContent.text()),
       content_html: coerceEmptyString(decodedContent.html()) ?? coerceEmptyString(decodedSummary.html(), ""),

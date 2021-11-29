@@ -1,10 +1,12 @@
 import yaml from "js-yaml";
 import { ProjectConfig } from "../typings/config";
-import { loadTextFile } from "./load-file";
-import { FileMetadata, VirtualFile } from "./virtual-file";
+import { loadJsonFile, loadTextFile } from "./load-file";
+import { UrlMapJson } from "./url-map";
+import { FileMetadata } from "./virtual-file";
 
 export interface LoadedProject {
-  config: VirtualFile<ProjectConfig>;
+  config: ProjectConfig;
+  urlMapJson: UrlMapJson;
 }
 
 /**
@@ -16,10 +18,15 @@ export async function loadProject(files: FileMetadata[]): Promise<LoadedProject>
 
   const configFileContent = yaml.load((await loadTextFile(configMeta)).content) as ProjectConfig;
 
+  const urlMapPath = files.find((file) => file.filename === "url-map.json");
+  const urlMapJson = urlMapPath ? (await loadJsonFile<UrlMapJson>(urlMapPath)).content : getEmptyUrlMap();
+
   return {
-    config: {
-      metadata: configMeta,
-      content: configFileContent,
-    },
+    config: configFileContent,
+    urlMapJson: urlMapJson,
   };
+}
+
+function getEmptyUrlMap(): UrlMapJson {
+  return [];
 }

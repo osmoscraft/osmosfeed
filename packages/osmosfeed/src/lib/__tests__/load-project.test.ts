@@ -27,7 +27,7 @@ describe("loadProject", () => {
         path: path.resolve(__dirname, "../__fixtures__/configs/valid/osmosfeed.yml"),
       },
     ]);
-    await expect(projectFiles.config.content.sources.length).toEqual(1);
-    await expect(projectFiles.config.content.sources[0].url).toEqual("https://test-domain.com/feed.xml");
+    await expect(projectFiles.config.sources.length).toEqual(1);
+    await expect(projectFiles.config.sources[0].url).toEqual("https://test-domain.com/feed.xml");
   });
 });
