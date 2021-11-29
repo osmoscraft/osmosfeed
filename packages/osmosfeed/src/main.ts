@@ -7,13 +7,14 @@ import { log } from "./lib/log";
 import { ProgressTracker } from "./lib/progress-tracker";
 import { concurrentRequest } from "./lib/concurrent-request";
 import { scanDir } from "./lib/scan-dir";
-import { concurrentWrite } from "./lib/concurrent-write";
+import { concurrentWrite, WriteRequest } from "./lib/concurrent-write";
 import { isUrl } from "./lib/url";
 import { UrlMap } from "./lib/url-map";
 import { urlToFilename } from "./lib/url-to-filename";
+import { exists } from "./lib/fs-utils";
 
 async function run() {
-  const downloadProgress = new ProgressTracker();
+  const progressTracker = new ProgressTracker();
 
   log.heading("01 Load files");
 
@@ -36,20 +37,22 @@ async function run() {
   log.heading("02 Fetch and parse feeds");
 
   const sourceUrls = project.config.sources.map((channel) => channel.url ?? channel.href);
-  downloadProgress.increaseTaskCount(sourceUrls.length);
+  progressTracker.increaseTaskCount(sourceUrls.length);
   const feedRequests = concurrentRequest({
     requests: sourceUrls.map((url) => ({ url })),
     onError: (req) => {
-      downloadProgress.increaseProgressCount();
-      log.error(`${downloadProgress} error download ${req.url}`);
+      progressTracker.increaseProgressCount();
+      log.error(`${progressTracker} error download ${req.url}`);
     },
     onResponse: (req) => {
-      downloadProgress.increaseProgressCount();
-      log.info(`${downloadProgress} downloaded ${req.url}`);
+      progressTracker.increaseProgressCount();
+      log.info(`${progressTracker} downloaded ${req.url}`);
     },
   });
 
   const jsonFeeds: JsonFeed[] = [];
+  const pagesToCache: WriteRequest[] = [];
+
   const feedResponses = feedRequests.map(async (download) => {
     const feedData = await download;
     if (!feedData) return;
@@ -62,21 +65,46 @@ async function run() {
       feed_url: feedData.url,
     };
 
-    const feedItemRequests = feed.items
-      .filter((item) => isUrl(item.url))
-      .map((item) => ({
-        url: item.url!,
+    // TODO add caching and merging logic
+    // request on new items or items without file cache
+    // meanwhile, mark unused cache for clean up
+
+    const newFeedItemUrls = await Promise.all(
+      feed.items
+        .filter((item) => isUrl(item.url))
+        .map(async (item) => {
+          const hashedFilename = urlMap.get(item.url!);
+          // TODO consolidate cache folder path management
+          const isCached = await exists(path.join(process.cwd(), `cache/pages/${hashedFilename}.json`));
+          progressTracker.increaseTaskCount();
+          if (isCached) {
+            progressTracker.increaseProgressCount();
+            log.info(`${progressTracker} already cached ${item.url}`);
+            return undefined;
+          } else {
+            return item.url;
+          }
+        })
+    );
+
+    const feedItemRequests = newFeedItemUrls
+      .filter((maybeUrl) => !!maybeUrl)
+      .map((url) => ({
+        url: url!,
       }));
-    downloadProgress.increaseTaskCount(feedItemRequests.length);
 
     const feedItemResponses = concurrentRequest({
       requests: feedItemRequests,
-      onResponse: (req, res) => {
-        // TODO parse, transform, save crawled items
-        downloadProgress.increaseProgressCount();
-        log.info(`${downloadProgress} crawled ${req.url}`);
+      onResponse: async (req, res) => {
+        progressTracker.increaseProgressCount();
+        log.info(`${progressTracker} crawled ${req.url}`);
         const cacheFilename = urlToFilename(req.url);
         urlMap.set(req.url, cacheFilename);
+        const page = {
+          parserVersion: 0, // TODO version system
+          html: res.text, // TODO use mercury parser
+        };
+        pagesToCache.push({ fromMemory: JSON.stringify(page, null, 2), toPath: `cache/pages/${cacheFilename}.json` });
       },
     });
 
@@ -87,9 +115,9 @@ async function run() {
 
   await Promise.all(feedResponses);
 
-  log.info("url map size", urlMap.size);
-
-  // TODO add caching and merging logic
+  // TODO can be optimized by blend into the download workflow
+  await concurrentWrite(pagesToCache);
+  log.info(`${pagesToCache.length} new pages saved to cache`);
 
   log.heading("03 Generate site");
 

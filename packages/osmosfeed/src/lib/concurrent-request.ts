@@ -35,11 +35,11 @@ export function concurrentRequest(input: ConcurrentRequestInput) {
         },
       };
 
-      onResponse?.(req, response);
+      await onResponse?.(req, response);
 
       return response;
     } catch {
-      onError?.(req);
+      await onError?.(req);
       return undefined;
     }
   });

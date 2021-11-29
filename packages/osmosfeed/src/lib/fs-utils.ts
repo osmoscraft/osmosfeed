@@ -1,4 +1,4 @@
-import { readdir, mkdir, copyFile } from "fs/promises";
+import { readdir, mkdir, copyFile, access } from "fs/promises";
 import path from "path";
 
 export async function copyDirRecursive(src: string, dest: string) {
@@ -31,4 +31,13 @@ async function safeCopyFile(src: string, dest: string) {
 
   await mkdir(dir, { recursive: true });
   return copyFile(src, dest);
+}
+
+export async function exists(path: string) {
+  try {
+    await access(path);
+    return true;
+  } catch (error) {
+    return false;
+  }
 }
