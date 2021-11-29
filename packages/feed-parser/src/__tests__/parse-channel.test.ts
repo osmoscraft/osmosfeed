@@ -18,7 +18,7 @@ describe("Parse channel", () => {
     await expect(result.items).toEqual([]);
     await expect(
       Object.keys(Object.fromEntries(Object.entries(result).filter((entry) => entry[1] !== undefined))).sort()
-    ).toEqual(["items", "title", "version"]);
+    ).toEqual(["_osmosfeed_v1", "items", "title", "version"]);
   });
 
   it("Missing fields/RDF", async () => {
@@ -33,7 +33,7 @@ describe("Parse channel", () => {
     await expect(result.items).toEqual([]);
     await expect(
       Object.keys(Object.fromEntries(Object.entries(result).filter((entry) => entry[1] !== undefined))).sort()
-    ).toEqual(["items", "title", "version"]);
+    ).toEqual(["_osmosfeed_v1", "items", "title", "version"]);
   });
 
   it("Missing fields/Atom", async () => {
@@ -46,7 +46,7 @@ describe("Parse channel", () => {
     await expect(result.items).toEqual([]);
     await expect(
       Object.keys(Object.fromEntries(Object.entries(result).filter((entry) => entry[1] !== undefined))).sort()
-    ).toEqual(["items", "title", "version"]);
+    ).toEqual(["_osmosfeed_v1", "items", "title", "version"]);
   });
 
   it("JSON Feed version/RSS", async () => {
@@ -225,8 +225,8 @@ describe("Parse channel", () => {
       </rss>
     `);
 
-    await expect(result._date_published).toEqual(undefined);
-    await expect(result._date_modified).toEqual(undefined);
+    await expect(result._osmosfeed_v1.date_published).toEqual(undefined);
+    await expect(result._osmosfeed_v1.date_modified).toEqual(undefined);
   });
 
   it("Channel timestamps/Publish only/RSS2", async () => {
@@ -239,8 +239,8 @@ describe("Parse channel", () => {
       </rss>
     `);
 
-    await expect(result._date_published).toEqual("2000-01-01T00:00:00.000Z");
-    await expect(result._date_modified).toEqual("2000-01-01T00:00:00.000Z");
+    await expect(result._osmosfeed_v1.date_published).toEqual("2000-01-01T00:00:00.000Z");
+    await expect(result._osmosfeed_v1.date_modified).toEqual("2000-01-01T00:00:00.000Z");
   });
 
   it("Channel timestamps/Update only/RSS", async () => {
@@ -253,8 +253,8 @@ describe("Parse channel", () => {
       </rss>
     `);
 
-    await expect(result._date_published).toEqual("2000-12-12T12:12:12.000Z");
-    await expect(result._date_modified).toEqual("2000-12-12T12:12:12.000Z");
+    await expect(result._osmosfeed_v1.date_published).toEqual("2000-12-12T12:12:12.000Z");
+    await expect(result._osmosfeed_v1.date_modified).toEqual("2000-12-12T12:12:12.000Z");
   });
 
   it("Channel timestamps/Publish and update/RSS2", async () => {
@@ -268,8 +268,8 @@ describe("Parse channel", () => {
       </rss>
     `);
 
-    await expect(result._date_published).toEqual("2000-01-01T00:00:00.000Z");
-    await expect(result._date_modified).toEqual("2000-12-12T12:12:12.000Z");
+    await expect(result._osmosfeed_v1.date_published).toEqual("2000-01-01T00:00:00.000Z");
+    await expect(result._osmosfeed_v1.date_modified).toEqual("2000-12-12T12:12:12.000Z");
   });
 
   it("Channel timestamps/RDF", async () => {
@@ -282,8 +282,8 @@ describe("Parse channel", () => {
       </rdf:RDF>
     `);
 
-    await expect(result._date_published).toEqual("2000-12-12T12:12:12.000Z");
-    await expect(result._date_modified).toEqual("2000-12-12T12:12:12.000Z");
+    await expect(result._osmosfeed_v1.date_published).toEqual("2000-12-12T12:12:12.000Z");
+    await expect(result._osmosfeed_v1.date_modified).toEqual("2000-12-12T12:12:12.000Z");
   });
 
   it("Channel timestamps/Atom", async () => {
@@ -294,8 +294,8 @@ describe("Parse channel", () => {
       </feed>
     `);
 
-    await expect(result._date_published).toEqual("2000-12-12T12:12:12.000Z");
-    await expect(result._date_modified).toEqual("2000-12-12T12:12:12.000Z");
+    await expect(result._osmosfeed_v1.date_published).toEqual("2000-12-12T12:12:12.000Z");
+    await expect(result._osmosfeed_v1.date_modified).toEqual("2000-12-12T12:12:12.000Z");
   });
 });
 

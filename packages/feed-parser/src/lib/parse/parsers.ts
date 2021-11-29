@@ -19,8 +19,10 @@ export const rssParser: XmlFeedParser = {
       icon:
         coerceEmptyString(channel.find("> image url").text()) ??
         channel.find("image[rdf\\:resource]").attr("rdf:resource"),
-      _date_published: coerceError(() => new Date(publishDate ?? modifiedhDate ?? "").toISOString()),
-      _date_modified: coerceError(() => new Date(modifiedhDate ?? publishDate ?? "").toISOString()),
+      _osmosfeed_v1: {
+        date_published: coerceError(() => new Date(publishDate ?? modifiedhDate ?? "").toISOString()),
+        date_modified: coerceError(() => new Date(modifiedhDate ?? publishDate ?? "").toISOString()),
+      },
     };
   },
   resolveItem: (item, _channel) => {
@@ -59,8 +61,10 @@ export const atomParser: XmlFeedParser = {
       description: coerceEmptyString(parseAtomNode(channel.find("> subtitle")).text()),
       home_page_url: channel.find(`> link:not([rel="self"])`).attr("href"),
       icon: coerceEmptyString(channel.find("> icon").text()),
-      _date_published: date ? coerceError(() => new Date(date).toISOString()) : undefined,
-      _date_modified: date ? coerceError(() => new Date(date).toISOString()) : undefined,
+      _osmosfeed_v1: {
+        date_published: date ? coerceError(() => new Date(date).toISOString()) : undefined,
+        date_modified: date ? coerceError(() => new Date(date).toISOString()) : undefined,
+      },
     };
   },
   resolveItem: (item: Cheerio<Element>, _channel: Cheerio<Element>) => {
