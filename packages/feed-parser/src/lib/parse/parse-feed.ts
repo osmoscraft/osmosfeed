@@ -1,21 +1,21 @@
 import type { Document, Element } from "cheerio";
 import cheerio, { Cheerio } from "cheerio";
 import * as htmlparser2 from "htmlparser2";
-import type { JsonFeed, JsonFeedItem } from "../json-feed";
+import type { ParsedJsonFeed, ParsedJsonFeedItem } from "../json-feed";
 
 export interface XmlFeedParser {
   isMatch: (root: Cheerio<Document>) => boolean;
   selectChannel: (root: Cheerio<Document>) => Cheerio<Element>;
-  resolveChannel: (channelElement: Cheerio<Element>) => Omit<JsonFeed, "items">;
+  resolveChannel: (channelElement: Cheerio<Element>) => Omit<ParsedJsonFeed, "items">;
   selectItems: (root: Cheerio<Document>) => Cheerio<Element>;
-  resolveItem: (itemElement: Cheerio<Element>, channelElement: Cheerio<Element>) => JsonFeedItem;
+  resolveItem: (itemElement: Cheerio<Element>, channelElement: Cheerio<Element>) => ParsedJsonFeedItem;
 }
 
 export interface ParseFeedInput {
   xml: string;
   parsers: XmlFeedParser[];
 }
-export function parseFeed(input: ParseFeedInput): JsonFeed {
+export function parseFeed(input: ParseFeedInput): ParsedJsonFeed {
   const dom = htmlparser2.parseDocument(input.xml, { xmlMode: true, decodeEntities: true });
   const $ = cheerio.load(dom, { xmlMode: true, decodeEntities: false });
   const root = $.root();

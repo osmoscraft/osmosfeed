@@ -1,8 +1,8 @@
-import type { JsonFeed, JsonFeedItem } from "../json-feed";
+import type { ParsedJsonFeed, ParsedJsonFeedItem } from "../json-feed";
 import { sanitizeHtml } from "./sanitize";
 
 export interface SiteModel {
-  data: JsonFeed[];
+  data: ParsedJsonFeed[];
   assets: Asset[];
 }
 
@@ -39,7 +39,7 @@ export function renderSite(model: SiteModel) {
 }
 
 export interface ChannelModel {
-  data: JsonFeed;
+  data: ParsedJsonFeed;
   parent: SiteModel;
 }
 export function renderChannel(model: ChannelModel) {
@@ -61,7 +61,7 @@ export function renderChannel(model: ChannelModel) {
 }
 
 export interface ItemModel {
-  data: JsonFeedItem;
+  data: ParsedJsonFeedItem;
   parent: ChannelModel;
 }
 export function renderItem(model: ItemModel) {
