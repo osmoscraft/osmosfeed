@@ -1,5 +1,5 @@
 import yaml from "js-yaml";
-import { ProjectConfig } from "../typings/config";
+import { ProjectConfig } from "@osmoscraft/osmosfeed-types";
 import { loadJsonFile, loadTextFile } from "./load-file";
 import { UrlMapJson } from "./url-map";
 import { FileMetadata } from "./virtual-file";

@@ -1,6 +1,6 @@
 import { cyan, gray, red } from "./terminal";
-import { InterfaceOfClass } from "./interface-of-class";
 import { withBorder } from "./box-drawing";
+import { InterfaceOfClass } from "../typings/interface-of-class";
 
 export type ILogger = InterfaceOfClass<Logger>;
 
