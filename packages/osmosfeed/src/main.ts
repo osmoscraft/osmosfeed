@@ -1,17 +1,18 @@
-import { atomParser, JsonFeed, parseFeed, rssParser } from "@osmoscraft/feed-parser";
+import { atomParser, parseFeed, rssParser } from "@osmoscraft/feed-parser";
+import type { ParsedJsonFeed } from "@osmoscraft/osmosfeed-types";
 import { App } from "@osmoscraft/osmosfeed-web-reader";
 import path from "path";
+import { concurrentRequest } from "./lib/concurrent-request";
+import { concurrentWrite, WriteRequest } from "./lib/concurrent-write";
+import { exists } from "./lib/fs-utils";
 import { loadClient } from "./lib/load-client";
 import { loadProject } from "./lib/load-project";
 import { log } from "./lib/log";
 import { ProgressTracker } from "./lib/progress-tracker";
-import { concurrentRequest } from "./lib/concurrent-request";
 import { scanDir } from "./lib/scan-dir";
-import { concurrentWrite, WriteRequest } from "./lib/concurrent-write";
 import { isUrl } from "./lib/url";
 import { UrlMap } from "./lib/url-map";
 import { urlToFilename } from "./lib/url-to-filename";
-import { exists } from "./lib/fs-utils";
 
 async function run() {
   const progressTracker = new ProgressTracker();
@@ -50,14 +51,14 @@ async function run() {
     },
   });
 
-  const jsonFeeds: JsonFeed[] = [];
+  const jsonFeeds: ParsedJsonFeed[] = [];
   const pagesToCache: WriteRequest[] = [];
 
   const feedResponses = feedRequests.map(async (download) => {
     const feedData = await download;
     if (!feedData) return;
 
-    const feed: JsonFeed = {
+    const feed: ParsedJsonFeed = {
       ...parseFeed({
         xml: feedData.text,
         parsers: [rssParser, atomParser],
