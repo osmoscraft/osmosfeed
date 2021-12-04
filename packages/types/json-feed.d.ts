@@ -1,4 +1,4 @@
-export interface JsonFeed {
+export type JsonFeed = {
   version: string;
   title: string;
   description?: string;
@@ -7,9 +7,9 @@ export interface JsonFeed {
   feed_url?: string;
   items: JsonFeedItem[];
   [key: string]: any;
-}
+};
 
-export interface JsonFeedItem {
+export type JsonFeedItem = {
   id: string;
   url?: string;
   title?: string;
@@ -20,4 +20,4 @@ export interface JsonFeedItem {
   summary?: string;
   image?: string;
   [key: string]: any;
-}
+};

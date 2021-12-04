@@ -1,12 +1,12 @@
 import type { Document, Element } from "cheerio";
 import cheerio, { Cheerio } from "cheerio";
 import * as htmlparser2 from "htmlparser2";
-import type { ParsedJsonFeed, ParsedJsonFeedItem } from "../json-feed";
+import type { ParsedJsonFeed, ParsedJsonFeedItem } from "@osmoscraft/osmosfeed-types";
 
 export interface XmlFeedParser {
   isMatch: (root: Cheerio<Document>) => boolean;
   selectChannel: (root: Cheerio<Document>) => Cheerio<Element>;
-  resolveChannel: (channelElement: Cheerio<Element>) => Omit<ParsedJsonFeed, "items">;
+  resolveChannel: (channelElement: Cheerio<Element>) => ParsedJsonFeed;
   selectItems: (root: Cheerio<Document>) => Cheerio<Element>;
   resolveItem: (itemElement: Cheerio<Element>, channelElement: Cheerio<Element>) => ParsedJsonFeedItem;
 }
@@ -27,10 +27,12 @@ export function parseFeed(input: ParseFeedInput): ParsedJsonFeed {
 
   const channelElement = selectChannel(root);
 
-  return {
+  const results = {
     ...resolveChannel(channelElement),
     items: selectItems(root)
       .toArray()
       .map((itemElement) => resolveItem($(itemElement), channelElement)),
   };
+
+  return results;
 }
