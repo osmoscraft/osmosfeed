@@ -22,7 +22,7 @@ export const rssParser: XmlFeedParser = {
         coerceEmptyString(channel.find("> image url").text()) ??
         channel.find("image[rdf\\:resource]").attr("rdf:resource"),
       _ext: {
-        generator_version: pkg.version,
+        parser_version: pkg.version,
         date_published: coerceError(() => new Date(publishDate ?? modifiedhDate ?? "").toISOString()),
         date_modified: coerceError(() => new Date(modifiedhDate ?? publishDate ?? "").toISOString()),
       },
@@ -65,7 +65,7 @@ export const atomParser: XmlFeedParser = {
       home_page_url: channel.find(`> link:not([rel="self"])`).attr("href"),
       icon: coerceEmptyString(channel.find("> icon").text()),
       _ext: {
-        generator_version: pkg.version,
+        parser_version: pkg.version,
         date_published: date ? coerceError(() => new Date(date).toISOString()) : undefined,
         date_modified: date ? coerceError(() => new Date(date).toISOString()) : undefined,
       },

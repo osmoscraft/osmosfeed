@@ -1,16 +1,13 @@
-export interface JsonFeed extends JsonFeedMetadata {
-  items: JsonFeedItem[];
-}
-
-export interface JsonFeedMetadata {
+export interface JsonFeed {
   version: string;
   title: string;
   description?: string;
   home_page_url?: string;
   icon?: string;
   feed_url?: string;
+  items: JsonFeedItem[];
   _ext: {
-    generator_version: string;
+    parser_version: string;
     date_published?: string;
     date_modified?: string;
   };

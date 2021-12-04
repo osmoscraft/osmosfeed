@@ -1,12 +1,12 @@
 import type { Document, Element } from "cheerio";
 import cheerio, { Cheerio } from "cheerio";
 import * as htmlparser2 from "htmlparser2";
-import type { JsonFeed, JsonFeedMetadata, JsonFeedItem } from "../json-feed";
+import type { JsonFeed, JsonFeedItem } from "../json-feed";
 
 export interface XmlFeedParser {
   isMatch: (root: Cheerio<Document>) => boolean;
   selectChannel: (root: Cheerio<Document>) => Cheerio<Element>;
-  resolveChannel: (channelElement: Cheerio<Element>) => JsonFeedMetadata;
+  resolveChannel: (channelElement: Cheerio<Element>) => Omit<JsonFeed, "items">;
   selectItems: (root: Cheerio<Document>) => Cheerio<Element>;
   resolveItem: (itemElement: Cheerio<Element>, channelElement: Cheerio<Element>) => JsonFeedItem;
 }

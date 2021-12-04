@@ -59,8 +59,8 @@ describe("Parse channel", () => {
       </rss>
     `);
 
-    await expect(result._ext.generator_version).toEqual(pkg.version);
-    await expect(result._ext.generator_version.includes(".")).toEqual(true);
+    await expect(result._ext.parser_version).toEqual(pkg.version);
+    await expect(result._ext.parser_version.includes(".")).toEqual(true);
   });
 
   it("Parser version/RDF", async () => {
@@ -71,8 +71,8 @@ describe("Parse channel", () => {
       </rdf:RDF>
     `);
 
-    await expect(result._ext.generator_version).toEqual(pkg.version);
-    await expect(result._ext.generator_version.includes(".")).toEqual(true);
+    await expect(result._ext.parser_version).toEqual(pkg.version);
+    await expect(result._ext.parser_version.includes(".")).toEqual(true);
   });
 
   it("Parser version/Atom", async () => {
@@ -81,8 +81,8 @@ describe("Parse channel", () => {
       <feed xmlns="http://www.w3.org/2005/Atom"></feed>
     `);
 
-    await expect(result._ext.generator_version).toEqual(pkg.version);
-    await expect(result._ext.generator_version.includes(".")).toEqual(true);
+    await expect(result._ext.parser_version).toEqual(pkg.version);
+    await expect(result._ext.parser_version.includes(".")).toEqual(true);
   });
 
   it("JSON Feed version/RSS", async () => {
