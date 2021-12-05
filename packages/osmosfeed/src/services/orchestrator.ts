@@ -1,11 +1,12 @@
 export class Orchestrator {
-  configService: any;
-  storageService: any;
-  buildService: any;
-  networkService: any;
-  pageService: any;
-  diffService: any;
-  feedService: any;
+  constructor(
+    private configService: any,
+    private storageService: any,
+    private buildService: any,
+    private networkService: any,
+    private pageService: any,
+    private feedService: any
+  ) {}
 
   async run() {
     // data-fetch sources

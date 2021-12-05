@@ -1,5 +1,5 @@
 import { atomParser, parseFeed, rssParser } from "@osmoscraft/feed-parser";
-import type { ParsedJsonFeed } from "@osmoscraft/osmosfeed-types";
+import type { CachedJsonFeed, ParsedJsonFeed } from "@osmoscraft/osmosfeed-types";
 import { App } from "@osmoscraft/osmosfeed-web-reader";
 import path from "path";
 import { concurrentRequest } from "./lib/concurrent-request";
@@ -8,10 +8,10 @@ import { exists } from "./lib/fs-utils";
 import { loadClient } from "./lib/load-client";
 import { loadProject } from "./lib/load-project";
 import { log } from "./lib/log";
+import { mergeJsonFeed } from "./lib/merge";
 import { ProgressTracker } from "./lib/progress-tracker";
 import { scanDir } from "./lib/scan-dir";
 import { isUrl } from "./lib/url";
-import { UrlMap } from "./lib/url-map";
 import { urlToFilename } from "./lib/url-to-filename";
 
 async function run() {
@@ -30,10 +30,10 @@ async function run() {
   log.trace("cwd", cwd);
 
   const projectDir = await scanDir(cwd);
-  const project = await loadProject(projectDir.files);
-  const urlMap = new UrlMap(project.urlMapJson);
+  const project = await loadProject(projectDir.files, projectDir.root);
   log.trace("config", project.config);
-  log.trace("url map size", urlMap.size);
+
+  // TODO load cache separately from project. Unlike project files, cache is highly mutable
 
   log.heading("02 Fetch and parse feeds");
 
@@ -51,8 +51,8 @@ async function run() {
     },
   });
 
-  const jsonFeeds: ParsedJsonFeed[] = [];
-  const pagesToCache: WriteRequest[] = [];
+  const jsonFeeds: CachedJsonFeed[] = [];
+  const feedsToCache: WriteRequest[] = [];
 
   const feedResponses = feedRequests.map(async (download) => {
     const feedData = await download;
@@ -66,17 +66,30 @@ async function run() {
       feed_url: feedData.url,
     };
 
-    // TODO add caching and merging logic
-    // request on new items or items without file cache
-    // meanwhile, mark unused cache for clean up
+    // TODO this should be generated after making all network requests to filter out broken urls
+    const existingCachedFeed = project.cachedFeeds.find((feed) => feed.feed_url! == feedData.url);
+    const cacheableFeed: CachedJsonFeed = {
+      ...feed,
+      _ext_cache: {
+        pkg_version: "", // TODO implement,
+        cache_key: urlToFilename(feedData.url),
+      },
+      items: feed.items.map((item) => ({
+        ...item,
+        _ext_cache: {
+          pkg_version: "", // TODO implement
+          cache_key: item.url ? urlToFilename(item.url) : undefined,
+        },
+      })),
+    };
+    const mergedFeed = existingCachedFeed ? mergeJsonFeed(cacheableFeed, existingCachedFeed) : cacheableFeed;
 
     const newFeedItemUrls = await Promise.all(
-      feed.items
+      mergedFeed.items
         .filter((item) => isUrl(item.url))
         .map(async (item) => {
-          const hashedFilename = urlMap.get(item.url!);
-          // TODO consolidate cache folder path management
-          const isCached = await exists(path.join(process.cwd(), `cache/pages/${hashedFilename}.json`));
+          const hashedFilename = item._ext_cache.cache_key;
+          const isCached = await exists(path.join(process.cwd(), `cache/pages/${hashedFilename}.html`));
           progressTracker.increaseTaskCount();
           if (isCached) {
             progressTracker.increaseProgressCount();
@@ -100,25 +113,30 @@ async function run() {
         progressTracker.increaseProgressCount();
         log.info(`${progressTracker} crawled ${req.url}`);
         const cacheFilename = urlToFilename(req.url);
-        urlMap.set(req.url, cacheFilename);
-        const page = {
-          parserVersion: 0, // TODO version system
-          html: res.text, // TODO use mercury parser
+        const html = res.text; // TODO strip javascript and stylesheet, maybe convert with mercury parser (otherwise use client side conversion)
+        const cacheWriteRequest = {
+          fromMemory: html,
+          toPath: `cache/pages/${cacheFilename}.html`,
         };
-        pagesToCache.push({ fromMemory: JSON.stringify(page, null, 2), toPath: `cache/pages/${cacheFilename}.json` });
+        await concurrentWrite([cacheWriteRequest]);
       },
     });
 
     await Promise.all(feedItemResponses);
 
-    jsonFeeds.push(feed);
+    jsonFeeds.push(mergedFeed);
+    const feedCacheName = urlToFilename(feedData.url);
+    feedsToCache.push({
+      fromMemory: JSON.stringify(mergedFeed, null, 2),
+      toPath: `cache/feeds/${feedCacheName}.json`,
+    });
   });
 
   await Promise.all(feedResponses);
 
-  // TODO can be optimized by blend into the download workflow
-  await concurrentWrite(pagesToCache);
-  log.info(`${pagesToCache.length} new pages saved to cache`);
+  // TODO remove unused page cache
+  // TODO remove unused feed cache
+  await concurrentWrite(feedsToCache);
 
   log.heading("03 Generate site");
 
@@ -135,10 +153,7 @@ async function run() {
       .map((file) => ({ content: file.content, mime: file.metadata.mime! }))?.[0],
   });
 
-  await concurrentWrite([
-    { fromMemory: html, toPath: path.join(cwd, "index.html") },
-    { fromMemory: urlMap.toString(), toPath: path.join(cwd, "cache/url-map.json") },
-  ]);
+  await concurrentWrite([{ fromMemory: html, toPath: path.join(cwd, "index.html") }]);
 
   log.info(`Site successfully built`);
 }

@@ -4,10 +4,10 @@ import type { JsonFeedCacheExtension, JsonFeedItemCacheExtension } from "./json-
 
 export type { JsonFeed, JsonFeedItem } from "./json-feed";
 
-export type ParsedJsonFeed = JsonFeed & JsonFeedParserExtension;
+export type ParsedJsonFeed = JsonFeed<ParsedJsonFeedItem> & JsonFeedParserExtension;
 export type ParsedJsonFeedItem = JsonFeedItem;
 
-export type CachedJsonFeed = JsonFeed & JsonFeedParserExtension & JsonFeedCacheExtension;
+export type CachedJsonFeed = JsonFeed<CachedJsonFeedItem> & JsonFeedParserExtension & JsonFeedCacheExtension;
 export type CachedJsonFeedItem = JsonFeedItem & JsonFeedItemCacheExtension;
 
 export type { ProjectConfig, SourceConfig } from "./project-config";

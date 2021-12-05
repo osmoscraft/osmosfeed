@@ -1,11 +1,11 @@
-export type JsonFeed = {
+export type JsonFeed<ItemType = JsonFeedItem> = {
   version: string;
   title: string;
   description?: string;
   home_page_url?: string;
   icon?: string;
   feed_url?: string;
-  items: JsonFeedItem[];
+  items: ItemType[];
   [key: string]: any;
 };
 
