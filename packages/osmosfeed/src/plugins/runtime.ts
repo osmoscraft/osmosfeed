@@ -1,4 +1,4 @@
-import { FeedsPlugin, PartialJsonFeed, Plugins } from "./plugins";
+import { PartialJsonFeed, Plugins } from "./plugins";
 
 export async function run(plugins: Plugins) {
   const { onFeeds: onFeedsPlugins = [], onFeed: onFeedPlugins = [], onItem: onItemPlugins = [] } = plugins;
