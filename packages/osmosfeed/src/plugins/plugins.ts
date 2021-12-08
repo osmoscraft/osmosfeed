@@ -4,18 +4,21 @@ export interface Plugins {
   onFeeds?: FeedsPlugin[];
   onFeed?: FeedPlugin[];
   onItem?: ItemPlugin[];
-  onItemEnd?: ItemPlugin[];
-  onFeedEnd?: FeedPlugin[];
-  onFeedsEnd?: FeedsPlugin[];
 }
 
-export type FeedsPlugin = (input: { feeds: Partial<JsonFeed>[] }) => Promise<Partial<JsonFeed>[]>;
-export type FeedPlugin = (input: { feed: Partial<JsonFeed>; feeds: Partial<JsonFeed>[] }) => Promise<Partial<JsonFeed>>;
+// TODO onFeeds rename to onSources
+// separate plugin temporary data from jsonFeed output data
+
+export type PartialJsonFeed = Partial<JsonFeed<PartialJsonFeedItem>>;
+export type PartialJsonFeedItem = Partial<JsonFeedItem>;
+
+export type FeedsPlugin = (input: { feeds: PartialJsonFeed[] }) => Promise<PartialJsonFeed[]>;
+export type FeedPlugin = (input: { feed: PartialJsonFeed; feeds: PartialJsonFeed[] }) => Promise<PartialJsonFeed>;
 export type ItemPlugin = (input: {
-  item: Partial<JsonFeedItem>;
-  feed: Partial<JsonFeed>;
-  feeds: Partial<JsonFeed>[];
-}) => Promise<Partial<JsonFeedItem>>;
+  item: PartialJsonFeedItem;
+  feed: PartialJsonFeed;
+  feeds: PartialJsonFeed[];
+}) => Promise<PartialJsonFeedItem>;
 
 // Implement unit test util plugins to help output other plugins
 // Implement runtime that invokes plugins
@@ -32,7 +35,7 @@ export function feedParserPlugin(): FeedPlugin {
     const html = feed._feed_download_plugin?.raw;
     if (!html) return feed;
 
-    const parsedFeed: Partial<JsonFeed> = {
+    const parsedFeed: PartialJsonFeed = {
       ...feed,
       title: "hello",
       items: [],
@@ -50,7 +53,7 @@ export function feedDownloadPlugin(): FeedPlugin {
     const url = feed.feed_url;
     if (!url) return feed;
 
-    const downloadedFeed: Partial<JsonFeed> = {
+    const downloadedFeed: PartialJsonFeed = {
       ...feed,
       _feed_download_plugin: {
         raw: "hello world",
@@ -67,7 +70,7 @@ export interface InlineSourcesPluginConfig {
   urls: string[];
 }
 export function inlineSourcesPlugin(config: InlineSourcesPluginConfig): FeedsPlugin {
-  const jsonFeeds: Partial<JsonFeed>[] = config.urls.map((url) => ({ feed_url: url }));
+  const jsonFeeds: PartialJsonFeed[] = config.urls.map((url) => ({ feed_url: url }));
 
   const plugin: FeedsPlugin = async () => {
     return jsonFeeds;
