@@ -4,9 +4,9 @@ import { run } from "../runtime";
 import {
   mockFeedDescriptionPlugin,
   mockFeedPassthroughPlugin,
-  mockFeedsAppendPlugin,
-  mockFeedsEmptyPlugin,
-  mockFeedsTitlePlugin,
+  mockSourcesAppendPlugin,
+  mockSourcesEmptyPlugin,
+  mockSourcesTitlePlugin,
 } from "../__mocks__/mock-plugins";
 
 describe("runtime/feeds", () => {
@@ -18,7 +18,7 @@ describe("runtime/feeds", () => {
 
   it("runs blank feeds plugin", async () => {
     const plugins: Plugins = {
-      onFeeds: [mockFeedsEmptyPlugin],
+      onSources: [mockSourcesEmptyPlugin],
     };
     const jsonFeeds = await run(plugins);
     await expect(jsonFeeds).toEqual([]);
@@ -26,7 +26,7 @@ describe("runtime/feeds", () => {
 
   it("runs generative feeds plugin", async () => {
     const plugins: Plugins = {
-      onFeeds: [mockFeedsTitlePlugin],
+      onSources: [mockSourcesTitlePlugin],
     };
     const jsonFeeds = await run(plugins);
     await expect(jsonFeeds).toEqual([
@@ -39,7 +39,7 @@ describe("runtime/feeds", () => {
 
   it("pipes feeds plugins", async () => {
     const plugins: Plugins = {
-      onFeeds: [mockFeedsTitlePlugin, mockFeedsAppendPlugin],
+      onSources: [mockSourcesTitlePlugin, mockSourcesAppendPlugin],
     };
     const jsonFeeds = await run(plugins);
     await expect(jsonFeeds).toEqual([
@@ -58,7 +58,7 @@ describe("runtime/feeds", () => {
 describe("runtime/feed", () => {
   it("runs passthrough feed plugin", async () => {
     const plugins: Plugins = {
-      onFeeds: [mockFeedsTitlePlugin],
+      onSources: [mockSourcesTitlePlugin],
       onFeed: [mockFeedPassthroughPlugin],
     };
     const jsonFeeds = await run(plugins);
@@ -72,7 +72,7 @@ describe("runtime/feed", () => {
 
   it("runs simple feed plugin", async () => {
     const plugins: Plugins = {
-      onFeeds: [mockFeedsTitlePlugin],
+      onSources: [mockSourcesTitlePlugin],
       onFeed: [mockFeedDescriptionPlugin],
     };
     const jsonFeeds = await run(plugins);

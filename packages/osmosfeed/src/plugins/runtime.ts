@@ -1,28 +1,20 @@
 import { PartialJsonFeed, Plugins } from "./plugins";
 
 export async function run(plugins: Plugins) {
-  const { onFeeds: onFeedsPlugins = [], onFeed: onFeedPlugins = [], onItem: onItemPlugins = [] } = plugins;
+  const { onSources: sourcesPlugins = [], onFeed: feedPlugins = [], onItem: itemPlugins = [] } = plugins;
 
   // TODO error handling
   // TODO test error handling
-  const feedsDry = await reduceAsync(onFeedsPlugins, (feeds, plugin) => plugin({ feeds }), [] as PartialJsonFeed[]);
+  const feedsDry = await reduceAsync(sourcesPlugins, (feeds, plugin) => plugin({ feeds }), [] as PartialJsonFeed[]);
 
   const feedsHydrated = await Promise.all(
     feedsDry.map(async (resultFeedDry) => {
-      const feedHydrated = await reduceAsync(
-        onFeedPlugins,
-        (feed, plugin) => plugin({ feed, feeds: feedsDry }),
-        resultFeedDry
-      );
+      const feedHydrated = await reduceAsync(feedPlugins, (feed, plugin) => plugin({ feed }), resultFeedDry);
 
       const itemsDry = feedHydrated.items ?? [];
       const itemsHydrated = await Promise.all(
         itemsDry.map(async (itemDry) => {
-          const itemHydrated = await reduceAsync(
-            onItemPlugins,
-            (item, plugin) => plugin({ item, feed: feedHydrated, feeds: feedsDry }),
-            itemDry
-          );
+          const itemHydrated = await reduceAsync(itemPlugins, (item, plugin) => plugin({ item }), itemDry);
 
           return itemHydrated;
         })

@@ -1,14 +1,14 @@
-import { FeedPlugin, FeedsPlugin } from "../plugins";
+import { FeedPlugin, SourcesPlugin } from "../plugins";
 
-export const mockFeedsEmptyPlugin: FeedsPlugin = async () => [];
+export const mockSourcesEmptyPlugin: SourcesPlugin = async () => [];
 
-export const mockFeedsTitlePlugin: FeedsPlugin = async () => [
+export const mockSourcesTitlePlugin: SourcesPlugin = async () => [
   {
     title: "Simple title",
   },
 ];
 
-export const mockFeedsAppendPlugin: FeedsPlugin = async (input) => [
+export const mockSourcesAppendPlugin: SourcesPlugin = async (input) => [
   ...input.feeds,
   {
     title: "Appended title",
@@ -24,7 +24,7 @@ export const mockFeedDescriptionPlugin: FeedPlugin = async (input) => ({
   description: "Simple description",
 });
 
-export const mockFeedsItemsPlugin: FeedsPlugin = async (input) => [
+export const mockFeedsItemsPlugin: SourcesPlugin = async (input) => [
   {
     items: [{}],
   },
