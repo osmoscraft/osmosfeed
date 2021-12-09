@@ -2,8 +2,8 @@
   "name": "@osmoscraft/feed-builder",
   "version": "0.0.1",
   "description": "",
-  "main": "index.d.ts",
-  "types": "index.d.ts",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
   "scripts": {
     "test": "ts-node-dev --project tsconfig.json --transpile-only src/run-test.ts",
     "test:watch": "ts-node-dev --project tsconfig.json --respawn --watch --transpile-only src/run-test.ts"

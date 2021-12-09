@@ -1,6 +1,6 @@
 import { JsonFeed } from "@osmoscraft/osmosfeed-types";
 import { ProjectConfig, SourceConfig } from "@osmoscraft/osmosfeed-types/project-config";
-import { PartialJsonFeed, PartialProjectConfig, PartialSourceConfig, Plugins } from "../plugins/sdk/sdk";
+import { PartialJsonFeed, PartialProjectConfig, PartialSourceConfig, Plugins } from "../plugins/sdk";
 
 export interface FeedBuilderInput {
   plugins: Plugins;
