@@ -9,9 +9,10 @@
   "scripts": {
     "dev": "npm run build -w ./packages/osmosfeed && npm start -w ./packages/sandbox",
     "build": "npm run build -w ./packages/osmosfeed",
-    "test": "npm run test -w ./packages/feed-parser -w ./packages/osmosfeed",
+    "test": "npm run test -w ./packages/feed-parser -w ./packages/feed-builder -w ./packages/osmosfeed",
     "test:watch": "concurrently npm:test:watch:*",
     "test:watch:feed-parser": "npm run test:watch -w ./packages/feed-parser",
+    "test:watch:feed-builder": "npm run test:watch -w ./packages/feed-builder",
     "test:watch:osmosfeed": "npm run test:watch -w ./packages/osmosfeed",
     "clean": "npm run clean -w ./packages/feed-parser -w ./packages/osmosfeed"
   },

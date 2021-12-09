@@ -1,6 +1,6 @@
 import { describe, expect, it } from "@osmoscraft/typescript-testing-library";
-import { FeedFormatError, ProjectConfigError, build } from "../feed-builder";
-import { Plugins } from "../sdk";
+import { FeedFormatError, ProjectConfigError, build } from "../runtime/feed-builder";
+import { Plugins } from "../plugins/sdk";
 
 describe("Runtime", () => {
   it("Throws ProjectConfig error when plugins do not resolve full config", async () => {
@@ -8,7 +8,9 @@ describe("Runtime", () => {
       configPlugins: [],
     };
 
-    await expect(() => build({ plugins })).toThrow(ProjectConfigError);
+    const result = await build({ plugins });
+
+    await expect(result.errors?.[0] instanceof ProjectConfigError).toEqual(true);
   });
 
   it("Throws FeedFormat error when plugins do not resolve full feed", async () => {
@@ -24,7 +26,9 @@ describe("Runtime", () => {
       ],
     };
 
-    await expect(() => build({ plugins })).toThrow(FeedFormatError);
+    const result = await build({ plugins });
+
+    await expect(result.errors?.[0] instanceof FeedFormatError).toEqual(true);
   });
 
   it("Executes plugins in config > feed > item order", async () => {

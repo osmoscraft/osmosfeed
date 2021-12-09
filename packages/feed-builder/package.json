@@ -1,0 +1,18 @@
+{
+  "name": "@osmoscraft/feed-builder",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.d.ts",
+  "types": "index.d.ts",
+  "scripts": {
+    "test": "ts-node-dev --project tsconfig.json --transpile-only src/run-test.ts",
+    "test:watch": "ts-node-dev --project tsconfig.json --respawn --watch --transpile-only src/run-test.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@osmoscraft/typescript-testing-library": "^0.0.5",
+    "@osmoscraft/osmosfeed-types": "file:../types"
+  }
+}
