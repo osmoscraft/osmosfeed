@@ -1,5 +1,5 @@
-export interface ProjectConfig {
-  sources: SourceConfig[];
+export interface ProjectConfig<SourceConfigType = SourceConfig> {
+  sources: SourceConfigType[];
 }
 
 export interface SourceConfig {

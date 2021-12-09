@@ -1,87 +1,79 @@
 import { describe, expect, it } from "@osmoscraft/typescript-testing-library";
-import { Plugins } from "../plugins";
-import { run } from "../runtime";
-import {
-  mockFeedDescriptionPlugin,
-  mockFeedPassthroughPlugin,
-  mockSourcesAppendPlugin,
-  mockSourcesEmptyPlugin,
-  mockSourcesTitlePlugin,
-} from "../__mocks__/mock-plugins";
+import { FeedFormatError, ProjectConfigError, build } from "../feed-builder";
+import { Plugins } from "../sdk";
 
-describe("runtime/feeds", () => {
-  it("runs on empty input", async () => {
-    const plugins: Plugins = {};
-    const jsonFeeds = await run(plugins);
-    await expect(jsonFeeds).toEqual([]);
+describe("Runtime", () => {
+  it("Throws ProjectConfig error when plugins do not resolve full config", async () => {
+    const plugins: Plugins = {
+      configPlugins: [],
+    };
+
+    await expect(() => build({ plugins })).toThrow(ProjectConfigError);
   });
 
-  it("runs blank feeds plugin", async () => {
+  it("Throws FeedFormat error when plugins do not resolve full feed", async () => {
     const plugins: Plugins = {
-      onSources: [mockSourcesEmptyPlugin],
+      configPlugins: [
+        async () => ({
+          sources: [
+            {
+              url: "",
+            },
+          ],
+        }),
+      ],
     };
-    const jsonFeeds = await run(plugins);
-    await expect(jsonFeeds).toEqual([]);
+
+    await expect(() => build({ plugins })).toThrow(FeedFormatError);
   });
 
-  it("runs generative feeds plugin", async () => {
+  it("Executes plugins in config > feed > item order", async () => {
+    const invocationTracker: string[] = [];
     const plugins: Plugins = {
-      onSources: [mockSourcesTitlePlugin],
+      configPlugins: [
+        async () => {
+          invocationTracker.push("s1");
+          return {};
+        },
+        async () => {
+          invocationTracker.push("s2");
+          return {
+            sources: [{ url: "" }],
+          };
+        },
+      ],
+      feedPlugins: [
+        async () => {
+          invocationTracker.push("f1");
+          return {};
+        },
+        async () => {
+          invocationTracker.push("f2");
+          return {
+            version: "",
+            title: "",
+            items: [
+              {
+                id: "0",
+              },
+            ],
+          };
+        },
+      ],
+      itemPlugins: [
+        async ({ item }) => {
+          invocationTracker.push("i1");
+          return { ...item };
+        },
+        async ({ item }) => {
+          invocationTracker.push("i2");
+          return { ...item };
+        },
+      ],
     };
-    const jsonFeeds = await run(plugins);
-    await expect(jsonFeeds).toEqual([
-      {
-        title: "Simple title",
-        items: [],
-      },
-    ]);
-  });
 
-  it("pipes feeds plugins", async () => {
-    const plugins: Plugins = {
-      onSources: [mockSourcesTitlePlugin, mockSourcesAppendPlugin],
-    };
-    const jsonFeeds = await run(plugins);
-    await expect(jsonFeeds).toEqual([
-      {
-        title: "Simple title",
-        items: [],
-      },
-      {
-        title: "Appended title",
-        items: [],
-      },
-    ]);
-  });
-});
+    await build({ plugins });
 
-describe("runtime/feed", () => {
-  it("runs passthrough feed plugin", async () => {
-    const plugins: Plugins = {
-      onSources: [mockSourcesTitlePlugin],
-      onFeed: [mockFeedPassthroughPlugin],
-    };
-    const jsonFeeds = await run(plugins);
-    await expect(jsonFeeds).toEqual([
-      {
-        title: "Simple title",
-        items: [],
-      },
-    ]);
-  });
-
-  it("runs simple feed plugin", async () => {
-    const plugins: Plugins = {
-      onSources: [mockSourcesTitlePlugin],
-      onFeed: [mockFeedDescriptionPlugin],
-    };
-    const jsonFeeds = await run(plugins);
-    await expect(jsonFeeds).toEqual([
-      {
-        title: "Simple title",
-        description: "Simple description",
-        items: [],
-      },
-    ]);
+    await expect(invocationTracker).toEqual(["s1", "s2", "f1", "f2", "i1", "i2"]);
   });
 });
