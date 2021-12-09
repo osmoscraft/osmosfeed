@@ -1,5 +1,5 @@
 import { describe, expect, it } from "@osmoscraft/typescript-testing-library";
-import { FeedFormatError, ProjectConfigError, build } from "../runtime/feed-builder";
+import { FeedFormatError, ProjectConfigError, build } from "../runtime/runtime";
 import { Plugins } from "../plugins/sdk";
 
 describe("Runtime", () => {

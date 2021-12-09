@@ -1,5 +1,6 @@
 import type { JsonFeed, JsonFeedItem, ProjectConfig, SourceConfig } from "@osmoscraft/osmosfeed-types";
 
+// TODO util function should be injected by runtime to get "feed" object safely
 export function setTempFeedData(feed: PartialJsonFeed, pluginName: string, keyValueTuple: [key: string, value: any]) {
   feed._temp ??= {};
   feed._temp[pluginName] ??= {};
@@ -28,7 +29,7 @@ export interface Plugins {
 // TODO rewrite mock plugins to simply exercise all paths of runtime (instead of testing individual mocks)
 // TODO adjust typing for sources plugin (probably only need to keep feed_url)
 
-export type ConfigPlugin = (input: { config?: PartialProjectConfig }) => Promise<PartialProjectConfig>;
+export type ConfigPlugin = (input: { config: PartialProjectConfig }) => Promise<PartialProjectConfig>;
 export type FeedPlugin = (input: {
   feed: PartialJsonFeed;
   sourceConfig: SourceConfig;

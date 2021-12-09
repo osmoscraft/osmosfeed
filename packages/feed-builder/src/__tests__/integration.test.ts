@@ -1,5 +1,5 @@
 import { describe, expect, it } from "@osmoscraft/typescript-testing-library";
-import { build } from "../runtime/feed-builder";
+import { build } from "../runtime/runtime";
 import { useHttpFeedDownloader, useInlineConfig, useJsonFeedParser } from "../plugins/core";
 import { Plugins } from "../plugins/sdk";
 
