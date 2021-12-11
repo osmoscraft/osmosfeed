@@ -1,20 +1,5 @@
 import type { JsonFeed, JsonFeedItem, ProjectConfig, SourceConfig } from "@osmoscraft/osmosfeed-types";
 
-// TODO util function should be injected by runtime to get "feed" object safely
-export function setTempFeedData(feed: PartialJsonFeed, pluginName: string, keyValueTuple: [key: string, value: any]) {
-  feed._temp ??= {};
-  feed._temp[pluginName] ??= {};
-  feed._temp[pluginName][keyValueTuple[0]] = keyValueTuple[1];
-}
-
-export function getTempFeedData<T = any>(feed: PartialJsonFeed, pluginName: string, key: string): T {
-  return feed?._temp?.[pluginName]?.[key];
-}
-
-export function clearTempFeedData(feed: PartialJsonFeed) {
-  delete feed._temp;
-}
-
 export type PartialJsonFeed = Partial<JsonFeed<PartialJsonFeedItem>>;
 export type PartialJsonFeedItem = Partial<JsonFeedItem>;
 export type PartialProjectConfig = Partial<ProjectConfig<PartialSourceConfig>>;
@@ -28,12 +13,19 @@ export interface Plugins {
 
 // TODO rewrite mock plugins to simply exercise all paths of runtime (instead of testing individual mocks)
 // TODO adjust typing for sources plugin (probably only need to keep feed_url)
+export interface PluginDefinition {
+  name: string;
+  // onConfig?: () =>
+  // onFeed?: () =>
+  // onItem?: () =>
+}
 
 export type ConfigPlugin = (input: { config: PartialProjectConfig }) => Promise<PartialProjectConfig>;
 export type FeedPlugin = (input: {
   feed: PartialJsonFeed;
   sourceConfig: SourceConfig;
   projectConfig: ProjectConfig;
+  utils: FeedPluginUtils;
 }) => Promise<PartialJsonFeed>;
 export type ItemPlugin = (input: {
   item: JsonFeedItem;
@@ -41,3 +33,20 @@ export type ItemPlugin = (input: {
   sourceConfig: SourceConfig;
   projectConfig: ProjectConfig;
 }) => Promise<JsonFeedItem>;
+
+export interface FeedPluginUtils {
+  httpGet: (req: HttpRequest) => Promise<HttpResponse>;
+  getTempData: <T = any>(pluginName: string, key: string) => T;
+  setTempData: (pluginName: string, key: string, value: any) => void;
+  getTextFile: (pluginName: string, filename: string) => Promise<string>;
+  setFile: (pluginName: string, filename: string, fileContent: Buffer | string) => Promise<void>;
+}
+
+export interface HttpRequest {
+  url: string;
+}
+export interface HttpResponse {
+  statusCode: number;
+  contentType?: string;
+  buffer: Buffer;
+}

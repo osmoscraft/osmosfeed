@@ -1,6 +1,9 @@
 import { JsonFeed } from "@osmoscraft/osmosfeed-types";
 import { ProjectConfig, SourceConfig } from "@osmoscraft/osmosfeed-types/project-config";
-import { PartialJsonFeed, PartialProjectConfig, PartialSourceConfig, Plugins } from "../plugins/sdk";
+import { getTempData, setTempData } from "./lib/temp-data-storage";
+import { FeedPluginUtils, PartialJsonFeed, PartialProjectConfig, PartialSourceConfig, Plugins } from "../types/plugins";
+import { httpGet } from "./lib/http-client";
+import { getTextFile, setFile } from "./lib/file-storage";
 
 export interface FeedBuilderInput {
   plugins: Plugins;
@@ -33,7 +36,16 @@ export async function build({ plugins }: FeedBuilderInput): Promise<FeedBuilderO
       try {
         const feedBase = await reduceAsync(
           feedPlugins,
-          (feed, plugin) => plugin({ feed, sourceConfig, projectConfig }),
+          (feed, plugin) => {
+            const utils: FeedPluginUtils = {
+              getTempData: getTempData.bind(null, feed) as FeedPluginUtils["getTempData"],
+              setTempData: setTempData.bind(null, feed),
+              httpGet,
+              getTextFile,
+              setFile,
+            };
+            return plugin({ feed, sourceConfig, projectConfig, utils });
+          },
           {} as PartialJsonFeed
         );
 

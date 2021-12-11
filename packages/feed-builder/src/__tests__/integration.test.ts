@@ -1,7 +1,7 @@
 import { describe, expect, it } from "@osmoscraft/typescript-testing-library";
 import { build } from "../runtime/runtime";
-import { useHttpFeedDownloader, useInlineConfig, useJsonFeedParser } from "../plugins/core";
-import { Plugins } from "../plugins/sdk";
+import { useHttpFeedDownloader, useInlineConfig, useJsonFeedParser } from "../plugins";
+import { Plugins } from "../types/plugins";
 
 describe("Integration", () => {
   it("Loads a single feed", async () => {
