@@ -7,6 +7,7 @@ export function runOnItemHook(plugin: Plugin, input: ItemHookInput) {
 export interface SingleItemMockInput {
   url?: string;
   id: string;
+  _plugin?: any;
 }
 export function mockDataForSingleItem(input: SingleItemMockInput): ItemHookData {
   return {
@@ -14,6 +15,7 @@ export function mockDataForSingleItem(input: SingleItemMockInput): ItemHookData 
     item: {
       id: input.id,
       url: input.url,
+      _plugin: input._plugin,
     },
     feed: {
       version: "",

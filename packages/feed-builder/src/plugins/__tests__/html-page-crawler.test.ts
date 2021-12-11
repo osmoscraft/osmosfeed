@@ -3,7 +3,7 @@ import { mimeMap } from "../lib/mime-map";
 import { useHtmlPageCrawler } from "../htmp-page-crawler";
 import { mockDataForSingleItem, runOnItemHook } from "./fixtures";
 
-describe("Plugin/Page crawler", () => {
+describe("Plugin/HTML Page Crawler", () => {
   it("Makes no http request when item has no url", async () => {
     const requestedUrls: string[] = [];
 
@@ -25,6 +25,74 @@ describe("Plugin/Page crawler", () => {
     });
 
     expect(requestedUrls).toEqual([]);
+  });
+
+  it("Reuse available cache", async () => {
+    const requestedUrls: string[] = [];
+    const fileOperations: any[] = [];
+
+    const output = await runOnItemHook(useHtmlPageCrawler(), {
+      data: mockDataForSingleItem({
+        id: "test-item-id",
+        url: "https://mock-domain.com/article.html",
+      }),
+      api: {
+        httpGet: async (url) => {
+          requestedUrls.push(url);
+          return {
+            statusCode: 200,
+            buffer: Buffer.from("Hello world"),
+          };
+        },
+        getTextFile: async (filename) => {
+          fileOperations.push("read " + filename);
+          return "Hello world";
+        },
+        setFile: async () => {
+          fileOperations.push("write");
+        },
+      },
+    });
+
+    expect(requestedUrls).toEqual([]);
+    expect(fileOperations.length).toEqual(1);
+    expect(fileOperations[0].includes("read")).toEqual(true);
+    expect(fileOperations[0].includes(".html")).toEqual(true);
+    expect(output._plugin.pageFilename.includes(".html")).toEqual(true);
+  });
+
+  it("Updates existing cached page file name", async () => {
+    const requestedUrls: string[] = [];
+    const fileOperations: any[] = [];
+
+    const output = await runOnItemHook(useHtmlPageCrawler(), {
+      data: mockDataForSingleItem({
+        id: "test-item-id",
+        url: "https://mock-domain.com/article.html",
+        _plugin: {
+          pageFilename: "old-file.html",
+        },
+      }),
+      api: {
+        httpGet: async (url) => {
+          requestedUrls.push(url);
+          return {
+            statusCode: 200,
+            buffer: Buffer.from("Hello world"),
+          };
+        },
+        getTextFile: async (filename) => {
+          fileOperations.push("read " + filename);
+          return "Hello world";
+        },
+        setFile: async () => {
+          fileOperations.push("write");
+        },
+      },
+    });
+
+    expect(output._plugin.pageFilename.includes(".html")).toEqual(true);
+    expect(output._plugin.pageFilename).not.toEqual("old-file.html");
   });
 
   it("Makes http request if cache miss", async () => {

@@ -12,6 +12,18 @@ export function useHtmlPageCrawler(): Plugin {
       if (!url) {
         return data.item;
       }
+      const filename = `${sha256(url)}.html`;
+
+      const cachedContent = await api.getTextFile(filename);
+      if (cachedContent) {
+        return {
+          ...data.item,
+          _plugin: {
+            ...data.item._plugin,
+            pageFilename: filename,
+          },
+        };
+      }
 
       const res = await api.httpGet(url);
 
@@ -25,7 +37,6 @@ export function useHtmlPageCrawler(): Plugin {
       }
 
       const content = res.buffer;
-      const filename = `${sha256(url)}.html`;
       await api.setFile(filename, content);
 
       return {
