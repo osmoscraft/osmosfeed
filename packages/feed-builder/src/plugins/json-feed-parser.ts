@@ -1,6 +1,6 @@
 import { atomParser, parseFeed, rssParser } from "@osmoscraft/feed-parser";
 import { ParsedJsonFeed } from "@osmoscraft/osmosfeed-types";
-import { id } from "./http-feed-downloader";
+import { id } from "./feed-downloader";
 import { Plugin } from "../types/plugin";
 
 export function useJsonFeedParser(): Plugin {
@@ -8,7 +8,8 @@ export function useJsonFeedParser(): Plugin {
     id: "af5fb3c3-9dd8-4d99-a6a1-1f5d08ba3988",
     name: "JSON Feed Parser",
     onFeed: async ({ data, api }) => {
-      const xml = api.getTempDataByPlugin<string>(id, "text");
+      // TODO handle error when rawFeed does not exist
+      const xml = data.feed._plugin.rawFeed;
       const parsedFeed: ParsedJsonFeed = {
         ...parseFeed({
           xml,

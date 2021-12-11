@@ -5,7 +5,7 @@ import { log } from "./lib/log";
 import { scanDir } from "./lib/scan-dir";
 import {
   build,
-  useHttpFeedDownloader,
+  useFeedDownloader,
   useIncrementalFeedStorage,
   useInlineConfig,
   useJsonFeedParser,
@@ -37,12 +37,7 @@ async function run() {
   log.heading("02 Fetch and parse feeds");
 
   const { feeds, errors } = await build({
-    plugins: [
-      useInlineConfig(project.config),
-      useHttpFeedDownloader(),
-      useJsonFeedParser(),
-      useIncrementalFeedStorage(),
-    ],
+    plugins: [useInlineConfig(project.config), useFeedDownloader(), useJsonFeedParser(), useIncrementalFeedStorage()],
   });
 
   log.heading("03 Generate site");
