@@ -1,13 +1,16 @@
-import { FeedPlugin } from "../types/plugins";
+import { Plugin } from "../types/plugins";
 
-export const httpFeedDownloaderPluginName = "httpFeedDownloader";
+export function useHttpFeedDownloader(): Plugin {
+  return {
+    id: "47764e9f-4327-4be7-8584-e8307ba08170",
+    onFeed: async ({ data, api }) => {
+      const result = await api.httpGet({ url: data.sourceConfig.url });
 
-export function useHttpFeedDownloader(): FeedPlugin {
-  return async ({ feed, sourceConfig, utils }) => {
-    const result = await utils.httpGet({ url: sourceConfig.url });
-
-    // TODO error handling
-    utils.setTempData(httpFeedDownloaderPluginName, "text", result.buffer.toString("utf8"));
-    return feed;
+      // TODO error handling
+      api.setTempData("text", result.buffer.toString("utf8"));
+      return data.feed;
+    },
   };
 }
+
+export const uuid = "47764e9f-4327-4be7-8584-e8307ba08170";

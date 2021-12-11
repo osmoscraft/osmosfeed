@@ -1,129 +1,106 @@
 import { describe, expect, it } from "@osmoscraft/typescript-testing-library";
-import { FeedFormatError, ProjectConfigError, build } from "../runtime/runtime";
-import { Plugins } from "../types/plugins";
+import { build, FeedFormatError, ProjectConfigError } from "../runtime/runtime";
+import { Plugin } from "../types/plugins";
 
 describe("Runtime", () => {
   it("Throws ProjectConfig error when plugins do not resolve full config", async () => {
-    const plugins: Plugins = {
-      configPlugins: [],
-    };
-
-    const result = await build({ plugins });
+    const result = await build({ plugins: [] });
 
     await expect(result.errors?.[0] instanceof ProjectConfigError).toEqual(true);
   });
 
   it("Throws FeedFormat error when plugins do not resolve full feed", async () => {
-    const plugins: Plugins = {
-      configPlugins: [
-        async () => ({
-          sources: [
-            {
-              url: "",
-            },
-          ],
-        }),
-      ],
+    const plugin: Plugin = {
+      id: "test-id",
+      onConfig: async () => ({
+        sources: [
+          {
+            url: "",
+          },
+        ],
+      }),
     };
 
-    const result = await build({ plugins });
+    const result = await build({ plugins: [plugin] });
 
     await expect(result.errors?.[0] instanceof FeedFormatError).toEqual(true);
   });
 
   it("Executes plugins in config > feed > item order", async () => {
     const invocationTracker: string[] = [];
-    const plugins: Plugins = {
-      configPlugins: [
-        async () => {
-          invocationTracker.push("s1");
-          return {};
-        },
-        async () => {
-          invocationTracker.push("s2");
-          return {
-            sources: [{ url: "" }],
-          };
-        },
-      ],
-      feedPlugins: [
-        async () => {
-          invocationTracker.push("f1");
-          return {};
-        },
-        async () => {
-          invocationTracker.push("f2");
-          return {
-            version: "",
-            title: "",
-            items: [
-              {
-                id: "0",
-              },
-            ],
-          };
-        },
-      ],
-      itemPlugins: [
-        async ({ item }) => {
-          invocationTracker.push("i1");
-          return { ...item };
-        },
-        async ({ item }) => {
-          invocationTracker.push("i2");
-          return { ...item };
-        },
-      ],
+    const plugin: Plugin = {
+      id: "test-id",
+      onConfig: async () => {
+        invocationTracker.push("s1");
+        return {
+          sources: [{ url: "" }],
+        };
+      },
+      onFeed: async () => {
+        invocationTracker.push("f1");
+        return {
+          version: "",
+          title: "",
+          items: [
+            {
+              id: "0",
+            },
+          ],
+        };
+      },
+      onItem: async ({ item }) => {
+        invocationTracker.push("i1");
+        return { ...item };
+      },
     };
 
-    await build({ plugins });
+    await build({ plugins: [plugin] });
 
-    await expect(invocationTracker).toEqual(["s1", "s2", "f1", "f2", "i1", "i2"]);
+    await expect(invocationTracker).toEqual(["s1", "f1", "i1"]);
   });
 
   it("pipes data through all plugins", async () => {
-    const plugins: Plugins = {
-      configPlugins: [
-        async () => {
-          return {
-            sources: [{ url: "s1" }],
-          };
-        },
-        async ({ config }) => {
-          return {
-            sources: [{ url: config.sources![0].url + "s2" }],
-          };
-        },
-      ],
-      feedPlugins: [
-        async ({ sourceConfig }) => {
-          return {
-            title: sourceConfig.url + "f1",
-          };
-        },
-        async ({ feed }) => {
-          return {
-            version: "",
-            title: feed.title! + "f2",
-            items: [
-              {
-                id: "0",
-              },
-            ],
-          };
-        },
-      ],
-      itemPlugins: [
-        async ({ item, feed }) => {
-          return { ...item, title: feed.title + "i1" };
-        },
-        async ({ item }) => {
-          return { ...item, title: item.title! + "i2" };
-        },
-      ],
+    const plugin1: Plugin = {
+      id: "test-plugin-id-1",
+      onConfig: async () => {
+        return {
+          sources: [{ url: "s1" }],
+        };
+      },
+      onFeed: async ({ data }) => {
+        return {
+          title: data.sourceConfig.url + "f1",
+        };
+      },
+      onItem: async ({ item, feed }) => {
+        return { ...item, title: feed.title + "i1" };
+      },
     };
 
-    const jsonFeed = await build({ plugins });
+    const plugin2: Plugin = {
+      id: "test-plugin-id-2",
+      onConfig: async ({ config }) => {
+        return {
+          sources: [{ url: config.sources![0].url + "s2" }],
+        };
+      },
+      onFeed: async ({ data }) => {
+        return {
+          version: "",
+          title: data.feed.title! + "f2",
+          items: [
+            {
+              id: "0",
+            },
+          ],
+        };
+      },
+      onItem: async ({ item }) => {
+        return { ...item, title: item.title! + "i2" };
+      },
+    };
+
+    const jsonFeed = await build({ plugins: [plugin1, plugin2] });
     await expect(jsonFeed.feeds![0].items[0].title).toEqual("s1s2f1f2i1i2");
   });
 });

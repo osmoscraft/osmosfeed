@@ -1,9 +1,15 @@
-export function setTempData(context: any, pluginName: string, key: string, value: any) {
-  context._temp ??= {};
-  context._temp[pluginName] ??= {};
-  context._temp[pluginName][key] = value;
+import { OnFeedHookData } from "../../types/plugins";
+
+export function setTempData(context: OnFeedHookData, key: string, value: any) {
+  context.feed._temp ??= {};
+  context.feed._temp[context.pluginId] ??= {};
+  context.feed._temp[context.pluginId][key] = value;
 }
 
-export function getTempData<T = any>(context: any, pluginName: string, key: string): T {
-  return context?._temp?.[pluginName]?.[key];
+export function getTempData<T = any>(context: OnFeedHookData, key: string): T {
+  return context.feed?._temp?.[context.pluginId]?.[key];
+}
+
+export function getTempDataByPlugin<T = any>(context: OnFeedHookData, pluginId: string, key: string): T {
+  return context.feed?._temp?.[pluginId]?.[key];
 }

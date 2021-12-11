@@ -1,19 +1,25 @@
-import { FeedPlugin } from "../types/plugins";
-import { urlToFilename } from "./lib/url-to-filename";
+import { Plugin } from "../types/plugins";
+import { sha256 } from "./lib/sha256";
 
 /**
  * Update or create feed in storage by merging new feed content to the existing one
  */
-export function useIncrementalFeedStorage(): FeedPlugin {
-  return async ({ feed, sourceConfig, utils }) => {
-    if (!feed.feed_url) throw new Error(); // TODO standardize error typing
-    // read storage
+export function useIncrementalFeedStorage(): Plugin {
+  return {
+    id: "04722f59-f9c9-431f-a9fd-c664a328577c",
+    onFeed: async ({ data, api }) => {
+      const { feed } = data;
 
-    // merge incoming feed with content
+      if (!feed.feed_url) throw new Error(); // TODO standardize error typing
+      // read storage
 
-    // write storage
-    const filename = urlToFilename(feed.feed_url);
+      // merge incoming feed with content
 
-    return feed;
+      // write storage
+      const filename = sha256(feed.feed_url);
+      await api.setFile(filename, "hello world");
+
+      return feed;
+    },
   };
 }
