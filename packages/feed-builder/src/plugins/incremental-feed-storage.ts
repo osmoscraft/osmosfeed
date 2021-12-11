@@ -1,4 +1,4 @@
-import { Plugin } from "../types/plugins";
+import { Plugin } from "../types/plugin";
 import { mergeJsonFeed } from "./lib/merge";
 import { sha256 } from "./lib/sha256";
 

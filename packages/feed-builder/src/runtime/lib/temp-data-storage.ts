@@ -1,4 +1,4 @@
-import { OnFeedHookData } from "../../types/plugins";
+import { OnFeedHookData } from "../../types/plugin";
 
 export function setTempData(context: OnFeedHookData, key: string, value: any) {
   context.feed._temp ??= {};

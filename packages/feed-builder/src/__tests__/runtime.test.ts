@@ -1,7 +1,7 @@
 import { describe, expect, it } from "@osmoscraft/typescript-testing-library";
 import { FeedFormatError, ProjectConfigError } from "../runtime/lib/error-types";
-import { build } from "../runtime/runtime";
-import { Plugin } from "../types/plugins";
+import { build } from "../runtime";
+import { Plugin } from "../types";
 
 describe("Runtime", () => {
   it("Throws ProjectConfig error when plugins do not resolve full config", async () => {

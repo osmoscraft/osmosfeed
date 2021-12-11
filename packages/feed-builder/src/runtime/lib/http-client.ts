@@ -1,5 +1,5 @@
 import got from "got";
-import { HttpRequest, HttpResponse } from "../../types/plugins";
+import { HttpRequest, HttpResponse } from "../../types/plugin";
 
 export function httpGet(req: HttpRequest): Promise<HttpResponse> {
   const res = got.get(req.url);

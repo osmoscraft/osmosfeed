@@ -1,4 +1,4 @@
-import { Plugin } from "../types/plugins";
+import { Plugin } from "../types/plugin";
 
 export function useHttpFeedDownloader(): Plugin {
   return {

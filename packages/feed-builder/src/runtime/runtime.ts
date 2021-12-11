@@ -1,5 +1,5 @@
 import { JsonFeed } from "@osmoscraft/osmosfeed-types";
-import { FeedPluginApi, OnFeedHookData, PartialJsonFeed, PartialProjectConfig, Plugin } from "../types/plugins";
+import { FeedPluginApi, OnFeedHookData, PartialJsonFeed, PartialProjectConfig, Plugin } from "../types/plugin";
 import { FeedFormatError, ProjectConfigError } from "./lib/error-types";
 import { getTextFile, setFile } from "./lib/file-storage";
 import { httpGet } from "./lib/http-client";

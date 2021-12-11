@@ -1,7 +1,7 @@
 import { atomParser, parseFeed, rssParser } from "@osmoscraft/feed-parser";
 import { ParsedJsonFeed } from "@osmoscraft/osmosfeed-types";
 import { uuid } from "./http-feed-downloader";
-import { Plugin } from "../types/plugins";
+import { Plugin } from "../types/plugin";
 
 export function useJsonFeedParser(): Plugin {
   return {

@@ -1,5 +1,5 @@
 import { ProjectConfig } from "@osmoscraft/osmosfeed-types";
-import { Plugin } from "../types/plugins";
+import { Plugin } from "../types/plugin";
 
 export function useInlineConfig(config: ProjectConfig): Plugin {
   return {

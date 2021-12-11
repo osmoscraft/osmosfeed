@@ -1,6 +1,6 @@
 import fs from "fs/promises";
 import path from "path";
-import { OnFeedHookData } from "../../types/plugins";
+import { OnFeedHookData } from "../../types/plugin";
 
 export async function getTextFile(context: OnFeedHookData, filename: string): Promise<string | null> {
   const relativeDir = `data/plugins/${context.pluginId}`;
