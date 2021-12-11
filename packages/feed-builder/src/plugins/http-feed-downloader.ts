@@ -13,4 +13,4 @@ export function useHttpFeedDownloader(): Plugin {
   };
 }
 
-export const uuid = "47764e9f-4327-4be7-8584-e8307ba08170";
+export const id = "47764e9f-4327-4be7-8584-e8307ba08170";
