@@ -15,7 +15,7 @@ export function useHtmlPageCrawler(): Plugin {
 
       const res = await api.httpGet(url);
 
-      if (res.contentType !== mimeMap[".html"]) {
+      if (!res.contentType?.includes(mimeMap[".html"])) {
         return data.item;
       }
 

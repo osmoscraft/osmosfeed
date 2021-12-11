@@ -127,7 +127,7 @@ describe("Plugin/Page crawler", () => {
     await expect(fileOperations.length).toEqual(0);
   });
 
-  it("Writes to file when http request succeeds", async () => {
+  it("Writes to file when result is missing charset", async () => {
     const fileOperations: any[] = [];
 
     await runOnItemHook(useHtmlPageCrawler(), {
@@ -154,7 +154,34 @@ describe("Plugin/Page crawler", () => {
     await expect(fileOperations[0][1]).toEqual("Hello world");
   });
 
-  it("Add associated filename to item file is saved", async () => {
+  it("Writes to file when result is correct", async () => {
+    const fileOperations: any[] = [];
+
+    await runOnItemHook(useHtmlPageCrawler(), {
+      data: mockDataForSingleItem({
+        id: "test-item-id",
+        url: "https://mock-domain.com/article.html",
+      }),
+      api: {
+        httpGet: async (url) => {
+          return {
+            statusCode: 200,
+            contentType: "text/html; charset=UTF-8",
+            buffer: Buffer.from("Hello world"),
+          };
+        },
+        getTextFile: async () => null,
+        setFile: async (filename, content) => {
+          fileOperations.push([filename, content.toString()]);
+        },
+      },
+    });
+
+    await expect(fileOperations.length).toEqual(1);
+    await expect(fileOperations[0][1]).toEqual("Hello world");
+  });
+
+  it("Add associated filename to item when file is saved", async () => {
     let savedFilename;
     const result = await runOnItemHook(useHtmlPageCrawler(), {
       data: mockDataForSingleItem({
