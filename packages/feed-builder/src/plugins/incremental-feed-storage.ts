@@ -8,6 +8,7 @@ import { sha256 } from "./lib/sha256";
 export function useIncrementalFeedStorage(): Plugin {
   return {
     id: "04722f59-f9c9-431f-a9fd-c664a328577c",
+    name: "Incremental Feed Storage",
     onFeed: async ({ data, api }) => {
       const { feed } = data;
 

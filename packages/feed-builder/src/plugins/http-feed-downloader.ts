@@ -3,6 +3,7 @@ import { Plugin } from "../types/plugin";
 export function useHttpFeedDownloader(): Plugin {
   return {
     id: "47764e9f-4327-4be7-8584-e8307ba08170",
+    name: "HTTP Feed Downloader",
     onFeed: async ({ data, api }) => {
       const result = await api.httpGet({ url: data.sourceConfig.url });
 

@@ -1,8 +1,11 @@
 import fs from "fs/promises";
 import path from "path";
-import { OnFeedHookData } from "../../types/plugin";
 
-export async function getTextFile(context: OnFeedHookData, filename: string): Promise<string | null> {
+export interface FileStorageContext {
+  pluginId: string;
+}
+
+export async function getTextFile(context: FileStorageContext, filename: string): Promise<string | null> {
   const relativeDir = `data/plugins/${context.pluginId}`;
   const fullPath = path.join(relativeDir, filename);
   if (!(await exists(fullPath))) {
@@ -12,7 +15,7 @@ export async function getTextFile(context: OnFeedHookData, filename: string): Pr
   return content;
 }
 
-export async function setFile(context: OnFeedHookData, filename: string, fileContent: Buffer | string) {
+export async function setFile(context: FileStorageContext, filename: string, fileContent: Buffer | string) {
   const relativeDir = `data/plugins/${context.pluginId}`;
   await ensureDir(relativeDir);
   await fs.writeFile(path.join(relativeDir, filename), fileContent);

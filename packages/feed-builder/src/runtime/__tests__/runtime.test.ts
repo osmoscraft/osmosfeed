@@ -13,6 +13,7 @@ describe("Runtime", () => {
   it("Throws FeedFormat error when plugins do not resolve full feed", async () => {
     const plugin: Plugin = {
       id: "test-id",
+      name: "Test Plugin",
       onConfig: async () => ({
         sources: [
           {
@@ -31,6 +32,7 @@ describe("Runtime", () => {
     const invocationTracker: string[] = [];
     const plugin: Plugin = {
       id: "test-id",
+      name: "Test Plugin",
       onConfig: async () => {
         invocationTracker.push("s1");
         return {
@@ -49,9 +51,9 @@ describe("Runtime", () => {
           ],
         };
       },
-      onItem: async ({ item }) => {
+      onItem: async ({ data }) => {
         invocationTracker.push("i1");
-        return { ...item };
+        return { ...data.item };
       },
     };
 
@@ -63,6 +65,7 @@ describe("Runtime", () => {
   it("pipes data through all plugins", async () => {
     const plugin1: Plugin = {
       id: "test-plugin-id-1",
+      name: "Test Plugin 1",
       onConfig: async () => {
         return {
           sources: [{ url: "s1" }],
@@ -73,16 +76,17 @@ describe("Runtime", () => {
           title: data.sourceConfig.url + "f1",
         };
       },
-      onItem: async ({ item, feed }) => {
-        return { ...item, title: feed.title + "i1" };
+      onItem: async ({ data }) => {
+        return { ...data.item, title: data.feed.title + "i1" };
       },
     };
 
     const plugin2: Plugin = {
       id: "test-plugin-id-2",
-      onConfig: async ({ config }) => {
+      name: "Test Plugin 2",
+      onConfig: async ({ data }) => {
         return {
-          sources: [{ url: config.sources![0].url + "s2" }],
+          sources: [{ url: data.config.sources![0].url + "s2" }],
         };
       },
       onFeed: async ({ data }) => {
@@ -96,8 +100,8 @@ describe("Runtime", () => {
           ],
         };
       },
-      onItem: async ({ item }) => {
-        return { ...item, title: item.title! + "i2" };
+      onItem: async ({ data }) => {
+        return { ...data.item, title: data.item.title! + "i2" };
       },
     };
 

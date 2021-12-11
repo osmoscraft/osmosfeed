@@ -1,5 +1,14 @@
 import { JsonFeed } from "@osmoscraft/osmosfeed-types";
-import { FeedPluginApi, OnFeedHookData, PartialJsonFeed, PartialProjectConfig, Plugin } from "../types/plugin";
+import {
+  OnConfigHookData,
+  OnFeedHookApi,
+  OnFeedHookData,
+  OnItemHookApi,
+  OnItemHookData,
+  PartialJsonFeed,
+  PartialProjectConfig,
+  Plugin,
+} from "../types/plugin";
 import { FeedFormatError, ProjectConfigError } from "./lib/error-types";
 import { getTextFile, setFile } from "./lib/file-storage";
 import { httpGet } from "./lib/http-client";
@@ -25,7 +34,12 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
 
   const projectConfig = await reduceAsync(
     configPlugins,
-    (config, plugin) => plugin.onConfig!({ config }),
+    (config, plugin) => {
+      const data: OnConfigHookData = {
+        config,
+      };
+      return plugin.onConfig!({ data });
+    },
     {} as PartialProjectConfig
   );
 
@@ -49,13 +63,19 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
               projectConfig,
             };
 
-            const api: FeedPluginApi = {
-              getTempData: getTempData.bind(null, data) as FeedPluginApi["getTempData"],
-              getTempDataByPlugin: getTempDataByPlugin.bind(null, data) as FeedPluginApi["getTempDataByPlugin"],
-              setTempData: setTempData.bind(null, data),
+            const api: OnFeedHookApi = {
+              getTempData: getTempData.bind(null, {
+                storeOnObject: feed,
+                pluginId: plugin.id,
+              }) as OnFeedHookApi["getTempData"],
+              getTempDataByPlugin: getTempDataByPlugin.bind(null, {
+                storeOnObject: feed,
+                pluginId: plugin.id,
+              }) as OnFeedHookApi["getTempDataByPlugin"],
+              setTempData: setTempData.bind(null, { storeOnObject: feed, pluginId: plugin.id }),
               httpGet,
-              getTextFile: getTextFile.bind(null, data),
-              setFile: setFile.bind(null, data),
+              getTextFile: getTextFile.bind(null, { pluginId: plugin.id }),
+              setFile: setFile.bind(null, { pluginId: plugin.id }),
             };
 
             return plugin.onFeed!({ data, api });
@@ -71,7 +91,22 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
           itemsBase.map(async (itemDry) => {
             const itemEnriched = await reduceAsync(
               itemPlugins,
-              (item, plugin) => plugin.onItem!({ item, feed: feedBase, sourceConfig, projectConfig }),
+              (item, plugin) => {
+                const data: OnItemHookData = {
+                  pluginId: plugin.id,
+                  item,
+                  feed: feedBase,
+                  sourceConfig,
+                  projectConfig,
+                };
+                const api: OnItemHookApi = {
+                  httpGet,
+                  getTextFile: getTextFile.bind(null, { pluginId: plugin.id }),
+                  setFile: setFile.bind(null, { pluginId: plugin.id }),
+                };
+
+                return plugin.onItem!({ data, api });
+              },
               itemDry
             );
 
@@ -88,6 +123,8 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
   );
 
   const validFeeds = feeds.filter(isValidFeed);
+
+  // TODO support onFeedsDone for cache cleanup
 
   return {
     feeds: validFeeds,

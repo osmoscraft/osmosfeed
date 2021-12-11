@@ -6,6 +6,7 @@ import { Plugin } from "../types/plugin";
 export function useJsonFeedParser(): Plugin {
   return {
     id: "af5fb3c3-9dd8-4d99-a6a1-1f5d08ba3988",
+    name: "JSON Feed Parser",
     onFeed: async ({ data, api }) => {
       const xml = api.getTempDataByPlugin<string>(id, "text");
       const parsedFeed: ParsedJsonFeed = {
