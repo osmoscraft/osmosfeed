@@ -1,16 +1,11 @@
 import { JsonFeed } from "@osmoscraft/osmosfeed-types";
-import { ProjectConfig, SourceConfig } from "@osmoscraft/osmosfeed-types/project-config";
-import {
-  FeedPluginApi,
-  OnFeedHookData,
-  PartialJsonFeed,
-  PartialProjectConfig,
-  PartialSourceConfig,
-  Plugin,
-} from "../types/plugins";
+import { FeedPluginApi, OnFeedHookData, PartialJsonFeed, PartialProjectConfig, Plugin } from "../types/plugins";
+import { FeedFormatError, ProjectConfigError } from "./lib/error-types";
 import { getTextFile, setFile } from "./lib/file-storage";
 import { httpGet } from "./lib/http-client";
+import { reduceAsync } from "./lib/reduce-async";
 import { getTempData, getTempDataByPlugin, setTempData } from "./lib/temp-data-storage";
+import { isFeed, isProjectConfig, isValidFeed } from "./lib/type-guards";
 
 export interface FeedBuilderInput {
   plugins?: Plugin[];
@@ -20,7 +15,6 @@ export interface FeedBuilderOutput {
   feeds?: JsonFeed[];
   errors?: any[];
 }
-export interface FeedBuilderError {}
 
 export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput> {
   const { plugins = [] } = input;
@@ -54,7 +48,8 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
               sourceConfig,
               projectConfig,
             };
-            const utils: FeedPluginApi = {
+
+            const api: FeedPluginApi = {
               getTempData: getTempData.bind(null, data) as FeedPluginApi["getTempData"],
               getTempDataByPlugin: getTempDataByPlugin.bind(null, data) as FeedPluginApi["getTempDataByPlugin"],
               setTempData: setTempData.bind(null, data),
@@ -62,7 +57,8 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
               getTextFile: getTextFile.bind(null, data),
               setFile: setFile.bind(null, data),
             };
-            return plugin.onFeed!({ data: data, api: utils });
+
+            return plugin.onFeed!({ data, api });
           },
           {} as PartialJsonFeed
         );
@@ -98,30 +94,3 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
     ...(feedsErrors.length ? { errors: feedsErrors } : {}),
   };
 }
-
-function isValidFeed(maybeFeed: JsonFeed | null): maybeFeed is JsonFeed {
-  return maybeFeed?._error === undefined;
-}
-
-function isFeed(partialJsonFeed: PartialJsonFeed): partialJsonFeed is JsonFeed {
-  return typeof partialJsonFeed.version === "string" && typeof partialJsonFeed.title === "string";
-}
-
-function isProjectConfig(partialProjectConfig: PartialProjectConfig): partialProjectConfig is ProjectConfig {
-  return partialProjectConfig?.sources?.every(isSourceConfig) === true;
-}
-
-function isSourceConfig(partialSourceConfig: PartialSourceConfig): partialSourceConfig is SourceConfig {
-  return typeof partialSourceConfig.url === "string";
-}
-
-async function reduceAsync<T, P>(values: T[], reducer: (prev: P, current: T) => Promise<P>, initial: P) {
-  let result: P = initial;
-  for (let value of values) {
-    result = await reducer(result, value);
-  }
-  return result;
-}
-
-export class ProjectConfigError extends Error {}
-export class FeedFormatError extends Error {}

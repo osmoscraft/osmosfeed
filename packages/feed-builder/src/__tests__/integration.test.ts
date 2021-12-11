@@ -1,5 +1,6 @@
 import { describe, expect, it } from "@osmoscraft/typescript-testing-library";
 import { useHttpFeedDownloader, useInlineConfig, useJsonFeedParser } from "../plugins";
+import { useIncrementalFeedStorage } from "../plugins/incremental-feed-storage";
 import { build } from "../runtime/runtime";
 import { Plugin } from "../types/plugins";
 
@@ -9,6 +10,7 @@ describe("Integration", () => {
       useInlineConfig({ sources: [{ url: "https://css-tricks.com/feed/" }] }),
       useHttpFeedDownloader(),
       useJsonFeedParser(),
+      // useIncrementalFeedStorage(),
     ];
 
     const result = await build({ plugins });

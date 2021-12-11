@@ -1,4 +1,5 @@
 import { Plugin } from "../types/plugins";
+import { mergeJsonFeed } from "./lib/merge";
 import { sha256 } from "./lib/sha256";
 
 /**
@@ -11,15 +12,21 @@ export function useIncrementalFeedStorage(): Plugin {
       const { feed } = data;
 
       if (!feed.feed_url) throw new Error(); // TODO standardize error typing
+
+      let mergedFeed = feed;
+      const filename = sha256(feed.feed_url);
       // read storage
+      const storedFeedRaw = await api.getTextFile(`${filename}.json`);
 
       // merge incoming feed with content
+      if (storedFeedRaw) {
+        mergedFeed = mergeJsonFeed(feed, JSON.parse(storedFeedRaw));
+      }
 
       // write storage
-      const filename = sha256(feed.feed_url);
-      await api.setFile(filename, "hello world");
+      await api.setFile(`${filename}.json`, JSON.stringify(mergedFeed, null, 2));
 
-      return feed;
+      return mergedFeed;
     },
   };
 }

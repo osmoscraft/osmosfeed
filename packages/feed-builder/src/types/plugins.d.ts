@@ -35,8 +35,8 @@ export interface FeedPluginApi {
   getTempData: <T = any>(key: string) => T;
   getTempDataByPlugin: <T = any>(pluginId: string, key: string) => T;
   setTempData: (key: string, value: any) => void;
-  getTextFile: (filename: string) => Promise<string>;
-  setFile: (filename: string, fileContent: Buffer | string) => Promise<void>;
+  getTextFile: (filename: string) => Promise<string | null>;
+  setFile: (filename: string, content: Buffer | string) => Promise<void>;
 }
 
 export interface HttpRequest {

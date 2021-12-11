@@ -2,9 +2,13 @@ import fs from "fs/promises";
 import path from "path";
 import { OnFeedHookData } from "../../types/plugins";
 
-export async function getTextFile(context: OnFeedHookData, filename: string): Promise<string> {
+export async function getTextFile(context: OnFeedHookData, filename: string): Promise<string | null> {
   const relativeDir = `data/plugins/${context.pluginId}`;
-  const content = await fs.readFile(path.join(relativeDir, filename), "utf8");
+  const fullPath = path.join(relativeDir, filename);
+  if (!(await exists(fullPath))) {
+    return null;
+  }
+  const content = await fs.readFile(fullPath, "utf8");
   return content;
 }
 
@@ -16,4 +20,13 @@ export async function setFile(context: OnFeedHookData, filename: string, fileCon
 
 async function ensureDir(path: string) {
   await fs.mkdir(path, { recursive: true });
+}
+
+async function exists(path: string) {
+  try {
+    await fs.access(path);
+    return true;
+  } catch {
+    return false;
+  }
 }
