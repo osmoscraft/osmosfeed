@@ -34,6 +34,10 @@ export interface FeedBuilderOutput {
 // 4. Progressive update (maybe?)
 //
 // This allows runtime to focus on mediating between functions (via plugins) and effects (via api implementations)
+//
+// Make the runtime a class
+// API implementation using DI
+// PlugIn to be provided to constructor
 
 export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput> {
   const { plugins = [] } = input;

@@ -1,7 +1,12 @@
 import { describe, expect, it } from "@osmoscraft/typescript-testing-library";
 import { mimeMap } from "../lib/mime-map";
 import { useHtmlPageCrawler } from "../html-page-crawler";
-import { mockDataForSingleItem, runItemTransformHook as runTransformItemHook } from "./fixtures";
+import {
+  mockDataForSingleItem,
+  mockDataForSingleItemBuildEnd,
+  runBuildEndHook,
+  runItemTransformHook as runTransformItemHook,
+} from "./fixtures";
 
 describe("Plugin/HTML Page Crawler", () => {
   it("Makes no http request when item has no url", async () => {
@@ -274,5 +279,79 @@ describe("Plugin/HTML Page Crawler", () => {
     expect(result._plugin.pageFilename).toEqual(savedFilename);
   });
 
-  // TODO test cache clean up after build
+  it("Keep new files when cache hit", async () => {
+    const plugin = useHtmlPageCrawler();
+    const keepFiles: string[] = [];
+
+    await runTransformItemHook(plugin, {
+      data: mockDataForSingleItem({
+        id: "test-item-id",
+        url: "https://mock-domain.com/article.html",
+      }),
+      api: {
+        httpGet: async () => {
+          return {
+            statusCode: 200,
+            contentType: "text/html",
+            buffer: Buffer.from("Hello world"),
+          };
+        },
+        getTextFile: async () => {
+          return "Hello world";
+        },
+        setFile: async () => {},
+      },
+    });
+
+    await runBuildEndHook(plugin, {
+      data: mockDataForSingleItemBuildEnd({
+        id: "test-item-id",
+        url: "https://mock-domain.com/article.html",
+      }),
+      api: {
+        pruneFiles: async (config) => {
+          keepFiles.push(...config.keep);
+        },
+      },
+    });
+
+    await expect(keepFiles.length).toEqual(1);
+  });
+
+  it("Keep new files when cache miss", async () => {
+    const plugin = useHtmlPageCrawler();
+    const keepFiles: string[] = [];
+
+    await runTransformItemHook(plugin, {
+      data: mockDataForSingleItem({
+        id: "test-item-id",
+        url: "https://mock-domain.com/article.html",
+      }),
+      api: {
+        httpGet: async () => {
+          return {
+            statusCode: 200,
+            contentType: "text/html",
+            buffer: Buffer.from("Hello world"),
+          };
+        },
+        getTextFile: async () => null,
+        setFile: async () => {},
+      },
+    });
+
+    await runBuildEndHook(plugin, {
+      data: mockDataForSingleItemBuildEnd({
+        id: "test-item-id",
+        url: "https://mock-domain.com/article.html",
+      }),
+      api: {
+        pruneFiles: async (config) => {
+          keepFiles.push(...config.keep);
+        },
+      },
+    });
+
+    await expect(keepFiles.length).toEqual(1);
+  });
 });

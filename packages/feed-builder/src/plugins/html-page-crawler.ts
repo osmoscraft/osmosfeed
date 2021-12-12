@@ -41,6 +41,7 @@ export function useHtmlPageCrawler(): Plugin {
 
       const content = res.buffer;
       await api.setFile(filename, content);
+      filesToKeep.push(filename);
 
       return {
         ...data.item,

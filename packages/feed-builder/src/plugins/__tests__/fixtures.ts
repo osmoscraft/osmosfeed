@@ -1,7 +1,11 @@
-import { ItemHookData, ItemHookInput, Plugin } from "../../types";
+import { BuildEndHookData, BuildEndHookInput, ItemHookData, ItemHookInput, Plugin } from "../../types";
 
 export function runItemTransformHook(plugin: Plugin, input: ItemHookInput) {
   return plugin.transformItem!(input);
+}
+
+export function runBuildEndHook(plugin: Plugin, input: BuildEndHookInput) {
+  return plugin.buildEnd!(input);
 }
 
 export interface SingleItemMockInput {
@@ -37,5 +41,14 @@ export function mockDataForSingleItem(input: SingleItemMockInput): ItemHookData 
         },
       ],
     },
+  };
+}
+
+export function mockDataForSingleItemBuildEnd(input: SingleItemMockInput): BuildEndHookData {
+  const mockData = mockDataForSingleItem(input);
+  return {
+    pluginId: "",
+    feeds: [mockData.feed],
+    projectConfig: mockData.projectConfig,
   };
 }
