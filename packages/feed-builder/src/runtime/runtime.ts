@@ -14,6 +14,7 @@ import {
 import { FeedFormatError, ProjectConfigError } from "./lib/error-types";
 import { getTextFile, pruneFiles, setFile } from "./lib/file-storage";
 import { httpGet } from "./lib/http-client";
+import { log } from "./lib/log";
 import { reduceAsync } from "./lib/reduce-async";
 import { isFeed, isProjectConfig, isValidFeed } from "./lib/type-guards";
 
@@ -34,6 +35,8 @@ export interface FeedBuilderOutput {
 // 4. Progressive update (maybe?)
 
 export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput> {
+  log.trace("Build started");
+
   const { plugins = [] } = input;
 
   const configPlugins = plugins.filter((plugin) => plugin.config);
@@ -61,6 +64,8 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
   const feedsErrors: any[] = [];
   const feeds = await Promise.all(
     (projectConfig.sources ?? []).map(async (sourceConfig) => {
+      log.trace(`Feed: ${sourceConfig.url}`);
+
       try {
         const feedBase = await reduceAsync(
           transformFeedPlugins,
@@ -86,9 +91,12 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
         // TODO add feed url to the error details
         if (!isFeed(feedBase)) throw new FeedFormatError();
 
+        // TODO skip item without URL?
+
         const itemsBase = feedBase.items ?? [];
         const itemsEnriched = await Promise.all(
           itemsBase.map(async (itemDry) => {
+            log.trace(`Item: ${itemDry.url ?? "<no url>"}`);
             const itemEnriched = await reduceAsync(
               transformItemPlugins,
               (item, plugin) => {
@@ -111,6 +119,7 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
             );
 
             // TODO item level try...catch
+
             return itemEnriched;
           })
         );
@@ -118,6 +127,7 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
         return { ...feedBase, items: itemsEnriched };
       } catch (error) {
         feedsErrors.push(error);
+        log.error(`Feed: ${sourceConfig.url}`);
         return null;
       }
     })
