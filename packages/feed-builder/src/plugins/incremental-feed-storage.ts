@@ -9,7 +9,7 @@ export function useIncrementalFeedStorage(): Plugin {
   return {
     id: "04722f59-f9c9-431f-a9fd-c664a328577c",
     name: "Incremental Feed Storage",
-    onFeed: async ({ data, api }) => {
+    transformFeed: async ({ data, api }) => {
       const { feed } = data;
 
       if (!feed.feed_url) throw new Error(); // TODO standardize error typing

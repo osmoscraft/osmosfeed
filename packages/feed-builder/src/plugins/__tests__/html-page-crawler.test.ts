@@ -1,13 +1,13 @@
 import { describe, expect, it } from "@osmoscraft/typescript-testing-library";
 import { mimeMap } from "../lib/mime-map";
-import { useHtmlPageCrawler } from "../htmp-page-crawler";
-import { mockDataForSingleItem, runOnItemHook } from "./fixtures";
+import { useHtmlPageCrawler } from "../html-page-crawler";
+import { mockDataForSingleItem, runItemTransformHook as runTransformItemHook } from "./fixtures";
 
 describe("Plugin/HTML Page Crawler", () => {
   it("Makes no http request when item has no url", async () => {
     const requestedUrls: string[] = [];
 
-    await runOnItemHook(useHtmlPageCrawler(), {
+    await runTransformItemHook(useHtmlPageCrawler(), {
       data: mockDataForSingleItem({
         id: "test-item-id",
       }),
@@ -31,7 +31,7 @@ describe("Plugin/HTML Page Crawler", () => {
     const requestedUrls: string[] = [];
     const fileOperations: any[] = [];
 
-    const output = await runOnItemHook(useHtmlPageCrawler(), {
+    const output = await runTransformItemHook(useHtmlPageCrawler(), {
       data: mockDataForSingleItem({
         id: "test-item-id",
         url: "https://mock-domain.com/article.html",
@@ -65,7 +65,7 @@ describe("Plugin/HTML Page Crawler", () => {
     const requestedUrls: string[] = [];
     const fileOperations: any[] = [];
 
-    const output = await runOnItemHook(useHtmlPageCrawler(), {
+    const output = await runTransformItemHook(useHtmlPageCrawler(), {
       data: mockDataForSingleItem({
         id: "test-item-id",
         url: "https://mock-domain.com/article.html",
@@ -98,7 +98,7 @@ describe("Plugin/HTML Page Crawler", () => {
   it("Makes http request if cache miss", async () => {
     const requestedUrls: string[] = [];
 
-    await runOnItemHook(useHtmlPageCrawler(), {
+    await runTransformItemHook(useHtmlPageCrawler(), {
       data: mockDataForSingleItem({
         id: "test-item-id",
         url: "https://mock-domain.com/article.html",
@@ -122,7 +122,7 @@ describe("Plugin/HTML Page Crawler", () => {
   it("Does not write to file when http request fails", async () => {
     const fileOperations: any[] = [];
 
-    await runOnItemHook(useHtmlPageCrawler(), {
+    await runTransformItemHook(useHtmlPageCrawler(), {
       data: mockDataForSingleItem({
         id: "test-item-id",
         url: "https://mock-domain.com/article.html",
@@ -147,7 +147,7 @@ describe("Plugin/HTML Page Crawler", () => {
   it("Does not write to file when result has no content type", async () => {
     const fileOperations: any[] = [];
 
-    await runOnItemHook(useHtmlPageCrawler(), {
+    await runTransformItemHook(useHtmlPageCrawler(), {
       data: mockDataForSingleItem({
         id: "test-item-id",
         url: "https://mock-domain.com/article.html",
@@ -172,7 +172,7 @@ describe("Plugin/HTML Page Crawler", () => {
   it("Does not write to file when result has non-html content type", async () => {
     const fileOperations: any[] = [];
 
-    await runOnItemHook(useHtmlPageCrawler(), {
+    await runTransformItemHook(useHtmlPageCrawler(), {
       data: mockDataForSingleItem({
         id: "test-item-id",
         url: "https://mock-domain.com/article.html",
@@ -198,7 +198,7 @@ describe("Plugin/HTML Page Crawler", () => {
   it("Writes to file when result is missing charset", async () => {
     const fileOperations: any[] = [];
 
-    await runOnItemHook(useHtmlPageCrawler(), {
+    await runTransformItemHook(useHtmlPageCrawler(), {
       data: mockDataForSingleItem({
         id: "test-item-id",
         url: "https://mock-domain.com/article.html",
@@ -225,7 +225,7 @@ describe("Plugin/HTML Page Crawler", () => {
   it("Writes to file when result is correct", async () => {
     const fileOperations: any[] = [];
 
-    await runOnItemHook(useHtmlPageCrawler(), {
+    await runTransformItemHook(useHtmlPageCrawler(), {
       data: mockDataForSingleItem({
         id: "test-item-id",
         url: "https://mock-domain.com/article.html",
@@ -251,7 +251,7 @@ describe("Plugin/HTML Page Crawler", () => {
 
   it("Add associated filename to item when file is saved", async () => {
     let savedFilename;
-    const result = await runOnItemHook(useHtmlPageCrawler(), {
+    const result = await runTransformItemHook(useHtmlPageCrawler(), {
       data: mockDataForSingleItem({
         id: "test-item-id",
         url: "https://mock-domain.com/article.html",

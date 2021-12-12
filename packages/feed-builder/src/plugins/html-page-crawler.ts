@@ -6,7 +6,7 @@ export function useHtmlPageCrawler(): Plugin {
   return {
     id: "8f0cb682-827a-41b6-a9d1-21b2b5e33284",
     name: "HTML Page Crawler",
-    onItem: async ({ data, api }) => {
+    transformItem: async ({ data, api }) => {
       const { url } = data.item;
 
       if (!url) {

@@ -1,4 +1,4 @@
-import type { JsonFeed, JsonFeedItem, ProjectConfig, SourceConfig } from "@osmoscraft/osmosfeed-types";
+import type { JsonFeed, JsonFeedItem, ProjectConfig, ProjectOutput, SourceConfig } from "@osmoscraft/osmosfeed-types";
 
 export type PartialJsonFeed = Partial<JsonFeed<PartialJsonFeedItem>>;
 export type PartialJsonFeedItem = Partial<JsonFeedItem>;
@@ -12,14 +12,16 @@ export interface Plugin {
   id: string;
   /** Name for display purposes */
   name: string;
-  onConfig?: ConfigHook;
-  onFeed?: FeedHook;
-  onItem?: ItemHook;
+  config?: ConfigHook;
+  transformFeed?: TransformFeedHook;
+  transformItem?: TransformItemHook;
+  buildEnd?: BuildEndHook;
 }
 
 export type ConfigHook = (input: ConfigHookInput) => Promise<PartialProjectConfig>;
-export type FeedHook = (input: FeedHookInput) => Promise<PartialJsonFeed>;
-export type ItemHook = (input: ItemHookInput) => Promise<JsonFeedItem>;
+export type TransformFeedHook = (input: FeedHookInput) => Promise<PartialJsonFeed>;
+export type TransformItemHook = (input: ItemHookInput) => Promise<JsonFeedItem>;
+export type BuildEndHook = (input: BuildEndHookInput) => Promise<ProjectOutput>;
 
 export interface ConfigHookInput {
   data: ConfigHookData;
@@ -31,6 +33,10 @@ export interface FeedHookInput {
 export interface ItemHookInput {
   data: ItemHookData;
   api: ItemHookApi;
+}
+export interface BuildEndHookInput {
+  data: BuildEndHookData;
+  api: BuildEndHookApi;
 }
 export interface ConfigHookData {
   config: PartialProjectConfig;
@@ -59,6 +65,16 @@ export interface ItemHookApi {
   httpGet: (url: string) => Promise<HttpResponse>;
   getTextFile: (filename: string) => Promise<string | null>;
   setFile: (filename: string, content: Buffer | string) => Promise<void>;
+}
+
+export interface BuildEndHookData {
+  pluginId: string;
+  feeds: JsonFeed[];
+  projectConfig: ProjectConfig;
+}
+
+export interface BuildEndHookApi {
+  pruneFiles: (filenamesToKeep: string[]) => Promise<void>;
 }
 
 export interface HttpResponse {

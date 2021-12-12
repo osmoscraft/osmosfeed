@@ -1,5 +1,7 @@
-import { JsonFeed } from "@osmoscraft/osmosfeed-types";
+import { JsonFeed, ProjectOutput } from "@osmoscraft/osmosfeed-types";
 import {
+  BuildEndHookApi,
+  BuildEndHookData,
   ConfigHookData,
   FeedHookApi,
   FeedHookData,
@@ -10,7 +12,7 @@ import {
   Plugin,
 } from "../types/plugin";
 import { FeedFormatError, ProjectConfigError } from "./lib/error-types";
-import { getTextFile, setFile } from "./lib/file-storage";
+import { getTextFile, pruneFiles, setFile } from "./lib/file-storage";
 import { httpGet } from "./lib/http-client";
 import { reduceAsync } from "./lib/reduce-async";
 import { isFeed, isProjectConfig, isValidFeed } from "./lib/type-guards";
@@ -24,12 +26,20 @@ export interface FeedBuilderOutput {
   errors?: any[];
 }
 
+// TODO handle external states
+// External states:
+// 1. Network request
+// 2. Filesystem
+// 3. Terminal I/O
+// 4. Progressive update (maybe?)
+
 export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput> {
   const { plugins = [] } = input;
 
-  const configPlugins = plugins.filter((plugin) => plugin.onConfig);
-  const feedPlugins = plugins.filter((plugin) => plugin.onFeed);
-  const itemPlugins = plugins.filter((plugin) => plugin.onItem);
+  const configPlugins = plugins.filter((plugin) => plugin.config);
+  const transformFeedPlugins = plugins.filter((plugin) => plugin.transformFeed);
+  const transformItemPlugins = plugins.filter((plugin) => plugin.transformItem);
+  const buildEndPlugins = plugins.filter((plugin) => plugin.buildEnd);
 
   const projectConfig = await reduceAsync(
     configPlugins,
@@ -37,7 +47,7 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
       const data: ConfigHookData = {
         config,
       };
-      return plugin.onConfig!({ data });
+      return plugin.config!({ data });
     },
     {} as PartialProjectConfig
   );
@@ -53,7 +63,7 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
     (projectConfig.sources ?? []).map(async (sourceConfig) => {
       try {
         const feedBase = await reduceAsync(
-          feedPlugins,
+          transformFeedPlugins,
           (feed, plugin) => {
             const data: FeedHookData = {
               pluginId: plugin.id,
@@ -68,7 +78,7 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
               setFile: setFile.bind(null, { pluginId: plugin.id }),
             };
 
-            return plugin.onFeed!({ data, api });
+            return plugin.transformFeed!({ data, api });
           },
           {} as PartialJsonFeed
         );
@@ -80,7 +90,7 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
         const itemsEnriched = await Promise.all(
           itemsBase.map(async (itemDry) => {
             const itemEnriched = await reduceAsync(
-              itemPlugins,
+              transformItemPlugins,
               (item, plugin) => {
                 const data: ItemHookData = {
                   pluginId: plugin.id,
@@ -95,11 +105,12 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
                   setFile: setFile.bind(null, { pluginId: plugin.id }),
                 };
 
-                return plugin.onItem!({ data, api });
+                return plugin.transformItem!({ data, api });
               },
               itemDry
             );
 
+            // TODO item level try...catch
             return itemEnriched;
           })
         );
@@ -114,10 +125,26 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
 
   const validFeeds = feeds.filter(isValidFeed);
 
-  // TODO support onFeedsDone for cache cleanup
+  const finalizedOutput = await reduceAsync(
+    buildEndPlugins,
+    (buildOutput, plugin) => {
+      const data: BuildEndHookData = {
+        pluginId: plugin.id,
+        feeds: buildOutput.feeds,
+        projectConfig,
+      };
+      const api: BuildEndHookApi = {
+        pruneFiles: pruneFiles.bind(null, { pluginId: plugin.id }),
+      };
+      return plugin.buildEnd!({ data, api });
+    },
+    {
+      feeds: validFeeds,
+    } as ProjectOutput
+  );
 
   return {
-    feeds: validFeeds,
+    feeds: finalizedOutput.feeds,
     ...(feedsErrors.length ? { errors: feedsErrors } : {}),
   };
 }

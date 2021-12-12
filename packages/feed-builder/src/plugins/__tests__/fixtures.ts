@@ -1,7 +1,7 @@
 import { ItemHookData, ItemHookInput, Plugin } from "../../types";
 
-export function runOnItemHook(plugin: Plugin, input: ItemHookInput) {
-  return plugin.onItem!(input);
+export function runItemTransformHook(plugin: Plugin, input: ItemHookInput) {
+  return plugin.transformItem!(input);
 }
 
 export interface SingleItemMockInput {

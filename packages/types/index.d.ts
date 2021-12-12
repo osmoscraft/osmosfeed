@@ -10,4 +10,4 @@ export type ParsedJsonFeedItem = JsonFeedItem;
 export type CachedJsonFeed = JsonFeed<CachedJsonFeedItem> & JsonFeedParserExtension & JsonFeedCacheExtension;
 export type CachedJsonFeedItem = JsonFeedItem & JsonFeedItemCacheExtension;
 
-export type { ProjectConfig, SourceConfig } from "./project-config";
+export type { ProjectConfig, SourceConfig, ProjectOutput } from "./project";
