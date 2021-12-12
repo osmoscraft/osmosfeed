@@ -1,4 +1,4 @@
-import type { JsonFeed } from "../json-feed";
+import type { JsonFeed } from "@osmoscraft/osmosfeed-types";
 
 export function mergeJsonFeeds(newFeeds: JsonFeed[], existingFeeds: JsonFeed[]): JsonFeed[] {
   return [...existingFeeds, ...newFeeds]; // TODO implement actual merge with TDD

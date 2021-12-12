@@ -1,4 +1,4 @@
-import type { JsonFeed } from "../json-feed";
+import type { JsonFeed } from "@osmoscraft/osmosfeed-types";
 
 import { readdir, readFile, writeFile, mkdir } from "fs/promises";
 import * as uuid from "uuid"; // TODO implement v5 without lib
