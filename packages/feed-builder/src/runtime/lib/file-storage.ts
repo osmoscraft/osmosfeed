@@ -1,5 +1,6 @@
 import fs from "fs/promises";
 import path from "path";
+import { PruneFilesConfig } from "../../types";
 
 export interface FileStorageContext {
   pluginId: string;
@@ -21,12 +22,12 @@ export async function setFile(context: FileStorageContext, filename: string, fil
   await fs.writeFile(path.join(relativeDir, filename), fileContent);
 }
 
-export async function pruneFiles(context: FileStorageContext, preserveFilenames: string[]): Promise<void> {
+export async function pruneFiles(context: FileStorageContext, config: PruneFilesConfig): Promise<void> {
   const relativeDir = `data/plugins/${context.pluginId}`;
   if (!exists(relativeDir)) return;
 
   const allFiles = await fs.readdir(relativeDir);
-  const filesToRemove = allFiles.filter((file) => !preserveFilenames.includes(file));
+  const filesToRemove = allFiles.filter((file) => !config.keep.includes(file));
   await Promise.allSettled(filesToRemove.map((fileToRemove) => fs.rm(path.join(relativeDir, fileToRemove))));
 }
 

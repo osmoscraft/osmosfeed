@@ -14,7 +14,6 @@ import {
 import { FeedFormatError, ProjectConfigError } from "./lib/error-types";
 import { getTextFile, pruneFiles, setFile } from "./lib/file-storage";
 import { httpGet } from "./lib/http-client";
-import { log } from "./lib/log";
 import { reduceAsync } from "./lib/reduce-async";
 import { isFeed, isProjectConfig, isValidFeed } from "./lib/type-guards";
 
@@ -33,10 +32,10 @@ export interface FeedBuilderOutput {
 // 2. Filesystem
 // 3. Terminal I/O
 // 4. Progressive update (maybe?)
+//
+// This allows runtime to focus on mediating between functions (via plugins) and effects (via api implementations)
 
 export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput> {
-  log.trace("Build started");
-
   const { plugins = [] } = input;
 
   const configPlugins = plugins.filter((plugin) => plugin.config);
@@ -64,8 +63,6 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
   const feedsErrors: any[] = [];
   const feeds = await Promise.all(
     (projectConfig.sources ?? []).map(async (sourceConfig) => {
-      log.trace(`Feed: ${sourceConfig.url}`);
-
       try {
         const feedBase = await reduceAsync(
           transformFeedPlugins,
@@ -80,7 +77,9 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
             const api: FeedHookApi = {
               httpGet,
               getTextFile: getTextFile.bind(null, { pluginId: plugin.id }),
-              setFile: setFile.bind(null, { pluginId: plugin.id }),
+              setFile: setFile.bind(null, {
+                pluginId: plugin.id,
+              }),
             };
 
             return plugin.transformFeed!({ data, api });
@@ -96,7 +95,6 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
         const itemsBase = feedBase.items ?? [];
         const itemsEnriched = await Promise.all(
           itemsBase.map(async (itemDry) => {
-            log.trace(`Item: ${itemDry.url ?? "<no url>"}`);
             const itemEnriched = await reduceAsync(
               transformItemPlugins,
               (item, plugin) => {
@@ -110,7 +108,9 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
                 const api: ItemHookApi = {
                   httpGet,
                   getTextFile: getTextFile.bind(null, { pluginId: plugin.id }),
-                  setFile: setFile.bind(null, { pluginId: plugin.id }),
+                  setFile: setFile.bind(null, {
+                    pluginId: plugin.id,
+                  }),
                 };
 
                 return plugin.transformItem!({ data, api });
@@ -127,7 +127,6 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
         return { ...feedBase, items: itemsEnriched };
       } catch (error) {
         feedsErrors.push(error);
-        log.error(`Feed: ${sourceConfig.url}`);
         return null;
       }
     })
@@ -152,6 +151,8 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
       feeds: validFeeds,
     } as ProjectOutput
   );
+
+  // TODO remove any plugin folders that were not in use
 
   return {
     feeds: finalizedOutput.feeds,

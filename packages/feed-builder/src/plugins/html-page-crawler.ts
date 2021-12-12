@@ -3,6 +3,8 @@ import { mimeMap } from "./lib/mime-map";
 import { sha256 } from "./lib/sha256";
 
 export function useHtmlPageCrawler(): Plugin {
+  const filesToKeep: string[] = [];
+
   return {
     id: "8f0cb682-827a-41b6-a9d1-21b2b5e33284",
     name: "HTML Page Crawler",
@@ -16,6 +18,7 @@ export function useHtmlPageCrawler(): Plugin {
 
       const cachedContent = await api.getTextFile(filename);
       if (cachedContent) {
+        filesToKeep.push(filename);
         return {
           ...data.item,
           _plugin: {
@@ -46,6 +49,13 @@ export function useHtmlPageCrawler(): Plugin {
           pageFilename: filename,
         },
       };
+    },
+    buildEnd: async ({ data, api }) => {
+      await api.pruneFiles({
+        keep: filesToKeep,
+      });
+
+      return data;
     },
   };
 }

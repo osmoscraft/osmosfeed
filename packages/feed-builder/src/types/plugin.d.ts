@@ -74,7 +74,10 @@ export interface BuildEndHookData {
 }
 
 export interface BuildEndHookApi {
-  pruneFiles: (filenamesToKeep: string[]) => Promise<void>;
+  pruneFiles: (config: PruneFilesConfig) => Promise<void>;
+}
+export interface PruneFilesConfig {
+  keep: string[];
 }
 
 export interface HttpResponse {
