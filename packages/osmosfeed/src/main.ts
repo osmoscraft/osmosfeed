@@ -38,14 +38,16 @@ async function run() {
 
   log.heading("02 Fetch and parse feeds");
 
-  // TODO console logging and progress report should be accessible as callbacks
+  // TODO add progress reporter
+  // TODO incrementalFeedStorage should also handle truncation
+  // TODO page crawler associated id should be written in json feed output
   const { feeds, errors } = await build({
     plugins: [
       useInlineConfig(project.config),
       useFeedDownloader(),
       useJsonFeedParser(),
-      useHtmlPageCrawler(),
       useIncrementalFeedStorage(),
+      useHtmlPageCrawler(),
       useAppBuilderPlugin(client, cwd),
     ],
   });

@@ -18,6 +18,7 @@ export function useHtmlPageCrawler(): Plugin {
 
       const cachedContent = await api.storage.getTextFile(filename);
       if (cachedContent) {
+        api.log.trace(`Skip crawl cached page ${url}`);
         filesToKeep.push(filename);
         return {
           ...data.item,
@@ -28,6 +29,7 @@ export function useHtmlPageCrawler(): Plugin {
         };
       }
 
+      api.log.info(`Crawl ${url}`);
       const res = await api.network.get(url);
 
       if (!res.contentType?.includes(mimeMap[".html"])) {
@@ -41,6 +43,7 @@ export function useHtmlPageCrawler(): Plugin {
 
       const content = res.buffer;
       await api.storage.setFile(filename, content);
+      api.log.info(`Save crawled page ${url}`);
       filesToKeep.push(filename);
 
       return {

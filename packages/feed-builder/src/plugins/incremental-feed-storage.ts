@@ -26,13 +26,21 @@ export function useIncrementalFeedStorage(): Plugin {
         mergedFeed = mergeJsonFeed(feed, JSON.parse(storedFeedRaw));
       }
 
-      // write storage
-      await api.storage.setFile(filename, JSON.stringify(mergedFeed, null, 2));
-      filesToKeep.push(filename);
-
       return mergedFeed;
     },
     buildEnd: async ({ data, api }) => {
+      // write storage
+      await Promise.all(
+        data.feeds.map(async (feed) => {
+          if (!feed.feed_url) throw new Error(); // TODO standardize error typing
+          api.log.trace(`Store ${feed.feed_url}`);
+          const filename = `${sha256(feed.feed_url!)}.json`;
+          await api.storage.setFile(filename, JSON.stringify(feed, null, 2));
+          filesToKeep.push(filename);
+        })
+      );
+
+      // TODO log number of files pruned
       await api.storage.pruneFiles({
         keep: filesToKeep,
       });
