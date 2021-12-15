@@ -19,7 +19,7 @@ export function useIncrementalFeedStorage(): Plugin {
       let mergedFeed = feed;
       const filename = `${sha256(feed.feed_url)}.json`;
       // read storage
-      const storedFeedRaw = await api.getTextFile(filename);
+      const storedFeedRaw = await api.storage.getTextFile(filename);
 
       // merge incoming feed with content
       if (storedFeedRaw) {
@@ -27,13 +27,13 @@ export function useIncrementalFeedStorage(): Plugin {
       }
 
       // write storage
-      await api.setFile(filename, JSON.stringify(mergedFeed, null, 2));
+      await api.storage.setFile(filename, JSON.stringify(mergedFeed, null, 2));
       filesToKeep.push(filename);
 
       return mergedFeed;
     },
     buildEnd: async ({ data, api }) => {
-      await api.pruneFiles({
+      await api.storage.pruneFiles({
         keep: filesToKeep,
       });
 

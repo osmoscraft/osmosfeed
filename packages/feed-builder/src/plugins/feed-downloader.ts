@@ -6,7 +6,7 @@ export function useFeedDownloader(): Plugin {
     id,
     name: "Feed Downloader",
     transformFeed: async ({ data, api }) => {
-      const result = await api.httpGet(data.sourceConfig.url);
+      const result = await api.network.get(data.sourceConfig.url);
 
       // TODO TDD to handle xml/atom vs json feed types
       // TODO error handling

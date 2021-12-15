@@ -49,9 +49,9 @@ export interface FeedHookData {
   projectConfig: ProjectConfig;
 }
 export interface FeedHookApi {
-  httpGet: (url: string) => Promise<HttpResponse>;
-  getTextFile: (filename: string) => Promise<string | null>;
-  setFile: (filename: string, content: Buffer | string) => Promise<void>;
+  log: ILogApi;
+  network: INetworkApi;
+  storage: IStorageApi;
 }
 
 export interface ItemHookData {
@@ -62,9 +62,9 @@ export interface ItemHookData {
   projectConfig: ProjectConfig;
 }
 export interface ItemHookApi {
-  httpGet: (url: string) => Promise<HttpResponse>;
-  getTextFile: (filename: string) => Promise<string | null>;
-  setFile: (filename: string, content: Buffer | string) => Promise<void>;
+  log: ILogApi;
+  network: INetworkApi;
+  storage: IStorageApi;
 }
 
 export interface BuildEndHookData {
@@ -74,8 +74,26 @@ export interface BuildEndHookData {
 }
 
 export interface BuildEndHookApi {
+  storage: IStorageApi;
+  log: ILogApi;
+}
+
+export interface ILogApi {
+  error(...args: Parameters<typeof console["error"]>): void;
+  info(...args: Parameters<typeof console["log"]>): void;
+  trace(...args: Parameters<typeof console["log"]>): void;
+}
+
+export interface INetworkApi {
+  get: (url: string) => Promise<HttpResponse>;
+}
+
+export interface IStorageApi {
+  getTextFile: (filename: string) => Promise<string | null>;
+  setFile: (filename: string, content: Buffer | string) => Promise<void>;
   pruneFiles: (config: PruneFilesConfig) => Promise<void>;
 }
+
 export interface PruneFilesConfig {
   keep: string[];
 }

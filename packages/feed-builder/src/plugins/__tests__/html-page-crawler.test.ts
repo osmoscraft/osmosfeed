@@ -1,6 +1,9 @@
 import { describe, expect, it } from "@osmoscraft/typescript-testing-library";
-import { mimeMap } from "../lib/mime-map";
+import { mockBuildEndHookApi, mockItemHookApi } from "../../runtime/api/__mocks__/api.mock";
+import { MockNetworkApi } from "../../runtime/api/__mocks__/network.mock";
+import { MockStorageApi } from "../../runtime/api/__mocks__/storage.mock";
 import { useHtmlPageCrawler } from "../html-page-crawler";
+import { mimeMap } from "../lib/mime-map";
 import {
   mockDataForSingleItem,
   mockDataForSingleItemBuildEnd,
@@ -16,17 +19,17 @@ describe("Plugin/HTML Page Crawler", () => {
       data: mockDataForSingleItem({
         id: "test-item-id",
       }),
-      api: {
-        httpGet: async (url) => {
-          requestedUrls.push(url);
-          return {
-            statusCode: 200,
-            buffer: Buffer.from("Hello world"),
-          };
-        },
-        getTextFile: async () => null,
-        setFile: async () => {},
-      },
+      api: mockItemHookApi({
+        network: new MockNetworkApi({
+          get: async (url) => {
+            requestedUrls.push(url);
+            return {
+              statusCode: 200,
+              buffer: Buffer.from("Hello world"),
+            };
+          },
+        }),
+      }),
     });
 
     expect(requestedUrls).toEqual([]);
@@ -41,22 +44,26 @@ describe("Plugin/HTML Page Crawler", () => {
         id: "test-item-id",
         url: "https://mock-domain.com/article.html",
       }),
-      api: {
-        httpGet: async (url) => {
-          requestedUrls.push(url);
-          return {
-            statusCode: 200,
-            buffer: Buffer.from("Hello world"),
-          };
-        },
-        getTextFile: async (filename) => {
-          fileOperations.push("read " + filename);
-          return "Hello world";
-        },
-        setFile: async () => {
-          fileOperations.push("write");
-        },
-      },
+      api: mockItemHookApi({
+        network: new MockNetworkApi({
+          get: async (url) => {
+            requestedUrls.push(url);
+            return {
+              statusCode: 200,
+              buffer: Buffer.from("Hello world"),
+            };
+          },
+        }),
+        storage: new MockStorageApi({
+          getTextFile: async (filename) => {
+            fileOperations.push("read " + filename);
+            return "Hello world";
+          },
+          setFile: async () => {
+            fileOperations.push("write");
+          },
+        }),
+      }),
     });
 
     expect(requestedUrls).toEqual([]);
@@ -78,22 +85,26 @@ describe("Plugin/HTML Page Crawler", () => {
           pageFilename: "old-file.html",
         },
       }),
-      api: {
-        httpGet: async (url) => {
-          requestedUrls.push(url);
-          return {
-            statusCode: 200,
-            buffer: Buffer.from("Hello world"),
-          };
-        },
-        getTextFile: async (filename) => {
-          fileOperations.push("read " + filename);
-          return "Hello world";
-        },
-        setFile: async () => {
-          fileOperations.push("write");
-        },
-      },
+      api: mockItemHookApi({
+        network: new MockNetworkApi({
+          get: async (url) => {
+            requestedUrls.push(url);
+            return {
+              statusCode: 200,
+              buffer: Buffer.from("Hello world"),
+            };
+          },
+        }),
+        storage: new MockStorageApi({
+          getTextFile: async (filename) => {
+            fileOperations.push("read " + filename);
+            return "Hello world";
+          },
+          setFile: async () => {
+            fileOperations.push("write");
+          },
+        }),
+      }),
     });
 
     expect(output._plugin.pageFilename.includes(".html")).toEqual(true);
@@ -108,17 +119,21 @@ describe("Plugin/HTML Page Crawler", () => {
         id: "test-item-id",
         url: "https://mock-domain.com/article.html",
       }),
-      api: {
-        httpGet: async (url) => {
-          requestedUrls.push(url);
-          return {
-            statusCode: 200,
-            buffer: Buffer.from("Hello world"),
-          };
-        },
-        getTextFile: async () => null,
-        setFile: async () => {},
-      },
+      api: mockItemHookApi({
+        network: new MockNetworkApi({
+          get: async (url) => {
+            requestedUrls.push(url);
+            return {
+              statusCode: 200,
+              buffer: Buffer.from("Hello world"),
+            };
+          },
+        }),
+        storage: new MockStorageApi({
+          getTextFile: async () => null,
+          setFile: async () => {},
+        }),
+      }),
     });
 
     expect(requestedUrls).toEqual(["https://mock-domain.com/article.html"]);
@@ -132,18 +147,22 @@ describe("Plugin/HTML Page Crawler", () => {
         id: "test-item-id",
         url: "https://mock-domain.com/article.html",
       }),
-      api: {
-        httpGet: async (url) => {
-          return {
-            statusCode: 404,
-            buffer: Buffer.from([]),
-          };
-        },
-        getTextFile: async () => null,
-        setFile: async (filename, content) => {
-          fileOperations.push([filename, content.toString()]);
-        },
-      },
+      api: mockItemHookApi({
+        network: new MockNetworkApi({
+          get: async (url) => {
+            return {
+              statusCode: 404,
+              buffer: Buffer.from([]),
+            };
+          },
+        }),
+        storage: new MockStorageApi({
+          getTextFile: async () => null,
+          setFile: async (filename, content) => {
+            fileOperations.push([filename, content.toString()]);
+          },
+        }),
+      }),
     });
 
     await expect(fileOperations.length).toEqual(0);
@@ -157,18 +176,22 @@ describe("Plugin/HTML Page Crawler", () => {
         id: "test-item-id",
         url: "https://mock-domain.com/article.html",
       }),
-      api: {
-        httpGet: async (url) => {
-          return {
-            statusCode: 200,
-            buffer: Buffer.from("Hello world"),
-          };
-        },
-        getTextFile: async () => null,
-        setFile: async (filename, content) => {
-          fileOperations.push([filename, content.toString()]);
-        },
-      },
+      api: mockItemHookApi({
+        network: new MockNetworkApi({
+          get: async (url) => {
+            return {
+              statusCode: 200,
+              buffer: Buffer.from("Hello world"),
+            };
+          },
+        }),
+        storage: new MockStorageApi({
+          getTextFile: async () => null,
+          setFile: async (filename, content) => {
+            fileOperations.push([filename, content.toString()]);
+          },
+        }),
+      }),
     });
 
     await expect(fileOperations.length).toEqual(0);
@@ -182,19 +205,23 @@ describe("Plugin/HTML Page Crawler", () => {
         id: "test-item-id",
         url: "https://mock-domain.com/article.html",
       }),
-      api: {
-        httpGet: async (url) => {
-          return {
-            statusCode: 200,
-            contentType: mimeMap[".txt"],
-            buffer: Buffer.from("Hello world"),
-          };
-        },
-        getTextFile: async () => null,
-        setFile: async (filename, content) => {
-          fileOperations.push([filename, content.toString()]);
-        },
-      },
+      api: mockItemHookApi({
+        network: new MockNetworkApi({
+          get: async (url) => {
+            return {
+              statusCode: 200,
+              contentType: mimeMap[".txt"],
+              buffer: Buffer.from("Hello world"),
+            };
+          },
+        }),
+        storage: new MockStorageApi({
+          getTextFile: async () => null,
+          setFile: async (filename, content) => {
+            fileOperations.push([filename, content.toString()]);
+          },
+        }),
+      }),
     });
 
     await expect(fileOperations.length).toEqual(0);
@@ -208,19 +235,23 @@ describe("Plugin/HTML Page Crawler", () => {
         id: "test-item-id",
         url: "https://mock-domain.com/article.html",
       }),
-      api: {
-        httpGet: async (url) => {
-          return {
-            statusCode: 200,
-            contentType: "text/html",
-            buffer: Buffer.from("Hello world"),
-          };
-        },
-        getTextFile: async () => null,
-        setFile: async (filename, content) => {
-          fileOperations.push([filename, content.toString()]);
-        },
-      },
+      api: mockItemHookApi({
+        network: new MockNetworkApi({
+          get: async (url) => {
+            return {
+              statusCode: 200,
+              contentType: "text/html",
+              buffer: Buffer.from("Hello world"),
+            };
+          },
+        }),
+        storage: new MockStorageApi({
+          getTextFile: async () => null,
+          setFile: async (filename, content) => {
+            fileOperations.push([filename, content.toString()]);
+          },
+        }),
+      }),
     });
 
     await expect(fileOperations.length).toEqual(1);
@@ -235,19 +266,23 @@ describe("Plugin/HTML Page Crawler", () => {
         id: "test-item-id",
         url: "https://mock-domain.com/article.html",
       }),
-      api: {
-        httpGet: async (url) => {
-          return {
-            statusCode: 200,
-            contentType: "text/html; charset=UTF-8",
-            buffer: Buffer.from("Hello world"),
-          };
-        },
-        getTextFile: async () => null,
-        setFile: async (filename, content) => {
-          fileOperations.push([filename, content.toString()]);
-        },
-      },
+      api: mockItemHookApi({
+        network: new MockNetworkApi({
+          get: async (url) => {
+            return {
+              statusCode: 200,
+              contentType: "text/html; charset=UTF-8",
+              buffer: Buffer.from("Hello world"),
+            };
+          },
+        }),
+        storage: new MockStorageApi({
+          getTextFile: async () => null,
+          setFile: async (filename, content) => {
+            fileOperations.push([filename, content.toString()]);
+          },
+        }),
+      }),
     });
 
     await expect(fileOperations.length).toEqual(1);
@@ -261,19 +296,23 @@ describe("Plugin/HTML Page Crawler", () => {
         id: "test-item-id",
         url: "https://mock-domain.com/article.html",
       }),
-      api: {
-        httpGet: async () => {
-          return {
-            statusCode: 200,
-            contentType: "text/html",
-            buffer: Buffer.from("Hello world"),
-          };
-        },
-        getTextFile: async () => null,
-        setFile: async (filename) => {
-          savedFilename = filename;
-        },
-      },
+      api: mockItemHookApi({
+        network: new MockNetworkApi({
+          get: async () => {
+            return {
+              statusCode: 200,
+              contentType: "text/html",
+              buffer: Buffer.from("Hello world"),
+            };
+          },
+        }),
+        storage: new MockStorageApi({
+          getTextFile: async () => null,
+          setFile: async (filename) => {
+            savedFilename = filename;
+          },
+        }),
+      }),
     });
 
     expect(result._plugin.pageFilename).toEqual(savedFilename);
@@ -288,19 +327,23 @@ describe("Plugin/HTML Page Crawler", () => {
         id: "test-item-id",
         url: "https://mock-domain.com/article.html",
       }),
-      api: {
-        httpGet: async () => {
-          return {
-            statusCode: 200,
-            contentType: "text/html",
-            buffer: Buffer.from("Hello world"),
-          };
-        },
-        getTextFile: async () => {
-          return "Hello world";
-        },
-        setFile: async () => {},
-      },
+      api: mockItemHookApi({
+        network: new MockNetworkApi({
+          get: async () => {
+            return {
+              statusCode: 200,
+              contentType: "text/html",
+              buffer: Buffer.from("Hello world"),
+            };
+          },
+        }),
+        storage: new MockStorageApi({
+          getTextFile: async () => {
+            return "Hello world";
+          },
+          setFile: async () => {},
+        }),
+      }),
     });
 
     await runBuildEndHook(plugin, {
@@ -308,11 +351,13 @@ describe("Plugin/HTML Page Crawler", () => {
         id: "test-item-id",
         url: "https://mock-domain.com/article.html",
       }),
-      api: {
-        pruneFiles: async (config) => {
-          keepFiles.push(...config.keep);
-        },
-      },
+      api: mockBuildEndHookApi({
+        storage: new MockStorageApi({
+          pruneFiles: async (config) => {
+            keepFiles.push(...config.keep);
+          },
+        }),
+      }),
     });
 
     await expect(keepFiles.length).toEqual(1);
@@ -327,17 +372,21 @@ describe("Plugin/HTML Page Crawler", () => {
         id: "test-item-id",
         url: "https://mock-domain.com/article.html",
       }),
-      api: {
-        httpGet: async () => {
-          return {
-            statusCode: 200,
-            contentType: "text/html",
-            buffer: Buffer.from("Hello world"),
-          };
-        },
-        getTextFile: async () => null,
-        setFile: async () => {},
-      },
+      api: mockItemHookApi({
+        network: new MockNetworkApi({
+          get: async () => {
+            return {
+              statusCode: 200,
+              contentType: "text/html",
+              buffer: Buffer.from("Hello world"),
+            };
+          },
+        }),
+        storage: new MockStorageApi({
+          getTextFile: async () => null,
+          setFile: async () => {},
+        }),
+      }),
     });
 
     await runBuildEndHook(plugin, {
@@ -345,11 +394,13 @@ describe("Plugin/HTML Page Crawler", () => {
         id: "test-item-id",
         url: "https://mock-domain.com/article.html",
       }),
-      api: {
-        pruneFiles: async (config) => {
-          keepFiles.push(...config.keep);
-        },
-      },
+      api: mockBuildEndHookApi({
+        storage: new MockStorageApi({
+          pruneFiles: async (config) => {
+            keepFiles.push(...config.keep);
+          },
+        }),
+      }),
     });
 
     await expect(keepFiles.length).toEqual(1);

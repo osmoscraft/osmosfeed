@@ -11,9 +11,10 @@ import {
   PartialProjectConfig,
   Plugin,
 } from "../types/plugin";
+import { LogApi } from "./api/log";
+import { NetworkApi } from "./api/network";
+import { StorageApi } from "./api/storage";
 import { FeedFormatError, ProjectConfigError } from "./lib/error-types";
-import { getTextFile, pruneFiles, setFile } from "./lib/file-storage";
-import { httpGet } from "./lib/http-client";
 import { reduceAsync } from "./lib/reduce-async";
 import { isFeed, isProjectConfig, isValidFeed } from "./lib/type-guards";
 
@@ -25,19 +26,6 @@ export interface FeedBuilderOutput {
   feeds?: JsonFeed[];
   errors?: any[];
 }
-
-// TODO handle external states
-// External states:
-// 1. Network request
-// 2. Filesystem
-// 3. Terminal I/O
-// 4. Progressive update (maybe?)
-//
-// This allows runtime to focus on mediating between functions (via plugins) and effects (via api implementations)
-//
-// Make the runtime a class
-// API implementation using DI
-// PlugIn to be provided to constructor
 
 export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput> {
   const { plugins = [] } = input;
@@ -79,11 +67,9 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
             };
 
             const api: FeedHookApi = {
-              httpGet,
-              getTextFile: getTextFile.bind(null, { pluginId: plugin.id }),
-              setFile: setFile.bind(null, {
-                pluginId: plugin.id,
-              }),
+              storage: new StorageApi({ pluginId: plugin.id }),
+              network: new NetworkApi(),
+              log: new LogApi(),
             };
 
             return plugin.transformFeed!({ data, api });
@@ -110,11 +96,9 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
                   projectConfig,
                 };
                 const api: ItemHookApi = {
-                  httpGet,
-                  getTextFile: getTextFile.bind(null, { pluginId: plugin.id }),
-                  setFile: setFile.bind(null, {
-                    pluginId: plugin.id,
-                  }),
+                  storage: new StorageApi({ pluginId: plugin.id }),
+                  network: new NetworkApi(),
+                  log: new LogApi(),
                 };
 
                 return plugin.transformItem!({ data, api });
@@ -147,7 +131,8 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
         projectConfig,
       };
       const api: BuildEndHookApi = {
-        pruneFiles: pruneFiles.bind(null, { pluginId: plugin.id }),
+        storage: new StorageApi({ pluginId: plugin.id }),
+        log: new LogApi(),
       };
       return plugin.buildEnd!({ data, api });
     },

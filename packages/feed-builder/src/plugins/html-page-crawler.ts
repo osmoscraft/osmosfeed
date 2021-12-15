@@ -16,7 +16,7 @@ export function useHtmlPageCrawler(): Plugin {
       }
       const filename = `${sha256(url)}.html`;
 
-      const cachedContent = await api.getTextFile(filename);
+      const cachedContent = await api.storage.getTextFile(filename);
       if (cachedContent) {
         filesToKeep.push(filename);
         return {
@@ -28,7 +28,7 @@ export function useHtmlPageCrawler(): Plugin {
         };
       }
 
-      const res = await api.httpGet(url);
+      const res = await api.network.get(url);
 
       if (!res.contentType?.includes(mimeMap[".html"])) {
         return data.item;
@@ -40,7 +40,7 @@ export function useHtmlPageCrawler(): Plugin {
       }
 
       const content = res.buffer;
-      await api.setFile(filename, content);
+      await api.storage.setFile(filename, content);
       filesToKeep.push(filename);
 
       return {
@@ -52,7 +52,7 @@ export function useHtmlPageCrawler(): Plugin {
       };
     },
     buildEnd: async ({ data, api }) => {
-      await api.pruneFiles({
+      await api.storage.pruneFiles({
         keep: filesToKeep,
       });
 

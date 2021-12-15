@@ -1,13 +1,7 @@
-import { cyan, gray, red } from "./terminal";
-import { InterfaceOfClass } from "../../types/interface-of-class";
+import { cyan, gray, red } from "../lib/terminal";
+import { ILogApi } from "../../types/plugin";
 
-export type ILogger = InterfaceOfClass<Logger>;
-
-class Logger {
-  heading(message: string) {
-    console.log(cyan(this.withBorder(message)));
-  }
-
+export class LogApi implements ILogApi {
   error(...args: Parameters<typeof console["error"]>) {
     const [message, ...rest] = args;
     console.error(`${red(`[ERROR]`)} ${this.getTimestamp()} ${message}`, ...rest);
@@ -21,25 +15,8 @@ class Logger {
     console.log(gray(`[TRACE] ${this.getTimestamp()} ${message}`), ...rest);
   }
 
-  private withBorder(message: string) {
-    const length = message.length;
-    const output = `
-╔═${this.drawChar("═", length)}═╗
-║ ${message} ║
-╚═${this.drawChar("═", length)}═╝
-`.trim();
-
-    return output;
-  }
-
-  private drawChar(char: string, count = 1) {
-    return Array(count).fill(char).join("");
-  }
-
   private getTimestamp(): string {
     const now = new Date();
     return `${now.toLocaleTimeString()}`;
   }
 }
-
-export const log = new Logger();
