@@ -5,8 +5,6 @@ export type PartialJsonFeedItem = Partial<JsonFeedItem>;
 export type PartialProjectConfig = Partial<ProjectConfig<PartialSourceConfig>>;
 export type PartialSourceConfig = Partial<SourceConfig>;
 
-// TODO rewrite mock plugins to simply exercise all paths of runtime (instead of testing individual mocks)
-// TODO adjust typing for sources plugin (probably only need to keep feed_url)
 export interface Plugin {
   /** Globally unique ID for associating plugin with its data */
   id: string;

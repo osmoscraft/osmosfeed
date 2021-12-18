@@ -1,5 +1,5 @@
 {
-  "name": "@osmoscraft/feed-builder",
+  "name": "@osmosfeed/builder",
   "version": "0.0.1",
   "description": "",
   "main": "src/index.ts",

@@ -1,5 +1,5 @@
 {
-  "name": "@osmoscraft/osmosfeed-web-reader",
+  "name": "@osmosfeed/web-reader",
   "version": "0.0.1-alpha.0",
   "description": "Client TypeScript files, pre-compiled into javascript, installable by the CLI.",
   "main": "src/index.ts",

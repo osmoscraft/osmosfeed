@@ -1,5 +1,5 @@
 {
-  "name": "@osmoscraft/osmosfeed",
+  "name": "@osmosfeed/cli",
   "version": "0.0.1-alpha.0",
   "description": "",
   "bin": {
