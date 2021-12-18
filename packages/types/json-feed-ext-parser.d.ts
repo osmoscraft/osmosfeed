@@ -1,6 +1,5 @@
 export type JsonFeedParserExtension = {
-  _ext_parser: {
-    pkg_version: string;
+  _ext: {
     date_published?: string;
     date_modified?: string;
   };
