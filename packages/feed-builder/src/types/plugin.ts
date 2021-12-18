@@ -7,6 +7,7 @@ export type PartialSourceConfig = Partial<SourceConfig>;
 
 export interface Plugin {
   /** npm package name. Must be globally unique for associating plugin with its data */
+  // TODO store this in actual package.json. No need to duplicate information
   packageName: string;
   config?: ConfigHook;
   transformFeed?: TransformFeedHook;
