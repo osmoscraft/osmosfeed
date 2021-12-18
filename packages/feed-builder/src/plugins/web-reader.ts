@@ -9,7 +9,7 @@ export interface WebReaderConfig {
 export function useWebReader(config: WebReaderConfig): Plugin {
   return {
     packageName: "@osmosfeed/web-reader",
-    buildEnd: async ({ data }) => {
+    buildEnd: async ({ data, api }) => {
       const html = App({
         data: data.feeds,
         embeddedScripts: config.scripts,
@@ -17,7 +17,7 @@ export function useWebReader(config: WebReaderConfig): Plugin {
         embeddedFavicon: config.favicon,
       });
 
-      // await concurrentWrite([{ fromMemory: html, toPath: path.join(cwd, "index.html") }]);
+      await api.storage.writeFile("index.html", html);
 
       return data;
     },

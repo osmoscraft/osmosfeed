@@ -18,11 +18,11 @@ export function useIncrementalFeedStorage(): Plugin {
       let mergedFeed = feed;
       const filename = `${sha256(feed.feed_url)}.json`;
       // read storage
-      const storedFeedRaw = await api.storage.getTextFile(filename);
+      const storedFeedRaw = await api.storage.readPluginDataFile(filename);
 
       // merge incoming feed with content
       if (storedFeedRaw) {
-        mergedFeed = mergeJsonFeed(feed, JSON.parse(storedFeedRaw));
+        mergedFeed = mergeJsonFeed(feed, JSON.parse(storedFeedRaw.toString("utf-8")));
       }
 
       return mergedFeed;
@@ -34,13 +34,13 @@ export function useIncrementalFeedStorage(): Plugin {
           if (!feed.feed_url) throw new Error(); // TODO standardize error typing
           api.log.trace(`Store ${feed.feed_url}`);
           const filename = `${sha256(feed.feed_url!)}.json`;
-          await api.storage.setFile(filename, JSON.stringify(feed, null, 2));
+          await api.storage.writePluginDataFile(filename, JSON.stringify(feed, null, 2));
           filesToKeep.push(filename);
         })
       );
 
       // TODO log number of files pruned
-      await api.storage.pruneFiles({
+      await api.storage.prunePluginDataFiles({
         keep: filesToKeep,
       });
 

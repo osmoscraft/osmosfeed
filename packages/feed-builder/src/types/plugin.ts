@@ -85,9 +85,10 @@ export interface INetworkApi {
 }
 
 export interface IStorageApi {
-  getTextFile: (filename: string) => Promise<string | null>;
-  setFile: (filename: string, content: Buffer | string) => Promise<void>;
-  pruneFiles: (config: PruneFilesConfig) => Promise<void>;
+  readPluginDataFile: (filename: string) => Promise<Buffer | null>;
+  writePluginDataFile: (filename: string, content: Buffer | string) => Promise<void>;
+  prunePluginDataFiles: (config: PruneFilesConfig) => Promise<void>;
+  writeFile: (path: string, content: Buffer | string) => Promise<void>;
 }
 
 export interface PruneFilesConfig {

@@ -55,11 +55,11 @@ describe("Plugin/HTML Page Crawler", () => {
           },
         }),
         storage: new MockStorageApi({
-          getTextFile: async (filename) => {
+          readPluginDataFile: async (filename) => {
             fileOperations.push("read " + filename);
             return "Hello world";
           },
-          setFile: async () => {
+          writePluginDataFile: async () => {
             fileOperations.push("write");
           },
         }),
@@ -96,11 +96,11 @@ describe("Plugin/HTML Page Crawler", () => {
           },
         }),
         storage: new MockStorageApi({
-          getTextFile: async (filename) => {
+          readPluginDataFile: async (filename) => {
             fileOperations.push("read " + filename);
             return "Hello world";
           },
-          setFile: async () => {
+          writePluginDataFile: async () => {
             fileOperations.push("write");
           },
         }),
@@ -130,8 +130,8 @@ describe("Plugin/HTML Page Crawler", () => {
           },
         }),
         storage: new MockStorageApi({
-          getTextFile: async () => null,
-          setFile: async () => {},
+          readPluginDataFile: async () => null,
+          writePluginDataFile: async () => {},
         }),
       }),
     });
@@ -157,8 +157,8 @@ describe("Plugin/HTML Page Crawler", () => {
           },
         }),
         storage: new MockStorageApi({
-          getTextFile: async () => null,
-          setFile: async (filename, content) => {
+          readPluginDataFile: async () => null,
+          writePluginDataFile: async (filename, content) => {
             fileOperations.push([filename, content.toString()]);
           },
         }),
@@ -186,8 +186,8 @@ describe("Plugin/HTML Page Crawler", () => {
           },
         }),
         storage: new MockStorageApi({
-          getTextFile: async () => null,
-          setFile: async (filename, content) => {
+          readPluginDataFile: async () => null,
+          writePluginDataFile: async (filename, content) => {
             fileOperations.push([filename, content.toString()]);
           },
         }),
@@ -216,8 +216,8 @@ describe("Plugin/HTML Page Crawler", () => {
           },
         }),
         storage: new MockStorageApi({
-          getTextFile: async () => null,
-          setFile: async (filename, content) => {
+          readPluginDataFile: async () => null,
+          writePluginDataFile: async (filename, content) => {
             fileOperations.push([filename, content.toString()]);
           },
         }),
@@ -246,8 +246,8 @@ describe("Plugin/HTML Page Crawler", () => {
           },
         }),
         storage: new MockStorageApi({
-          getTextFile: async () => null,
-          setFile: async (filename, content) => {
+          readPluginDataFile: async () => null,
+          writePluginDataFile: async (filename, content) => {
             fileOperations.push([filename, content.toString()]);
           },
         }),
@@ -277,8 +277,8 @@ describe("Plugin/HTML Page Crawler", () => {
           },
         }),
         storage: new MockStorageApi({
-          getTextFile: async () => null,
-          setFile: async (filename, content) => {
+          readPluginDataFile: async () => null,
+          writePluginDataFile: async (filename, content) => {
             fileOperations.push([filename, content.toString()]);
           },
         }),
@@ -307,8 +307,8 @@ describe("Plugin/HTML Page Crawler", () => {
           },
         }),
         storage: new MockStorageApi({
-          getTextFile: async () => null,
-          setFile: async (filename) => {
+          readPluginDataFile: async () => null,
+          writePluginDataFile: async (filename) => {
             savedFilename = filename;
           },
         }),
@@ -338,10 +338,10 @@ describe("Plugin/HTML Page Crawler", () => {
           },
         }),
         storage: new MockStorageApi({
-          getTextFile: async () => {
+          readPluginDataFile: async () => {
             return "Hello world";
           },
-          setFile: async () => {},
+          writePluginDataFile: async () => {},
         }),
       }),
     });
@@ -353,7 +353,7 @@ describe("Plugin/HTML Page Crawler", () => {
       }),
       api: mockBuildEndHookApi({
         storage: new MockStorageApi({
-          pruneFiles: async (config) => {
+          prunePluginDataFiles: async (config) => {
             keepFiles.push(...config.keep);
           },
         }),
@@ -383,8 +383,8 @@ describe("Plugin/HTML Page Crawler", () => {
           },
         }),
         storage: new MockStorageApi({
-          getTextFile: async () => null,
-          setFile: async () => {},
+          readPluginDataFile: async () => null,
+          writePluginDataFile: async () => {},
         }),
       }),
     });
@@ -396,7 +396,7 @@ describe("Plugin/HTML Page Crawler", () => {
       }),
       api: mockBuildEndHookApi({
         storage: new MockStorageApi({
-          pruneFiles: async (config) => {
+          prunePluginDataFiles: async (config) => {
             keepFiles.push(...config.keep);
           },
         }),

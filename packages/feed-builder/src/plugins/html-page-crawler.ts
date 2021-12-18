@@ -15,7 +15,7 @@ export function useHtmlPageCrawler(): Plugin {
       }
       const filename = `${sha256(url)}.html`;
 
-      const cachedContent = await api.storage.getTextFile(filename);
+      const cachedContent = await api.storage.readPluginDataFile(filename);
       if (cachedContent) {
         api.log.trace(`Skip crawl cached page ${url}`);
         filesToKeep.push(filename);
@@ -41,7 +41,7 @@ export function useHtmlPageCrawler(): Plugin {
       }
 
       const content = res.buffer;
-      await api.storage.setFile(filename, content);
+      await api.storage.writePluginDataFile(filename, content);
       api.log.info(`Save crawled page ${url}`);
       filesToKeep.push(filename);
 
@@ -54,7 +54,7 @@ export function useHtmlPageCrawler(): Plugin {
       };
     },
     buildEnd: async ({ data, api }) => {
-      await api.storage.pruneFiles({
+      await api.storage.prunePluginDataFiles({
         keep: filesToKeep,
       });
 

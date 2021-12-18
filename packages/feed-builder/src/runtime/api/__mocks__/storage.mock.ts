@@ -3,15 +3,19 @@ import { IStorageApi, PruneFilesConfig } from "../../../types/plugin";
 export class MockStorageApi implements IStorageApi {
   constructor(private override?: Partial<IStorageApi>) {}
 
-  async getTextFile(filename: string) {
-    return this.override?.getTextFile ? this.override.getTextFile(filename) : "Hello world";
+  async readPluginDataFile(filename: string) {
+    return this.override?.readPluginDataFile ? this.override.readPluginDataFile(filename) : Buffer.from("Hello world");
   }
 
-  async setFile(filename: string, content: Buffer | string) {
-    return this.override?.setFile?.(filename, content);
+  async writePluginDataFile(filename: string, content: Buffer | string) {
+    return this.override?.writePluginDataFile?.(filename, content);
   }
 
-  async pruneFiles(config: PruneFilesConfig) {
-    return this.override?.pruneFiles?.(config);
+  async prunePluginDataFiles(config: PruneFilesConfig) {
+    return this.override?.prunePluginDataFiles?.(config);
+  }
+
+  async writeFile(path: string, content: string | Buffer) {
+    return this.override?.writeFile?.(path, content);
   }
 }
