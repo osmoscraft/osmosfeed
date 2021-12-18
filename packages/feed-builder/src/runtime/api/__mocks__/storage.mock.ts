@@ -4,7 +4,7 @@ export class MockStorageApi implements IStorageApi {
   constructor(private override?: Partial<IStorageApi>) {}
 
   async readPluginDataFile(filename: string) {
-    return this.override?.readPluginDataFile ? this.override.readPluginDataFile(filename) : Buffer.from("Hello world");
+    return this.override?.readPluginDataFile?.(filename) ?? null;
   }
 
   async writePluginDataFile(filename: string, content: Buffer | string) {
@@ -17,5 +17,9 @@ export class MockStorageApi implements IStorageApi {
 
   async writeFile(path: string, content: string | Buffer) {
     return this.override?.writeFile?.(path, content);
+  }
+
+  async readPluginStaticFile(pathToFile: string): Promise<Buffer | null> {
+    return this.override?.readPluginStaticFile?.(pathToFile) ?? null;
   }
 }

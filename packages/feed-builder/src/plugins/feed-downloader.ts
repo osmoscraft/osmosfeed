@@ -9,6 +9,7 @@ export function useFeedDownloader(): Plugin {
       const result = await api.network.get(data.sourceConfig.url);
 
       // TODO TDD to handle xml/atom vs json feed types
+      // TODO add timeout and retry logic
       // TODO error handling
       return {
         ...data.feed,

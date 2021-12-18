@@ -3,14 +3,14 @@ import path from "path";
 import { IStorageApi, PruneFilesConfig } from "../../types/plugin";
 
 export interface FileStorageContext {
-  pluginId: string;
+  pluginPackageName: string;
 }
 
 export class StorageApi implements IStorageApi {
   constructor(private context: FileStorageContext) {}
 
   async readPluginDataFile(filename: string): Promise<Buffer | null> {
-    const relativeDir = `data/plugins/${this.context.pluginId}`;
+    const relativeDir = `data/plugins/${this.context.pluginPackageName}`;
     const pathToFile = path.join(relativeDir, filename);
     if (!(await this.exists(pathToFile))) {
       return null;
@@ -20,13 +20,13 @@ export class StorageApi implements IStorageApi {
   }
 
   async writePluginDataFile(filename: string, content: Buffer | string) {
-    const relativeDir = `data/plugins/${this.context.pluginId}`;
+    const relativeDir = `data/plugins/${this.context.pluginPackageName}`;
     await this.ensureDir(relativeDir);
     await fs.writeFile(path.join(relativeDir, filename), content);
   }
 
   async prunePluginDataFiles(config: PruneFilesConfig): Promise<void> {
-    const relativeDir = `data/plugins/${this.context.pluginId}`;
+    const relativeDir = `data/plugins/${this.context.pluginPackageName}`;
     if (!this.exists(relativeDir)) return;
 
     const allFiles = await fs.readdir(relativeDir);
@@ -40,6 +40,27 @@ export class StorageApi implements IStorageApi {
   async writeFile(pathToFile: string, content: Buffer | string): Promise<void> {
     await this.ensureDir(path.dirname(pathToFile));
     await fs.writeFile(pathToFile, content);
+  }
+
+  async readPluginStaticFile(pathToFile: string): Promise<Buffer | null> {
+    // TODO Avoid branching logic. Refactor core plugin into userland plugin
+    const corePluginStaticFilePath = path.resolve(
+      __dirname,
+      "core-plugins",
+      this.context.pluginPackageName,
+      pathToFile
+    );
+    const isCorePlugin = await this.exists(path.dirname(corePluginStaticFilePath));
+    if (isCorePlugin) {
+      if (await this.exists(corePluginStaticFilePath)) {
+        return fs.readFile(corePluginStaticFilePath);
+      } else {
+        return null;
+      }
+    }
+
+    // TODO support static files for userland plugins
+    return null;
   }
 
   private async ensureDir(path: string) {

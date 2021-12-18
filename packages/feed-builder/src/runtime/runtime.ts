@@ -67,7 +67,7 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
             };
 
             const api: FeedHookApi = {
-              storage: new StorageApi({ pluginId: plugin.packageName }),
+              storage: new StorageApi({ pluginPackageName: plugin.packageName }),
               network: new NetworkApi(),
               log: new LogApi(),
             };
@@ -96,7 +96,7 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
                   projectConfig,
                 };
                 const api: ItemHookApi = {
-                  storage: new StorageApi({ pluginId: plugin.packageName }),
+                  storage: new StorageApi({ pluginPackageName: plugin.packageName }),
                   network: new NetworkApi(),
                   log: new LogApi(),
                 };
@@ -131,7 +131,7 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
         projectConfig,
       };
       const api: BuildEndHookApi = {
-        storage: new StorageApi({ pluginId: plugin.packageName }),
+        storage: new StorageApi({ pluginPackageName: plugin.packageName }),
         log: new LogApi(),
       };
       return plugin.buildEnd!({ data, api });

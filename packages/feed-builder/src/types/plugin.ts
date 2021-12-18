@@ -88,7 +88,8 @@ export interface IStorageApi {
   readPluginDataFile: (filename: string) => Promise<Buffer | null>;
   writePluginDataFile: (filename: string, content: Buffer | string) => Promise<void>;
   prunePluginDataFiles: (config: PruneFilesConfig) => Promise<void>;
-  writeFile: (path: string, content: Buffer | string) => Promise<void>;
+  writeFile: (pathToFile: string, content: Buffer | string) => Promise<void>;
+  readPluginStaticFile: (pathToFile: string) => Promise<Buffer | null>;
 }
 
 export interface PruneFilesConfig {
