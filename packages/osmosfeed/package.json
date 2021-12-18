@@ -17,9 +17,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@osmosfeed/feed-parser": "file:../feed-parser",
     "@osmosfeed/feed-builder": "file:../feed-builder",
-    "@osmosfeed/web-reader": "file:../web-reader",
     "@osmoscraft/typescript-testing-library": "^0.0.5",
     "@types/js-yaml": "^4.0.5",
     "esbuild": "^0.14.0",
