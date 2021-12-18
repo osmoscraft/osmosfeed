@@ -6,6 +6,8 @@ export interface FileStorageContext {
   pluginPackageName: string;
 }
 
+export const CORE_PLUGINS_DIRNAME = "plugins";
+
 export class StorageApi implements IStorageApi {
   constructor(private context: FileStorageContext) {}
 
@@ -46,7 +48,7 @@ export class StorageApi implements IStorageApi {
     // TODO Avoid branching logic. Refactor core plugin into userland plugin
     const corePluginStaticFilePath = path.resolve(
       __dirname,
-      "core-plugins",
+      CORE_PLUGINS_DIRNAME,
       this.context.pluginPackageName,
       pathToFile
     );

@@ -1,3 +1,4 @@
+import { CORE_PLUGINS_DIRNAME } from "@osmosfeed/feed-builder/src/runtime/api/storage";
 import { build } from "esbuild";
 import path from "path";
 import { copyDirRecursive } from "../src/lib/fs-utils";
@@ -25,12 +26,12 @@ async function buildCli() {
 
 async function buildCorePlugins() {
   const assetDir = path.resolve(require.resolve("@osmosfeed/web-reader"), "../assets");
-  copyDirRecursive(path.join(assetDir), path.join(__dirname, "../dist/core-plugins/@osmosfeed/web-reader"));
+  copyDirRecursive(path.join(assetDir), path.join(__dirname, `../dist/${CORE_PLUGINS_DIRNAME}/@osmosfeed/web-reader`));
   build({
     entryPoints: [require.resolve("@osmosfeed/web-reader/src/client/index.ts")],
     sourcemap: true,
     bundle: true,
     format: "esm",
-    outdir: "dist/core-plugins/@osmosfeed/web-reader",
+    outdir: `dist/${CORE_PLUGINS_DIRNAME}/@osmosfeed/web-reader`,
   }).catch(() => process.exit(1));
 }
