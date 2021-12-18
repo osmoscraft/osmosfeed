@@ -15,6 +15,10 @@ export class MockStorageApi implements IStorageApi {
     return this.override?.prunePluginDataFiles?.(config);
   }
 
+  async readFile(pathToFile: string) {
+    return this.override?.readFile?.(pathToFile) ?? null;
+  }
+
   async writeFile(path: string, content: string | Buffer) {
     return this.override?.writeFile?.(path, content);
   }

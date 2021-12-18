@@ -39,6 +39,15 @@ export class StorageApi implements IStorageApi {
   /**
    * @param pathToFile path relative to the root of the project
    */
+  async readFile(pathToFile: string): Promise<Buffer | null> {
+    if (!this.exists(pathToFile)) return null;
+
+    return fs.readFile(pathToFile);
+  }
+
+  /**
+   * @param pathToFile path relative to the root of the project
+   */
   async writeFile(pathToFile: string, content: Buffer | string): Promise<void> {
     await this.ensureDir(path.dirname(pathToFile));
     await fs.writeFile(pathToFile, content);

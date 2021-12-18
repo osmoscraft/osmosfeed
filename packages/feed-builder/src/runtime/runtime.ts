@@ -2,6 +2,7 @@ import { JsonFeed, ProjectOutput } from "@osmosfeed/types";
 import {
   BuildEndHookApi,
   BuildEndHookData,
+  ConfigHookApi,
   ConfigHookData,
   FeedHookApi,
   FeedHookData,
@@ -42,7 +43,12 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
       const data: ConfigHookData = {
         config,
       };
-      return plugin.config!({ data });
+
+      const api: ConfigHookApi = {
+        log: new LogApi(),
+        storage: new StorageApi({ pluginPackageName: plugin.packageName }),
+      };
+      return plugin.config!({ data, api });
     },
     {} as PartialProjectConfig
   );

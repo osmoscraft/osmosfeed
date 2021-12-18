@@ -22,6 +22,7 @@ export type BuildEndHook = (input: BuildEndHookInput) => Promise<ProjectOutput>;
 
 export interface ConfigHookInput {
   data: ConfigHookData;
+  api: ConfigHookApi;
 }
 export interface FeedHookInput {
   data: FeedHookData;
@@ -37,6 +38,10 @@ export interface BuildEndHookInput {
 }
 export interface ConfigHookData {
   config: PartialProjectConfig;
+}
+export interface ConfigHookApi {
+  log: ILogApi;
+  storage: IStorageApi;
 }
 
 export interface FeedHookData {
@@ -89,6 +94,7 @@ export interface IStorageApi {
   readPluginDataFile: (filename: string) => Promise<Buffer | null>;
   writePluginDataFile: (filename: string, content: Buffer | string) => Promise<void>;
   prunePluginDataFiles: (config: PruneFilesConfig) => Promise<void>;
+  readFile: (pathToFile: string) => Promise<Buffer | null>;
   writeFile: (pathToFile: string, content: Buffer | string) => Promise<void>;
   readPluginStaticFile: (pathToFile: string) => Promise<Buffer | null>;
 }
