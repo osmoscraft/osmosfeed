@@ -1,5 +1,5 @@
 {
-  "name": "@osmoscraft/osmosfeed-types",
+  "name": "@osmosfeed/types",
   "version": "0.0.1",
   "description": "",
   "main": "index.d.ts",

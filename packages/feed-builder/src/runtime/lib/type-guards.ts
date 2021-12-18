@@ -1,4 +1,4 @@
-import { JsonFeed, ProjectConfig, SourceConfig } from "@osmoscraft/osmosfeed-types";
+import { JsonFeed, ProjectConfig, SourceConfig } from "@osmosfeed/types";
 import { PartialJsonFeed, PartialProjectConfig, PartialSourceConfig } from "../../types/plugin";
 
 export function isValidFeed(maybeFeed: JsonFeed | null): maybeFeed is JsonFeed {

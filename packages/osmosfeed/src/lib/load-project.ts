@@ -1,6 +1,6 @@
 import path from "path";
 import yaml from "js-yaml";
-import { CachedJsonFeed, ProjectConfig } from "@osmoscraft/osmosfeed-types";
+import { CachedJsonFeed, ProjectConfig } from "@osmosfeed/types";
 import { loadJsonFile, loadTextFile } from "./load-file";
 import { UrlMapJson } from "./url-map";
 import { FileMetadata } from "./virtual-file";

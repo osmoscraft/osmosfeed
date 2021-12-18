@@ -1,4 +1,4 @@
-import type { JsonFeed, JsonFeedItem, ProjectConfig, ProjectOutput, SourceConfig } from "@osmoscraft/osmosfeed-types";
+import type { JsonFeed, JsonFeedItem, ProjectConfig, ProjectOutput, SourceConfig } from "@osmosfeed/types";
 
 export type PartialJsonFeed = Partial<JsonFeed<PartialJsonFeedItem>>;
 export type PartialJsonFeedItem = Partial<JsonFeedItem>;

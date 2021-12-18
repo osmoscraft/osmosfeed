@@ -29,7 +29,7 @@ async function buildCli() {
 
 async function buildClient() {
   build({
-    entryPoints: [require.resolve("@osmoscraft/osmosfeed-web-reader/src/client/index.ts")],
+    entryPoints: [require.resolve("@osmosfeed/web-reader/src/client/index.ts")],
     sourcemap: true,
     bundle: true,
     format: "esm",

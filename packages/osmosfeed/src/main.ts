@@ -11,8 +11,8 @@ import {
   useInlineConfig,
   useJsonFeedParser,
   Plugin,
-} from "@osmoscraft/feed-builder";
-import { App } from "@osmoscraft/osmosfeed-web-reader";
+} from "@osmosfeed/feed-builder";
+import { App } from "@osmosfeed/web-reader";
 import { concurrentWrite } from "./lib/concurrent-write";
 
 async function run() {

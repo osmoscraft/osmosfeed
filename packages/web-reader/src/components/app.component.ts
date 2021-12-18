@@ -1,4 +1,4 @@
-import { JsonFeed } from "@osmoscraft/feed-parser";
+import { JsonFeed } from "@osmosfeed/feed-parser";
 import { Channel } from "./channel.component";
 
 export interface AppModel {

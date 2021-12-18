@@ -1,4 +1,4 @@
-import type { JsonFeed } from "@osmoscraft/osmosfeed-types";
+import type { JsonFeed } from "@osmosfeed/types";
 import { deduplicate } from "./deduplicate";
 
 export function mergeJsonFeed<T extends JsonFeed>(newFeed: T, existingFeed: T): T {

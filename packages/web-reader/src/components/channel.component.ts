@@ -1,4 +1,4 @@
-import { JsonFeed } from "@osmoscraft/feed-parser";
+import { JsonFeed } from "@osmosfeed/feed-parser";
 import { sanitizeHtml } from "../utils/sanitize";
 import { Article } from "./article.component";
 import { AppModel } from "./app.component";

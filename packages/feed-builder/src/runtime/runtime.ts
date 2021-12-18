@@ -1,4 +1,4 @@
-import { JsonFeed, ProjectOutput } from "@osmoscraft/osmosfeed-types";
+import { JsonFeed, ProjectOutput } from "@osmosfeed/types";
 import {
   BuildEndHookApi,
   BuildEndHookData,

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "@osmoscraft/typescript-testing-library";
-import type { JsonFeedParsed } from "@osmoscraft/osmosfeed-types";
+import type { JsonFeedParsed } from "@osmosfeed/types";
 import { parseFeed } from "../lib/parse/parse-feed";
 import { atomParser, rssParser } from "../lib";
 import { loadXmlFixture } from "../__fixtures__/test-helper/load-fixture";

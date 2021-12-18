@@ -1,4 +1,4 @@
-import type { ParsedJsonFeed, ParsedJsonFeedItem } from "@osmoscraft/osmosfeed-types";
+import type { ParsedJsonFeed, ParsedJsonFeedItem } from "@osmosfeed/types";
 import { sanitizeHtml } from "./sanitize";
 
 export interface SiteModel {
