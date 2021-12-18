@@ -6,10 +6,8 @@ export type PartialProjectConfig = Partial<ProjectConfig<PartialSourceConfig>>;
 export type PartialSourceConfig = Partial<SourceConfig>;
 
 export interface Plugin {
-  /** Globally unique ID for associating plugin with its data */
-  id: string;
-  /** Name for display purposes */
-  name: string;
+  /** npm package name. Must be globally unique for associating plugin with its data */
+  packageName: string;
   config?: ConfigHook;
   transformFeed?: TransformFeedHook;
   transformItem?: TransformItemHook;

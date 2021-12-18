@@ -3,8 +3,7 @@ import { Plugin } from "../types/plugin";
 export const id = "47764e9f-4327-4be7-8584-e8307ba08170";
 export function useFeedDownloader(): Plugin {
   return {
-    id,
-    name: "Feed Downloader",
+    packageName: "@osmosfeed/downloader",
     transformFeed: async ({ data, api }) => {
       api.log.trace(`Download feed ${data.sourceConfig.url}`);
       const result = await api.network.get(data.sourceConfig.url);

@@ -60,14 +60,14 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
           transformFeedPlugins,
           (feed, plugin) => {
             const data: FeedHookData = {
-              pluginId: plugin.id,
+              pluginId: plugin.packageName,
               feed,
               sourceConfig,
               projectConfig,
             };
 
             const api: FeedHookApi = {
-              storage: new StorageApi({ pluginId: plugin.id }),
+              storage: new StorageApi({ pluginId: plugin.packageName }),
               network: new NetworkApi(),
               log: new LogApi(),
             };
@@ -89,14 +89,14 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
               transformItemPlugins,
               (item, plugin) => {
                 const data: ItemHookData = {
-                  pluginId: plugin.id,
+                  pluginId: plugin.packageName,
                   item,
                   feed: feedBase,
                   sourceConfig,
                   projectConfig,
                 };
                 const api: ItemHookApi = {
-                  storage: new StorageApi({ pluginId: plugin.id }),
+                  storage: new StorageApi({ pluginId: plugin.packageName }),
                   network: new NetworkApi(),
                   log: new LogApi(),
                 };
@@ -126,12 +126,12 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
     buildEndPlugins,
     (buildOutput, plugin) => {
       const data: BuildEndHookData = {
-        pluginId: plugin.id,
+        pluginId: plugin.packageName,
         feeds: buildOutput.feeds,
         projectConfig,
       };
       const api: BuildEndHookApi = {
-        storage: new StorageApi({ pluginId: plugin.id }),
+        storage: new StorageApi({ pluginId: plugin.packageName }),
         log: new LogApi(),
       };
       return plugin.buildEnd!({ data, api });

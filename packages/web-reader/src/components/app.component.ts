@@ -1,16 +1,20 @@
-import { JsonFeed } from "@osmosfeed/feed-parser";
+import { JsonFeed } from "@osmosfeed/types";
 import { Channel } from "./channel.component";
 
 export interface AppModel {
   data: JsonFeed[];
-  embeddedScripts: EmbeddedResource[];
-  embeddedStylesheets: EmbeddedResource[];
-  embeddedFavicon?: EmbeddedResource; // TODO implement
+  embeddedScripts: EmbeddedTextFile[];
+  embeddedStylesheets: EmbeddedTextFile[];
+  embeddedFavicon?: EmbeddedMediaFile; // TODO implement
 }
 
-export interface EmbeddedResource {
-  mime?: string;
+export interface EmbeddedTextFile {
+  content: string;
+}
+
+export interface EmbeddedMediaFile {
   content: Buffer;
+  mime: string;
 }
 
 export function App(model: AppModel) {

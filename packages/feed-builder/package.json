@@ -13,6 +13,8 @@
   "license": "MIT",
   "devDependencies": {
     "@osmoscraft/typescript-testing-library": "^0.0.5",
-    "@osmosfeed/types": "file:../types"
+    "@osmosfeed/types": "file:../types",
+    "@osmosfeed/feed-parser": "file:../feed-parser",
+    "@osmosfeed/web-reader": "file:../web-reader"
   }
 }

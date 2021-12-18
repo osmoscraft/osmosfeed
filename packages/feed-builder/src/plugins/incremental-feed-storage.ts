@@ -9,8 +9,7 @@ export function useIncrementalFeedStorage(): Plugin {
   const filesToKeep: string[] = [];
 
   return {
-    id: "04722f59-f9c9-431f-a9fd-c664a328577c",
-    name: "Incremental Feed Storage",
+    packageName: "@osmosfeed/incremental-feed-storage",
     transformFeed: async ({ data, api }) => {
       const { feed } = data;
 

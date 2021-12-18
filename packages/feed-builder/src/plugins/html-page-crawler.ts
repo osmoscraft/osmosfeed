@@ -6,8 +6,7 @@ export function useHtmlPageCrawler(): Plugin {
   const filesToKeep: string[] = [];
 
   return {
-    id: "8f0cb682-827a-41b6-a9d1-21b2b5e33284",
-    name: "HTML Page Crawler",
+    packageName: "@osmosfeed/html-page-crawler",
     transformItem: async ({ data, api }) => {
       const { url } = data.item;
 

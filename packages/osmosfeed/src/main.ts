@@ -62,8 +62,7 @@ async function run() {
 
 function useAppBuilderPlugin(client: LoadedClient, cwd: string): Plugin {
   return {
-    id: "virtual",
-    name: "App Builder",
+    packageName: "app-builder",
     buildEnd: async ({ data }) => {
       log.heading("03 Generate site");
 
@@ -71,10 +70,10 @@ function useAppBuilderPlugin(client: LoadedClient, cwd: string): Plugin {
         data: data.feeds,
         embeddedScripts: client.files
           .filter((file) => path.join("/", file.relativePath) === "/index.js")
-          .map((file) => ({ content: file.content })),
+          .map((file) => ({ content: file.content.toString("utf-8") })),
         embeddedStylesheets: client.files
           .filter((file) => path.join("/", file.relativePath) === "/index.css")
-          .map((file) => ({ content: file.content })),
+          .map((file) => ({ content: file.content.toString("utf-8") })),
         embeddedFavicon: client.files
           .filter((file) => path.join("/", file.relativePath) === "/favicon.png")
           .map((file) => ({ content: file.content, mime: file.metadata.mime! }))?.[0],

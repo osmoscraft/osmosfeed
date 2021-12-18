@@ -12,8 +12,7 @@ describe("Runtime", () => {
 
   it("Throws FeedFormat error when plugins do not resolve full feed", async () => {
     const plugin: Plugin = {
-      id: "test-id",
-      name: "Test Plugin",
+      packageName: "test-id",
       config: async () => ({
         sources: [
           {
@@ -31,8 +30,7 @@ describe("Runtime", () => {
   it("Executes plugins in config > feed > item > buildEnd order", async () => {
     const invocationTracker: string[] = [];
     const plugin: Plugin = {
-      id: "test-id",
-      name: "Test Plugin",
+      packageName: "test-id",
       config: async () => {
         invocationTracker.push("s1");
         return {
@@ -68,8 +66,7 @@ describe("Runtime", () => {
 
   it("pipes data through all plugins", async () => {
     const plugin1: Plugin = {
-      id: "test-plugin-id-1",
-      name: "Test Plugin 1",
+      packageName: "test-plugin-id-1",
       config: async () => {
         return {
           sources: [{ url: "s1" }],
@@ -86,8 +83,7 @@ describe("Runtime", () => {
     };
 
     const plugin2: Plugin = {
-      id: "test-plugin-id-2",
-      name: "Test Plugin 2",
+      packageName: "test-plugin-id-2",
       config: async ({ data }) => {
         return {
           sources: [{ url: data.config.sources![0].url + "s2" }],
