@@ -1,7 +1,7 @@
 import { CORE_PLUGINS_DIRNAME } from "@osmosfeed/feed-builder/src/runtime/api/storage";
 import { build } from "esbuild";
 import path from "path";
-import { copyDirRecursive } from "../src/lib/fs-utils";
+import { copyDirRecursive } from "./fs-utils";
 
 const isWatchMode = process.argv.includes("--watch");
 
