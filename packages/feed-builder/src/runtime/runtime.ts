@@ -126,6 +126,7 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
     })
   );
 
+  // TODO error handling logic needs update
   const validFeeds = feeds.filter(isValidFeed);
 
   const finalizedOutput = await reduceAsync(
