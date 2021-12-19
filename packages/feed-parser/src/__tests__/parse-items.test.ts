@@ -1,5 +1,5 @@
 import { describe, expect, it } from "@osmoscraft/typescript-testing-library";
-import { atomParser, parseFeed, rssParser } from "../lib";
+import { atomParser, parseFeed, rssParser } from "../";
 
 describe("Parse items", () => {
   it("Missing fields/RSS2", async () => {

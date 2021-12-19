@@ -3,8 +3,6 @@ import cheerio, { Cheerio } from "cheerio";
 import { ElementType } from "htmlparser2";
 import type { XmlFeedParser } from "./parse-feed";
 
-const pkg = require("../../../package.json");
-
 export const rssParser: XmlFeedParser = {
   isMatch: (root) => root.find("rss,rdf\\:RDF").length > 0,
   selectChannel: (root) => root.find("channel"),

@@ -31,7 +31,6 @@ export interface FeedBuilderOutput {
 export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput> {
   const { plugins = [] } = input;
 
-  // TODO load plugins by scanning package names rather than direct imports
   const configPlugins = plugins.filter((plugin) => plugin.config);
   const transformFeedPlugins = plugins.filter((plugin) => plugin.transformFeed);
   const transformItemPlugins = plugins.filter((plugin) => plugin.transformItem);

@@ -1,7 +1,5 @@
 import { describe, expect, it } from "@osmoscraft/typescript-testing-library";
-import { atomParser, parseFeed, rssParser } from "../lib";
-
-const pkg = require("../../package.json");
+import { atomParser, parseFeed, rssParser } from "../";
 
 describe("Parse channel", () => {
   it("Throws for Non-feed XML", async () => {
