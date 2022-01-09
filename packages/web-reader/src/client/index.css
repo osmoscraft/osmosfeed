@@ -1,4 +1,5 @@
 @import url("../styles/reset.css");
+@import url("../styles/element.css");
 @import url("../styles/utils.css");
 
 @import url("../components/channel.component.css");
