@@ -13,7 +13,6 @@ export function useJsonFeedParser(): Plugin {
           xml,
           parsers: [rssParser, atomParser],
         }),
-        feed_url: data.sourceConfig.url,
       };
 
       return parsedFeed;

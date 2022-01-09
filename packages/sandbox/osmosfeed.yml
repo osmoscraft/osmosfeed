@@ -19,3 +19,4 @@ sources:
   - url: https://ishadeed.com/feed.xml
   - url: https://lea.verou.me/feed/
   - url: https://tympanus.net/codrops/feed/
+clientDevMode: true

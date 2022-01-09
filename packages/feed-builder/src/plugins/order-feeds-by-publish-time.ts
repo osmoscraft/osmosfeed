@@ -12,8 +12,6 @@ export function useOrderFeedsByPublishTime(): Plugin {
         (a, b) => new Date(b._ext.date_published).getTime() - new Date(a._ext.date_published).getTime()
       );
 
-      console.log(sortedFeeds);
-
       return {
         feeds: sortedFeeds,
       };

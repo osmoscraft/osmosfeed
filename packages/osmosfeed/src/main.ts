@@ -1,6 +1,7 @@
 import {
   build,
   useFeedDownloader,
+  useFeedSkeleton,
   useHtmlPageCrawler,
   useIncrementalFeedStorage,
   useJsonFeedParser,
@@ -22,6 +23,7 @@ async function run() {
   const { errors } = await build({
     plugins: [
       useYamlConfig(),
+      useFeedSkeleton(),
       useFeedDownloader(),
       useJsonFeedParser(),
       useSyntheticPublishTime(),

@@ -1,4 +1,5 @@
 export * from "./feed-downloader";
+export * from "./feed-skeleton";
 export * from "./inline-config";
 export * from "./yaml-config";
 export * from "./json-feed-parser";

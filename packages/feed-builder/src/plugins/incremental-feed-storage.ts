@@ -16,7 +16,7 @@ export function useIncrementalFeedStorage(): Plugin {
       if (!feed.feed_url) throw new Error(); // TODO standardize error typing
 
       let mergedFeed = feed;
-      const filename = `${sha256(feed.feed_url)}.json`;
+      const filename = `${sha256(data.sourceConfig.url)}.json`;
       // read storage
       const storedFeedRaw = await api.storage.readPluginDataFile(filename);
 
