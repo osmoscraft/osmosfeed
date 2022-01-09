@@ -9,6 +9,7 @@ export function useJsonFeedParser(): Plugin {
       // TODO handle error when rawFeed does not exist
       const xml = data.feed._plugin.rawFeed;
       const parsedFeed: ParsedJsonFeed = {
+        ...data.feed,
         ...parseFeed({
           xml,
           parsers: [rssParser, atomParser],

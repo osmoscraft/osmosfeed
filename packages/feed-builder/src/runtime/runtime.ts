@@ -36,6 +36,8 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
   const transformItemPlugins = plugins.filter((plugin) => plugin.transformItem);
   const buildEndPlugins = plugins.filter((plugin) => plugin.buildEnd);
 
+  const runtimeLogger = new LogApi();
+
   const projectConfig = await reduceAsync(
     configPlugins,
     (config, plugin) => {
@@ -64,7 +66,7 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
       try {
         const feedBase = await reduceAsync(
           transformFeedPlugins,
-          (feed, plugin) => {
+          async (feed, plugin) => {
             const data: FeedHookData = {
               pluginId: plugin.packageName,
               feed,
@@ -78,7 +80,12 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
               log: new LogApi(),
             };
 
-            return plugin.transformFeed!({ data, api });
+            try {
+              return await plugin.transformFeed!({ data, api });
+            } catch (error) {
+              runtimeLogger.error(`${plugin.packageName} had error transforming feed url ${sourceConfig.url}`);
+              throw error;
+            }
           },
           {} as PartialJsonFeed
         );
@@ -93,7 +100,7 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
           itemsBase.map(async (itemDry) => {
             const itemEnriched = await reduceAsync(
               transformItemPlugins,
-              (item, plugin) => {
+              async (item, plugin) => {
                 const data: ItemHookData = {
                   pluginId: plugin.packageName,
                   item,
@@ -101,13 +108,19 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
                   sourceConfig,
                   projectConfig,
                 };
+
                 const api: ItemHookApi = {
                   storage: new StorageApi({ pluginPackageName: plugin.packageName }),
                   network: new NetworkApi(),
                   log: new LogApi(),
                 };
 
-                return plugin.transformItem!({ data, api });
+                try {
+                  return await plugin.transformItem!({ data, api });
+                } catch (error) {
+                  runtimeLogger.error(`${plugin.packageName} had error transforming item id ${item.id}`);
+                  throw error;
+                }
               },
               itemDry
             );
@@ -131,7 +144,7 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
 
   const finalizedOutput = await reduceAsync(
     buildEndPlugins,
-    (buildOutput, plugin) => {
+    async (buildOutput, plugin) => {
       const data: BuildEndHookData = {
         pluginId: plugin.packageName,
         feeds: buildOutput.feeds,
@@ -141,7 +154,13 @@ export async function build(input: FeedBuilderInput): Promise<FeedBuilderOutput>
         storage: new StorageApi({ pluginPackageName: plugin.packageName }),
         log: new LogApi(),
       };
-      return plugin.buildEnd!({ data, api });
+
+      try {
+        return await plugin.buildEnd!({ data, api });
+      } catch (error) {
+        runtimeLogger.error(`${plugin.packageName} had error in build end step`);
+        throw error;
+      }
     },
     {
       feeds: validFeeds,
