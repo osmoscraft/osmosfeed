@@ -1,11 +1,50 @@
-import { BuildEndHookData, BuildEndHookInput, ItemHookData, ItemHookInput, Plugin } from "../../types";
+import { JsonFeed, JsonFeedItem } from "@osmosfeed/types";
+import {
+  BuildEndHookData,
+  BuildEndHookInput,
+  FeedHookData,
+  FeedHookInput,
+  ItemHookData,
+  ItemHookInput,
+  Plugin,
+} from "../../types";
 
-export function runItemTransformHook(plugin: Plugin, input: ItemHookInput) {
+export function runTransformFeedHook(plugin: Plugin, input: FeedHookInput) {
+  return plugin.transformFeed!(input);
+}
+
+export function runTransformItemHook(plugin: Plugin, input: ItemHookInput) {
   return plugin.transformItem!(input);
 }
 
 export function runBuildEndHook(plugin: Plugin, input: BuildEndHookInput) {
   return plugin.buildEnd!(input);
+}
+
+export interface MockFeedInput {
+  feed: Partial<JsonFeed>;
+}
+
+export function mockDataForFeed(input: MockFeedInput): FeedHookData {
+  return {
+    pluginId: "",
+    feed: {
+      version: "",
+      title: "",
+      feed_url: "https://mock-domain/feed.xml",
+      ...input.feed,
+    },
+    sourceConfig: {
+      url: "https://mock-domain/feed.xml",
+    },
+    projectConfig: {
+      sources: [
+        {
+          url: "https://mock-domain/feed.xml",
+        },
+      ],
+    },
+  };
 }
 
 export interface SingleItemMockInput {

@@ -8,7 +8,7 @@ import {
   mockDataForSingleItem,
   mockDataForSingleItemBuildEnd,
   runBuildEndHook,
-  runItemTransformHook as runTransformItemHook,
+  runTransformItemHook,
 } from "./fixtures";
 
 describe("Plugin/HTML Page Crawler", () => {
@@ -57,7 +57,7 @@ describe("Plugin/HTML Page Crawler", () => {
         storage: new MockStorageApi({
           readPluginDataFile: async (filename) => {
             fileOperations.push("read " + filename);
-            return "Hello world";
+            return Buffer.from("Hello world");
           },
           writePluginDataFile: async () => {
             fileOperations.push("write");
@@ -98,7 +98,7 @@ describe("Plugin/HTML Page Crawler", () => {
         storage: new MockStorageApi({
           readPluginDataFile: async (filename) => {
             fileOperations.push("read " + filename);
-            return "Hello world";
+            return Buffer.from("Hello world");
           },
           writePluginDataFile: async () => {
             fileOperations.push("write");
@@ -339,7 +339,7 @@ describe("Plugin/HTML Page Crawler", () => {
         }),
         storage: new MockStorageApi({
           readPluginDataFile: async () => {
-            return "Hello world";
+            return Buffer.from("Hello world");
           },
           writePluginDataFile: async () => {},
         }),
