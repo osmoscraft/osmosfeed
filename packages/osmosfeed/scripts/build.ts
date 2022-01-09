@@ -3,7 +3,8 @@ import { build } from "esbuild";
 import path from "path";
 import { copyDirRecursive } from "./fs-utils";
 
-const isWatchMode = process.argv.includes("--watch");
+// const isWatchMode = process.argv.includes("--watch");
+const isWatchMode = false;
 
 main();
 

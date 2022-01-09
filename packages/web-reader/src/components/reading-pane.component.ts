@@ -1,12 +1,12 @@
 import type { parse } from "@postlight/mercury-parser";
 
 export function ReadingPane() {
-  return `<aside>
-  <osmos-reading-pane>
-    <h1>title of the article</h1>
-    <article></article>
-  </osmos-reading-pane>
-  </aside>`;
+  return `<osmos-reading-pane class="c-reading-pane">
+    <h1 class="c-reading-pane__title">
+      <a href="#">title of the article</a>
+    </h1>
+    <div class="c-embedded-html"></div>
+  </osmos-reading-pane>`;
 }
 
 export class ReadingPaneElement extends HTMLElement {
@@ -36,7 +36,10 @@ export class ReadingPaneElement extends HTMLElement {
   }
 
   setContent(input: { url: string; title: string; htmlContent: string }) {
-    this.querySelector("h1")!.innerText = input.title;
-    this.querySelector("article")!.innerHTML = input.htmlContent;
+    const title = this.querySelector<HTMLAnchorElement>("h1 a");
+    title!.innerText = input.title;
+    title!.href = input.url;
+    this.parentElement!.scrollTop = 0;
+    this.querySelector("div")!.innerHTML = input.htmlContent;
   }
 }

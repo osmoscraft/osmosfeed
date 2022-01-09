@@ -1,0 +1,23 @@
+.c-reading-pane {
+  padding: 2rem;
+  display: block;
+  min-height: 100%;
+  background-color: white;
+}
+
+.c-reading-pane__title {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.c-embedded-html {
+  line-height: 1.5;
+}
+
+.c-embedded-html * {
+  all: revert;
+}
+
+.c-embedded-html img {
+  max-width: 100%;
+}

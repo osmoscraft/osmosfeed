@@ -24,12 +24,12 @@ async function run() {
     plugins: [
       useYamlConfig(),
       useFeedSkeleton(),
-      useFeedDownloader(),
-      useJsonFeedParser(),
-      useSyntheticPublishTime(),
-      useOrderFeedsByPublishTime(),
+      // useFeedDownloader(),
+      // useJsonFeedParser(),
+      // useSyntheticPublishTime(),
+      // useOrderFeedsByPublishTime(),
       useIncrementalFeedStorage(),
-      useHtmlPageCrawler(),
+      // useHtmlPageCrawler(),
       useWebReader(),
     ],
   });
