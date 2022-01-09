@@ -4,6 +4,8 @@ import {
   useHtmlPageCrawler,
   useIncrementalFeedStorage,
   useJsonFeedParser,
+  useOrderFeedsByPublishTime,
+  useSyntheticPublishTime,
   useWebReader,
   useYamlConfig,
 } from "@osmosfeed/feed-builder";
@@ -16,6 +18,8 @@ async function run() {
       useYamlConfig(),
       useFeedDownloader(),
       useJsonFeedParser(),
+      useSyntheticPublishTime(),
+      useOrderFeedsByPublishTime(),
       useIncrementalFeedStorage(),
       useHtmlPageCrawler(),
       useWebReader(),

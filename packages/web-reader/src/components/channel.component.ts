@@ -2,6 +2,7 @@ import { sanitizeHtml } from "../utils/sanitize";
 import { Article } from "./article.component";
 import { AppModel } from "./app.component";
 import type { JsonFeed } from "@osmosfeed/types";
+import { getRelativeTime } from "../utils/relative-time";
 
 export interface ChannelModel {
   data: JsonFeed;
@@ -11,6 +12,7 @@ export function Channel(model: ChannelModel) {
   return `
 <osmos-channel>
   <section class="feed js-horizontal-scroll">
+    <div>${getRelativeTime(model.data._ext.date_published)}</div>
     <h1 class="feed-title-group">
       ${model.data.icon ? `<img class="feed-icon" src="${model.data.icon}" width="32" height="32">` : ``}
       <a class="u-reset" href="${model.data.home_page_url}">${sanitizeHtml(model.data.title)}</a>
@@ -35,12 +37,8 @@ export class ChannelElement extends HTMLElement {
   }
 
   private formatDatetime() {
-    const rtf = new Intl.RelativeTimeFormat(undefined, { numeric: "auto" });
     [...this.querySelectorAll<HTMLTimeElement>(".js-datetime")].forEach((datetime) => {
-      const currentEpoc = Date.now();
-      const sourceEpoc = new Date(datetime.dateTime).getTime();
-      const relativeDays = Math.floor((sourceEpoc - currentEpoc) / 1000 / 60 / 60 / 24);
-      datetime.innerText = rtf.format(relativeDays, "day");
+      datetime.innerText = getRelativeTime(datetime.dateTime);
     });
   }
 

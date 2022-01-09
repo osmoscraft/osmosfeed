@@ -5,3 +5,5 @@ export * from "./json-feed-parser";
 export * from "./incremental-feed-storage";
 export * from "./html-page-crawler";
 export * from "./web-reader";
+export * from "./order-feeds-by-publish-time";
+export * from "./synthetic-publish-time";

@@ -44,6 +44,35 @@ describe("Util/Merge", () => {
     await expect(merged.description).toEqual("Mock description new");
   });
 
+  it("Feed/Metadata update/Persist publish time", async () => {
+    const existing: JsonFeed = {
+      version: "Mock version",
+      title: "Mock title",
+      description: "Mock description",
+      _ext: {
+        date_published: "2000-01-01T00:00:00Z",
+      },
+      items: [],
+    };
+
+    const incoming: JsonFeed = {
+      version: "Mock version",
+      title: "Mock title new",
+      description: "Mock description new",
+      _ext: {
+        date_published: "2000-01-02T00:00:00Z",
+      },
+      items: [],
+    };
+
+    const merged = mergeJsonFeed(incoming, existing);
+
+    await expect(merged.items.length).toEqual(0);
+    await expect(merged.title).toEqual("Mock title new");
+    await expect(merged.description).toEqual("Mock description new");
+    await expect(merged._ext.date_published).toEqual("2000-01-01T00:00:00Z");
+  });
+
   it("Items/Addition", async () => {
     const existing: JsonFeed = {
       version: "",
@@ -146,6 +175,38 @@ describe("Util/Merge", () => {
     await expect(merged.items[0].title).toEqual("Title new");
   });
 
+  it("Items/Update/Persist publish time", async () => {
+    const existing: JsonFeed = {
+      version: "",
+      title: "",
+      items: [
+        {
+          id: "1",
+          title: "Title",
+          date_published: "2000-01-01T00:00:00Z",
+        },
+      ],
+    };
+
+    const incoming: JsonFeed = {
+      version: "",
+      title: "",
+      items: [
+        {
+          id: "1",
+          title: "Title new",
+          date_published: "2000-01-02T00:00:00Z", // should be ignored
+        },
+      ],
+    };
+
+    const merged = mergeJsonFeed(incoming, mergeJsonFeed(incoming, existing));
+
+    await expect(merged.items.length).toEqual(1);
+    await expect(merged.items[0].title).toEqual("Title new");
+    await expect(merged.items[0].date_published).toEqual("2000-01-01T00:00:00Z");
+  });
+
   it("Items/Ordering/Without timestamp", async () => {
     const existing: JsonFeed = {
       version: "",
@@ -183,7 +244,7 @@ describe("Util/Merge", () => {
     await expect(merged.items.map((item) => item.id).join(",")).toEqual("3,4,1,2");
   });
 
-  it("Items/Ordering/With timestamp", async () => {
+  it("Items/Ordering/With timestamp and persistency", async () => {
     const existing: JsonFeed = {
       version: "",
       title: "",
