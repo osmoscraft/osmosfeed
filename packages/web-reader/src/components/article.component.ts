@@ -13,7 +13,9 @@ export function Article(model: ItemModel) {
 <osmos-article>
   <article class="article js-horizontal-scroll__item">
     ${model.data.image ? `<img class="article__image" src="${model.data.image}">` : ""}
-    <a class="u-reset" href="#" data-read-url="${model.data.url}">
+    <a class="u-reset" href="${model.data.url}" data-page-url="${model.data.url}" data-page-filename="${
+    model.data._plugin.pageFilename
+  }">
       <h2 class="article__title">${sanitizeHtml(model.data.title)}</h2>
     </a>
     ${sensibleTimestamp ? `<time class="js-datetime" datetime="${sensibleTimestamp}">${sensibleTimestamp}</time>` : ""}

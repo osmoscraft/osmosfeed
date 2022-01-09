@@ -35,13 +35,15 @@ export function App(model: AppModel) {
     }
 	</head>
 	<body>
-    <osmos-app>
-      <div class="c-feed-list">
+    <div class="c-app-layout">
+      <div class="c-feed-list c-app-layout__main">
       ${model.data.map((channel) => Channel({ parent: model, data: channel })).join("\n")}
       </div>
+      <div class="c-app-layout__aside">
       ${ReadingPane()}
-    </osmos-app>
-    ${model.embeddedScripts.map((resource) => `<script type="module">${resource.content}</script>`).join("\n")}
+      </div>
+    </div>
+    ${model.embeddedScripts.map((resource) => `<script>${resource.content}</script>`).join("\n")}
 	</body>
 </html>
 `.trim();

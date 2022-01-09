@@ -3,3 +3,20 @@ body {
     "Helvetica Neue", sans-serif;
   background-color: #eee;
 }
+
+.c-app-layout {
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+
+.c-app-layout__main {
+  overflow-x: auto;
+  overflow-y: auto;
+  height: 100vh;
+}
+
+.c-app-layout__aside {
+  max-width: clamp(400px, 50vw, 800px);
+  overflow-y: auto;
+  height: 100vh;
+}
