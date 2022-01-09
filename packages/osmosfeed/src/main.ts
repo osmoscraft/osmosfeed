@@ -11,8 +11,14 @@ import {
 } from "@osmosfeed/feed-builder";
 
 async function run() {
-  // TODO load plugins by package name, instead of direct import
-  // TODO clean up feed-parser unused utils
+  /**
+   * TODO clean up feed-parser unused utils
+   * TODO commit feed output during github action
+   * TODO open full content in side reading pane
+   * TODO backfill description from crawler output
+   * TODO style home page
+   * TODO themable home page
+   */
   const { errors } = await build({
     plugins: [
       useYamlConfig(),
