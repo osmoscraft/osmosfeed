@@ -1,10 +1,12 @@
-.feed-title-group {
+.c-feed-title-group {
   display: flex;
   gap: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
   align-items: center;
 }
 
-.article-list {
+.c-article-list {
   display: grid;
   overflow-x: auto;
   grid-template-columns: 320px;
@@ -15,30 +17,14 @@
   scroll-snap-type: x mandatory;
 }
 
-.article {
-  border: 1px solid #999;
-  padding: 1rem;
-  scroll-snap-align: start;
-  max-height: 600px;
-  overflow-y: hidden;
-  background-color: white;
-}
-
-.article__title {
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.article__image {
-  width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-}
-
-.article__summary {
-  display: -webkit-box;
-  -webkit-line-clamp: 8;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+/** TODO consolidate with other buttons */
+.c-feed-controls button {
+  border: 1px solid #666;
+  padding: 4px 8px;
+  font-size: 1rem;
+  min-width: 60px;
+  border-radius: 4px;
+  display: inline-flex;
+  justify-content: center;
+  cursor: pointer;
 }

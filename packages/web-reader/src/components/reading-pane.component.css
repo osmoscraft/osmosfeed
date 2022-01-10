@@ -1,5 +1,5 @@
 .c-reading-pane {
-  padding: 2rem;
+  padding: 1rem 2rem;
   display: block;
   min-height: 100%;
   background-color: white;
@@ -12,6 +12,13 @@
 .c-reading-pane__title {
   font-size: 2rem;
   font-weight: bold;
+  margin-top: 1rem;
+}
+.c-reading-pane__title a {
+  cursor: pointer;
+}
+.c-reading-pane__title a:hover {
+  text-decoration: underline;
 }
 
 .c-embedded-html {
@@ -22,7 +29,7 @@
   all: revert;
 }
 
-.c-embedded-html img {
+.c-embedded-html :is(img, video) {
   max-width: 100%;
 }
 
@@ -38,4 +45,5 @@
   border-radius: 4px;
   display: inline-flex;
   justify-content: center;
+  cursor: pointer;
 }

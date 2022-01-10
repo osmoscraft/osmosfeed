@@ -13,13 +13,15 @@ export function Channel(model: ChannelModel) {
 <osmos-channel data-feed-url="${model.data.feed_url}">
   <section class="feed js-horizontal-scroll">
     <div>${getRelativeTime(model.data._ext.date_published)}</div>
-    <h1 class="feed-title-group">
+    <h1 class="c-feed-title-group">
       ${model.data.icon ? `<img class="feed-icon" src="${model.data.icon}" width="32" height="32">` : ``}
-      <a class="u-reset" href="${model.data.home_page_url}">${sanitizeHtml(model.data.title)}</a>
+      <a href="${model.data.home_page_url}">${sanitizeHtml(model.data.title)}</a>
     </h1>
-    <button class="js-horizontal-scroll__backward">&lt;</button>
-    <button class="js-horizontal-scroll__forward">&gt;</button>
-    <div class="u-hide-scrollbar article-list js-horizontal-scroll__list">
+    <div class="c-feed-controls">
+      <button class="js-horizontal-scroll__backward">&lt;</button>
+      <button class="js-horizontal-scroll__forward">&gt;</button>
+    </div>
+    <div class="u-hide-scrollbar c-article-list js-horizontal-scroll__list">
       ${model.data.items.map((item) => Article({ data: item, parent: model })).join("\n")}
     </div>
   </section>

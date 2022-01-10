@@ -12,12 +12,12 @@ export function Article(model: ItemModel) {
   return `
 <osmos-article data-page-filename="${model.data._plugin.pageFilename}">
   <article class="article js-horizontal-scroll__item">
-    ${model.data.image ? `<img class="article__image" src="${model.data.image}">` : ""}
-    <a href="${model.data.url}" data-page-url="${model.data.url}" data-page-filename="${
+    ${model.data.image ? `<img class="article__image" loading="lazy" src="${model.data.image}">` : ""}
+      <h2 class="article__title">
+        <a href="${model.data.url}" data-page-url="${model.data.url}" data-page-filename="${
     model.data._plugin.pageFilename
-  }">
-      <h2 class="article__title">${sanitizeHtml(model.data.title)}</h2>
-    </a>
+  }">${sanitizeHtml(model.data.title)}</a>
+      </h2>
     ${sensibleTimestamp ? `<time class="js-datetime" datetime="${sensibleTimestamp}">${sensibleTimestamp}</time>` : ""}
     <p class="article__summary">${sanitizeHtml(model.data.summary)}</p>
   </article>
