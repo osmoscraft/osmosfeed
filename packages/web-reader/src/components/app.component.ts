@@ -1,6 +1,7 @@
 import { JsonFeed } from "@osmosfeed/types";
 import { Channel } from "./channel.component";
 import { ReadingPane } from "./reading-pane.component";
+import { Router } from "./router.component";
 
 export interface AppModel {
   data: JsonFeed[];
@@ -35,6 +36,7 @@ export function App(model: AppModel) {
     }
 	</head>
 	<body>
+    ${Router()}
     <div class="c-app-layout">
       <div class="c-feed-list c-app-layout__main">
       ${model.data.map((channel) => Channel({ parent: model, data: channel })).join("\n")}

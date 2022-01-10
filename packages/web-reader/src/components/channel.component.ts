@@ -10,7 +10,7 @@ export interface ChannelModel {
 }
 export function Channel(model: ChannelModel) {
   return `
-<osmos-channel>
+<osmos-channel data-feed-url="${model.data.feed_url}">
   <section class="feed js-horizontal-scroll">
     <div>${getRelativeTime(model.data._ext.date_published)}</div>
     <h1 class="feed-title-group">
