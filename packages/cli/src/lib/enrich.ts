@@ -46,16 +46,34 @@ export interface EnrichInput {
   config: Config;
 }
 
-export async function enrich(enrichInput: EnrichInput): Promise<EnrichedSource> {
+/**
+ * @returns null when enrich failed due to fatal errors
+ */
+export async function enrich(enrichInput: EnrichInput): Promise<EnrichedSource | null> {
   // TODO split into download, parse, report, etc. steps
   return enrichInternal(enrichInput);
 }
 
-async function enrichInternal(enrichInput: EnrichInput): Promise<EnrichedSource> {
+async function enrichInternal(enrichInput: EnrichInput): Promise<EnrichedSource | null> {
   const { source, cache, config } = enrichInput;
+  const cachedSource = cache.sources.find((cachedSource) => cachedSource.feedUrl === source.href);
 
   const startTime = performance.now();
-  const xmlString = await downloadTextFile(source.href);
+  const xmlString = await downloadTextFile(source.href).catch((err) => {
+    console.error(`[enrich] Error downloading source ${source.href}`);
+    return null;
+  });
+
+  if (!xmlString) {
+    if (cachedSource) {
+      console.log(`[enrich] Error recovery: cache used for ${source.href}`);
+      return cachedSource;
+    } else {
+      console.log(`[enrich] Error recovery: no cache available. ${source.href} is skipped.`);
+      return null;
+    }
+  }
+
   const rawFeed = await parser.parseString(xmlString)!.catch((err) => {
     console.error(`[enrich] Parse source failed ${source.href}`);
     throw err;
@@ -166,6 +184,7 @@ async function enrichItem(link: string): Promise<EnrichItemResult> {
     return enrichItemResult;
   } catch (err) {
     console.log(`[enrich] Error enrich ${link}`);
+    console.log(`[enrich] Recover: plain content used for ${link}`);
     return unenrichableItem;
   }
 }

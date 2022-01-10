@@ -15,6 +15,7 @@ import { getTemplateData } from "./lib/get-template-data";
 import { renderAtom } from "./lib/render-atom";
 import { renderUserSnippets } from "./lib/render-user-snippets";
 import { cliVersion } from "./utils/version";
+import { isNotNull } from "./utils/is-not-null";
 
 async function run() {
   const startTime = performance.now();
@@ -26,9 +27,9 @@ async function run() {
 
   const cache = await getCache({ cacheUrl: config.cacheUrl, localCacheFile: systemFiles.localCacheFile });
 
-  const enrichedSources: EnrichedSource[] = await Promise.all(
-    config.sources.map((source) => enrich({ source, cache, config }))
-  );
+  const enrichedSources: EnrichedSource[] = (
+    await Promise.all(config.sources.map((source) => enrich({ source, cache, config })))
+  ).filter(isNotNull);
 
   const executableTemplate = compileTemplates({
     userTemplates: userFiles.userTemplateFiles,
