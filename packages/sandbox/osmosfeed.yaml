@@ -1,17 +1,68 @@
-# This config is used for local developement
-
-# cacheUrl: https://dailyread.netlify.app/cache.json
-# cacheMaxDays: 30
-# siteTitle: dev - osmosfeed
+cacheUrl: https://sokomin.github.io/RS-RSS/cache.json
 sources:
-  - href: https://www.freecodecamp.org/news/rss/
-  - href: https://christianheilmann.com/feed/
-  - href: https://daverupert.com/atom.xml
-  - href: https://css-tricks.com/feed/
-  - href: https://developer.chrome.com/feeds/blog.xml
-  - href: https://webkit.org/feed/atom/
-  - href: https://hacks.mozilla.org/feed/
-  # - href: https://gomakethings.com/feed
-  # - href: https://feeds.npr.org/510289/podcast.xml
-  # - href: https://shoptalkshow.com/feed/podcast/
-  # - href: https://feed.syntax.fm/rss
+  # - href: https://github.com/osmoscraft/osmosfeed/releases.atom # Get new feature announcement via this feed
+  #   - href: https://css-tricks.com/feed/
+  #   - href: https://www.smashingmagazine.com/feed/
+  #   - href: https://www.freecodecamp.org/news/rss/
+  - href: https://api.plaza.rakuten.ne.jp/redstoneteikou/rss/ #そこみん
+  - href: https://khbsroom.com/index.xml #KHBの部屋
+  # - href: https://nitter.net/redstonejp/rss
+  - href: https://akira773.blog22.fc2.com/?xml #リヤンのペット図鑑
+  - href: https://mitsurin32.blog.fc2.com/?xml #ミツリン
+  - href: http://rssblog.ameba.jp/pochi-bird/rss20.xml #ぷりたん
+  - href: http://rssblog.ameba.jp/sakuyuno0822/rss20.xml #もこもこの時たま日常レッドストーン
+  - href: http://sakuranohana240.blog.fc2.com/?xml #桜の華
+  - href: http://rinsmile.blog70.fc2.com/?xml #リンズカフェ
+  - href: https://api.plaza.rakuten.ne.jp/maomiku4649/rss/ #まおみく
+  - href: http://yumegon5505.blog.fc2.com/?xml #ゆめごん
+  - href: https://www.youtube.com/feeds/videos.xml?channel_id=UC8pMAy5Ifr2KgH8kM_xR9Og #youtube
+  - href: https://intothe.info/feed/ #marsborn
+  - href: https://api.plaza.rakuten.ne.jp/mahounokabe/rss/ #裁判官
+  - href: http://ashash.cocolog-nifty.com/blog/index.rdf #ファーブ
+  - href: https://www.youtube.com/feeds/videos.xml?channel_id=UCEogzcpaLym0m_sS-ekzKiA #ロイ4世
+  - href: https://www.youtube.com/feeds/videos.xml?channel_id=UChnkwJpiOgIFlMIlv23aOkA #ひさプッチ
+  - href: https://chorrealism.com/feed/ #無職と美学とシュルレアリスム
+  - href: https://btlirk.blog.fc2.com/?xml #淑女の休日
+  - href: https://api.plaza.rakuten.ne.jp/ronfa/rss/ #ネトゲの記録
+  - href: https://api.plaza.rakuten.ne.jp/motoshihu/rss/ #シーフがメインですが何か？
+  - href: http://rssblog.ameba.jp/sentou-01/rss20.xml #レッドストーン 物理戦士どうでしょう
+  - href: https://rs-kumapon.blogspot.com/feeds/posts/default?alt=rss #RS☆KUMApon
+  - href: http://blog.livedoor.jp/tonnsuke_rs/index.rdf #とんすけと金鯖
+  - href: http://kaze.gg-blog.com/RSS/ #風に吹かれて
+  - href: http://frogkigurumi.blog59.fc2.com/?xml #クレリューフ
+  - href: http://scratch2009.blog.fc2.com/?xml #今日のアリアン
+  - href: http://amakusa46.blog34.fc2.com/?xml #JEFRYの悪足掻き
+  - href: http://rssblog.ameba.jp/redstoneonline/rss20.xml #「RED STONE（レッドストーン）」公式ブログ
+  - href: http://tonbototyoutyo.blog84.fc2.com/?xml #ぐーたら日記inRS
+  - href: http://jackswsl.blog.fc2.com/?xml # 【Jackさんの冒険モノガタリ】
+  # - href: http://moyashirs.seesaa.net/index20.rdf # 堅牢なもやしに憧れてXLS
+  - href: http://fukars.blog.fc2.com/?xml #きまぐれ日記
+  - href: http://wh-rs.jugem.jp/?mode=rss # Wheel of Fortune
+  - href: http://extremetrailblazer.blog.fc2.com/?xml #REDSTONE Relinquish
+  - href: http://jendoradoo.blog.fc2.com/?xml # ジェンド日記
+  - href: http://frangile.blog.fc2.com/?xml # その槍の名前はフラジールニップ
+  - href: https://orientalrose4.blog.fc2.com/?xml #赤石グラフィティ
+  - href: http://neomukaking.blog.fc2.com/?xml # それいけ！NEO無課金同盟in橋頭鯖　リターンズ
+  - href: http://kakeragatenkomori.blog.fc2.com/?xml # かけらがてんこもり
+  - href: http://pandamahha.blog99.fc2.com/?xml # パンダ族♪ﾊﾟﾗﾚﾙﾜｰﾙﾄ
+  - href: http://religionofrabia.blog.fc2.com/?xml # ラビア教狂信者
+  - href: http://yuu0908summoner.blog.fc2.com/?xml # ゆう０９０８サマナーのサマナ記録
+  - href: http://yukiyuki4646.blog.fc2.com/?xml # ていま日記 -- テイマをひたすら愛でるブログ
+  - href: http://tomatosama.blog.fc2.com/?xml # とまとんのにっき
+  - href: http://kenntatosachiko.blog129.fc2.com/?xml # ☆紅ﾃﾞｺ娘のまった～りﾌﾞﾛｸﾞ☆
+  - href: http://rscat31.jugem.jp/?mode=rss # 猫ノみぃ 冒険談　～　猫みぃ大騒動記録
+  - href: http://rssblog.ameba.jp/wind-bell-201001/rss20.xml # どっかの物理ユーザの雑記
+  - href: https://api.plaza.rakuten.ne.jp/karudxrs/rss/ # カルDXのレッドストーン放浪
+  - href: https://api.plaza.rakuten.ne.jp/rb79k2/rss/ # rb79kのブログ
+  - href: https://sayo-sigure.hatenablog.jp/rss # しぐれの日記
+  - href: http://miroquois.blog.fc2.com/?xml #すべては戦士の地位向上のために【現実弱化90%ドラツイ】
+  - href: http://fatdragoncrowds.blog.fc2.com/?xml #丸い龍と蟻【Rebirth】
+  - href: http://3rdcat.blog.fc2.com/?xml #3rd cat
+  - href: http://rssblog.ameba.jp/tori-tori121/rss20.xml #とりくんのREDSTONEＶ鯖ブログ！
+  - href: http://rssblog.ameba.jp/vsabarahune/rss20.xml #レッドストーンというゲームを楽しむパパ奮闘記
+  - href: "https://rs-clair-de-lune.com/rss.xml" # The Adventure Of The Jacks - Re: Jackさんの冒険モノガタリ -
+  - href: "http://kekkagasubete.blog.fc2.com/?xml" #バインダーに栄光あれ
+  - href: "https://blog.goo.ne.jp/sizuku-mo/rss2.xml" #仔猫のしっぽ（ＲＥＤ　ＳＴＯＮＥ☆B鯖）
+  - href: "http://rssblog.ameba.jp/keykeykey2010/rss20.xml" #きぃこんぱ～んちっ( ﾟ∀ﾟ)Ξ〇) ﾟﾛﾟ)∵＜出張版☆＞
+  - href: "http://yuntohoozuki.blog.fc2.com/?xml" #～軌跡Ⅱ～(RSﾌﾞﾘｯｼﾞﾍｯﾄﾞ)
+  - href: "http://gregorio29.blog.shinobi.jp/RSS/" #グレゴリオ麺道　〜Red Stoneと麺類〜

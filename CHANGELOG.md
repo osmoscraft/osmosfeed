@@ -1,14 +1,20 @@
+# v1.12.0
+
+- New: When source download fails, fall back to cache and continue rest of the build.
+- Chore: Dependency updates
+- Thank you: @sokomin, @molakirlee, @philippnagel
+
 # v1.11.3
 
-- Fixed: broken links in documentation
+- Fixed: Broken links in documentation
 - Chore: Dependency updates
 - Thank you: @hirdot
 
 # v1.11.2
 
 - Fixed: unicode characters in URL caused download error
-- Fixed: project root npm install error
-- Added: unit test library
+- Fixed: Project root npm install error
+- Added: Unit test library
 - Chore: Dependency updates
 - Thank you: @CaptNo1
 
