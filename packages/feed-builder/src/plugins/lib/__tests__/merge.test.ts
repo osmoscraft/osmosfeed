@@ -27,28 +27,6 @@ describe("Util/Merge", () => {
       version: "Mock version",
       title: "Mock title",
       description: "Mock description",
-      items: [],
-    };
-
-    const incoming: JsonFeed = {
-      version: "Mock version",
-      title: "Mock title new",
-      description: "Mock description new",
-      items: [],
-    };
-
-    const merged = mergeJsonFeed(incoming, existing);
-
-    await expect(merged.items.length).toEqual(0);
-    await expect(merged.title).toEqual("Mock title new");
-    await expect(merged.description).toEqual("Mock description new");
-  });
-
-  it("Feed/Metadata update/Persist publish time", async () => {
-    const existing: JsonFeed = {
-      version: "Mock version",
-      title: "Mock title",
-      description: "Mock description",
       _ext: {
         date_published: "2000-01-01T00:00:00Z",
       },
@@ -70,7 +48,7 @@ describe("Util/Merge", () => {
     await expect(merged.items.length).toEqual(0);
     await expect(merged.title).toEqual("Mock title new");
     await expect(merged.description).toEqual("Mock description new");
-    await expect(merged._ext.date_published).toEqual("2000-01-01T00:00:00Z");
+    await expect(merged._ext.date_published).toEqual("2000-01-02T00:00:00Z");
   });
 
   it("Items/Addition", async () => {

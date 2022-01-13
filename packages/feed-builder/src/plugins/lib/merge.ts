@@ -4,11 +4,6 @@ export function mergeJsonFeed<T extends JsonFeed>(newFeed: T, existingFeed: T): 
   return {
     ...existingFeed,
     ...newFeed,
-    _ext: {
-      ...existingFeed._ext,
-      ...newFeed._ext,
-      date_published: existingFeed._ext?.date_published ?? newFeed._ext?.date_published, // publish timestamp is considered immutable
-    },
     items: mergeFeedItems(newFeed.items, existingFeed.items, mergeItems).sort(sortItems),
   };
 }

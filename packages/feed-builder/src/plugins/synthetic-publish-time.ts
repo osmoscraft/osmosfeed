@@ -33,10 +33,10 @@ export function useSyntheticPublishTime(): Plugin {
           _ext: {
             ...feed._ext,
             date_published:
-              (feed as ParsedJsonFeed)._ext?.date_published ??
-              (feed as ParsedJsonFeed)._ext?.date_modified ??
               feed.items[0]?.date_published ??
               feed.items[0]?.date_modified ??
+              (feed as ParsedJsonFeed)._ext?.date_published ??
+              (feed as ParsedJsonFeed)._ext?.date_modified ??
               new Date().toISOString(),
           },
         })),
