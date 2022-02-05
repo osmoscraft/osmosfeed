@@ -118,9 +118,10 @@ async function enrichInternal(enrichInput: EnrichInput): Promise<EnrichedSource 
   const combinedArticles = [...newArticles, ...cachedArticles];
 
   const renderedArticles = combinedArticles
-    .filter(
-      (item) => Math.round((now - new Date(item.publishedOn).getTime()) / MILLISECONDS_PER_DAY) < config.cacheMaxDays
-    )
+    .filter((item) => {
+      const elapsedDate = Math.round((now - new Date(item.publishedOn).getTime()) / MILLISECONDS_PER_DAY);
+      return elapsedDate < config.cacheMaxDays && elapsedDate >= 0;
+    })
     .sort((a, b) => b.publishedOn.localeCompare(a.publishedOn));
 
   const durationInSeconds = ((performance.now() - startTime) / 1000).toFixed(2);
