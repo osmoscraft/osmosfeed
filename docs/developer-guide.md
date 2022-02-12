@@ -86,3 +86,4 @@ Afterwards, remember to
 
 1. Update `CHANGELOG.md` to include the latest stable version
 2. Add changelog as release notes in [GitHub Releases](https://github.com/osmoscraft/osmosfeed/tags).
+3. Make sure all contributors are mentioned in the "thank you" section of the release notes
