@@ -28,7 +28,7 @@
   },
   "homepage": "https://osmoscraft.org",
   "dependencies": {
-    "axios": "^0.24.0",
+    "axios": "^0.25.0",
     "cheerio": "^1.0.0-rc.10",
     "feed": "^4.2.2",
     "handlebars": "^4.7.7",

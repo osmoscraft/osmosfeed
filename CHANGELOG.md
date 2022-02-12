@@ -1,3 +1,9 @@
+# v1.12.1
+
+- Fixed: Future articles appeared in the feed
+- Fxied: Security vulnerability from axios
+- Thank you: @naari3
+
 # v1.12.0
 
 - New: When source download fails, fall back to cache and continue rest of the build.
