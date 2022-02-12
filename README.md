@@ -6,10 +6,10 @@
 
 An RSS reader running entirely from your GitHub repo.
 
-- Free hosting on [GitHub Pages](https://pages.github.com/). No ads. No third party tracking.
+- Free hosting on [GitHub Pages](https://pages.github.com/).
 - No need for backend. Content updates via [GitHub Actions](https://github.com/features/actions).
 - Customizable layouts and styles via templating and theming API. Just bring your HTML and CSS.
-- Free and open source. No third-party tracking.
+- Free and open source. No ads. No third party tracking.
 
 ## Demos
 
