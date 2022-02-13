@@ -19,7 +19,6 @@
 - [官方模板 + Gruvbox dark](https://osmoscraft.github.io/osmosfeed-demo/) | [源代码](https://github.com/osmoscraft/osmosfeed-demo)
 - [官方模板 + Solarized dark](https://osmoscraft.github.io/osmosfeed-examples/default-solarized-dark/)
 - [官方模板 + Solarized light](https://osmoscraft.github.io/osmosfeed-examples/default-solarized-light/)
-- [自定义模板 + Nord dark](https://onnyyonn.github.io/feed/) | [源代码](https://github.com/onnyyonn/feed) | 作者 [onnyyonn](https://github.com/onnyyonn)
 - [极简模板 (无皮肤)](https://osmoscraft.github.io/osmosfeed-examples/articles-unstyled/) 用于进阶自主设计
 - [更多展示及源代码](https://github.com/osmoscraft/osmosfeed-examples)
 
