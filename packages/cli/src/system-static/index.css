@@ -46,12 +46,19 @@
   --source-name-color: var(--base05);
   --source-name-hover-color: var(--base07);
 
+  --article-stack-gap: 16px;
+
   --article-title-color: var(--base09);
   --article-title-hover-color: var(--base09);
+
   --article-summary-color: var(--base04);
   --article-summary-hover-color: var(--base07);
+
   --article-reading-time-color: var(--base04);
+
   --article-image-radius: 6px;
+  --article-image-border-color: var(--base03);
+  --article-image-shadow: none;
 
   --accordion-content-rail-color: var(--base03);
   --accordion-content-hover-rail-color: var(--base04);
@@ -62,8 +69,7 @@
   --card-bg: var(--base01);
   --card-radius: 8px;
   --card-stack-gap: 24px;
-
-  --article-stack-gap: 16px;
+  --card-shadow: none;
 
   --footer-color: var(--base04);
   --footer-link-hover-color: var(--base07);
@@ -179,7 +185,8 @@ body {
   aspect-ratio: 16/9;
   border-radius: var(--article-image-radius);
   object-fit: cover;
-  border: 1px solid var(--card-border-color);
+  border: 1px solid var(--article-image-border-color);
+  box-shadow: var(--article-image-shadow);
 }
 .article-expander[open] .article-image {
   display: block;
