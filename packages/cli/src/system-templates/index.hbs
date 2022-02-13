@@ -16,9 +16,9 @@
 <body>
 <!-- %after-body-begin.html% -->
   {{#each dates}}
-  <section class="daily-content js-daily-expand-scope">
+  <section class="daily-content js-toggle-accordions-scope">
     <h2 class="daily-heading">
-      <button class="daily-heading__toggle" data-action="toggle-daily-expand"><time datetime="{{isoPublishDate}}">{{isoPublishDate}}</time></button>
+      <button class="daily-heading__toggle" data-action="toggle-accordions"><time datetime="{{isoPublishDate}}">{{isoPublishDate}}</time></button>
     </h2>
     <ul class="sources">
       {{#each sources}}

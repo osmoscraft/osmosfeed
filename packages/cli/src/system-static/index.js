@@ -8,7 +8,7 @@ document.addEventListener("click", (event) => {
   const action = event.target.closest("[data-action]");
   if (action) {
     switch (action.getAttribute("data-action")) {
-      case "toggle-daily-expand":
+      case "toggle-accordions":
         handleToggleDailyExpand(event);
         break;
     }
@@ -20,7 +20,7 @@ document.addEventListener("click", (event) => {
  */
 function handleToggleDailyExpand(event) {
   // when ctrl is held, toggle every accordion in the document
-  const scope = event.ctrlKey ? document : event.target.closest(".js-daily-expand-scope");
+  const scope = event.ctrlKey ? document : event.target.closest(".js-toggle-accordions-scope");
   const detailsElements = [...scope.querySelectorAll("details")];
   const isAnyOpen = detailsElements.some((element) => element.open);
   detailsElements.forEach((element) => (element.open = !isAnyOpen));
