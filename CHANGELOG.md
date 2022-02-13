@@ -1,3 +1,12 @@
+# v1.13.0
+
+- New: Thumbnail image display for each article
+- New: Improved color, spacing, and typography for easier reading
+- New: Click the date to toggle all accordions on that day. Ctrl + Click to toggle all accordions on the entire site.
+- Changed: All sections are expanded by default
+- Changed: Switched to vitest for easier testing
+- Thank you: @naari3
+
 # v1.12.1
 
 - Fixed: Future articles appeared in the feed
