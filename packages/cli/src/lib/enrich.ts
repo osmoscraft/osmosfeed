@@ -16,11 +16,12 @@ const SUMMARY_TRIM_TO_LENGTH = 800; // characters
 export interface EnrichedArticle {
   id: string;
   author: string | null;
-  description: string; // TODO in next major release, use `summary` instead, so as to distinguish from `content`
+  description: string;
   link: string;
   publishedOn: string;
   title: string;
   wordCount: number | null;
+  imageUrl: string | null;
   enclosure?: {
     url: string;
     type: string;
@@ -38,7 +39,11 @@ export interface EnrichedSource {
   articles: EnrichedArticle[];
 }
 
-const parser = new Parser();
+const parser = new Parser({
+  customFields: {
+    item: ["media:thumbnail"],
+  },
+});
 
 export interface EnrichInput {
   source: Source;
@@ -92,11 +97,13 @@ async function enrichInternal(enrichInput: EnrichInput): Promise<EnrichedSource 
 
     if (!link) return null;
 
+    // In general, treat feed as source of truth and enriched content as fallback
     const enrichedItem = isItemEnrichable(item) ? await enrichItem(link) : unenrichableItem;
     const description = getSummary({ parsedItem: item, enrichedItem });
     const publishedOn = item.isoDate ?? enrichedItem.publishedTime?.toISOString() ?? new Date().toISOString();
     const id = item.guid ?? link;
     const author = item.creator ?? null;
+    const imageUrl = item.imageUrl ?? enrichedItem.imageUrl ?? null;
 
     const enrichedArticle: EnrichedArticle = {
       id,
@@ -108,6 +115,7 @@ async function enrichInternal(enrichInput: EnrichInput): Promise<EnrichedSource 
       title,
       itunes: item.itunes,
       enclosure: item.enclosure,
+      imageUrl,
     };
 
     return enrichedArticle;
@@ -146,6 +154,7 @@ export interface EnrichItemResult {
   description: string | null;
   wordCount: number | null;
   publishedTime: Date | null;
+  imageUrl: string | null;
 }
 
 async function enrichItem(link: string): Promise<EnrichItemResult> {
@@ -176,10 +185,13 @@ async function enrichItem(link: string): Promise<EnrichItemResult> {
       }
     }
 
+    const imageUrl = $(`meta[property="og:image"]`).attr("content") ?? null;
+
     const enrichItemResult: EnrichItemResult = {
       description,
       wordCount,
       publishedTime,
+      imageUrl,
     };
 
     return enrichItemResult;
@@ -194,6 +206,7 @@ const unenrichableItem: EnrichItemResult = {
   description: null,
   wordCount: null,
   publishedTime: null,
+  imageUrl: null,
 };
 
 interface ParsedFeed {
@@ -202,7 +215,7 @@ interface ParsedFeed {
   items: ParsedFeedItem[];
 }
 
-interface ParsedFeedItem extends CustomFields {
+interface ParsedFeedItem {
   guid: string | null;
   title: string | null;
   link: string | null;
@@ -210,6 +223,15 @@ interface ParsedFeedItem extends CustomFields {
   creator: string | null;
   summary: string | null;
   content: string | null;
+  imageUrl: string | null;
+  itunes?: {
+    duration: string;
+  };
+  enclosure?: {
+    url: string;
+    type: string;
+    length: number;
+  };
 }
 
 interface CustomFields {
@@ -221,22 +243,31 @@ interface CustomFields {
     type: string;
     length: number;
   };
+  "media:thumbnail": string;
 }
 
 function normalizeFeed(feed: Parser.Output<CustomFields>): ParsedFeed {
   return {
     link: getNonEmptyStringOrNull(feed.link),
     title: getNonEmptyStringOrNull(feed.title),
-    items: feed.items.map((item) => ({
-      content: getNonEmptyStringOrNull(item.contentSnippet),
-      creator: getNonEmptyStringOrNull(item.creator),
-      guid: getNonEmptyStringOrNull(item.guid),
-      isoDate: getNonEmptyStringOrNull(item.isoDate),
-      link: getNonEmptyStringOrNull(item.link),
-      summary: getNonEmptyStringOrNull(item.summary),
-      title: getNonEmptyStringOrNull(item.title),
-      ...getItunesFields(item),
-    })),
+    items: feed.items.map((item) => {
+      const thumbnailImage = getNonEmptyStringOrNull(item["media:thumbnail"]);
+      const enclosureImage = item.enclosure?.type.startsWith("image/")
+        ? getNonEmptyStringOrNull(item.enclosure.url)
+        : null;
+
+      return {
+        content: getNonEmptyStringOrNull(item.contentSnippet),
+        creator: getNonEmptyStringOrNull(item.creator),
+        guid: getNonEmptyStringOrNull(item.guid),
+        isoDate: getNonEmptyStringOrNull(item.isoDate),
+        link: getNonEmptyStringOrNull(item.link),
+        summary: getNonEmptyStringOrNull(item.summary),
+        title: getNonEmptyStringOrNull(item.title),
+        imageUrl: thumbnailImage ?? enclosureImage,
+        ...getItunesFields(item),
+      };
+    }),
   };
 }
 

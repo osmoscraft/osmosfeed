@@ -27,33 +27,43 @@
   --font-family-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell,
     "Helvetica Neue", sans-serif;
   --font-size-scaler: 62.5%; /* 1rem = 10px */
-  --font-size-m: 1.4rem;
-  --font-size-s: 1.2rem;
+  --font-size-L: 3.2rem;
+  --font-size-m: 2.4rem;
+  --font-size-s: 1.8rem;
+  --body-line-height: 1.4;
+  --heading-line-height: 1.2;
 
   /**
    * Components
    */
   --body-color: var(--base04);
   --body-bg: var(--base00);
+  --body-padding: 24px;
 
-  --daily-heading-color: var(--base04);
+  --daily-heading-color: var(--base03);
+  --daily-heading-hover-color: var(--base04);
 
-  --source-name-color: var(--base0A);
-  --source-name-hover-color: var(--base0A);
+  --source-name-color: var(--base05);
+  --source-name-hover-color: var(--base07);
 
-  --article-title-color: var(--base05);
-  --article-title-hover-color: var(--base07);
+  --article-title-color: var(--base09);
+  --article-title-hover-color: var(--base09);
   --article-summary-color: var(--base04);
   --article-summary-hover-color: var(--base07);
+  --article-reading-time-color: var(--base04);
+  --article-image-radius: 6px;
 
   --accordion-content-rail-color: var(--base03);
   --accordion-content-hover-rail-color: var(--base04);
   --accordion-title-marker-color: var(--base03);
   --accordion-title-hover-marker-color: var(--base04);
 
-  --card-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+  --card-border-color: var(--base03);
   --card-bg: var(--base01);
-  --card-radius: 4px;
+  --card-radius: 8px;
+  --card-stack-gap: 24px;
+
+  --article-stack-gap: 16px;
 
   --footer-color: var(--base04);
   --footer-link-hover-color: var(--base07);
@@ -77,10 +87,11 @@ html {
 body {
   background-color: var(--body-bg);
   font-family: var(--font-family-default);
+  line-height: var(--body-line-height);
   color: var(--body-color);
   margin: 0;
   gap: 24px;
-  padding: 16px;
+  padding: var(--body-padding);
   display: grid;
 }
 
@@ -89,36 +100,48 @@ body {
 }
 
 .card {
+  padding: 16px;
   border-radius: var(--card-radius);
   box-shadow: var(--card-shadow);
   background: var(--card-bg);
+  border: 1px solid var(--card-border-color);
 }
 
 .sources {
-  padding: 12px 16px;
   list-style: none;
   margin: 0;
+  padding: 0;
   display: grid;
-  gap: 16px;
+  gap: var(--card-stack-gap);
 }
 
 .daily-heading {
-  font-size: var(--font-size-s);
-  font-weight: 600;
-  margin: 0 0 8px 0;
+  font-size: var(--font-size-L);
+  font-weight: 700;
+  margin: 0 0 4px 0;
   padding-left: 16px;
+}
+
+.daily-heading__toggle {
+  font: inherit;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
   color: var(--daily-heading-color);
+}
+.daily-heading__toggle:hover {
+  color: var(--daily-heading-hover-color);
 }
 
 .source {
   display: grid;
-  gap: 4px;
 }
 
 .source-name {
   font-size: var(--font-size-s);
-  font-weight: 400;
-  margin: 0;
+  font-weight: 600;
+  margin: 0 0 8px 0;
 }
 .source-name__link {
   color: var(--source-name-color);
@@ -130,14 +153,15 @@ body {
 }
 
 .article-expander {
-  padding: 2px 4px;
-  border-radius: 4px;
+  padding: 4px;
 }
 
 .article-expander__title {
   color: var(--article-title-color);
   font-size: var(--font-size-m);
+  line-height: var(--heading-line-height);
   font-weight: 600;
+  user-select: none;
 }
 .article-expander__title:hover {
   cursor: pointer;
@@ -150,6 +174,43 @@ body {
   color: var(--accordion-title-hover-marker-color);
 }
 
+.article-image {
+  display: none;
+  aspect-ratio: 16/9;
+  border-radius: var(--article-image-radius);
+  object-fit: cover;
+  border: 1px solid var(--card-border-color);
+}
+.article-expander[open] .article-image {
+  display: block;
+}
+
+.media-object {
+  display: grid;
+  grid-template:
+    "media" auto
+    "text" auto / 1fr;
+  gap: 16px;
+}
+.media-object__text {
+  grid-area: text;
+}
+.media-object__media {
+  grid-area: media;
+
+  width: 100%;
+}
+
+@media screen and (min-width: 40rem) {
+  .media-object {
+    grid-template: "text media" auto / 1fr auto;
+  }
+  .media-object__media {
+    height: 100px;
+    grid-area: media;
+    margin-bottom: var(--article-stack-gap);
+  }
+}
 .article-summary-link {
   color: var(--article-summary-color);
   font-size: var(--font-size-m);
@@ -163,16 +224,22 @@ body {
 
 .article-summary-box-outer {
   display: block;
-  padding: 4px 8px 8px 4px;
+  padding: 6px 7px var(--article-stack-gap) 7px;
 }
 
 .article-summary-box-inner {
-  padding-left: 8px;
+  padding-left: 14px;
   border-left: 1px solid var(--accordion-content-rail-color);
+  font-size: var(--font-size-s);
+  overflow-wrap: anywhere;
 }
 
 .article-reading-time {
-  font-weight: 600;
+  font-weight: 400;
+  padding-left: 8px;
+  color: var(--article-reading-time-color);
+  font-size: var(--font-size-s);
+  white-space: nowrap;
 }
 
 footer {

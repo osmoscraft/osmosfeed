@@ -1,15 +1,10 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "esnext",
     "moduleResolution": "node",
-    "esModuleInterop": true,
-    "allowJs": true,
-    "module": "commonjs",
     "strict": true,
-    "importsNotUsedAsValues": "error",
-    "skipDefaultLibCheck": true,
-    "resolveJsonModule": true,
-    "outDir": "bin",
+    "esModuleInterop": true,
+    "noEmit": true
   },
   "include": ["src/**/*.ts"]
 }

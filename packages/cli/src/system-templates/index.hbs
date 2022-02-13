@@ -16,22 +16,29 @@
 <body>
 <!-- %after-body-begin.html% -->
   {{#each dates}}
-  <section class="daily-content">
-    <h2 class="daily-heading"><time datatime="{{isoPublishDate}}">{{isoPublishDate}}</time></h2>
-    <ul class="sources card">
+  <section class="daily-content js-toggle-accordions-scope">
+    <h2 class="daily-heading">
+      <button class="daily-heading__toggle" data-action="toggle-accordions"><time datetime="{{isoPublishDate}}">{{isoPublishDate}}</time></button>
+    </h2>
+    <ul class="sources">
       {{#each sources}}
-      <li class="source">
+      <li class="source card">
         <section>
           <h3 class="source-name"><a class="source-name__link" href="{{siteUrl}}">{{title}}</a></h3>
           <section class="articles-per-source">
             {{#each articles}}
             <article>
-              <details class="article-expander">
-                <summary class="article-expander__title">{{title}}</summary>
+              <details class="article-expander" open>
+                <summary class="article-expander__title">
+                    <span>{{title}}</span>
+                    <span class="article-reading-time">{{readingTimeInMin}} min</span>
+                </summary>
                 <a class="article-summary-link article-summary-box-outer" href="{{link}}">
-                  <div class="article-summary-box-inner">
-                    <span class="article-reading-time">({{readingTimeInMin}} min)</span>
-                    <span>{{description}}</span>
+                  <div class="article-summary-box-inner media-object">
+                    {{#if imageUrl}}
+                    <img src="{{imageUrl}}" loading="lazy" class="media-object__media article-image"/>
+                    {{/if}}
+                    <span class="media-object__text">{{description}}</span>
                   </div>
                 </a>
               </details>
