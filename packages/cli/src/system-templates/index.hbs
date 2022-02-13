@@ -26,11 +26,13 @@
           <section class="articles-per-source">
             {{#each articles}}
             <article>
-              <details class="article-expander">
-                <summary class="article-expander__title">{{title}}</summary>
+              <details class="article-expander" open>
+                <summary class="article-expander__title">
+                    <span>{{title}}</span>
+                    <span class="article-reading-time">{{readingTimeInMin}} min</span>
+                </summary>
                 <a class="article-summary-link article-summary-box-outer" href="{{link}}">
                   <div class="article-summary-box-inner">
-                    <span class="article-reading-time">({{readingTimeInMin}} min)</span>
                     <span>{{description}}</span>
                   </div>
                 </a>
