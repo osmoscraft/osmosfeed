@@ -51,7 +51,7 @@
   --article-summary-color: var(--base04);
   --article-summary-hover-color: var(--base07);
   --article-reading-time-color: var(--base04);
-  --article-image-radius: 4px;
+  --article-image-radius: 6px;
 
   --accordion-content-rail-color: var(--base03);
   --accordion-content-hover-rail-color: var(--base04);
@@ -126,6 +126,7 @@ body {
   font: inherit;
   border: none;
   background: none;
+  padding: 0;
   cursor: pointer;
   color: var(--daily-heading-color);
 }
@@ -205,7 +206,7 @@ body {
 
 .article-summary-box-outer {
   display: block;
-  padding: 6px 6px var(--article-stack-gap) 6px;
+  padding: 6px 7px var(--article-stack-gap) 7px;
 }
 
 .article-summary-box-inner {
