@@ -1,6 +1,10 @@
 # v1.14.0
 
+- (planned): Add weekday display
+- (planned): Relative timestamp on each article, flush right align
+- (planned): Move reading time to bottom the content snippet
 - New: Card title now toggles card content. The link to feed source is available as standalone link.
+- New: all toggles on the UI are persisted with local storage
 - New: High-fidelity timestamp available as `isoLatestPublishTime` on all levels of template data
 - Changed: Sources are sorted based on publish time rather than alphabetical order
 - Fixed: Horizontal overflow on Safari
