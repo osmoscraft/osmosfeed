@@ -1,3 +1,11 @@
+# v1.14.0
+
+- New: Card title now toggles card content. The link to feed source is available as standalone link.
+- New: High-fidelity timestamp available as `isoLatestPublishTime` on all levels of template data
+- Changed: Sources are sorted based on publish time rather than alphabetical order
+- Fixed: Horizontal overflow on Safari
+- Fixed: HTML syntax error in default template
+
 # v1.13.0
 
 - New: Thumbnail image display for each article

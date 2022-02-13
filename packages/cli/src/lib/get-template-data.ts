@@ -27,11 +27,13 @@ export interface GetTemplateDataOutput {
 interface TemplateArticle extends EnrichedArticle {
   source: EnrichedSource;
   isoPublishDate: string;
+  isoLatestPublishTime: string;
   readingTimeInMin: number;
 }
 
 interface TemplateSource extends TemplateSourceBase {
   dates: {
+    isoLatestPublishTime: string;
     isoPublishDate: string;
     articles: TemplateArticle[];
   }[];
@@ -39,11 +41,13 @@ interface TemplateSource extends TemplateSourceBase {
 
 interface TemplateDates {
   isoPublishDate: string;
+  isoLatestPublishTime: string;
   articles: TemplateArticle[];
   sources: TemplateSourceBase[];
 }
 
 interface TemplateSourceBase extends EnrichedSource {
+  isoLatestPublishTime: string;
   articles: TemplateArticle[];
 }
 
@@ -81,6 +85,7 @@ function organizeByArticles(enrichedSources: EnrichedSource[]): TemplateArticle[
         ...article,
         source: enrichedSource,
         isoPublishDate: article.publishedOn.split("T")[0],
+        isoLatestPublishTime: article.publishedOn,
         title: ensureDisplayString(htmlToText(article.title), "Untitled"),
         description: ensureDisplayString(htmlToText(article.description), "No content preview"),
         readingTimeInMin: Math.round((article.wordCount ?? 0) / 300),
@@ -96,10 +101,12 @@ function organizeBySources(enrichedSources: EnrichedSource[]): TemplateSource[] 
   const articlesBySource = groupBy(articles, (article) => article.source);
   const sortedArticlesBySource = [...articlesBySource.entries()].map(([source, articles]) => ({
     ...source,
+    isoLatestPublishTime: articles[0].isoLatestPublishTime, // due to groupBy, articles array won't be empty
     articles: articles.sort((a, b) => b.publishedOn.localeCompare(a.publishedOn)), // by date, most recent first
     dates: [...groupBy(articles, (article) => article.isoPublishDate)]
       .sort((a, b) => b[0].localeCompare(a[0])) // by date, most recent first
       .map(([date, articles]) => ({
+        isoLatestPublishTime: articles[0].isoLatestPublishTime, // due to groupBy, articles array won't be empty
         isoPublishDate: date,
         articles,
       })),
@@ -116,11 +123,13 @@ function organizeByDates(enrichedSources: EnrichedSource[]): TemplateDates[] {
     .sort((a, b) => b[0].localeCompare(a[0])) // by date, most recent first
     .map(([date, articles]) => ({
       isoPublishDate: date,
+      isoLatestPublishTime: articles[0].isoLatestPublishTime, // due to groupBy, articles array won't be empty
       articles,
       sources: [...groupBy(articles, (articles) => articles.source).entries()]
-        .sort((a, b) => a[0].feedUrl.localeCompare(b[0].feedUrl)) // by feed url, a-z
+        .sort((a, b) => b[1][0].isoLatestPublishTime.localeCompare(a[1][0].isoLatestPublishTime)) // by date, most recent first
         .map(([source, articles]) => ({
           ...source,
+          isoLatestPublishTime: articles[0].isoLatestPublishTime, // due to groupBy, articles array won't be empty
           articles,
         })),
     }));
