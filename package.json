@@ -1,7 +1,7 @@
 {
-  "name": "osmosfeed-root",
+  "name": "root",
   "private": true,
-  "version": "1.1.0",
+  "version": "0.0.1",
   "description": "Monorepo root",
   "directories": {
     "doc": "docs"

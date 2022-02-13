@@ -1,4 +1,4 @@
-import { describe, expect, it } from "@osmoscraft/typescript-testing-library";
+import { describe, expect, it } from "vitest";
 import { normalizeUrl } from "../normalize-url";
 
 describe("normalizeUrl", () => {
