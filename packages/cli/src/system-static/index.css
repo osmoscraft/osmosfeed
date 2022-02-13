@@ -27,9 +27,9 @@
   --font-family-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell,
     "Helvetica Neue", sans-serif;
   --font-size-scaler: 62.5%; /* 1rem = 10px */
-  --font-size-L: 3.2rem;
-  --font-size-m: 2.4rem;
-  --font-size-s: 1.8rem;
+  --font-size-L: 3.6rem;
+  --font-size-m: 2.2rem;
+  --font-size-s: 1.6rem;
   --body-line-height: 1.4;
   --heading-line-height: 1.2;
 
@@ -38,7 +38,8 @@
    */
   --body-color: var(--base04);
   --body-bg: var(--base00);
-  --body-padding: 24px;
+  --body-padding: 32px 24px;
+  --body-stack-gap: 32px;
 
   --daily-heading-color: var(--base03);
   --daily-heading-hover-color: var(--base04);
@@ -99,7 +100,7 @@ body {
   line-height: var(--body-line-height);
   color: var(--body-color);
   margin: 0;
-  gap: 24px;
+  gap: var(--body-stack-gap);
   padding: var(--body-padding);
   display: grid;
 }
@@ -148,6 +149,7 @@ body {
   border: none;
   background: none;
   padding: 0;
+  text-align: start;
   cursor: pointer;
   color: var(--daily-heading-color);
 }

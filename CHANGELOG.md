@@ -3,6 +3,7 @@
 - (planned): Add weekday display
 - (planned): Relative timestamp on each article, flush right align
 - (planned): Move reading time to bottom the content snippet
+- (planned): Merge all cards on a single into a grid
 - New: Card title now toggles card content. The link to feed source is available as standalone link.
 - New: all toggles on the UI are persisted with local storage
 - New: High-fidelity timestamp available as `isoLatestPublishTime` on all levels of template data
