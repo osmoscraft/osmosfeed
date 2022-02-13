@@ -5,6 +5,7 @@
 - New: Click the date to toggle all accordions on that day. Ctrl + Click to toggle all accordions on the entire site.
 - Changed: All sections are expanded by default
 - Changed: Switched to vitest for easier testing
+- Fixed: Long string (e.g. URL) caused horizontal overflow
 - Thank you: @naari3
 
 # v1.12.1
