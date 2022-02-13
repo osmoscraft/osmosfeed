@@ -6,12 +6,12 @@
 - Changed: All sections are expanded by default
 - Changed: Switched to vitest for easier testing
 - Fixed: Long string (e.g. URL) caused horizontal overflow
-- Thank you: @naari3
+- Thank you: @naari3, @tianheg
 
 # v1.12.1
 
 - Fixed: Future articles appeared in the feed
-- Fxied: Security vulnerability from axios
+- Fixed: Security vulnerability from axios
 - Thank you: @naari3
 
 # v1.12.0
