@@ -34,11 +34,11 @@
                     <span class="article-reading-time">{{readingTimeInMin}} min</span>
                 </summary>
                 <a class="article-summary-link article-summary-box-outer" href="{{link}}">
-                  <div class="article-summary-box-inner article-media-layout">
-                    <span>{{description}}</span>
+                  <div class="article-summary-box-inner media-object">
                     {{#if imageUrl}}
-                    <img src="{{imageUrl}}" loading="lazy" class="article-image"/>
+                    <img src="{{imageUrl}}" loading="lazy" class="media-object__media article-image"/>
                     {{/if}}
+                    <span class="media-object__text">{{description}}</span>
                   </div>
                 </a>
               </details>
