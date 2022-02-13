@@ -41,6 +41,7 @@
   --body-padding: 24px;
 
   --daily-heading-color: var(--base03);
+  --daily-heading-hover-color: var(--base04);
 
   --source-name-color: var(--base05);
   --source-name-hover-color: var(--base07);
@@ -50,6 +51,7 @@
   --article-summary-color: var(--base04);
   --article-summary-hover-color: var(--base07);
   --article-reading-time-color: var(--base04);
+  --article-image-radius: 4px;
 
   --accordion-content-rail-color: var(--base03);
   --accordion-content-hover-rail-color: var(--base04);
@@ -118,7 +120,17 @@ body {
   font-weight: 700;
   margin: 0 0 4px 0;
   padding-left: 16px;
+}
+
+.daily-heading__toggle {
+  font: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
   color: var(--daily-heading-color);
+}
+.daily-heading__toggle:hover {
+  color: var(--daily-heading-hover-color);
 }
 
 .source {
@@ -140,8 +152,7 @@ body {
 }
 
 .article-expander {
-  padding: 2px 4px;
-  border-radius: 4px;
+  padding: 4px;
 }
 
 .article-expander__title {
@@ -166,7 +177,7 @@ body {
   display: none;
   height: 100px;
   aspect-ratio: 16/9;
-  border-radius: var(--card-radius);
+  border-radius: var(--article-image-radius);
   object-fit: cover;
   margin-bottom: var(--article-stack-gap);
   border: 1px solid var(--card-border-color);

@@ -16,8 +16,10 @@
 <body>
 <!-- %after-body-begin.html% -->
   {{#each dates}}
-  <section class="daily-content">
-    <h2 class="daily-heading"><time datatime="{{isoPublishDate}}">{{isoPublishDate}}</time></h2>
+  <section class="daily-content js-daily-expand-scope">
+    <h2 class="daily-heading">
+      <button class="daily-heading__toggle" data-action="toggle-daily-expand"><time datetime="{{isoPublishDate}}">{{isoPublishDate}}</time></button>
+    </h2>
     <ul class="sources">
       {{#each sources}}
       <li class="source card">
