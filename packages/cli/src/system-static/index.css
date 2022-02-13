@@ -27,9 +27,9 @@
   --font-family-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell,
     "Helvetica Neue", sans-serif;
   --font-size-scaler: 62.5%; /* 1rem = 10px */
-  --font-size-L: 2.8rem;
-  --font-size-m: 2rem;
-  --font-size-s: 1.6rem;
+  --font-size-L: 3.2rem;
+  --font-size-m: 2.4rem;
+  --font-size-s: 1.8rem;
   --body-line-height: 1.4;
   --heading-line-height: 1.2;
 
@@ -46,7 +46,7 @@
   --source-name-hover-color: var(--base07);
 
   --article-title-color: var(--base09);
-  --article-title-hover-color: var(--base07);
+  --article-title-hover-color: var(--base09);
   --article-summary-color: var(--base04);
   --article-summary-hover-color: var(--base07);
   --article-reading-time-color: var(--base04);
@@ -56,10 +56,12 @@
   --accordion-title-marker-color: var(--base03);
   --accordion-title-hover-marker-color: var(--base04);
 
-  --card-border-color: var(--base02);
+  --card-border-color: var(--base03);
   --card-bg: var(--base01);
   --card-radius: 8px;
   --card-stack-gap: 24px;
+
+  --article-stack-gap: 16px;
 
   --footer-color: var(--base04);
   --footer-link-hover-color: var(--base07);
@@ -125,7 +127,7 @@ body {
 
 .source-name {
   font-size: var(--font-size-s);
-  font-weight: 400;
+  font-weight: 600;
   margin: 0 0 8px 0;
 }
 .source-name__link {
@@ -160,6 +162,25 @@ body {
   color: var(--accordion-title-hover-marker-color);
 }
 
+.article-image {
+  display: none;
+  height: 100px;
+  aspect-ratio: 16/9;
+  border-radius: var(--card-radius);
+  object-fit: cover;
+  margin-bottom: var(--article-stack-gap);
+  border: 1px solid var(--card-border-color);
+}
+.article-expander[open] .article-image {
+  display: block;
+}
+
+.article-media-layout {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+}
+
 .article-summary-link {
   color: var(--article-summary-color);
   font-size: var(--font-size-m);
@@ -173,7 +194,7 @@ body {
 
 .article-summary-box-outer {
   display: block;
-  padding: 6px 6px 12px 6px;
+  padding: 6px 6px var(--article-stack-gap) 6px;
 }
 
 .article-summary-box-inner {
@@ -187,6 +208,7 @@ body {
   padding-left: 8px;
   color: var(--article-reading-time-color);
   font-size: var(--font-size-s);
+  white-space: nowrap;
 }
 
 footer {
