@@ -18,32 +18,48 @@
     {{#each dates}}
       <section class="daily-content js-toggle-accordions-scope">
         <h2 class="daily-heading">
-          <button class="daily-heading__toggle" data-action="toggle-accordions" title="Click to toggle the day, Ctrl + click to toggle all."><time
-              datetime="{{isoPublishDate}}"
-            >{{isoPublishDate}}</time></button>
+          <button
+            class="daily-heading__toggle"
+            data-action="toggle-accordions"
+            title="Click to toggle the day, Ctrl + click to toggle all."
+          >
+            <time class="js-weekday" datetime="{{isoLatestPublishTime}}">{{isoPublishDate}}</time>
+          </button>
         </h2>
         <ul class="sources">
           {{#each sources}}
             <li>
               <section class="card js-toggle-accordions-scope">
                 <h3 class="source-heading">
-                  <button class="source-heading__name" data-action="toggle-accordions" title="Click to toggle the source, Ctrl + click to toggle all.">{{title}}</button>
+                  <button
+                    class="source-heading__name"
+                    data-action="toggle-accordions"
+                    title="Click to toggle the source, Ctrl + click to toggle all."
+                  >{{title}}</button>
                   <a class="source-heading__link" href="{{siteUrl}}">Open</a>
                 </h3>
                 <section class="articles-per-source">
                   {{#each articles}}
                     <article>
-                      <details class="article-expander" data-action="toggle-native-accordion" data-accordion-key="{{id}}" open>
-                        <summary class="article-expander__title">
-                          <span>{{title}}</span>
-                          <span class="article-reading-time">{{readingTimeInMin}} min</span>
-                        </summary>
+                      <details
+                        class="article-expander"
+                        data-action="toggle-native-accordion"
+                        data-accordion-key="{{id}}"
+                        open
+                      >
+                        <summary class="article-expander__title">{{title}}</summary>
                         <a class="article-summary-link article-summary-box-outer" href="{{link}}">
                           <div class="article-summary-box-inner media-object">
                             {{#if imageUrl}}
                               <img src="{{imageUrl}}" loading="lazy" class="media-object__media article-image" />
                             {{/if}}
-                            <span class="media-object__text">{{description}}</span>
+                            <span class="media-object__text">
+                              <span>{{description}}</span>
+                              {{#if readingTimeInMin}}
+                                &ensp;<span class="article-reading-time">(&hairsp;{{readingTimeInMin}}
+                                  min&hairsp;)</span>
+                              {{/if}}
+                            </span>
                           </div>
                         </a>
                       </details>

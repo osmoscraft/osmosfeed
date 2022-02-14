@@ -1,6 +1,7 @@
 closeAccordionByIds(getClosedAccordionIdsFromStorage());
 handleAllClickEvents();
 renderBuildTimestamp();
+renderWeekday();
 
 /**
  * ====== UTILS ======
@@ -31,7 +32,9 @@ function storeClosedAccordionIds(ids) {
 function getClosedAccordionIdsFromStorage() {
   const stateString = localStorage.getItem("closedAccordionIds");
   try {
-    return JSON.parse(stateString);
+    const parsed = JSON.parse(stateString);
+    if (!parsed?.length) return [];
+    return parsed;
   } catch {
     return [];
   }
@@ -85,3 +88,5 @@ function renderBuildTimestamp() {
   const timestamp = document.getElementById("build-timestamp");
   timestamp.innerText = new Date(timestamp.getAttribute("datetime")).toLocaleString();
 }
+
+function renderWeekday() {}

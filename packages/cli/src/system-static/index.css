@@ -29,7 +29,7 @@
   --font-size-scaler: 62.5%; /* 1rem = 10px */
   --font-size-L: 3.6rem;
   --font-size-m: 2.2rem;
-  --font-size-s: 1.6rem;
+  --font-size-s: 1.8rem;
   --body-line-height: 1.4;
   --heading-line-height: 1.2;
 
@@ -41,33 +41,22 @@
   --body-padding: 32px 24px;
   --body-stack-gap: 32px;
 
-  --daily-heading-color: var(--base03);
-  --daily-heading-hover-color: var(--base04);
-
-  --source-name-color: var(--base05);
-  --source-name-hover-color: var(--base07);
-  --source-link-color: var(--base04);
-  --source-link-hover-color: var(--base07);
+  --accordion-content-rail-color: var(--base03);
+  --accordion-content-hover-rail-color: var(--base04);
+  --accordion-marker-color: var(--base0E);
+  --accordion-marker-hover-color: var(--base0E);
+  --accordion-marker-expanded-color: var(--base03);
+  --accordion-rail-indent: 7px;
 
   --article-stack-gap: 16px;
-
-  --article-title-color: var(--base09);
-  --article-title-hover-color: var(--base09);
-
-  --article-summary-color: var(--base04);
+  --article-title-color: var(--base0E);
+  --article-title-expanded-color: var(--base0E);
+  --article-summary-color: var(--base05);
   --article-summary-hover-color: var(--base07);
-
   --article-reading-time-color: var(--base04);
-
   --article-image-radius: 6px;
   --article-image-border-color: var(--base03);
   --article-image-shadow: none;
-
-  --accordion-content-rail-color: var(--base03);
-  --accordion-content-hover-rail-color: var(--base04);
-  --accordion-title-marker-color: var(--base03);
-  --accordion-title-hover-marker-color: var(--base04);
-  --accordion-rail-indent: 7px;
 
   --card-border-color: var(--base03);
   --card-bg: var(--base01);
@@ -75,8 +64,16 @@
   --card-stack-gap: 24px;
   --card-shadow: none;
 
+  --daily-heading-color: var(--base03);
+  --daily-heading-hover-color: var(--base04);
+
   --footer-color: var(--base04);
   --footer-link-hover-color: var(--base07);
+
+  --source-name-color: var(--base0A);
+  --source-name-hover-color: var(--base07);
+  --source-link-color: var(--base04);
+  --source-link-hover-color: var(--base07);
 }
 
 /**
@@ -90,6 +87,18 @@
  * 2. Target specific elements and write your own CSS. A future change in HTML may break your style.
  * 3. (Coming soon...) Write your own template with Template Extensibility API.
  */
+
+/** RESETS */
+
+* {
+  box-sizing: border-box;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/** GENERIC */
 html {
   font-size: var(--font-size-scaler);
 }
@@ -105,91 +114,7 @@ body {
   display: grid;
 }
 
-* {
-  box-sizing: border-box;
-}
-
-:not(:focus-visible) {
-  outline: none;
-}
-
-.card {
-  display: grid;
-  padding: 16px;
-  border-radius: var(--card-radius);
-  box-shadow: var(--card-shadow);
-  background: var(--card-bg);
-  border: 1px solid var(--card-border-color);
-}
-
-.z-stack {
-  display: grid;
-}
-.z-stack__layer {
-  grid-area: 1/1/-1/-1;
-}
-
-.sources {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: var(--card-stack-gap);
-}
-
-.daily-heading {
-  font-size: var(--font-size-L);
-  font-weight: 700;
-  margin: 0 0 4px 0;
-  padding-left: 16px;
-}
-
-.daily-heading__toggle {
-  font: inherit;
-  border: none;
-  background: none;
-  padding: 0;
-  text-align: start;
-  cursor: pointer;
-  color: var(--daily-heading-color);
-}
-.daily-heading__toggle:hover {
-  color: var(--daily-heading-hover-color);
-}
-
-.source-heading {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  font-size: var(--font-size-s);
-  margin: 0 0 8px 0;
-  padding-right: var(--accordion-rail-indent);
-}
-.source-heading__name {
-  font: inherit;
-  font-size: var(--font-size-s);
-  font-weight: 600;
-  text-align: start;
-  border: none;
-  background: none;
-  padding: 0;
-  cursor: pointer;
-  color: var(--source-name-color);
-  flex-grow: 1;
-}
-.source-heading__name:hover {
-  color: var(--source-name-hover-color);
-}
-.source-heading__link {
-  color: var(--source-link-color);
-  font-weight: 400;
-  text-decoration: none;
-}
-.source-heading__link:hover {
-  color: var(--source-link-hover-color);
-  text-decoration: underline;
-}
-
+/** COMPONENTS */
 .article-expander {
   padding: 4px 0 4px 4px;
 }
@@ -200,16 +125,36 @@ body {
   line-height: var(--heading-line-height);
   font-weight: 600;
   user-select: none;
-}
-.article-expander__title:hover {
+  display: -webkit-box;
   cursor: pointer;
-  color: var(--article-title-hover-color);
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
-.article-expander__title::marker {
-  color: var(--accordion-title-marker-color);
+.article-expander[open] .article-expander__title {
+  display: block;
+  color: var(--article-title-expanded-color);
 }
-.article-expander__title:hover::marker {
-  color: var(--accordion-title-hover-marker-color);
+.article-expander__title::before {
+  content: "•";
+  color: var(--accordion-marker-color);
+  display: inline-flex;
+  justify-content: center;
+  width: 16px;
+  font-weight: 700;
+  margin-right: 8px;
+  font-family: monospace;
+}
+.article-expander[open] .article-expander__title::before {
+  color: var(--accordion-marker-expanded-color);
+}
+.article-expander .article-expander__title:hover::before {
+  content: "+";
+  color: var(--accordion-marker-hover-color);
+}
+.article-expander[open] .article-expander__title:hover::before {
+  content: "-";
+  color: var(--accordion-marker-hover-color);
 }
 
 .article-image {
@@ -222,29 +167,6 @@ body {
   display: block;
 }
 
-.media-object {
-  display: grid;
-  gap: 16px;
-}
-.media-object__media {
-  aspect-ratio: 16/9;
-  object-fit: cover;
-  width: 100%;
-}
-
-@media screen and (min-width: 40rem) {
-  .media-object {
-    grid-template: "text media" auto / 1fr auto;
-  }
-  .media-object__text {
-    grid-area: text;
-  }
-  .media-object__media {
-    height: 100px;
-    grid-area: media;
-    margin-bottom: var(--article-stack-gap);
-  }
-}
 .article-summary-link {
   color: var(--article-summary-color);
   font-size: var(--font-size-m);
@@ -271,10 +193,38 @@ body {
 
 .article-reading-time {
   font-weight: 400;
-  padding-left: 8px;
   color: var(--article-reading-time-color);
   font-size: var(--font-size-s);
   white-space: nowrap;
+}
+
+.card {
+  display: grid;
+  padding: 16px;
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border-color);
+}
+
+.daily-heading {
+  font-size: var(--font-size-L);
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  padding-left: 16px;
+}
+
+.daily-heading__toggle {
+  font: inherit;
+  border: none;
+  background: none;
+  padding: 0;
+  text-align: start;
+  cursor: pointer;
+  color: var(--daily-heading-color);
+}
+.daily-heading__toggle:hover {
+  color: var(--daily-heading-hover-color);
 }
 
 footer {
@@ -293,4 +243,76 @@ footer {
 .footer-link:hover {
   color: var(--footer-link-hover-color);
   text-decoration: underline;
+}
+
+.media-object {
+  display: grid;
+  gap: 16px;
+}
+.media-object__media {
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  width: 100%;
+}
+
+@media screen and (min-width: 40rem) {
+  .media-object {
+    grid-template: "text media" auto / 1fr auto;
+  }
+  .media-object__text {
+    grid-area: text;
+  }
+  .media-object__media {
+    height: 100px;
+    grid-area: media;
+    margin-bottom: var(--article-stack-gap);
+  }
+}
+
+.sources {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--card-stack-gap);
+}
+
+.source-heading {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: var(--font-size-s);
+  margin: 0 0 8px 0;
+  padding-right: var(--accordion-rail-indent);
+}
+.source-heading__name {
+  font: inherit;
+  font-size: var(--font-size-s);
+  font-weight: 400;
+  text-align: start;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--source-name-color);
+  flex-grow: 1;
+}
+.source-heading__name:hover {
+  color: var(--source-name-hover-color);
+}
+.source-heading__link {
+  color: var(--source-link-color);
+  font-weight: 400;
+  text-decoration: none;
+}
+.source-heading__link:hover {
+  color: var(--source-link-hover-color);
+  text-decoration: underline;
+}
+
+.z-stack {
+  display: grid;
+}
+.z-stack__layer {
+  grid-area: 1/1/-1/-1;
 }
