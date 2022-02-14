@@ -14,7 +14,7 @@
 
 ## 展示
 
-[![image](https://user-images.githubusercontent.com/1895289/153740570-26ac58de-373c-4804-9198-0a3d7fadf1c0.png)](https://osmoscraft.github.io/osmosfeed-demo/)
+[![screely-1644817854073](https://user-images.githubusercontent.com/1895289/153807479-80437862-1012-40a5-b6e2-8d5826e989ca.png)](https://osmoscraft.github.io/osmosfeed-demo/)
 
 - [官方模板 + Gruvbox dark](https://osmoscraft.github.io/osmosfeed-demo/) | [源代码](https://github.com/osmoscraft/osmosfeed-demo)
 - [官方模板 + Solarized dark](https://osmoscraft.github.io/osmosfeed-examples/default-solarized-dark/)
