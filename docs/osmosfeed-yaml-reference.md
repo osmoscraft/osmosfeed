@@ -17,8 +17,8 @@ sources:
 # `siteTitle`: Title to use in the browser tab and the machine readable feed output. (optional)
 siteTitle: "osmos::feed"
 
-# `timezone`: Match server timezone with your browser's timezone so content can be grouped correctly.
-# Find yours from https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+# `timezone`: Specify your local timezone so server can group content by weekday
+# Find yours from the "TZ database name" column of this page: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List
 # Examples: America/Los_Angeles, America/New_York, Asia/Shanghai, Asia/Tokyo
 timezone: null
 

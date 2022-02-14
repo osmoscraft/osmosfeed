@@ -1,6 +1,6 @@
 # v1.14.0
 
-- New: Adjust article grouping based on timezone. You need to add `timezone` in `osmosfeed.yml` for accurate grouping
+- New: Adjust article grouping based on timezone. You need to add `timezone` in `osmosfeed.yml` for accurate grouping. [See details in documentation](./docs/osmosfeed-yaml-reference.md).
 - New: Card title now toggles card content
 - New: all toggles on the UI are persisted with local storage. You can use it to track read/unread status within a single browser.
 - New: Build timestamp now links to the GitHub Action run

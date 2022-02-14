@@ -53,7 +53,6 @@ Browse all [sources and more examples](https://github.com/osmoscraft/osmosfeed-e
 
    ```yaml
    cacheUrl: https://<github_username>.github.io/<repo>/cache.json
-   timezone: America/Los_Angeles
    sources:
      - href: https://my-rss-source-1/feed/
      - href: https://my-rss-source-2/rss/

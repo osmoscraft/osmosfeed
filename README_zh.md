@@ -49,7 +49,6 @@
 
    ```yaml
    cacheUrl: https://<github_username>.github.io/<repo>/cache.json
-   timezone: Asia/Shanghai
    sources:
      - href: https://my-rss-source-1/feed/
      - href: https://my-rss-source-2/rss/
