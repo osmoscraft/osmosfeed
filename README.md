@@ -13,7 +13,7 @@ An RSS reader running entirely from your GitHub repo.
 
 ## Demos
 
-[![image](https://user-images.githubusercontent.com/1895289/153740570-26ac58de-373c-4804-9198-0a3d7fadf1c0.png)](https://osmoscraft.github.io/osmosfeed-demo/)
+[![screely-1644817299264](https://user-images.githubusercontent.com/1895289/153806639-4b40197e-4d78-484f-9f7d-39b78473d63c.png)](https://osmoscraft.github.io/osmosfeed-demo/)
 
 ### More examples
 
