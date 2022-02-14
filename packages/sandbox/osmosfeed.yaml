@@ -3,9 +3,7 @@
 # cacheUrl: https://dailyread.netlify.app/cache.json
 # cacheMaxDays: 30
 # siteTitle: dev - osmosfeed
-# timezone: Asia/Shanghai
 timezone: America/Los_Angeles
-# timezone: UTC
 sources:
   - href: https://www.freecodecamp.org/news/rss/
   - href: https://christianheilmann.com/feed/
