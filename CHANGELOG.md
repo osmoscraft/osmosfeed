@@ -3,6 +3,7 @@
 - New: Adjust article grouping based on timezone. You need to add `timezone` in `osmosfeed.yml` for accurate grouping
 - New: Card title now toggles card content
 - New: all toggles on the UI are persisted with local storage. You can use it to track read/unread status within a single browser.
+- New: Build timestamp now links to the GitHub Action run
 - Changed: Sources are sorted based on publish time rather than alphabetical order
 - Changed: Style updates for higher information density
 - Fixed: Horizontal overflow on Safari

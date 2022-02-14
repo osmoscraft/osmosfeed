@@ -75,8 +75,14 @@
     {{/each}}
 
     <footer>
+      {{#if githubRunUrl}}
+      <a class="footer-link" href="{{githubRunUrl}}">
+        <time id="build-timestamp" datetime="{{siteBuildTimestamp}}">{{siteBuildTimestamp}}</time>
+      </a>
+      {{else}}
       <time id="build-timestamp" datetime="{{siteBuildTimestamp}}">{{siteBuildTimestamp}}</time>
-      <span><a class="footer-link" href="{{projectUrl}}">osmosfeed {{cliVersion}}</a></span>
+      {{/if}}
+      <a class="footer-link" href="{{projectUrl}}">osmosfeed {{cliVersion}}</a>
     </footer>
     <script src="index.js"></script>
     <!-- %before-body-end.html% -->

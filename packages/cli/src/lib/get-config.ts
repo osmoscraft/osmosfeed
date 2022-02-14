@@ -14,6 +14,9 @@ export interface Config {
   siteTitle: string;
   timezone: string | null;
   timezoneOffset: number;
+  githubServerUrl: string | null;
+  githubRepository: string | null;
+  githubRunId: string | null;
 }
 
 export async function getConfig(configFile: ParsableFile | null): Promise<Config> {
@@ -39,6 +42,9 @@ function getDefaultConfig(): Config {
     siteTitle: "osmos::feed",
     timezone: null,
     timezoneOffset: 0,
+    githubServerUrl: process.env.GITHUB_SERVER_URL ?? null,
+    githubRepository: process.env.GITHUB_REPOSITORY ?? null,
+    githubRunId: process.env.GITHUB_RUN_ID ?? null,
   };
 }
 

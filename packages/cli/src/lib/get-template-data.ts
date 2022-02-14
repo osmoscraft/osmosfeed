@@ -22,6 +22,9 @@ export interface GetTemplateDataOutput {
   /** ISO timestamp for the build */
   siteBuildTimestamp: string;
 
+  /** URL to the GitHub Action run. Available only when using GitHub Action */
+  githubRunUrl: string | null;
+
   siteTitle: string;
 }
 
@@ -80,6 +83,12 @@ export interface GetTemplateDataInput {
 }
 
 export function getTemplateData(input: GetTemplateDataInput): GetTemplateDataOutput {
+  const { githubServerUrl, githubRepository, githubRunId } = input.config;
+  const githubRunUrl =
+    githubServerUrl && githubRepository && githubRunId
+      ? `${input.config.githubServerUrl}/${input.config.githubRepository}/actions/run/${input.config.githubRunId}`
+      : null;
+
   return {
     get dates() {
       return organizeByDates(input);
@@ -94,6 +103,7 @@ export function getTemplateData(input: GetTemplateDataInput): GetTemplateDataOut
     },
 
     cliVersion,
+    githubRunUrl,
     siteTitle: input.config.siteTitle,
     siteBuildTimestamp: new Date().toISOString(),
     projectUrl: `https://github.com/osmoscraft/osmosfeed`,
