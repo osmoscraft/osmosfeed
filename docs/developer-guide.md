@@ -44,6 +44,12 @@ npm install
 - Build and test are automatically executed for pull requests.
 - GitHub acition will run `npm publish` when a git tag `v<major>.<minor>.<patch>` is pushed to master branch.
 
+## Publish
+
+### Pre-publish checklist
+
+1. Make sure `index.hbs` is referencing the latest version of JavaScript and CSS assets.
+
 ### To publish beta build from feature branch
 
 ```bash
@@ -82,7 +88,7 @@ git push origin vX.Y.X
 
 This cause GitHub action to build and publish to npm.
 
-Afterwards, remember to
+### Post-publish checklist
 
 1. Update `CHANGELOG.md` to include the latest stable version
 2. Add changelog as release notes in [GitHub Releases](https://github.com/osmoscraft/osmosfeed/tags).
