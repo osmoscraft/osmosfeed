@@ -89,4 +89,25 @@ function renderBuildTimestamp() {
   timestamp.innerText = new Date(timestamp.getAttribute("datetime")).toLocaleString();
 }
 
-function renderWeekday() {}
+/**
+ * Convert the server timestamp to human readable weekday and dates.
+ * Note: the server is responsible for shifting the date based on config file.
+ * The client should parse the date as if it is in UTC timezone.
+ */
+function renderWeekday() {
+  document.querySelectorAll(".js-offset-weekday").forEach((element) => {
+    const weekday = new Date(element.getAttribute("data-offset-date")).toLocaleString(window.navigator.language, {
+      weekday: "long",
+      timeZone: "UTC",
+    });
+    element.innerText = weekday;
+  });
+  document.querySelectorAll(".js-offset-date").forEach((element) => {
+    const date = new Date(element.getAttribute("data-offset-date")).toLocaleString(window.navigator.language, {
+      month: "numeric",
+      day: "numeric",
+      timeZone: "UTC",
+    });
+    element.innerText = date;
+  });
+}

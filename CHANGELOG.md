@@ -1,13 +1,10 @@
 # v1.14.0
 
-- (planned): Add weekday display
-- (planned): Relative timestamp on each article, flush right align
-- (planned): Move reading time to bottom the content snippet
-- (planned): Merge all cards on a single into a grid
-- New: Card title now toggles card content. The link to feed source is available as standalone link.
-- New: all toggles on the UI are persisted with local storage
-- New: High-fidelity timestamp available as `isoLatestPublishTime` on all levels of template data
+- New: Adjust article grouping based on timezone. You need to add `timezone` in `osmosfeed.yml` for accurate grouping
+- New: Card title now toggles card content
+- New: all toggles on the UI are persisted with local storage. You can use it to track read/unread status within a single browser.
 - Changed: Sources are sorted based on publish time rather than alphabetical order
+- Changed: Style updates for higher information density
 - Fixed: Horizontal overflow on Safari
 - Fixed: HTML syntax error in default template
 

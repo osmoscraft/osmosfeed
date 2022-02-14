@@ -17,6 +17,11 @@ sources:
 # `siteTitle`: Title to use in the browser tab and the machine readable feed output. (optional)
 siteTitle: "osmos::feed"
 
+# `timezone`: Match server timezone with your browser's timezone so content can be grouped correctly.
+# Find yours from https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+# Examples: America/Los_Angeles, America/New_York, Asia/Shanghai, Asia/Tokyo
+timezone: null
+
 # `cacheMaxDays` Max number of days to keep the feed content in cache. A very large value can increase the initial load time of the site. (optional)
 cacheMaxDays: 30
 ```

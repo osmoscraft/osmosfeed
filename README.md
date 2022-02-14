@@ -16,14 +16,14 @@ An RSS reader running entirely from your GitHub repo.
 [![image](https://user-images.githubusercontent.com/1895289/114334657-e4268600-9aff-11eb-90c6-184284b90be2.png)](https://osmoscraft.github.io/osmosfeed-demo/)
 
 ### More examples
+
 - 💻 [Default template + Gruvbox dark](https://osmoscraft.github.io/osmosfeed-demo/) | [View source](https://github.com/osmoscraft/osmosfeed-demo)
 - 😎 [Default template + Solarized dark](https://osmoscraft.github.io/osmosfeed-examples/default-solarized-dark/)
 - ☀ [Default template + Solarized light](https://osmoscraft.github.io/osmosfeed-examples/default-solarized-light/)
 - ❄ [Custom template + Nord dark](https://onnyyonn.github.io/feed/) | [View source](https://github.com/onnyyonn/feed) | by [onnyyonn](https://github.com/onnyyonn)
-- 🔨 [Unstyled template](https://osmoscraft.github.io/osmosfeed-examples/articles-unstyled/) for building from scratch.  
+- 🔨 [Unstyled template](https://osmoscraft.github.io/osmosfeed-examples/articles-unstyled/) for building from scratch.
 - 📺 [YouTube feed template + Material dark](https://osmoscraft.github.io/osmosfeed-examples/youtube-dark/)
 - 🎧 [Unstyled template for building a podcast feed](https://osmoscraft.github.io/osmosfeed-examples/podcast-unstyled/)
-
 
 Browse all [sources and more examples](https://github.com/osmoscraft/osmosfeed-examples)
 
@@ -53,6 +53,7 @@ Browse all [sources and more examples](https://github.com/osmoscraft/osmosfeed-e
 
    ```yaml
    cacheUrl: https://<github_username>.github.io/<repo>/cache.json
+   timezone: America/Los_Angeles
    sources:
      - href: https://my-rss-source-1/feed/
      - href: https://my-rss-source-2/rss/

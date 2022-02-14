@@ -19,17 +19,18 @@
       <section class="daily-content js-toggle-accordions-scope">
         <h2 class="daily-heading">
           <button
-            class="daily-heading__toggle"
+            class="daily-heading-toggle"
             data-action="toggle-accordions"
             title="Click to toggle the day, Ctrl + click to toggle all."
           >
-            <time class="js-weekday" datetime="{{isoLatestPublishTime}}">{{isoPublishDate}}</time>
+            <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date={{isoOffsetPublishDate}} datetime="{{isoUtcPublishTime}}">{{isoOffsetPublishDate}}</time>
+            <time class="daily-heading-toggle__date js-offset-date" data-offset-date={{isoOffsetPublishDate}} datetime="{{isoUtcPublishTime}}"></time>
           </button>
         </h2>
-        <ul class="sources">
+        <ul class="sources card">
           {{#each sources}}
-            <li>
-              <section class="card js-toggle-accordions-scope">
+            <li class="card__section">
+              <section class="js-toggle-accordions-scope">
                 <h3 class="source-heading">
                   <button
                     class="source-heading__name"
