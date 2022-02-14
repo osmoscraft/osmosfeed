@@ -86,7 +86,7 @@ export function getTemplateData(input: GetTemplateDataInput): GetTemplateDataOut
   const { githubServerUrl, githubRepository, githubRunId } = input.config;
   const githubRunUrl =
     githubServerUrl && githubRepository && githubRunId
-      ? `${input.config.githubServerUrl}/${input.config.githubRepository}/actions/run/${input.config.githubRunId}`
+      ? `${input.config.githubServerUrl}/${input.config.githubRepository}/actions/runs/${input.config.githubRunId}`
       : null;
 
   return {
