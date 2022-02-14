@@ -1,4 +1,8 @@
-# v1.14.0
+# v1.14.4
+
+- Fixed: Several style issues
+
+# v1.14.2
 
 - New: Adjust article grouping based on timezone. You need to add `timezone` in `osmosfeed.yml` for accurate grouping. [See details in documentation](./docs/osmosfeed-yaml-reference.md).
 - New: Card title now toggles card content

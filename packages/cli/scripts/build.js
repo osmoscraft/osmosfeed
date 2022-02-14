@@ -18,10 +18,8 @@ require("esbuild")
 
 copy();
 
-
 async function copy() {
   await Promise.all([
-    copyFileDeepAsync(path.resolve("src/index-template.html"), path.resolve("bin/index-template.html")),
     copyDirRecursiveAsync(path.resolve("src/system-static"), path.resolve("bin/system-static")),
     copyDirRecursiveAsync(path.resolve("src/system-templates"), path.resolve("bin/system-templates")),
   ]);
@@ -29,9 +27,9 @@ async function copy() {
 
 async function copyDirRecursiveAsync(srcDir, destDir) {
   const copyPaths = await readDirDeepAsync(srcDir);
-  const copyTasksAsync = copyPaths.map(copyPath => copyFileDeepAsync(
-    path.resolve(srcDir, copyPath), path.resolve(destDir, copyPath)
-  ));
+  const copyTasksAsync = copyPaths.map((copyPath) =>
+    copyFileDeepAsync(path.resolve(srcDir, copyPath), path.resolve(destDir, copyPath))
+  );
 
   return Promise.all(copyTasksAsync);
 }

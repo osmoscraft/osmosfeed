@@ -96,7 +96,7 @@
   box-sizing: border-box;
 }
 
-:focus:not(:focus-visible) {
+*:focus:not(:focus-visible) {
   outline: none;
 }
 
@@ -146,6 +146,9 @@ body {
   font-weight: 700;
   margin-right: 6px;
   font-family: monospace;
+}
+.article-expander__title::-webkit-details-marker {
+  display: none; /* remove triangle from Safair */
 }
 .article-expander[open] .article-expander__title::before {
   color: var(--accordion-marker-expanded-color);
@@ -279,6 +282,7 @@ footer {
   }
   .media-object__media {
     height: 100px;
+    width: auto;
     grid-area: media;
     margin-bottom: var(--article-stack-gap);
   }
