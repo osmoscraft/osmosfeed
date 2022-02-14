@@ -43,9 +43,10 @@
 
   --accordion-content-hover-rail-color: var(--base04);
   --accordion-content-rail-color: var(--base03);
-  --accordion-marker-color: var(--base0E);
+  --accordion-marker-color: var(--article-title-color);
   --accordion-marker-expanded-color: var(--base03);
-  --accordion-marker-hover-color: var(--base0E);
+  --accordion-marker-hover-color: var(--accordion-marker-color);
+  --accordion-marker-expanded-hover-color: var(--accordion-marker-color);
   --accordion-rail-indent: 7px;
 
   --article-image-border-color: var(--base03);
@@ -117,7 +118,7 @@ body {
 
 /** COMPONENTS */
 .article-expander {
-  padding: 4px 0 4px 4px;
+  padding: 4px 0;
 }
 
 .article-expander__title {
@@ -143,7 +144,7 @@ body {
   justify-content: center;
   width: 16px;
   font-weight: 700;
-  margin-right: 8px;
+  margin-right: 6px;
   font-family: monospace;
 }
 .article-expander[open] .article-expander__title::before {
@@ -232,6 +233,7 @@ body {
   text-align: start;
   cursor: pointer;
   color: var(--daily-heading-color);
+  text-transform: uppercase;
 }
 .daily-heading-toggle:hover {
   color: var(--daily-heading-hover-color);

@@ -5,6 +5,11 @@
 # siteTitle: dev - osmosfeed
 timezone: America/Los_Angeles
 sources:
+  - href: https://feedx.net/rss/guokrscientific.xml
+  - href: https://linux.cn/rss.xml
+  - href: https://www.zhihu.com/rss
+  - href: https://feeds.appinn.com/appinns/
+  - href: https://chinese.engadget.com/rss.xml
   - href: https://www.freecodecamp.org/news/rss/
   - href: https://christianheilmann.com/feed/
   - href: https://daverupert.com/atom.xml
