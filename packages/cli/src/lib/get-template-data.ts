@@ -62,7 +62,7 @@ interface TemplateSource extends TemplateSourceBase {
 interface TemplateDates {
   /**
    * @deprecated This date should only be used by the server internally.
-   * Use `isoUtcPublishTime` for high-fidelity timestamp or `isoOffsetPublishDate` for grouping by dates
+   * Use `isoUtcPublishTime` for true timestamp or `isoOffsetPublishDate` for grouping by dates
    */
   isoPublishDate: string;
   isoOffsetPublishDate: string;
