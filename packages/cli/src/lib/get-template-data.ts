@@ -3,6 +3,7 @@ import { cliVersion } from "../utils/version";
 import type { EnrichedArticle, EnrichedSource } from "./enrich";
 import type { Config } from "./get-config";
 import { FEED_FILENAME } from "./render-atom";
+import { getDateFromIsoString, getIsoTimeWithOffset } from "./time";
 
 export interface GetTemplateDataOutput {
   /** Array of dates, each containing the content published on the date */
@@ -21,29 +22,58 @@ export interface GetTemplateDataOutput {
   /** ISO timestamp for the build */
   siteBuildTimestamp: string;
 
+  /** URL to the GitHub Action run. Available only when using GitHub Action */
+  githubRunUrl: string | null;
+
   siteTitle: string;
 }
 
 interface TemplateArticle extends EnrichedArticle {
   source: EnrichedSource;
+  /**
+   * @deprecated This date should only be used by the server internally.
+   * Use `isoUtcPublishTime` for high-fidelity timestamp or `isoOffsetPublishDate` for grouping by dates
+   */
   isoPublishDate: string;
+  /**
+   * The publish date in user's specified timezone (UTC by default)
+   */
+  isoOffsetPublishDate: string;
+  /**
+   * The publish time in UTC timezone
+   */
+  isoUtcPublishTime: string;
   readingTimeInMin: number;
 }
 
 interface TemplateSource extends TemplateSourceBase {
   dates: {
+    /**
+     * @deprecated This date should only be used by the server internally.
+     * Use `isoUtcPublishTime` for high-fidelity timestamp or `isoOffsetPublishDate` for grouping by dates
+     */
     isoPublishDate: string;
+    isoOffsetPublishDate: string;
+    isoUtcPublishTime: string;
     articles: TemplateArticle[];
   }[];
 }
 
 interface TemplateDates {
+  /**
+   * @deprecated This date should only be used by the server internally.
+   * Use `isoUtcPublishTime` for true timestamp or `isoOffsetPublishDate` for grouping by dates
+   */
   isoPublishDate: string;
+  isoOffsetPublishDate: string;
+  isoUtcPublishTime: string;
   articles: TemplateArticle[];
   sources: TemplateSourceBase[];
 }
 
 interface TemplateSourceBase extends EnrichedSource {
+  isoOffsetPublishDate: string;
+  isoUtcPublishTime: string;
   articles: TemplateArticle[];
 }
 
@@ -53,20 +83,27 @@ export interface GetTemplateDataInput {
 }
 
 export function getTemplateData(input: GetTemplateDataInput): GetTemplateDataOutput {
+  const { githubServerUrl, githubRepository, githubRunId } = input.config;
+  const githubRunUrl =
+    githubServerUrl && githubRepository && githubRunId
+      ? `${input.config.githubServerUrl}/${input.config.githubRepository}/actions/run/${input.config.githubRunId}`
+      : null;
+
   return {
     get dates() {
-      return organizeByDates(input.enrichedSources);
+      return organizeByDates(input);
     },
 
     get sources() {
-      return organizeBySources(input.enrichedSources);
+      return organizeBySources(input);
     },
 
     get articles() {
-      return organizeByArticles(input.enrichedSources);
+      return organizeByArticles(input);
     },
 
     cliVersion,
+    githubRunUrl,
     siteTitle: input.config.siteTitle,
     siteBuildTimestamp: new Date().toISOString(),
     projectUrl: `https://github.com/osmoscraft/osmosfeed`,
@@ -74,13 +111,22 @@ export function getTemplateData(input: GetTemplateDataInput): GetTemplateDataOut
   };
 }
 
-function organizeByArticles(enrichedSources: EnrichedSource[]): TemplateArticle[] {
-  const articles: TemplateArticle[] = enrichedSources
+function getTimestamps(isoUtcTimestamp: string, timezoneOffset: number) {
+  const isoOffsetTime = getIsoTimeWithOffset(isoUtcTimestamp, timezoneOffset);
+  return {
+    isoUtcPublishTime: isoUtcTimestamp,
+    isoOffsetPublishDate: getDateFromIsoString(isoOffsetTime),
+  };
+}
+
+function organizeByArticles(input: GetTemplateDataInput): TemplateArticle[] {
+  const articles: TemplateArticle[] = input.enrichedSources
     .flatMap((enrichedSource) =>
       enrichedSource.articles.map((article) => ({
         ...article,
         source: enrichedSource,
-        isoPublishDate: article.publishedOn.split("T")[0],
+        isoPublishDate: getDateFromIsoString(article.publishedOn),
+        ...getTimestamps(article.publishedOn, input.config.timezoneOffset),
         title: ensureDisplayString(htmlToText(article.title), "Untitled"),
         description: ensureDisplayString(htmlToText(article.description), "No content preview"),
         readingTimeInMin: Math.round((article.wordCount ?? 0) / 300),
@@ -90,17 +136,19 @@ function organizeByArticles(enrichedSources: EnrichedSource[]): TemplateArticle[
   return articles;
 }
 
-function organizeBySources(enrichedSources: EnrichedSource[]): TemplateSource[] {
-  const articles = organizeByArticles(enrichedSources);
+function organizeBySources(input: GetTemplateDataInput): TemplateSource[] {
+  const articles = organizeByArticles(input);
 
   const articlesBySource = groupBy(articles, (article) => article.source);
   const sortedArticlesBySource = [...articlesBySource.entries()].map(([source, articles]) => ({
     ...source,
+    ...getTimestamps(articles[0].isoUtcPublishTime, input.config.timezoneOffset),
     articles: articles.sort((a, b) => b.publishedOn.localeCompare(a.publishedOn)), // by date, most recent first
-    dates: [...groupBy(articles, (article) => article.isoPublishDate)]
+    dates: [...groupBy(articles, (article) => article.isoOffsetPublishDate)]
       .sort((a, b) => b[0].localeCompare(a[0])) // by date, most recent first
       .map(([date, articles]) => ({
         isoPublishDate: date,
+        ...getTimestamps(articles[0].isoUtcPublishTime, input.config.timezoneOffset),
         articles,
       })),
   }));
@@ -108,19 +156,21 @@ function organizeBySources(enrichedSources: EnrichedSource[]): TemplateSource[] 
   return sortedArticlesBySource;
 }
 
-function organizeByDates(enrichedSources: EnrichedSource[]): TemplateDates[] {
-  const articles = organizeByArticles(enrichedSources);
+function organizeByDates(input: GetTemplateDataInput): TemplateDates[] {
+  const articles = organizeByArticles(input);
 
-  const articlesByDate = groupBy(articles, (article) => article.isoPublishDate);
+  const articlesByDate = groupBy(articles, (article) => article.isoOffsetPublishDate);
   const sortedArticlesByDate = [...articlesByDate.entries()]
     .sort((a, b) => b[0].localeCompare(a[0])) // by date, most recent first
     .map(([date, articles]) => ({
       isoPublishDate: date,
+      ...getTimestamps(articles[0].isoUtcPublishTime, input.config.timezoneOffset),
       articles,
       sources: [...groupBy(articles, (articles) => articles.source).entries()]
-        .sort((a, b) => a[0].feedUrl.localeCompare(b[0].feedUrl)) // by feed url, a-z
+        .sort((a, b) => b[1][0].isoUtcPublishTime.localeCompare(a[1][0].isoUtcPublishTime)) // by date, most recent first
         .map(([source, articles]) => ({
           ...source,
+          ...getTimestamps(articles[0].isoUtcPublishTime, input.config.timezoneOffset),
           articles,
         })),
     }));

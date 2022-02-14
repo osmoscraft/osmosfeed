@@ -3,6 +3,7 @@
 # cacheUrl: https://dailyread.netlify.app/cache.json
 # cacheMaxDays: 30
 # siteTitle: dev - osmosfeed
+timezone: America/Los_Angeles
 sources:
   - href: https://www.freecodecamp.org/news/rss/
   - href: https://christianheilmann.com/feed/
@@ -11,7 +12,7 @@ sources:
   - href: https://developer.chrome.com/feeds/blog.xml
   - href: https://webkit.org/feed/atom/
   - href: https://hacks.mozilla.org/feed/
-  # - href: https://gomakethings.com/feed
-  # - href: https://feeds.npr.org/510289/podcast.xml
-  # - href: https://shoptalkshow.com/feed/podcast/
-  # - href: https://feed.syntax.fm/rss
+  - href: https://gomakethings.com/feed
+  - href: https://feeds.npr.org/510289/podcast.xml
+  - href: https://shoptalkshow.com/feed/podcast/
+  - href: https://feed.syntax.fm/rss
