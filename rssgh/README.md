@@ -1,3 +1,5 @@
+a rss feed for the hungry
+
 [![image](./docs/media/osmosfeed-square-badge.svg)](#get-started)
 
 [中文](./README_zh.md)
