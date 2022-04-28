@@ -1,3 +1,13 @@
+# Unreleased
+
+- TODO: Migrate to the standard json feed format
+- TODO: Refactor to microkernel + pipeline plugin architecture
+- TODO: Prevent GitHub Action 60-day expiry by committing to default branch
+- TODO: Add RSS link to bottom of the output
+- TODO: Split documentation to wiki
+- STRETCH GOAL: Support data manipulation plugin
+- STRETCH GOAL: Support custom template directive
+
 # v1.14.4
 
 - Fixed: Several style issues
