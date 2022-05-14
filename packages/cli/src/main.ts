@@ -1,21 +1,22 @@
 #!/usr/bin/env node
 
 import { performance } from "perf_hooks";
+import { compileTemplates } from "./lib/compile-templates";
 import { copyStatic } from "./lib/copy-static";
 import { discoverSystemFiles, discoverUserFiles } from "./lib/discover-files";
+import { enrich, EnrichedSource } from "./lib/enrich";
+import { enrichV2 } from "./lib/enrich-v2";
 import { getCache } from "./lib/get-cache";
 import { getConfig } from "./lib/get-config";
 import { getCopyStaticPlan } from "./lib/get-copy-static-plan";
 import { getSnippets } from "./lib/get-snippets";
-import { compileTemplates } from "./lib/compile-templates";
-import { setCache } from "./lib/set-cache";
-import { writeFiles } from "./lib/write-files";
-import { enrich, EnrichedSource } from "./lib/enrich";
 import { getTemplateData } from "./lib/get-template-data";
 import { renderAtom } from "./lib/render-atom";
 import { renderUserSnippets } from "./lib/render-user-snippets";
-import { cliVersion } from "./utils/version";
+import { setCache } from "./lib/set-cache";
+import { writeFiles } from "./lib/write-files";
 import { isNotNull } from "./utils/is-not-null";
+import { cliVersion } from "./utils/version";
 
 async function run() {
   const startTime = performance.now();
@@ -30,6 +31,9 @@ async function run() {
   const enrichedSources: EnrichedSource[] = (
     await Promise.all(config.sources.map((source) => enrich({ source, cache, config })))
   ).filter(isNotNull);
+
+  // migration temp use
+  const jsonFeeds = await Promise.all(config.sources.map((source) => enrichV2({ source, cache, config })));
 
   const executableTemplate = compileTemplates({
     userTemplates: userFiles.userTemplateFiles,
