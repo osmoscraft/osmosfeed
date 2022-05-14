@@ -1,0 +1,22 @@
+{
+  "name": "@osmoscraft/json-feed-parser",
+  "version": "0.0.1",
+  "description": "",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest watch --ui --open"
+  },
+  "main": "lib.ts",
+  "keywords": [],
+  "author": "osmoscraft",
+  "license": "MIT",
+  "homepage": "https://osmoscraft.org",
+  "devDependencies": {
+    "@osmoscraft/json-feed-types": "^0.0.2",
+    "vitest": "^0.12.6"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.10",
+    "htmlparser2": "^7.0.0"
+  }
+}

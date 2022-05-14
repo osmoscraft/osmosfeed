@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<rss version="2.0">
+	<channel>
+		<title>Mock channel title</title>
+		<link>http://mock-domain.com</link>
+		<description>Mock channel description</description>
+		<language>en-us</language>
+		<image>
+			<url>http://mock-domain.com/channel-image.png</url>
+			<title>Mock channel image title</title>
+			<link>http://mock-domain.com</link>
+		</image>
+    <pubDate>Sat, 01 Jan 2000 00:00:00 GMT</pubDate>
+    <lastBuildDate>Tue, 12 Dec 2000 12:12:12 GMT</lastBuildDate>
+	</channel>
+</rss>

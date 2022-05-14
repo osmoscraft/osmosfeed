@@ -1,0 +1,12 @@
+{
+  "name": "@osmoscraft/json-feed-types",
+  "version": "0.0.2",
+  "description": "Typings for JSON Feed",
+  "main": "index.d.ts",
+  "types": "index.d.ts",
+  "scripts": {},
+  "author": "osmoscraft",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {}
+}
