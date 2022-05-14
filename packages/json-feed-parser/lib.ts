@@ -1,7 +1,8 @@
 import type { JsonFeed, JsonFeedItem } from "@osmoscraft/json-feed-types";
 import type { Cheerio, Document, Element, Node } from "cheerio";
 import * as cheerio from "cheerio";
-import htmlparser2, { ElementType } from "htmlparser2";
+import * as htmlparser2 from "htmlparser2";
+import { ElementType } from "htmlparser2";
 
 export interface LanguageParser {
   match: (root: Cheerio<Document>) => boolean;
@@ -11,7 +12,7 @@ export interface LanguageParser {
   parseItem: (itemElement: Cheerio<Element>, channelElement: Cheerio<Element>) => JsonFeedItem;
 }
 
-export function parse(xml: string): JsonFeed {
+export async function parse(xml: string): Promise<JsonFeed> {
   const dom = htmlparser2.parseDocument(xml, { xmlMode: true, decodeEntities: true });
   const $ = cheerio.load(dom, { xmlMode: true, decodeEntities: false });
   const root = $.root();

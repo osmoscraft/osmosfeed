@@ -7,17 +7,17 @@ describe("Parse doc", () => {
   });
 
   it("Rejects non-xml", () => {
-    expect(() => parse("This is not a XML string")).toThrow();
+    expect(parse("This is not a XML string")).rejects.toThrow();
   });
 
   it("Rejects non-feed xml", () => {
-    expect(() => parse(`<?xml version="1.0" encoding="UTF-8"?>`)).toThrow();
+    expect(parse(`<?xml version="1.0" encoding="UTF-8"?>`)).rejects.toThrow();
   });
 });
 
 describe("Parse channel", () => {
-  it("Missings fields/RSS2", () => {
-    const result = parse(`
+  it("Missings fields/RSS2", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rss>
         <channel></channel>
@@ -31,8 +31,8 @@ describe("Parse channel", () => {
     ).toEqual(["items", "title", "version"]);
   });
 
-  it("Missing fields/RDF", () => {
-    const result = parse(`
+  it("Missing fields/RDF", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
         <channel></channel>
@@ -46,8 +46,8 @@ describe("Parse channel", () => {
     ).toEqual(["items", "title", "version"]);
   });
 
-  it("Missing fields/Atom", () => {
-    const result = parse(`
+  it("Missing fields/Atom", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom"></feed>
     `);
@@ -59,8 +59,8 @@ describe("Parse channel", () => {
     ).toEqual(["items", "title", "version"]);
   });
 
-  it("JSON Feed version/RSS", () => {
-    const result = parse(`
+  it("JSON Feed version/RSS", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rss>
         <channel>
@@ -72,8 +72,8 @@ describe("Parse channel", () => {
     expect(result.version).toEqual("https://jsonfeed.org/version/1.1");
   });
 
-  it("JSON Feed version/RDF", () => {
-    const result = parse(`
+  it("JSON Feed version/RDF", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
         <channel>
@@ -85,8 +85,8 @@ describe("Parse channel", () => {
     expect(result.version).toEqual("https://jsonfeed.org/version/1.1");
   });
 
-  it("JSON Feed version/Atom", () => {
-    const result = parse(`
+  it("JSON Feed version/Atom", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
         <title></title>
@@ -96,8 +96,8 @@ describe("Parse channel", () => {
     expect(result.version).toEqual("https://jsonfeed.org/version/1.1");
   });
 
-  it("Title/RSS", () => {
-    const result = parse(`
+  it("Title/RSS", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rss>
         <channel>
@@ -109,8 +109,8 @@ describe("Parse channel", () => {
     expect(result.title).toEqual("Mock channel title");
   });
 
-  it("Title/Atom", () => {
-    const result = parse(`
+  it("Title/Atom", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
         <title>Mock channel title</title>
@@ -120,8 +120,8 @@ describe("Parse channel", () => {
     expect(result.title).toEqual("Mock channel title");
   });
 
-  it("Summary/RSS2", () => {
-    const result = parse(`
+  it("Summary/RSS2", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rss>
         <channel>
@@ -133,8 +133,8 @@ describe("Parse channel", () => {
     expect(result.description).toEqual("Mock channel description");
   });
 
-  it("Summary/Atom", () => {
-    const result = parse(`
+  it("Summary/Atom", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
         <subtitle>Mock channel description</subtitle>
@@ -144,8 +144,8 @@ describe("Parse channel", () => {
     expect(result.description).toEqual("Mock channel description");
   });
 
-  it("Home page url/RSS2", () => {
-    const result = parse(`
+  it("Home page url/RSS2", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rss>
         <channel>
@@ -157,8 +157,8 @@ describe("Parse channel", () => {
     expect(result.home_page_url).toEqual("http://mock-domain.com");
   });
 
-  it("Home page url/Atom", () => {
-    const result = parse(`
+  it("Home page url/Atom", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
         <link href="http://mock-domain.com"/>
@@ -168,8 +168,8 @@ describe("Parse channel", () => {
     expect(result.home_page_url).toEqual("http://mock-domain.com");
   });
 
-  it("Home page url with self/Atom", () => {
-    const result = parse(`
+  it("Home page url with self/Atom", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
         <link rel="self" href="http://mock-domain.com/feed.xml"/>
@@ -180,8 +180,8 @@ describe("Parse channel", () => {
     expect(result.home_page_url).toEqual("http://mock-domain.com");
   });
 
-  it("Channel icon/RSS2", () => {
-    const result = parse(`
+  it("Channel icon/RSS2", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rss>
         <channel>
@@ -197,8 +197,8 @@ describe("Parse channel", () => {
     expect(result.icon).toEqual("http://mock-domain.com/channel-image.png");
   });
 
-  it("Channel icon/RDF", () => {
-    const result = parse(`
+  it("Channel icon/RDF", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
         <channel rdf:about="http://mock-domain.com/rss">
@@ -215,8 +215,8 @@ describe("Parse channel", () => {
     expect(result.icon).toEqual("http://mock-domain.com/channel-image.png");
   });
 
-  it("Channel icon/Atom", () => {
-    const result = parse(`
+  it("Channel icon/Atom", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
         <icon>http://mock-domain.com/channel-image.png</icon>
@@ -228,8 +228,8 @@ describe("Parse channel", () => {
 });
 
 describe("Parse items", () => {
-  it("Missing fields/RSS2", () => {
-    const result = parse(`
+  it("Missing fields/RSS2", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rss>
         <channel>
@@ -246,8 +246,8 @@ describe("Parse items", () => {
     ).toEqual(["content_html", "content_text", "id"]);
   });
 
-  it("Missing fields/RDF", () => {
-    const result = parse(`
+  it("Missing fields/RDF", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
         <channel></channel>
@@ -263,8 +263,8 @@ describe("Parse items", () => {
     ).toEqual(["content_html", "content_text", "id"]);
   });
 
-  it("Missing fields/Atom", () => {
-    const result = parse(`
+  it("Missing fields/Atom", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
         <entry></entry>
@@ -279,8 +279,8 @@ describe("Parse items", () => {
     ).toEqual(["content_html", "content_text", "id"]);
   });
 
-  it("Id/Link only/RSS2", () => {
-    const result = parse(`
+  it("Id/Link only/RSS2", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rss>
         <channel>
@@ -294,8 +294,8 @@ describe("Parse items", () => {
     expect(result.items[0].id).toEqual("http://mock-domain.com/item/1");
   });
 
-  it("Id/Guid only/RSS2", () => {
-    const result = parse(`
+  it("Id/Guid only/RSS2", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rss>
         <channel>
@@ -309,8 +309,8 @@ describe("Parse items", () => {
     expect(result.items[0].id).toEqual("1234-abcd");
   });
 
-  it("Id/Guid and link/RSS2", () => {
-    const result = parse(`
+  it("Id/Guid and link/RSS2", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rss>
         <channel>
@@ -325,8 +325,8 @@ describe("Parse items", () => {
     expect(result.items[0].id).toEqual("1234-abcd");
   });
 
-  it("Id/RDF", () => {
-    const result = parse(`
+  it("Id/RDF", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
         <channel>
@@ -340,8 +340,8 @@ describe("Parse items", () => {
     expect(result.items[0].id).toEqual("http://mock-domain.com/item/1");
   });
 
-  it("Id/Id only/Atom", () => {
-    const result = parse(`
+  it("Id/Id only/Atom", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
@@ -353,8 +353,8 @@ describe("Parse items", () => {
     expect(result.items[0].id).toEqual("1234-abcd");
   });
 
-  it("Id/Link only/Atom", () => {
-    const result = parse(`
+  it("Id/Link only/Atom", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
@@ -366,8 +366,8 @@ describe("Parse items", () => {
     expect(result.items[0].id).toEqual("http://mock-domain.com/item/1");
   });
 
-  it("Id/Id and link/Atom", () => {
-    const result = parse(`
+  it("Id/Id and link/Atom", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
@@ -380,8 +380,8 @@ describe("Parse items", () => {
     expect(result.items[0].id).toEqual("1234-abcd");
   });
 
-  it("Url/RSS2", () => {
-    const result = parse(`
+  it("Url/RSS2", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rss>
         <channel>
@@ -395,8 +395,8 @@ describe("Parse items", () => {
     expect(result.items[0].url).toEqual("http://mock-domain.com/item/1");
   });
 
-  it("Url/RDF", () => {
-    const result = parse(`
+  it("Url/RDF", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
         <channel>
@@ -410,8 +410,8 @@ describe("Parse items", () => {
     expect(result.items[0].url).toEqual("http://mock-domain.com/item/1");
   });
 
-  it("Url/Atom", () => {
-    const result = parse(`
+  it("Url/Atom", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
@@ -423,8 +423,8 @@ describe("Parse items", () => {
     expect(result.items[0].url).toEqual("http://mock-domain.com/item/1");
   });
 
-  it("Url trimming/RSS2", () => {
-    const result = parse(`
+  it("Url trimming/RSS2", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rss>
         <channel>
@@ -438,8 +438,8 @@ describe("Parse items", () => {
     expect(result.items[0].url).toEqual("http://mock-domain.com/item/1");
   });
 
-  it("Url trimming/RDF", () => {
-    const result = parse(`
+  it("Url trimming/RDF", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
         <channel>
@@ -453,8 +453,8 @@ describe("Parse items", () => {
     expect(result.items[0].url).toEqual("http://mock-domain.com/item/1");
   });
 
-  it("Url trimming/Atom", () => {
-    const result = parse(`
+  it("Url trimming/Atom", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom ">
         <entry>
@@ -466,8 +466,8 @@ describe("Parse items", () => {
     expect(result.items[0].url).toEqual("http://mock-domain.com/item/1");
   });
 
-  it("Title/RSS2", () => {
-    const result = parse(`
+  it("Title/RSS2", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rss>
         <channel>
@@ -481,8 +481,8 @@ describe("Parse items", () => {
     expect(result.items[0].title).toEqual("Mock item title 1");
   });
 
-  it("Title/RDF", () => {
-    const result = parse(`
+  it("Title/RDF", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
         <channel>
@@ -496,8 +496,8 @@ describe("Parse items", () => {
     expect(result.items[0].title).toEqual("Mock item title 1");
   });
 
-  it("Title/Atom", () => {
-    const result = parse(`
+  it("Title/Atom", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
@@ -509,8 +509,8 @@ describe("Parse items", () => {
     expect(result.items[0].title).toEqual("Mock item title 1");
   });
 
-  it("Content/Plaintext", () => {
-    const result = parse(`
+  it("Content/Plaintext", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rss>
         <channel>
@@ -525,8 +525,8 @@ describe("Parse items", () => {
     expect(result.items[0].content_html).toEqual("Plaintext description");
   });
 
-  it("Content/Space trimming", () => {
-    const result = parse(`
+  it("Content/Space trimming", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rss>
         <channel>
@@ -541,8 +541,8 @@ describe("Parse items", () => {
     expect(result.items[0].content_html).toEqual("Plaintext description");
   });
 
-  it("Content/Ampersand", () => {
-    const result = parse(`
+  it("Content/Ampersand", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rss>
         <channel>
@@ -557,8 +557,8 @@ describe("Parse items", () => {
     expect(result.items[0].content_html).toEqual("&");
   });
 
-  it("Content/Angle bracket", () => {
-    const result = parse(`
+  it("Content/Angle bracket", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rss>
         <channel>
@@ -573,8 +573,8 @@ describe("Parse items", () => {
     expect(result.items[0].content_html).toEqual("&lt;");
   });
 
-  it("Content/HTML tags", () => {
-    const result = parse(`
+  it("Content/HTML tags", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rss>
         <channel>
@@ -589,8 +589,8 @@ describe("Parse items", () => {
     expect(result.items[0].content_html).toEqual("<b>bold</b>");
   });
 
-  it("Content/Double-escaped entities", () => {
-    const result = parse(`
+  it("Content/Double-escaped entities", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rss>
         <channel>
@@ -605,8 +605,8 @@ describe("Parse items", () => {
     expect(result.items[0].content_html).toEqual("&lt;b&gt;bold&lt;/b&gt;");
   });
 
-  it("Content/CDATA without escape", () => {
-    const result = parse(`
+  it("Content/CDATA without escape", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rss>
         <channel>
@@ -621,8 +621,8 @@ describe("Parse items", () => {
     expect(result.items[0].content_html).toEqual("<b>bold</b>");
   });
 
-  it("Content/CDATA with escape", () => {
-    const result = parse(`
+  it("Content/CDATA with escape", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rss>
         <channel>
@@ -637,8 +637,8 @@ describe("Parse items", () => {
     expect(result.items[0].content_html).toEqual("&lt;b&gt;bold&lt;/b&gt;");
   });
 
-  it("Content/HTML", () => {
-    const result = parse(`
+  it("Content/HTML", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rss>
         <channel>
@@ -653,8 +653,8 @@ describe("Parse items", () => {
     expect(result.items[0].content_html).toEqual("<b>bold</b>");
   });
 
-  it("Content/Atom/Default type", () => {
-    const result = parse(`
+  it("Content/Atom/Default type", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
@@ -667,8 +667,8 @@ describe("Parse items", () => {
     expect(result.items[0].content_html).toEqual("&lt;b&gt;bold&lt;/b&gt;");
   });
 
-  it("Content/Atom/text type", () => {
-    const result = parse(`
+  it("Content/Atom/text type", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
@@ -681,8 +681,8 @@ describe("Parse items", () => {
     expect(result.items[0].content_html).toEqual("&lt;b&gt;bold&lt;/b&gt;");
   });
 
-  it("Content/Atom/html type", () => {
-    const result = parse(`
+  it("Content/Atom/html type", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
@@ -695,8 +695,8 @@ describe("Parse items", () => {
     expect(result.items[0].content_html).toEqual("<b>bold</b>");
   });
 
-  it("Content/Atom/xhtml type", () => {
-    const result = parse(`
+  it("Content/Atom/xhtml type", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
@@ -713,8 +713,8 @@ describe("Parse items", () => {
     expect(result.items[0].content_html).toEqual("AT&T bought <b>by SBC</b>");
   });
 
-  it("Summary and content/Summary only/RSS", () => {
-    const result = parse(`
+  it("Summary and content/Summary only/RSS", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rss>
         <channel>
@@ -729,8 +729,8 @@ describe("Parse items", () => {
     expect(result.items[0].content_text).toEqual("summary");
   });
 
-  it("Summary and content/Summary only/Atom", () => {
-    const result = parse(`
+  it("Summary and content/Summary only/Atom", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
@@ -743,8 +743,8 @@ describe("Parse items", () => {
     expect(result.items[0].content_text).toEqual("summary");
   });
 
-  it("Summary and content/Content only/RSS", () => {
-    const result = parse(`
+  it("Summary and content/Content only/RSS", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rss>
         <channel>
@@ -759,8 +759,8 @@ describe("Parse items", () => {
     expect(result.items[0].content_text).toEqual("content");
   });
 
-  it("Summary and content/Content only/Atom", () => {
-    const result = parse(`
+  it("Summary and content/Content only/Atom", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
@@ -773,8 +773,8 @@ describe("Parse items", () => {
     expect(result.items[0].content_text).toEqual("content");
   });
 
-  it("Summary and content/Both/RSS2", () => {
-    const result = parse(`
+  it("Summary and content/Both/RSS2", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rss>
         <channel>
@@ -790,8 +790,8 @@ describe("Parse items", () => {
     expect(result.items[0].content_text).toEqual("content");
   });
 
-  it("Summary and content/Both/Atom", () => {
-    const result = parse(`
+  it("Summary and content/Both/Atom", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
@@ -805,8 +805,8 @@ describe("Parse items", () => {
     expect(result.items[0].content_text).toEqual("content");
   });
 
-  it("Image/RSS2", () => {
-    const result = parse(`
+  it("Image/RSS2", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rss>
         <channel>
@@ -820,8 +820,8 @@ describe("Parse items", () => {
     expect(result.items[0].image).toEqual("http://mock-domain.com/item-image-1.png");
   });
 
-  it("Image/RDF", () => {
-    const result = parse(`
+  it("Image/RDF", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rdf:RDF
         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -838,8 +838,8 @@ describe("Parse items", () => {
     expect(result.items[0].image).toEqual("http://mock-domain.com/item-image-1.png");
   });
 
-  it("Image/Atom", () => {
-    const result = parse(`
+  it("Image/Atom", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
@@ -851,8 +851,8 @@ describe("Parse items", () => {
     expect(result.items[0].image).toEqual("http://mock-domain.com/item-image-1.png");
   });
 
-  it("Timestamps/RSS2", () => {
-    const result = parse(`
+  it("Timestamps/RSS2", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rss>
         <channel>
@@ -866,8 +866,8 @@ describe("Parse items", () => {
     expect(result.items[0].date_published).toEqual("2000-01-01T00:00:00.000Z");
   });
 
-  it("Timestamps/RDF", () => {
-    const result = parse(`
+  it("Timestamps/RDF", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <rss>
         <channel>
@@ -881,8 +881,8 @@ describe("Parse items", () => {
     expect(result.items[0].date_published).toEqual("2000-01-01T00:00:00.000Z");
   });
 
-  it("Timestamps/Publish only/Atom", () => {
-    const result = parse(`
+  it("Timestamps/Publish only/Atom", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
@@ -894,8 +894,8 @@ describe("Parse items", () => {
     expect(result.items[0].date_published).toEqual("2000-01-01T00:00:00.000Z");
   });
 
-  it("Timestamps/Update only/Atom", () => {
-    const result = parse(`
+  it("Timestamps/Update only/Atom", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
@@ -907,8 +907,8 @@ describe("Parse items", () => {
     expect(result.items[0].date_modified).toEqual("2000-12-12T12:12:12.000Z");
   });
 
-  it("Timestamps/Publish and update/Atom", () => {
-    const result = parse(`
+  it("Timestamps/Publish and update/Atom", async () => {
+    const result = await parse(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
