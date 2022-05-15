@@ -4,6 +4,7 @@
     "moduleResolution": "node",
     "strict": true,
     "esModuleInterop": true,
+    "importsNotUsedAsValues": "error",
     "noEmit": true
   },
   "include": ["src/**/*.ts"]

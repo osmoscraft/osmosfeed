@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parse } from "../../lib";
+import { parse } from "../lib";
 import { readFixture, runMatrix } from "./helper";
 
 describe("Integration", () => {
