@@ -1,4 +1,10 @@
+import path from "path";
+import { exit } from "process";
+import { getCache } from "./functions/cache";
+import { getConfig } from "./functions/config";
 import { getSmartFetch } from "./functions/fetch";
+import { notNullish } from "./functions/flow";
+import { getFileHandles } from "./functions/fs";
 
 export async function main() {
   const fetch = getSmartFetch({
@@ -8,17 +14,27 @@ export async function main() {
     onWillRetry: () => console.log("retry"),
   });
 
-  const fileHandles = await getFileHandles();
-  const configHandle = await getConfig(fileHandles);
-  const cacheHandle = getCache(fileHandles);
+  const userFileHandles = await getFileHandles(path.resolve("."));
+  const userConfig = await userFileHandles.find((file) => file.relativePath === "osmosfeed.yaml");
+  const config = await getConfig(notNullish(await userConfig?.read().text(), "osmosfeed.yaml file not found"));
 
-  const defaultSiteSrc = getBuiltInSiteSrc(fileHandles);
-  const userSiteSrc = getUserSiteSrc(fileHandles);
-  const siteSrcHandles = getSiteSrc(defaultSiteSrc, userSiteSrc);
+  const systemFileHandles = await getFileHandles(__dirname);
+  const systemPublic = systemFileHandles.filter((handle) => handle.relativePath.startsWith("public"));
+  const systemIncludes = systemFileHandles.filter((handle) => handle.relativePath.startsWith("includes"));
+  const userPublic = userFileHandles.filter((handle) => handle.relativePath.startsWith("public"));
+  const userIncludes = userFileHandles.filter((handle) => handle.relativePath.startsWith("includes"));
+  const userCache = userFileHandles.find((file) => file.relativePath === "cache.json");
+
+  const cache = getCache(await userCache?.read().text(), (error) => console.error(`Cache loading error`, error));
+
+  const siteSrcHandles = getSiteSrc(systemPublic, systemIncludes, userPublic, userIncludes);
+
+  console.log(config);
+  (() => exit(0))();
 
   const { feed, buildFeedSummary } = await buildFeed({
-    configHandle,
-    cacheHandle,
+    config,
+    cache,
     onFetch: fetch,
     onError: console.error,
     onInfo: console.log,
@@ -28,7 +44,7 @@ export async function main() {
 
   const site = await buildSite({
     feed,
-    configHandle,
+    config,
     siteSrcHandles,
     buildFeedSummary,
     onError: console.error,
@@ -40,18 +56,6 @@ export async function main() {
   });
 }
 
-function getFileHandles() {
-  throw new Error("Function not implemented.");
-}
-
-function getConfig(fileHandles: any) {
-  throw new Error("Function not implemented.");
-}
-
-function getCache(fileHandles: any) {
-  throw new Error("Function not implemented.");
-}
-
 function getBuiltInSiteSrc(fileHandles: any) {
   throw new Error("Function not implemented.");
 }
@@ -60,7 +64,7 @@ function getUserSiteSrc(fileHandles: any) {
   throw new Error("Function not implemented.");
 }
 
-function getSiteSrc(defaultSiteSrc: any, userSiteSrc: any) {
+function getSiteSrc(...args: any[]) {
   throw new Error("Function not implemented.");
 }
 
@@ -68,19 +72,13 @@ function getWriter(): { writeFile: any } {
   throw new Error("Function not implemented.");
 }
 
-function buildFeed(arg0: {
-  configHandle: any;
-  cacheHandle: any;
-  onFetch: any;
-  onError: any;
-  onInfo: any;
-}): Promise<any> {
+function buildFeed(arg0: any): Promise<any> {
   throw new Error("Function not implemented.");
 }
 
 function buildSite(arg0: {
   feed: any;
-  configHandle: any;
+  config: any;
   siteSrcHandles: any;
   buildFeedSummary: any;
   onError: any;

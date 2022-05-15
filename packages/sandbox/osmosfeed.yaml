@@ -5,19 +5,19 @@
 # siteTitle: dev - osmosfeed
 timezone: America/Los_Angeles
 sources:
-  - href: https://feedx.net/rss/guokrscientific.xml
-  - href: https://linux.cn/rss.xml
-  - href: https://www.zhihu.com/rss
-  - href: https://feeds.appinn.com/appinns/
-  - href: https://chinese.engadget.com/rss.xml
-  - href: https://www.freecodecamp.org/news/rss/
-  - href: https://christianheilmann.com/feed/
-  - href: https://daverupert.com/atom.xml
-  - href: https://css-tricks.com/feed/
-  - href: https://developer.chrome.com/feeds/blog.xml
-  - href: https://webkit.org/feed/atom/
-  - href: https://hacks.mozilla.org/feed/
-  - href: https://gomakethings.com/feed
-  - href: https://feeds.npr.org/510289/podcast.xml
-  - href: https://shoptalkshow.com/feed/podcast/
-  - href: https://feed.syntax.fm/rss
+  - url: https://feedx.net/rss/guokrscientific.xml
+  - url: https://linux.cn/rss.xml
+  - url: https://www.zhihu.com/rss
+  - url: https://feeds.appinn.com/appinns/
+  - url: https://chinese.engadget.com/rss.xml
+  - url: https://www.freecodecamp.org/news/rss/
+  - url: https://christianheilmann.com/feed/
+  - url: https://daverupert.com/atom.xml
+  - url: https://css-tricks.com/feed/
+  - url: https://developer.chrome.com/feeds/blog.xml
+  - url: https://webkit.org/feed/atom/
+  - url: https://hacks.mozilla.org/feed/
+  - url: https://gomakethings.com/feed
+  - url: https://feeds.npr.org/510289/podcast.xml
+  - url: https://shoptalkshow.com/feed/podcast/
+  - url: https://feed.syntax.fm/rss
