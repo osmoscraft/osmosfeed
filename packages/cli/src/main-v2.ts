@@ -1,9 +1,9 @@
+import { getSmartFetch } from "./functions/fetch";
+
 export async function main() {
-  const net = getNet();
-
   const fileHandles = await getFileHandles();
-
   const configHandle = await getConfig(fileHandles);
+  const fetch = getSmartFetch({ retry: 3, retryDelay: 5000 });
 
   const cacheHandle = getCache(fileHandles);
 
@@ -14,7 +14,7 @@ export async function main() {
   const { feed, buildFeedSummary } = await buildFeed({
     configHandle,
     cacheHandle,
-    onFetch: net.get,
+    onFetch: fetch,
     onError: console.error,
     onInfo: console.log,
   });
@@ -33,28 +33,6 @@ export async function main() {
   await writeSite({
     site,
   });
-}
-
-function audit(...args: any[]) {
-  return {
-    read: () => {
-      throw new Error("Function not implemented.");
-    },
-    write: () => {
-      throw new Error("Function not implemented.");
-    },
-    audit: () => {
-      throw new Error("Function not implemented.");
-    },
-  };
-}
-
-function getNet() {
-  return {
-    get: () => {
-      throw new Error("Function not implemented.");
-    },
-  };
 }
 
 function getFileHandles() {
