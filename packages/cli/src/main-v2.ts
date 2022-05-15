@@ -1,42 +1,38 @@
 export async function main() {
-  const cliArgs = getCliArgs();
   const net = getNet();
-  const log = getLog({ debug: true });
 
-  const fileHandles = await readFiles();
+  const fileHandles = await getFileHandles();
 
   const configHandle = await getConfig(fileHandles);
 
-  const cacheHandles = getCache(fileHandles);
-
-  const { read: readCache, write: writeCache, audit: auditCache } = audit(cacheHandles);
+  const cacheHandle = getCache(fileHandles);
 
   const defaultSiteSrc = getBuiltInSiteSrc(fileHandles);
   const userSiteSrc = getUserSiteSrc(fileHandles);
   const siteSrcHandles = getSiteSrc(defaultSiteSrc, userSiteSrc);
 
-  const { writeFile } = getWriter();
-
   const { feed, buildFeedSummary } = await buildFeed({
     configHandle,
+    cacheHandle,
     onFetch: net.get,
-    onError: log.error,
-    onInfo: log.info,
-    onReadCache: readCache,
-    onWriteCache: writeCache,
+    onError: console.error,
+    onInfo: console.log,
   });
 
-  await buildSite({
+  await writeCache(feed);
+
+  const site = await buildSite({
     feed,
     configHandle,
     siteSrcHandles,
     buildFeedSummary,
-    onError: log.error,
-    onInfo: log.info,
-    onWrite: writeFile,
+    onError: console.error,
+    onInfo: console.log,
   });
 
-  await cleanUp(auditCache);
+  await writeSite({
+    site,
+  });
 }
 
 function audit(...args: any[]) {
@@ -53,10 +49,6 @@ function audit(...args: any[]) {
   };
 }
 
-function getCliArgs() {
-  throw new Error("Function not implemented.");
-}
-
 function getNet() {
   return {
     get: () => {
@@ -65,18 +57,7 @@ function getNet() {
   };
 }
 
-function getLog(arg0: { debug: boolean }) {
-  return {
-    info: () => {
-      throw new Error("Function not implemented.");
-    },
-    error: () => {
-      throw new Error("Function not implemented.");
-    },
-  };
-}
-
-function readFiles() {
+function getFileHandles() {
   throw new Error("Function not implemented.");
 }
 
@@ -106,12 +87,11 @@ function getWriter(): { writeFile: any } {
 
 function buildFeed(arg0: {
   configHandle: any;
+  cacheHandle: any;
   onFetch: any;
   onError: any;
   onInfo: any;
-  onReadCache: any;
-  onWriteCache: any;
-}): { feed: any; buildFeedSummary: any } | PromiseLike<{ feed: any; buildFeedSummary: any }> {
+}): Promise<any> {
   throw new Error("Function not implemented.");
 }
 
@@ -122,11 +102,16 @@ function buildSite(arg0: {
   buildFeedSummary: any;
   onError: any;
   onInfo: any;
-  onWrite: any;
 }) {
   throw new Error("Function not implemented.");
 }
 
 function cleanUp(getAudit: any) {
+  throw new Error("Function not implemented.");
+}
+function writeCache(feed: any) {
+  throw new Error("Function not implemented.");
+}
+function writeSite(arg0: { site: void }) {
   throw new Error("Function not implemented.");
 }
