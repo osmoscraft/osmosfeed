@@ -11,7 +11,7 @@ require("esbuild")
     entryPoints: ["src/main.ts"],
     sourcemap: true,
     bundle: true,
-    target: "node16",
+    target: "node18",
     outfile: "bin/main.js",
   })
   .catch(() => process.exit(1));

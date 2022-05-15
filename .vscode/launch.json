@@ -5,7 +5,7 @@
       "name": "Debug with sandbox",
       "request": "launch",
       "runtimeArgs": ["run-script", "start"],
-      "runtimeVersion": "16",
+      "runtimeVersion": "18",
       "runtimeExecutable": "npm",
       "skipFiles": ["<node_internals>/**"],
       "type": "pwa-node"
@@ -14,7 +14,7 @@
       "name": "Debug tests",
       "request": "launch",
       "runtimeArgs": ["run-script", "test"],
-      "runtimeVersion": "16",
+      "runtimeVersion": "18",
       "runtimeExecutable": "npm",
       "skipFiles": ["<node_internals>/**"],
       "type": "pwa-node"

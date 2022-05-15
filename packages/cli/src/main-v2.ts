@@ -1,10 +1,15 @@
 import { getSmartFetch } from "./functions/fetch";
 
 export async function main() {
+  const fetch = getSmartFetch({
+    retry: 3,
+    retryDelay: 0, // no delay between retry
+    timeout: 10000, // default 10s timeout
+    onWillRetry: () => console.log("retry"),
+  });
+
   const fileHandles = await getFileHandles();
   const configHandle = await getConfig(fileHandles);
-  const fetch = getSmartFetch({ retry: 3, retryDelay: 5000 });
-
   const cacheHandle = getCache(fileHandles);
 
   const defaultSiteSrc = getBuiltInSiteSrc(fileHandles);

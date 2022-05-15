@@ -1,11 +1,11 @@
-export interface RetryConfig {
+export interface RetryConfig<ArgsType = any> {
   retry: number;
   delay: number;
-  onWillRetry?: (error: unknown, attempsLeft: number) => any;
+  onWillRetry?: (args: ArgsType, error: unknown, attempsLeft: number) => any;
 }
 export function withAsyncRetry<ArgsType extends any[], ResolveType>(
   fn: (...args: ArgsType) => Promise<ResolveType>,
-  { retry, delay, onWillRetry }: RetryConfig
+  { retry, delay, onWillRetry }: RetryConfig<ArgsType>
 ) {
   return async (...args: ArgsType) => {
     if (retry < 0) throw new Error(`Invalid retry limit: ${retry}`);
@@ -20,7 +20,7 @@ export function withAsyncRetry<ArgsType extends any[], ResolveType>(
         attempsLeft--;
         if (attempsLeft === 0) throw error;
 
-        onWillRetry?.(error, attempsLeft);
+        onWillRetry?.(args, error, attempsLeft);
         await new Promise((resolve) => setTimeout(resolve, delay));
       }
     }

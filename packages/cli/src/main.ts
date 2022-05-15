@@ -5,7 +5,6 @@ import { compileTemplates } from "./lib/compile-templates";
 import { copyStatic } from "./lib/copy-static";
 import { discoverSystemFiles, discoverUserFiles } from "./lib/discover-files";
 import { enrich, EnrichedSource } from "./lib/enrich";
-import { enrichV2 } from "./lib/enrich-v2";
 import { getCache } from "./lib/get-cache";
 import { getConfig } from "./lib/get-config";
 import { getCopyStaticPlan } from "./lib/get-copy-static-plan";
@@ -15,6 +14,7 @@ import { renderAtom } from "./lib/render-atom";
 import { renderUserSnippets } from "./lib/render-user-snippets";
 import { setCache } from "./lib/set-cache";
 import { writeFiles } from "./lib/write-files";
+import { main } from "./main-v2";
 import { isNotNull } from "./utils/is-not-null";
 import { cliVersion } from "./utils/version";
 
@@ -33,7 +33,7 @@ async function run() {
   ).filter(isNotNull);
 
   // migration temp use
-  const jsonFeeds = await Promise.all(config.sources.map((source) => enrichV2({ source, cache, config })));
+  // const jsonFeeds = await Promise.all(config.sources.map((source) => enrichV2({ source, cache, config })));
 
   const executableTemplate = compileTemplates({
     userTemplates: userFiles.userTemplateFiles,
@@ -61,4 +61,5 @@ async function run() {
   console.log(`[main] Finished build in ${durationInSeconds} seconds`);
 }
 
-run();
+// run();
+main();
