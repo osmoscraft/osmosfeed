@@ -32,7 +32,7 @@ export async function main() {
   console.log(config);
   (() => exit(0))();
 
-  const { feed, buildFeedSummary } = await buildFeed({
+  const { feed } = await buildFeed({
     config,
     cache,
     onFetch: fetch,
@@ -46,7 +46,7 @@ export async function main() {
     feed,
     config,
     siteSrcHandles,
-    buildFeedSummary,
+
     onError: console.error,
     onInfo: console.log,
   });
@@ -76,14 +76,7 @@ function buildFeed(arg0: any): Promise<any> {
   throw new Error("Function not implemented.");
 }
 
-function buildSite(arg0: {
-  feed: any;
-  config: any;
-  siteSrcHandles: any;
-  buildFeedSummary: any;
-  onError: any;
-  onInfo: any;
-}) {
+function buildSite(arg0: { feed: any; config: any; siteSrcHandles: any; onError: any; onInfo: any }) {
   throw new Error("Function not implemented.");
 }
 
