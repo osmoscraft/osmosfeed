@@ -20,7 +20,7 @@ copy();
 
 async function copy() {
   await Promise.all([
-    copyDirRecursiveAsync(path.resolve("src/public"), path.resolve("bin/public")),
+    copyDirRecursiveAsync(path.resolve("src/static"), path.resolve("bin/static")),
     copyDirRecursiveAsync(path.resolve("src/includes"), path.resolve("bin/includes")),
   ]);
 }

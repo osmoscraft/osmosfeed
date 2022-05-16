@@ -14,7 +14,7 @@ export interface Source {
   // timeout?: number;
 }
 
-export async function getConfig(text: string): Promise<ProjectConfig> {
+export async function getProjectConfig(text: string): Promise<ProjectConfig> {
   const baseConfig = parse(text);
 
   return baseConfig;

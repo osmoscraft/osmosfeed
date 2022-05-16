@@ -1,10 +1,18 @@
+import { parse } from "@osmoscraft/json-feed-parser";
+import fs from "fs/promises";
 import path from "path";
 import { exit } from "process";
+import { buildFeeds, mergeFeed, mergeItems, normalizeFeed } from "./functions/build-feed";
 import { getCache } from "./functions/cache";
-import { getConfig } from "./functions/config";
+import { getProjectConfig } from "./functions/config";
+import { executeCopyPlan, getCopyPlan } from "./functions/copy";
 import { getSmartFetch } from "./functions/fetch";
 import { notNullish } from "./functions/flow";
 import { getFileHandles } from "./functions/fs";
+import { reportCopy, reportFeedProgress, reportFileDiscovery, reportTemplateRegistration } from "./functions/report";
+import { compileTemplates } from "./functions/template";
+
+const CACHE_PATH = "public/cache-v1.json";
 
 export async function main() {
   const fetch = getSmartFetch({
@@ -16,76 +24,56 @@ export async function main() {
 
   const userFileHandles = await getFileHandles(path.resolve("."));
   const userConfig = await userFileHandles.find((file) => file.relativePath === "osmosfeed.yaml");
-  const config = await getConfig(notNullish(await userConfig?.read().text(), "osmosfeed.yaml file not found"));
+  const projectConfig = await getProjectConfig(notNullish(await userConfig?.text(), "osmosfeed.yaml file not found"));
 
   const systemFileHandles = await getFileHandles(__dirname);
-  const systemPublic = systemFileHandles.filter((handle) => handle.relativePath.startsWith("public"));
-  const systemIncludes = systemFileHandles.filter((handle) => handle.relativePath.startsWith("includes"));
-  const userPublic = userFileHandles.filter((handle) => handle.relativePath.startsWith("public"));
-  const userIncludes = userFileHandles.filter((handle) => handle.relativePath.startsWith("includes"));
-  const userCache = userFileHandles.find((file) => file.relativePath === "cache.json");
+  const systemStatic = systemFileHandles.filter((handle) => handle.relativePath.startsWith("static"));
+  const systemIncludes = systemFileHandles.filter(
+    (handle) => handle.relativePath.startsWith("includes") && handle.ext === ".hbs"
+  );
+  const userStatic = userFileHandles.filter((handle) => handle.relativePath.startsWith("static"));
+  const userIncludes = userFileHandles.filter(
+    (handle) => handle.relativePath.startsWith("includes") && handle.ext === ".hbs"
+  );
+  const userCache = userFileHandles.find((file) => file.relativePath === CACHE_PATH);
 
-  const cache = getCache(await userCache?.read().text(), (error) => console.error(`Cache loading error`, error));
+  reportFileDiscovery({
+    systemIncludes,
+    systemStatic,
+    userIncludes,
+    userStatic,
+    userCache,
+  });
 
-  const siteSrcHandles = getSiteSrc(systemPublic, systemIncludes, userPublic, userIncludes);
+  const cache = getCache(await userCache?.text(), (error) => console.error(`Cache loading error`, error));
 
-  console.log(config);
-  (() => exit(0))();
-
-  const { feed } = await buildFeed({
-    config,
+  const feeds = await buildFeeds({
+    projectConfig,
     cache,
-    onFetch: fetch,
-    onError: console.error,
-    onInfo: console.log,
+    fetch,
+    parse,
+    normalize: normalizeFeed,
+    merge: mergeFeed.bind(null, mergeItems.bind(null, 100)),
+    onProgress: reportFeedProgress,
   });
 
-  await writeCache(feed);
+  await fs.mkdir(path.resolve(path.dirname(CACHE_PATH)), { recursive: true });
+  await fs.writeFile(path.resolve(CACHE_PATH), JSON.stringify(feeds));
 
-  const site = await buildSite({
-    feed,
-    config,
-    siteSrcHandles,
-
-    onError: console.error,
-    onInfo: console.log,
+  const siteSrcHandles = getCopyPlan({
+    systemStatic,
+    systemIncludes,
+    userStatic,
+    userIncludes,
+    getOutPath: (handle) => (path.resolve("public"), handle.name),
   });
 
-  await writeSite({
-    site,
+  await executeCopyPlan(siteSrcHandles, reportCopy);
+
+  exit(0);
+
+  const executableTemplate = await compileTemplates({
+    templates: userIncludes?.length ? userIncludes : systemIncludes,
+    onTemplateRegistered: reportTemplateRegistration,
   });
-}
-
-function getBuiltInSiteSrc(fileHandles: any) {
-  throw new Error("Function not implemented.");
-}
-
-function getUserSiteSrc(fileHandles: any) {
-  throw new Error("Function not implemented.");
-}
-
-function getSiteSrc(...args: any[]) {
-  throw new Error("Function not implemented.");
-}
-
-function getWriter(): { writeFile: any } {
-  throw new Error("Function not implemented.");
-}
-
-function buildFeed(arg0: any): Promise<any> {
-  throw new Error("Function not implemented.");
-}
-
-function buildSite(arg0: { feed: any; config: any; siteSrcHandles: any; onError: any; onInfo: any }) {
-  throw new Error("Function not implemented.");
-}
-
-function cleanUp(getAudit: any) {
-  throw new Error("Function not implemented.");
-}
-function writeCache(feed: any) {
-  throw new Error("Function not implemented.");
-}
-function writeSite(arg0: { site: void }) {
-  throw new Error("Function not implemented.");
 }

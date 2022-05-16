@@ -3,27 +3,20 @@ import path, { basename, extname, resolve } from "path";
 
 export interface FileHandle {
   relativePath: string;
-  read: () => {
-    fullPath: string;
-    name: string;
-    ext: string;
-    text(): Promise<string>;
-  };
+  fullPath: string;
+  name: string;
+  ext: string;
+  text(): Promise<string>;
 }
 export async function getFileHandles(baseDir: string): Promise<FileHandle[]> {
   const filePaths = await getFilesRecursive(baseDir);
 
-  const readHandle = (fullPath: string) => ({
+  return filePaths.map((fullPath) => ({
+    relativePath: path.relative(baseDir, fullPath),
     fullPath,
     name: basename(fullPath),
     ext: extname(fullPath),
     text: async () => readFile(fullPath, "utf-8"),
-    json: async () => JSON.parse(await readFile(fullPath, "utf-8")),
-  });
-
-  return filePaths.map((fullPath) => ({
-    relativePath: path.relative(baseDir, fullPath),
-    read: () => readHandle(fullPath),
   }));
 }
 
