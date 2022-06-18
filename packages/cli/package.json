@@ -9,9 +9,9 @@
     "test:watch": "vitest watch --ui --open",
     "clean": "rm -rf bin"
   },
-  "main": "main.js",
+  "main": "dist/main.js",
   "bin": {
-    "osmosfeed": "main.js"
+    "osmosfeed": "dist/main.js"
   },
   "files": [
     "bin"
@@ -28,7 +28,7 @@
   },
   "homepage": "https://osmoscraft.org",
   "dependencies": {
-    "axios": "^0.25.0",
+    "axios": "^0.27.2",
     "cheerio": "^1.0.0-rc.10",
     "feed": "^4.2.2",
     "handlebars": "^4.7.7",
@@ -40,6 +40,6 @@
     "@types/node": "^16.11.24",
     "@vitest/ui": "^0.3.4",
     "esbuild": "^0.14.11",
-    "vitest": "^0.3.4"
+    "vitest": "^0.15.1"
   }
 }
