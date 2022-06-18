@@ -1,5 +1,6 @@
 import Parser from "rss-parser";
 import { getNonEmptyStringOrNull } from "../utils/ensure-string-content";
+import { resolveRelativeUrl } from "../utils/url";
 
 export interface ParsedFeed {
   link: string | null;
@@ -26,25 +27,28 @@ export interface ParsedFeedItem {
   };
 }
 
-export function normalizeFeed(feed: Parser.Output<CustomFields>): ParsedFeed {
+export function normalizeFeed(feed: Parser.Output<CustomFields>, feedUrl: string): ParsedFeed {
   return {
     link: getNonEmptyStringOrNull(feed.link),
     title: getNonEmptyStringOrNull(feed.title),
     items: feed.items.map((item) => {
+      const feedImage = getNonEmptyStringOrNull(feed.image?.url);
       const thumbnailImage = getNonEmptyStringOrNull(item["media:thumbnail"]);
       const enclosureImage = item.enclosure?.type.startsWith("image/")
         ? getNonEmptyStringOrNull(item.enclosure.url)
         : null;
+      const link = getNonEmptyStringOrNull(item.link);
+      const imageUrl = thumbnailImage ?? enclosureImage ?? feedImage;
 
       return {
         content: getNonEmptyStringOrNull(item.contentSnippet),
         creator: getNonEmptyStringOrNull(item.creator),
         guid: getNonEmptyStringOrNull(item.guid),
         isoDate: getNonEmptyStringOrNull(item.isoDate),
-        link: getNonEmptyStringOrNull(item.link),
+        link: link ? resolveRelativeUrl(link, feedUrl) : null,
         summary: getNonEmptyStringOrNull(item.summary),
         title: getNonEmptyStringOrNull(item.title),
-        imageUrl: thumbnailImage ?? enclosureImage,
+        imageUrl: imageUrl ? resolveRelativeUrl(imageUrl, feedUrl) : null,
         ...getItunesFields(item),
       };
     }),

@@ -1,6 +1,9 @@
 # v1.15.0
 
+- Added: Resolve relative URLs in item link and media
+- Added: Item thumbnail fallback to channel thumbnail
 - Chore: Dependency updates
+- Thank you: @cpwnd
 
 # v1.14.4
 

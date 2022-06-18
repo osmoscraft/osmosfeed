@@ -83,7 +83,7 @@ async function enrichInternal(enrichInput: EnrichInput): Promise<EnrichedSource 
     console.error(`[enrich] Parse source failed ${source.href}`);
     throw err;
   });
-  const feed = normalizeFeed(rawFeed);
+  const feed = normalizeFeed(rawFeed, source.href);
   const items = feed.items;
   const now = Date.now();
 
