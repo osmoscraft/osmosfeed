@@ -9,9 +9,9 @@
     "test:watch": "vitest watch --ui --open",
     "clean": "rm -rf bin"
   },
-  "main": "dist/main.js",
+  "main": "bin/main.js",
   "bin": {
-    "osmosfeed": "dist/main.js"
+    "osmosfeed": "bin/main.js"
   },
   "files": [
     "bin"
