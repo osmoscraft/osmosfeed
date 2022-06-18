@@ -2,12 +2,12 @@ import cheerio from "cheerio";
 import { performance } from "perf_hooks";
 import Parser from "rss-parser";
 import { downloadTextFile } from "../utils/download";
-import { getNonEmptyStringOrNull } from "../utils/ensure-string-content";
 import { getFirstNonNullItem } from "../utils/get-first-non-null-item";
 import { htmlToText } from "../utils/html-to-text";
 import { trimWithThreshold } from "../utils/trim-with-threshold";
 import type { Cache } from "./get-cache";
 import type { Config, Source } from "./get-config";
+import { normalizeFeed, ParsedFeedItem } from "./normalize-feed";
 
 const MILLISECONDS_PER_DAY = 86400000; // 1000 * 60 * 60 * 24
 const SUMMARY_TRIM_ACTIVATION_THRESHOLD = 2048; // characters
@@ -83,7 +83,7 @@ async function enrichInternal(enrichInput: EnrichInput): Promise<EnrichedSource 
     console.error(`[enrich] Parse source failed ${source.href}`);
     throw err;
   });
-  const feed = normalizeFeed(rawFeed);
+  const feed = normalizeFeed(rawFeed, source.href);
   const items = feed.items;
   const now = Date.now();
 
@@ -208,87 +208,6 @@ const unenrichableItem: EnrichItemResult = {
   publishedTime: null,
   imageUrl: null,
 };
-
-interface ParsedFeed {
-  link: string | null;
-  title: string | null;
-  items: ParsedFeedItem[];
-}
-
-interface ParsedFeedItem {
-  guid: string | null;
-  title: string | null;
-  link: string | null;
-  isoDate: string | null;
-  creator: string | null;
-  summary: string | null;
-  content: string | null;
-  imageUrl: string | null;
-  itunes?: {
-    duration: string;
-  };
-  enclosure?: {
-    url: string;
-    type: string;
-    length: number;
-  };
-}
-
-interface CustomFields {
-  itunes?: {
-    duration: string;
-  };
-  enclosure?: {
-    url: string;
-    type: string;
-    length: number;
-  };
-  "media:thumbnail": string;
-}
-
-function normalizeFeed(feed: Parser.Output<CustomFields>): ParsedFeed {
-  return {
-    link: getNonEmptyStringOrNull(feed.link),
-    title: getNonEmptyStringOrNull(feed.title),
-    items: feed.items.map((item) => {
-      const thumbnailImage = getNonEmptyStringOrNull(item["media:thumbnail"]);
-      const enclosureImage = item.enclosure?.type.startsWith("image/")
-        ? getNonEmptyStringOrNull(item.enclosure.url)
-        : null;
-
-      return {
-        content: getNonEmptyStringOrNull(item.contentSnippet),
-        creator: getNonEmptyStringOrNull(item.creator),
-        guid: getNonEmptyStringOrNull(item.guid),
-        isoDate: getNonEmptyStringOrNull(item.isoDate),
-        link: getNonEmptyStringOrNull(item.link),
-        summary: getNonEmptyStringOrNull(item.summary),
-        title: getNonEmptyStringOrNull(item.title),
-        imageUrl: thumbnailImage ?? enclosureImage,
-        ...getItunesFields(item),
-      };
-    }),
-  };
-}
-
-function getItunesFields(itunesItem: CustomFields) {
-  const itunes = itunesItem.itunes
-    ? {
-        duration: itunesItem.itunes.duration,
-      }
-    : undefined;
-
-  const enclosure = itunesItem.enclosure
-    ? {
-        ...itunesItem.enclosure,
-      }
-    : undefined;
-
-  return {
-    itunes,
-    enclosure,
-  };
-}
 
 // TODO improve summary accuracy
 // when `content:encodedSnippet` exists and differs from content, we can assume content is the summary.

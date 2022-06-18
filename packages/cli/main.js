@@ -1,4 +1,5 @@
 #!/usr/bin/env node
 
-// This file is not needed when this issue is resolved: https://github.com/npm/cli/issues/2632
+// This file is needed because bin/main.js does not exist during the initial `npm install`
+// and the executable `osmosfeed` won't be created.
 require("./bin/main");

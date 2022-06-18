@@ -1,8 +1,8 @@
 import { Feed } from "feed";
+import { getHostnameFromUrl } from "../utils/url";
 import { cliVersion } from "../utils/version";
-import type { Config } from "./get-config";
 import type { EnrichedArticle, EnrichedSource } from "./enrich";
-import { getHostnameFromUrl } from "../utils/get-hostname-from-url";
+import type { Config } from "./get-config";
 import { CACHE_FILENAME } from "./path-constants";
 
 export const FEED_FILENAME = "feed.atom";
