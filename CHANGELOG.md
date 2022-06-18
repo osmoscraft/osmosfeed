@@ -1,3 +1,7 @@
+# v1.15.0
+
+- Chore: Dependency updates
+
 # v1.14.4
 
 - Fixed: Several style issues
