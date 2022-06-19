@@ -1,0 +1,23 @@
+{
+  "name": "lib",
+  "private": true,
+  "version": "0.0.1",
+  "description": "",
+  "scripts": {
+    "dev": "vitest watch --ui --open",
+    "test": "vitest run"
+  },
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "keywords": [],
+  "author": "osmoscraft",
+  "license": "MIT",
+  "homepage": "https://osmoscraft.org",
+  "devDependencies": {
+    "vitest": "^0.12.6"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.10",
+    "htmlparser2": "^7.0.0"
+  }
+}
