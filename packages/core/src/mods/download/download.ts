@@ -1,6 +1,6 @@
-import { getSmartFetch } from "../utils/fetch";
-import { isValid, toError } from "../utils/flow-control";
-import type { PipeFeed } from "./pipe-feed";
+import { getSmartFetch } from "../../utils/fetch";
+import { isValid, toError } from "../../utils/flow-control";
+import type { PipeFeed } from "../pipe-feed";
 
 export function useDownload(): (feed: PipeFeed) => Promise<PipeFeed> {
   return async (feed) => {

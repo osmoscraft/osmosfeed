@@ -17,11 +17,11 @@
   "devDependencies": {
     "@types/node": "^18.0.0",
     "tsx": "^3.4.3",
-    "vitest": "^0.12.6"
+    "vitest": "^0.15.1"
   },
   "dependencies": {
-    "cheerio": "^1.0.0-rc.10",
-    "htmlparser2": "^7.0.0",
+    "cheerio": "^1.0.0-rc.11",
+    "htmlparser2": "^8.0.1",
     "node-fetch": "^3.2.6"
   }
 }

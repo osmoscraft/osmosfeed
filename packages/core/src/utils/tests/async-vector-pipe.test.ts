@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { asyncVectorPipeFactory } from "./async-vector-pipe";
+import { asyncVectorPipeFactory } from "../async-vector-pipe";
 
 describe("asyncVectorPipe", () => {
   it("Empty", async () => {

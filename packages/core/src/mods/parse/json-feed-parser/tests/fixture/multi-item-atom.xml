@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Mock channel title</title>
+  <subtitle>Mock channel description</subtitle>
+  <link href="http://mock-domain.com"/>
+  <entry>
+    <title>Mock item title 1</title>
+    <link href="http://mock-domain.com/item/1"/>
+    <id>urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a</id>
+    <summary>Mock item description 1</summary>
+    <content>Mock item content 1</content>
+    <link rel="enclosure" type="image/png" href="http://mock-domain.com/item-image-1.png" />
+    <published>2000-01-01T00:00:00Z</published>
+    <updated>2000-12-12T12:12:12Z</updated>
+  </entry>
+  <entry>
+    <title>Mock item title 2</title>
+    <link href="http://mock-domain.com/item/2"/>
+    <id>urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6b</id>
+    <summary>Mock item description 2</summary>
+    <content>Mock item content 2</content>
+  </entry>
+</feed>
