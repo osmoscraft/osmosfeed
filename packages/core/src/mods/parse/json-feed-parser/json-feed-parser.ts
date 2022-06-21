@@ -2,7 +2,7 @@ import type { AnyNode, Cheerio, Document, Element } from "cheerio";
 import * as cheerio from "cheerio";
 import * as htmlparser2 from "htmlparser2";
 import { ElementType } from "htmlparser2";
-import type { JsonFeed, JsonFeedItem } from "../../json-feed";
+import type { JsonFeed, JsonFeedItem } from "../../types";
 
 export interface LanguageParser {
   match: (root: Cheerio<Document>) => boolean;

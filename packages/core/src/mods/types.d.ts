@@ -1,3 +1,20 @@
+export interface PipeFeed {
+  cache?: Error | NormalizedFeed;
+  config?:
+    | Error
+    | {
+        url: string;
+      };
+  download?:
+    | Error
+    | {
+        content: string;
+        mediaType: string | null;
+      };
+  jsonFeed?: Error | JsonFeed;
+  normalizedFeed?: Error | NormalizedFeed;
+}
+
 export type JsonFeed<FeedExtensionsType = {}, ItemExtensionsType = {}> = {
   version: string;
   title: string;
@@ -19,3 +36,6 @@ export type JsonFeedItem<ItemExtensionsType = {}> = {
   summary?: string;
   image?: string;
 } & ItemExtensionsType;
+
+export type NormalizedFeed = JsonFeed<{ feed_url: string }, { date_published: string }>;
+export type NormalizedItem = JsonFeedItem<{ date_published: string }>;

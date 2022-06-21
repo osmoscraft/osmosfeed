@@ -1,13 +1,14 @@
-import { isValid, toError } from "../../utils/flow-control";
-import type { PipeFeed } from "../pipe-feed";
+import { asError, extractError, undefinedAsError } from "../../utils/error";
+import type { PipeFeed } from "../types";
 import { parse } from "./json-feed-parser/json-feed-parser";
 
 export function useParse(): (feed: PipeFeed) => Promise<PipeFeed> {
   return async (feed) => {
-    if (!isValid(feed.download)) return feed;
+    const [download, downloadError] = extractError(undefinedAsError(feed.download));
+    if (downloadError) return feed;
 
     try {
-      const jsonFeed = await parse(feed.download.content);
+      const jsonFeed = await parse(download.content);
       return {
         ...feed,
         jsonFeed: jsonFeed,
@@ -15,7 +16,7 @@ export function useParse(): (feed: PipeFeed) => Promise<PipeFeed> {
     } catch (e) {
       return {
         ...feed,
-        jsonFeed: toError(e),
+        jsonFeed: asError(e),
       };
     }
   };

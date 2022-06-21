@@ -1,0 +1,3 @@
+- Image extraction
+  - Handle atom logo in addition to icon
+- Unit test all pipe modules

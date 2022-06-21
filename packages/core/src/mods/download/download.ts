@@ -1,14 +1,15 @@
+import { asError, extractError, undefinedAsError } from "../../utils/error";
 import { getSmartFetch } from "../../utils/fetch";
-import { isValid, toError } from "../../utils/flow-control";
-import type { PipeFeed } from "../pipe-feed";
+import type { PipeFeed } from "../types";
 
 export function useDownload(): (feed: PipeFeed) => Promise<PipeFeed> {
   return async (feed) => {
-    if (!isValid(feed.config)) return feed;
+    const [config, configError] = extractError(undefinedAsError(feed.config));
+    if (configError) return feed;
 
     try {
       const fetch = getSmartFetch();
-      const response = await fetch(feed.config.url);
+      const response = await fetch(config.url);
       return {
         ...feed,
         download: response.ok
@@ -21,7 +22,7 @@ export function useDownload(): (feed: PipeFeed) => Promise<PipeFeed> {
     } catch (e) {
       return {
         ...feed,
-        download: toError(e),
+        download: asError(e),
       };
     }
   };
