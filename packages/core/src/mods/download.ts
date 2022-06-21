@@ -1,4 +1,5 @@
-import { isValid, toError } from "../kernel/flow-control";
+import { getSmartFetch } from "../utils/fetch";
+import { isValid, toError } from "../utils/flow-control";
 import type { PipeFeed } from "./pipe-feed";
 
 export function useDownload(): (feed: PipeFeed) => Promise<PipeFeed> {
@@ -6,6 +7,7 @@ export function useDownload(): (feed: PipeFeed) => Promise<PipeFeed> {
     if (!isValid(feed.configResult)) return feed;
 
     try {
+      const fetch = getSmartFetch();
       const response = await fetch(feed.configResult.url);
       return {
         ...feed,

@@ -1,6 +1,6 @@
-import { asyncVectorPipeFactory } from "./kernel/async-vector-pipe";
 import { useDownload } from "./mods/download";
 import type { PipeFeed } from "./mods/pipe-feed";
+import { asyncVectorPipeFactory } from "./utils/async-vector-pipe";
 
 const pipe = asyncVectorPipeFactory<PipeFeed>(useDownload());
 
