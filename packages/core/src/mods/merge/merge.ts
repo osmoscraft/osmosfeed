@@ -1,32 +1,47 @@
-import { extractError, undefinedAsError } from "../../utils/error";
-import type { NormalizedFeed, NormalizedItem, PipeFeed } from "../types";
+import { asError, extractError, undefinedAsError } from "../../utils/error";
+import type { MergeFeedSummary, MergeItemsSummary, NormalizedFeed, NormalizedItem, PipeFeed } from "../types";
 
 export function useMerge(): (feed: PipeFeed) => Promise<PipeFeed> {
   return async (feed) => {
     const [normalizedFeed, normalizedFeedError] = extractError(undefinedAsError(feed.normalizedFeed));
+    const [cacheRead, cacheReadError] = extractError(undefinedAsError(feed.cacheRead));
 
-    // TODO
-    // cache OK, feed ERR => reuse cache
-    // cache OK, feed OK => merge
-    // cache BAD, feed OK => use feed
-    // cache BAD, feed BAD => error
+    const remoteFeed = normalizedFeedError ? null : normalizedFeed;
+    const cachedFeed = cacheReadError ? null : cacheRead;
 
-    return feed;
-}
+    if (remoteFeed === null && cachedFeed === null) {
+      return {
+        ...feed,
+        mergedFeed: new Error("Both cached and remote feed are missing"),
+      };
+    }
 
-export interface MergeFeedSummary extends MergeItemsSummary {
-  feed: NormalizedFeed;
+    try {
+      const mergeSummary = mergeFeed(mergeItems.bind(null, 100), remoteFeed, cachedFeed);
+      return {
+        ...feed,
+        mergedFeed: mergeSummary,
+      };
+    } catch (e) {
+      return {
+        ...feed,
+        mergedFeed: asError(e),
+      };
+    }
+  };
 }
 
 export function mergeFeed(
   mergeItems: (parsedItems: NormalizedItem[], cachedItems: NormalizedItem[]) => MergeItemsSummary,
-  parsedFeed: NormalizedFeed,
-  cachedFeed?: NormalizedFeed
+  remoteFeed: NormalizedFeed | null,
+  cachedFeed: NormalizedFeed | null
 ): MergeFeedSummary {
-  const mergeItemsSummary = mergeItems(parsedFeed.items, cachedFeed?.items ?? []);
+  if (!remoteFeed && !cachedFeed) throw new Error("Cannot merge when both remote and cached feeds are missing");
+
+  const mergeItemsSummary = mergeItems(remoteFeed?.items ?? [], cachedFeed?.items ?? []);
 
   const mergedFeed: NormalizedFeed = {
-    ...parsedFeed, // always use metadata from parsed feed
+    ...(remoteFeed ?? cachedFeed!), // we have checked at least one of them exist
     items: mergeItemsSummary.items,
   };
 
@@ -34,14 +49,6 @@ export function mergeFeed(
     feed: mergedFeed,
     ...mergeItemsSummary,
   };
-}
-
-export interface MergeItemsSummary {
-  items: NormalizedItem[];
-  added: number;
-  updated: number;
-  unchanged: number;
-  removed: number;
 }
 
 export function mergeItems(

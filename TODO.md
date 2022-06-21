@@ -1,3 +1,10 @@
+- Pipe step impl
+  - Cache reader
+  - Cache writer
+  - Config loader
+  - Site generator
 - Image extraction
   - Handle atom logo in addition to icon
 - Unit test all pipe modules
+  - Merge
+  - Cache

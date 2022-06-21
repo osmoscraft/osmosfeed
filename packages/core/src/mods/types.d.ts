@@ -1,5 +1,6 @@
 export interface PipeFeed {
-  cache?: Error | NormalizedFeed;
+  cacheRead?: Error | null | NormalizedFeed;
+  cacheWrite?: any; // TODO
   config?:
     | Error
     | {
@@ -13,6 +14,7 @@ export interface PipeFeed {
       };
   jsonFeed?: Error | JsonFeed;
   normalizedFeed?: Error | NormalizedFeed;
+  mergedFeed?: Error | MergeFeedSummary;
 }
 
 export type JsonFeed<FeedExtensionsType = {}, ItemExtensionsType = {}> = {
@@ -39,3 +41,15 @@ export type JsonFeedItem<ItemExtensionsType = {}> = {
 
 export type NormalizedFeed = JsonFeed<{ feed_url: string }, { date_published: string }>;
 export type NormalizedItem = JsonFeedItem<{ date_published: string }>;
+
+export interface MergeFeedSummary extends MergeItemsSummary {
+  feed: NormalizedFeed;
+}
+
+export interface MergeItemsSummary {
+  items: NormalizedItem[];
+  added: number;
+  updated: number;
+  unchanged: number;
+  removed: number;
+}
