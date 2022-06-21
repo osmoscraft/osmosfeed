@@ -8,8 +8,8 @@ const pipe = asyncVectorPipeFactory<PipeFeed>(useDownload(), useParse());
 async function main() {
   const out = await pipe([
     {
-      configResult: {
-        url: "https://www.google.com",
+      config: {
+        url: "https://css-tricks.com/feed/",
       },
     },
   ]);

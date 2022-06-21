@@ -10,12 +10,12 @@ export function useParse(): (feed: PipeFeed) => Promise<PipeFeed> {
       const jsonFeed = await parse(feed.download.content);
       return {
         ...feed,
-        parseResult: jsonFeed,
+        jsonFeed: jsonFeed,
       };
     } catch (e) {
       return {
         ...feed,
-        parseResult: toError(e),
+        jsonFeed: toError(e),
       };
     }
   };

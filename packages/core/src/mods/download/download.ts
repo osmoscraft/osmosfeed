@@ -4,11 +4,11 @@ import type { PipeFeed } from "../pipe-feed";
 
 export function useDownload(): (feed: PipeFeed) => Promise<PipeFeed> {
   return async (feed) => {
-    if (!isValid(feed.configResult)) return feed;
+    if (!isValid(feed.config)) return feed;
 
     try {
       const fetch = getSmartFetch();
-      const response = await fetch(feed.configResult.url);
+      const response = await fetch(feed.config.url);
       return {
         ...feed,
         download: response.ok

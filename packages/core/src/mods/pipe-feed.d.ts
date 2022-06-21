@@ -1,7 +1,7 @@
 import type { JsonFeed } from "./json-feed";
 
 export interface PipeFeed {
-  configResult?:
+  config?:
     | Error
     | {
         url: string;
@@ -12,11 +12,5 @@ export interface PipeFeed {
         content: string;
         mediaType: string | null;
       };
-  parseResult?: Error | JsonFeed;
-  transformResult?:
-    | Error
-    | {
-        feed: Record<string, any>;
-        items: Record<string, any>[];
-      };
+  jsonFeed?: Error | JsonFeed;
 }
