@@ -2,18 +2,18 @@ import { describe, expect, it } from "vitest";
 import { asyncVectorPipe } from "../async-vector-pipe";
 
 describe("asyncVectorPipe", () => {
-  it("Empty", async () => {
+  it("empty", async () => {
     const pipe = asyncVectorPipe(() => []);
     expect(pipe).toBeDefined();
   });
 
-  it("Empty pipe mirrors input", async () => {
+  it("empty pipe mirrors input", async () => {
     const pipe = asyncVectorPipe(() => [1]);
     const output = await pipe();
     expect(output).toEqual([1]);
   });
 
-  it("Single map", async () => {
+  it("single map", async () => {
     const pipe = asyncVectorPipe(
       () => [1],
       (i: number) => i * 2
@@ -22,7 +22,7 @@ describe("asyncVectorPipe", () => {
     expect(output).toEqual([2]);
   });
 
-  it("Single async map", async () => {
+  it("single async map", async () => {
     const pipe = asyncVectorPipe(
       () => [1],
       async (i: number) => i * 2
@@ -31,7 +31,7 @@ describe("asyncVectorPipe", () => {
     expect(output).toEqual([2]);
   });
 
-  it("Single async map on multiple elements", async () => {
+  it("single async map on multiple elements", async () => {
     const pipe = asyncVectorPipe(
       () => [1, 2, 3],
       async (i: number) => i * 2
@@ -40,7 +40,7 @@ describe("asyncVectorPipe", () => {
     expect(output).toEqual([2, 4, 6]);
   });
 
-  it("Single async map on zero elements", async () => {
+  it("single async map on zero elements", async () => {
     const pipe = asyncVectorPipe(
       () => [],
       async (i: number) => i * 2
@@ -49,7 +49,7 @@ describe("asyncVectorPipe", () => {
     expect(output).toEqual([]);
   });
 
-  it("Multi async maps", async () => {
+  it("multi async maps", async () => {
     const pipe = asyncVectorPipe(
       () => [1, 2, 3],
       async (i: number) => i + 1,
@@ -59,7 +59,7 @@ describe("asyncVectorPipe", () => {
     expect(output).toEqual([4, 6, 8]);
   });
 
-  it("Concurrency: normal order", async () => {
+  it("concurrency: normal order", async () => {
     const records: any[] = [];
 
     let step1BaseIndex = 0;
@@ -96,7 +96,7 @@ describe("asyncVectorPipe", () => {
     expect(records).toEqual([0, 1, 2, 3]);
   });
 
-  it("Concurrency: in-step pipe reordering", async () => {
+  it("concurrency: in-step pipe reordering", async () => {
     const records: any[] = [];
 
     let step1BaseIndex = 0;
@@ -133,7 +133,7 @@ describe("asyncVectorPipe", () => {
     expect(records).toEqual([1, 0, 2, 3]);
   });
 
-  it("Concurrency: full pipe reordering", async () => {
+  it("concurrency: full pipe reordering", async () => {
     const records: any[] = [];
 
     let step1BaseIndex = 0;

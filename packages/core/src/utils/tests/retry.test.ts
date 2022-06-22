@@ -2,12 +2,12 @@ import { describe, expect, it } from "vitest";
 import { withAsyncRetry } from "../retry";
 
 describe("withAsyncRetry", () => {
-  it("Compiles", () => {
+  it("compiles", () => {
     const fn = withAsyncRetry(async () => {}, { retry: 3, delay: 1000 });
     expect(typeof fn).toBe("function");
   });
 
-  it("Executes 1st time", async () => {
+  it("executes 1st time", async () => {
     const runOutput: any[] = [];
     const fn = withAsyncRetry(
       async () => {
@@ -20,7 +20,7 @@ describe("withAsyncRetry", () => {
     expect(runOutput).toEqual(["1"]);
   });
 
-  it("Throws on error", async () => {
+  it("throws on error", async () => {
     const fn = withAsyncRetry(
       async () => {
         throw new Error();
@@ -31,7 +31,7 @@ describe("withAsyncRetry", () => {
     expect(() => fn()).rejects.toThrow();
   });
 
-  it("Throws on error after exhausting retries", async () => {
+  it("throws on error after exhausting retries", async () => {
     let tryCount = 0;
     const fn = withAsyncRetry(
       async () => {
@@ -45,7 +45,7 @@ describe("withAsyncRetry", () => {
     expect(tryCount).toBe(4);
   });
 
-  it("Recovers after 1 retry", async () => {
+  it("recovers after 1 retry", async () => {
     let tryCount = 0;
     let successCount = 0;
     const fn = withAsyncRetry(
