@@ -1,3 +1,7 @@
+# v1.15.1
+
+- Fixed: Favicon used as article image
+
 # v1.15.0
 
 - Added: Resolve relative URLs in item link and media

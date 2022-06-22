@@ -155,36 +155,6 @@ describe("normalizeFeed", () => {
     expect(result.items[0].link).toBe("https://example.com/asset/page.html");
   });
 
-  it("resolve image url from feed", () => {
-    const mockInput: Parser.Output<any> = {
-      link: "https://example.com/",
-      feedUrl: "https://example.com/feed/feed.xml",
-      image: {
-        url: "https://example.com/asset/image.png",
-      },
-      title: "Mock title",
-      items: [{}],
-    };
-    const result = normalizeFeed(mockInput, "https://example.com/feed/feed.xml");
-
-    expect(result.items[0].imageUrl).toBe("https://example.com/asset/image.png");
-  });
-
-  it("resolve relative image url from feed", () => {
-    const mockInput: Parser.Output<any> = {
-      link: "https://example.com/",
-      feedUrl: "https://example.com/feed/feed.xml",
-      image: {
-        url: "/asset/image.png",
-      },
-      title: "Mock title",
-      items: [{}],
-    };
-    const result = normalizeFeed(mockInput, "https://example.com/feed/feed.xml");
-
-    expect(result.items[0].imageUrl).toBe("https://example.com/asset/image.png");
-  });
-
   it("resolve image url from enclosure", () => {
     const mockInput: Parser.Output<any> = {
       link: "https://example.com/",

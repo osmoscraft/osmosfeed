@@ -32,13 +32,12 @@ export function normalizeFeed(feed: Parser.Output<CustomFields>, feedUrl: string
     link: getNonEmptyStringOrNull(feed.link),
     title: getNonEmptyStringOrNull(feed.title),
     items: feed.items.map((item) => {
-      const feedImage = getNonEmptyStringOrNull(feed.image?.url);
       const thumbnailImage = getNonEmptyStringOrNull(item["media:thumbnail"]);
       const enclosureImage = item.enclosure?.type.startsWith("image/")
         ? getNonEmptyStringOrNull(item.enclosure.url)
         : null;
       const link = getNonEmptyStringOrNull(item.link);
-      const imageUrl = thumbnailImage ?? enclosureImage ?? feedImage;
+      const imageUrl = thumbnailImage ?? enclosureImage;
 
       return {
         content: getNonEmptyStringOrNull(item.contentSnippet),
