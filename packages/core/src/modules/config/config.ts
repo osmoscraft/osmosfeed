@@ -1,6 +1,6 @@
 import { asError, extractError, undefinedAsError } from "../../utils/error";
 import { escapeUnicodeUrl } from "../../utils/url";
-import type { PipeFeed } from "../types";
+import type { PipeFeed, ProjectConfig } from "../types";
 
 export function useConfig(): (feed: PipeFeed) => Promise<PipeFeed> {
   return async (feed) => {
@@ -22,4 +22,21 @@ export function useConfig(): (feed: PipeFeed) => Promise<PipeFeed> {
       };
     }
   };
+}
+
+export function useInlineConfig(config: ProjectConfig): () => PipeFeed[] {
+  return () =>
+    config.feeds.map((feed) => {
+      try {
+        return {
+          config: {
+            url: escapeUnicodeUrl(feed.url),
+          },
+        };
+      } catch (e) {
+        return {
+          config: asError(e),
+        };
+      }
+    });
 }

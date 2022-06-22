@@ -17,6 +17,12 @@ export interface PipeFeed {
   mergedFeed?: Error | MergeFeedSummary;
 }
 
+export interface ProjectConfig {
+  feeds: {
+    url: string;
+  }[];
+}
+
 export type JsonFeed<FeedExtensionsType = {}, ItemExtensionsType = {}> = {
   version: string;
   title: string;

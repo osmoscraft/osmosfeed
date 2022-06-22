@@ -1,7 +1,12 @@
 import { asError, extractError, undefinedAsError } from "../../utils/error";
 import type { PipeFeed } from "../types";
 
-export function useCacheReader(): (feed: PipeFeed) => Promise<PipeFeed> {
+export const useCache = {
+  reader: useCacheReader,
+  writer: useCacheWriter,
+};
+
+function useCacheReader(): (feed: PipeFeed) => Promise<PipeFeed> {
   return async (feed) => {
     const [config, configError] = extractError(undefinedAsError(feed.config));
     if (configError) return feed;
@@ -22,7 +27,7 @@ export function useCacheReader(): (feed: PipeFeed) => Promise<PipeFeed> {
   };
 }
 
-export function useCacheWriter(): (feed: PipeFeed) => Promise<PipeFeed> {
+function useCacheWriter(): (feed: PipeFeed) => Promise<PipeFeed> {
   return async (feed) => {
     // TODO write cache to disk
 

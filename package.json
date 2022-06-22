@@ -7,7 +7,7 @@
     "doc": "docs"
   },
   "scripts": {
-    "start": "npm start -w packages/core",
+    "start": "npm start -w packages/sandbox",
     "dev": "npm run dev -w packages/core",
     "test": "npm run test -w packages/core",
     "clean": "npm run clean --workspaces=true"

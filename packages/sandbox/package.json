@@ -1,0 +1,14 @@
+{
+  "name": "sandbox",
+  "version": "1.0.0",
+  "description": "For developement use only",
+  "main": "main.js",
+  "scripts": {
+    "start": "npx tsx main.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@osmosfeed/core": "../core"
+  }
+}

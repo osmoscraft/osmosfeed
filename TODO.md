@@ -8,3 +8,7 @@
 - Unit test all pipe modules
   - Merge
   - Cache
+- Alpha objectives
+  - Evaluate tsx runtime stability
+  - Evalutae github 60d no-disable hack
+  - Evaluate node native fetch stability, performance, and TCP connection pooling
