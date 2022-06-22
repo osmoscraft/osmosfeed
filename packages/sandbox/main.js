@@ -25,7 +25,8 @@ const customPipe = pipe(
   useCacheWriter()
 );
 
-customPipe().then((out) =>
+customPipe().then(
+  // (out) => console.log(out.map((i) => i.mergedFeed))
   console.log(
     JSON.parse(JSON.stringify(out, (k, v) => (k === "content" ? v.slice(0, 100) + " | result truncated..." : v), 2))
   )

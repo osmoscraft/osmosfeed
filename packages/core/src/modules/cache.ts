@@ -1,4 +1,4 @@
-import { mkdir, writeFile } from "fs/promises";
+import { mkdir, readFile, writeFile } from "fs/promises";
 import path, { dirname } from "path";
 import process from "process";
 import { asError, extractError, undefinedAsError } from "../utils/error";
@@ -10,14 +10,23 @@ export function useCacheReader(): (feed: PipeFeed) => Promise<PipeFeed> {
     const [config, configError] = extractError(undefinedAsError(feed.config));
     if (configError) return feed;
 
-    // TODO read cache from disk
+    const filename = `${urlToFilename(config.url)}.json`;
+    const cachePath = path.join(process.cwd(), "dist/cache", filename);
 
     try {
+      const cache = await readFile(cachePath, "utf-8");
+      const parsedCache = JSON.parse(cache);
       return {
         ...feed,
-        cacheRead: null,
+        cacheRead: parsedCache,
       };
     } catch (e) {
+      if ((e as any).code === "ENOENT")
+        return {
+          ...feed,
+          cacheRead: null,
+        };
+
       return {
         ...feed,
         cacheRead: asError(e),
@@ -28,7 +37,6 @@ export function useCacheReader(): (feed: PipeFeed) => Promise<PipeFeed> {
 
 export function useCacheWriter(): (feed: PipeFeed) => Promise<PipeFeed> {
   return async (feed) => {
-    // TODO write cache to disk
     const [config, configError] = extractError(undefinedAsError(feed.config));
     if (configError) return feed;
 
