@@ -1,61 +1,61 @@
 import { describe, expect, it } from "vitest";
-import { asyncVectorPipe } from "../async-vector-pipe";
+import { pipe } from "../pipe";
 
 describe("asyncVectorPipe", () => {
   it("empty", async () => {
-    const pipe = asyncVectorPipe(() => []);
-    expect(pipe).toBeDefined();
+    const mockPipe = pipe(() => []);
+    expect(mockPipe).toBeDefined();
   });
 
-  it("empty pipe mirrors input", async () => {
-    const pipe = asyncVectorPipe(() => [1]);
-    const output = await pipe();
+  it("empty mockPipe mirrors input", async () => {
+    const mockPipe = pipe(() => [1]);
+    const output = await mockPipe();
     expect(output).toEqual([1]);
   });
 
   it("single map", async () => {
-    const pipe = asyncVectorPipe(
+    const mockPipe = pipe(
       () => [1],
       (i: number) => i * 2
     );
-    const output = await pipe();
+    const output = await mockPipe();
     expect(output).toEqual([2]);
   });
 
   it("single async map", async () => {
-    const pipe = asyncVectorPipe(
+    const mockPipe = pipe(
       () => [1],
       async (i: number) => i * 2
     );
-    const output = await pipe();
+    const output = await mockPipe();
     expect(output).toEqual([2]);
   });
 
   it("single async map on multiple elements", async () => {
-    const pipe = asyncVectorPipe(
+    const mockPipe = pipe(
       () => [1, 2, 3],
       async (i: number) => i * 2
     );
-    const output = await pipe();
+    const output = await mockPipe();
     expect(output).toEqual([2, 4, 6]);
   });
 
   it("single async map on zero elements", async () => {
-    const pipe = asyncVectorPipe(
+    const mockPipe = pipe(
       () => [],
       async (i: number) => i * 2
     );
-    const output = await pipe();
+    const output = await mockPipe();
     expect(output).toEqual([]);
   });
 
   it("multi async maps", async () => {
-    const pipe = asyncVectorPipe(
+    const mockPipe = pipe(
       () => [1, 2, 3],
       async (i: number) => i + 1,
       async (i: number) => i * 2
     );
-    const output = await pipe();
+    const output = await mockPipe();
     expect(output).toEqual([4, 6, 8]);
   });
 
@@ -81,13 +81,13 @@ describe("asyncVectorPipe", () => {
       };
     });
 
-    const pipe = asyncVectorPipe(
+    const mockPipe = pipe(
       () => ["", ""],
       () => mockOutputs[step1BaseIndex++].value,
       () => mockOutputs[step2BaseIndex++].value
     );
 
-    const resultAsync = pipe();
+    const resultAsync = mockPipe();
 
     [0, 1, 2, 3].forEach((i) => mockOutputs[i].resolve(""));
 
@@ -96,7 +96,7 @@ describe("asyncVectorPipe", () => {
     expect(records).toEqual([0, 1, 2, 3]);
   });
 
-  it("concurrency: in-step pipe reordering", async () => {
+  it("concurrency: in-step mockPipe reordering", async () => {
     const records: any[] = [];
 
     let step1BaseIndex = 0;
@@ -118,13 +118,13 @@ describe("asyncVectorPipe", () => {
       };
     });
 
-    const pipe = asyncVectorPipe(
+    const mockPipe = pipe(
       () => ["", ""],
       () => mockOutputs[step1BaseIndex++].value,
       () => mockOutputs[step2BaseIndex++].value
     );
 
-    const resultAsync = pipe();
+    const resultAsync = mockPipe();
 
     [1, 0, 2, 3].forEach((i) => mockOutputs[i].resolve(""));
 
@@ -133,7 +133,7 @@ describe("asyncVectorPipe", () => {
     expect(records).toEqual([1, 0, 2, 3]);
   });
 
-  it("concurrency: full pipe reordering", async () => {
+  it("concurrency: full mockPipe reordering", async () => {
     const records: any[] = [];
 
     let step1BaseIndex = 0;
@@ -155,13 +155,13 @@ describe("asyncVectorPipe", () => {
       };
     });
 
-    const pipe = asyncVectorPipe(
+    const mockPipe = pipe(
       () => ["", ""],
       () => mockOutputs[step1BaseIndex++].value,
       () => mockOutputs[step2BaseIndex++].value
     );
 
-    const resultAsync = pipe();
+    const resultAsync = mockPipe();
 
     [2, 3, 0, 1].forEach((i) => mockOutputs[i].resolve(""));
 

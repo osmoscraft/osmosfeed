@@ -1,6 +1,6 @@
-import { asError, extractError, undefinedAsError } from "../../utils/error";
-import type { PipeFeed } from "../types";
-import { parse } from "./json-feed-parser/json-feed-parser";
+import { asError, extractError, undefinedAsError } from "../utils/error";
+import { parse } from "./parse/json-feed-parser";
+import type { PipeFeed } from "./types";
 
 export function useParse(): (feed: PipeFeed) => Promise<PipeFeed> {
   return async (feed) => {

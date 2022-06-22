@@ -1,6 +1,6 @@
-import { asError, extractError, undefinedAsError } from "../../utils/error";
-import { getSmartFetch } from "../../utils/fetch";
-import type { PipeFeed } from "../types";
+import { asError, extractError, undefinedAsError } from "../utils/error";
+import { getSmartFetch } from "../utils/fetch";
+import type { PipeFeed } from "./types";
 
 export function useDownload(): (feed: PipeFeed) => Promise<PipeFeed> {
   return async (feed) => {

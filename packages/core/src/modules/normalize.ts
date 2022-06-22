@@ -1,5 +1,5 @@
-import { asError, extractError, undefinedAsError } from "../../utils/error";
-import type { PipeFeed } from "../types";
+import { asError, extractError, undefinedAsError } from "../utils/error";
+import type { PipeFeed } from "./types";
 
 export function useNormalize(): (feed: PipeFeed) => Promise<PipeFeed> {
   return async (feed) => {

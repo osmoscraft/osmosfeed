@@ -1,5 +1,5 @@
-import { asError, extractError, undefinedAsError } from "../../utils/error";
-import type { MergeFeedSummary, MergeItemsSummary, NormalizedFeed, NormalizedItem, PipeFeed } from "../types";
+import { asError, extractError, undefinedAsError } from "../utils/error";
+import type { MergeFeedSummary, MergeItemsSummary, NormalizedFeed, NormalizedItem, PipeFeed } from "./types";
 
 export function useMerge(): (feed: PipeFeed) => Promise<PipeFeed> {
   return async (feed) => {

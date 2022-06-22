@@ -1,6 +1,6 @@
 export interface PipeFeed {
   cacheRead?: Error | null | NormalizedFeed;
-  cacheWrite?: any; // TODO
+  cacheWrite?: Error | string; // TODO
   config?:
     | Error
     | {
