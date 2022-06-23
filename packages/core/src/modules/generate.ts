@@ -14,7 +14,7 @@ export function useGenerateWeb(): (feed: PipeFeed) => Promise<PipeFeed> {
     } catch (e) {
       return {
         ...feed,
-        generate: asError(e)
+        generate: asError(e),
       };
     }
   };

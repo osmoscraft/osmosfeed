@@ -8,8 +8,8 @@
   },
   "scripts": {
     "start": "npm start -w packages/sandbox",
-    "dev": "npm run dev -w packages/core",
-    "test": "npm run test -w packages/core",
+    "dev": "npm run dev -w packages/runtime",
+    "test": "npm run test -w packages/runtime",
     "clean": "npm run clean --workspaces=true"
   },
   "repository": {
