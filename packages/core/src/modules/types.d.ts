@@ -15,6 +15,7 @@ export interface PipeFeed {
   jsonFeed?: Error | JsonFeed;
   normalizedFeed?: Error | NormalizedFeed;
   mergedFeed?: Error | MergeFeedSummary;
+  generate?: Error | true;
 }
 
 export interface ProjectConfig {
