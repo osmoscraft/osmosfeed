@@ -1,9 +1,9 @@
 export interface PipeConfig<T> {
-  preProjectTasks?: ((feeds: T[][]) => T[][] | Promise<T[][]>)[];
+  preProjectTasks?: ((project: T[][]) => T[][] | Promise<T[][]>)[];
   preFeedTasks?: ((feed: T[]) => T[] | Promise<T[]>)[];
-  itemTasks?: ((feed: T) => T | Promise<T>)[];
+  itemTasks?: ((item: T) => T | Promise<T>)[];
   postFeedTasks?: ((feed: T[]) => T[] | Promise<T[]>)[];
-  postProjectTasks?: ((feeds: T[][]) => T[][] | Promise<T[][]>)[];
+  postProjectTasks?: ((project: T[][]) => T[][] | Promise<T[][]>)[];
 }
 
 export async function build<T>(config?: PipeConfig<T>) {
@@ -23,10 +23,11 @@ export async function build<T>(config?: PipeConfig<T>) {
   return project;
 }
 
+/**
+ * Perform a sequence of async tasks on all the items in a collection in parallel
+ */
 function spawnMap<T>(collection: T[], asyncTasks: ((value: T) => T | Promise<T>)[]): Promise<T[]> {
-  return Promise.all(collection.map((item) => asyncTasks.reduce(asyncReducer, Promise.resolve(item))));
-}
-
-async function asyncReducer<T>(current: Promise<T>, task: (value: T) => T | Promise<T>) {
-  return task(await current);
+  return Promise.all(
+    collection.map((item) => asyncTasks.reduce(async (value, task) => task(await value), Promise.resolve(item)))
+  );
 }
