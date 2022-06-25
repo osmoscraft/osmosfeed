@@ -4,104 +4,125 @@ import { createPipe } from "..";
 
 describe("definePipe", () => {
   it("smoke test", () => {
-    const pipe = createPipe({
-      collectionPostTransforms: [],
-      collectionPreTransforms: [],
-      itemTransform: [],
-    });
+    const pipe = createPipe();
     expect(pipe).toBeDefined();
   });
 
   it("empty pipe", async () => {
-    const pipe = createPipe({
-      collectionPostTransforms: [],
-      collectionPreTransforms: [],
-      itemTransform: [],
-    });
+    const project = createPipe();
 
-    const result = await lastValueFrom(pipe);
+    const result = await lastValueFrom(project);
     expect(result).toEqual([]);
   });
 
-  it("pre-transform", async () => {
-    const pipe = createPipe({
-      collectionPostTransforms: [],
-      collectionPreTransforms: [async () => [1, 2, 3]],
-      itemTransform: [],
+  it("preProjectTransform", async () => {
+    const project = createPipe({
+      preProjectTasks: [async () => [[{ a: 1 }], [{ a: 2 }]]],
     });
 
-    const result = await lastValueFrom(pipe);
-    expect(result).toEqual([1, 2, 3]);
+    const result = await lastValueFrom(project);
+    expect(result).toEqual([[{ a: 1 }], [{ a: 2 }]]);
   });
 
-  it("pre-transform multiple", async () => {
-    const pipe = createPipe({
-      collectionPostTransforms: [],
-      collectionPreTransforms: [async () => [1, 2, 3], async (list) => list.map((item) => item + 1)],
-      itemTransform: [],
+  it("preFeedTransform", async () => {
+    const project = createPipe({
+      preProjectTasks: [async (_feeds) => [[1], [2]]],
+      preFeedTasks: [async (items) => items.map(addOne)],
     });
 
-    const result = await lastValueFrom(pipe);
-    expect(result).toEqual([2, 3, 4]);
+    const result = await lastValueFrom(project);
+    expect(result).toEqual([[2], [3]]);
   });
 
-  it("item transform", async () => {
-    const pipe = createPipe({
-      collectionPostTransforms: [],
-      collectionPreTransforms: [async () => [1, 2, 3]],
-      itemTransform: [doubleAsync],
+  it("itemTransform", async () => {
+    const project = createPipe({
+      preProjectTasks: [async (_feeds) => [[1], [2]]],
+      preFeedTasks: [async (items) => items.map(addOne)],
+      itemTasks: [doubleAsync],
     });
 
-    const result = await lastValueFrom(pipe);
-    expect(result).toEqual([2, 4, 6]);
+    const result = await lastValueFrom(project);
+    expect(result).toEqual([[4], [6]]);
   });
 
-  it("item transform multiple", async () => {
-    const pipe = createPipe({
-      collectionPostTransforms: [],
-      collectionPreTransforms: [async () => [1, 2, 3]],
-      itemTransform: [doubleAsync, addOneAsync],
-    });
+  // it("pre-transform", async () => {
+  //   const pipe = createPipe({
+  //     preProjectTransforms: [async () => [[1], [2], [3]]],
+  //     preFeedTransforms: [],
+  //     itemTransforms: [],
+  //     postFeedTransforms: [],
+  //     postProjectTransforms: [],
+  //   });
 
-    const result = await lastValueFrom(pipe);
-    expect(result).toEqual([3, 5, 7]);
-  });
+  //   const result = await lastValueFrom(pipe);
+  //   expect(result).toEqual([[[1, 2, 3]]]);
+  // });
 
-  it("post-transform", async () => {
-    const pipe = createPipe({
-      collectionPostTransforms: [async (collection) => collection.map(double)],
-      collectionPreTransforms: [async () => [1, 2, 3]],
-      itemTransform: [],
-    });
+  // it("pre-transform multiple", async () => {
+  //   const pipe = createPipe({
+  //     postFeedTransforms: [],
+  //     preFeedTransforms: [async () => [1, 2, 3], async (list) => list.map((item) => item + 1)],
+  //     itemTransforms: [],
+  //   });
 
-    const result = await lastValueFrom(pipe);
-    expect(result).toEqual([2, 4, 6]);
-  });
+  //   const result = await lastValueFrom(pipe);
+  //   expect(result).toEqual([2, 3, 4]);
+  // });
 
-  it("post-transform multiple", async () => {
-    const pipe = createPipe({
-      collectionPostTransforms: [
-        async (collection) => collection.map(double),
-        async (collection) => collection.map(addOne),
-      ],
-      collectionPreTransforms: [async () => [1, 2, 3]],
-      itemTransform: [],
-    });
+  // it("item transform", async () => {
+  //   const pipe = createPipe({
+  //     postFeedTransforms: [],
+  //     preFeedTransforms: [async () => [1, 2, 3]],
+  //     itemTransforms: [doubleAsync],
+  //   });
 
-    const result = await lastValueFrom(pipe);
-    expect(result).toEqual([3, 5, 7]);
-  });
+  //   const result = await lastValueFrom(pipe);
+  //   expect(result).toEqual([2, 4, 6]);
+  // });
 
-  it("integration", async () => {
-    const pipe = createPipe({
-      collectionPostTransforms: [async (collection) => collection.map(addOne)],
-      collectionPreTransforms: [async () => [1, 2, 3]],
-      itemTransform: [doubleAsync],
-    });
+  // it("item transform multiple", async () => {
+  //   const pipe = createPipe({
+  //     postFeedTransforms: [],
+  //     preFeedTransforms: [async () => [1, 2, 3]],
+  //     itemTransforms: [doubleAsync, addOneAsync],
+  //   });
 
-    const result = await lastValueFrom(pipe);
-    expect(result).toEqual([3, 5, 7]);
-  });
+  //   const result = await lastValueFrom(pipe);
+  //   expect(result).toEqual([3, 5, 7]);
+  // });
+
+  // it("post-transform", async () => {
+  //   const pipe = createPipe({
+  //     postFeedTransforms: [async (collection) => collection.map(double)],
+  //     preFeedTransforms: [async () => [1, 2, 3]],
+  //     itemTransforms: [],
+  //   });
+
+  //   const result = await lastValueFrom(pipe);
+  //   expect(result).toEqual([2, 4, 6]);
+  // });
+
+  // it("post-transform multiple", async () => {
+  //   const pipe = createPipe({
+  //     postFeedTransforms: [async (collection) => collection.map(double), async (collection) => collection.map(addOne)],
+  //     preFeedTransforms: [async () => [1, 2, 3]],
+  //     itemTransforms: [],
+  //   });
+
+  //   const result = await lastValueFrom(pipe);
+  //   expect(result).toEqual([3, 5, 7]);
+  // });
+
+  // it("integration", async () => {
+  //   const pipe = createPipe({
+  //     postFeedTransforms: [async (collection) => collection.map(addOne)],
+  //     preFeedTransforms: [async () => [1, 2, 3]],
+  //     itemTransforms: [doubleAsync],
+  //   });
+
+  //   const result = await lastValueFrom(pipe);
+  //   expect(result).toEqual([3, 5, 7]);
+  // });
 });
 
 async function addOneAsync(i: number) {
