@@ -6,6 +6,14 @@ export interface PipeConfig<T> {
   postProjectTasks?: ((project: T[][]) => T[][] | Promise<T[][]>)[];
 }
 
+/**
+ * Runtime responsibility
+ * - Scheduling
+ * - Error handling
+ * - Logging
+ * - Network API
+ * - Storage API
+ */
 export async function build<T>(config?: PipeConfig<T>) {
   const itemTasks = config?.itemTasks ?? [];
 
