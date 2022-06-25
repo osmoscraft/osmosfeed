@@ -6,4 +6,4 @@ Full list of tasks are tracked at https://github.com/osmoscraft/osmosfeed/projec
 
 - Handlebar to Nunjucks upgrade
 - runtime and plugin separation
-  - rxjs runtime impl
+  - Error tolerance (v1 with silent fail)
