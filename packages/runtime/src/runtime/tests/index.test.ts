@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { build } from "..";
+import { build } from "../";
 
 describe("definePipe", () => {
   it("empty pipe", async () => {
