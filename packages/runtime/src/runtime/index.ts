@@ -30,27 +30,27 @@ export async function build<T>(config?: PipeConfig<T>) {
     feeds: [],
   };
 
-  const itemTasks = config?.itemTasks ?? [];
+  const {
+    itemTasks = [],
+    preFeedTasks = [],
+    postFeedTasks = [],
+    preProjectTasks = [],
+    postProjectTasks = [],
+  } = config ?? {};
 
-  const preFeedTasks = config?.preFeedTasks ?? [];
-  const postFeedTasks = config?.postFeedTasks ?? [];
   const feedTask = async (feed: Feed<T>) => ({
     ...feed,
     items: await Promise.all(feed.items.map((item) => runAsyncTasks(itemTasks, item))),
   });
   const feedTasks = [...preFeedTasks, feedTask, ...postFeedTasks];
 
-  const preProjectTasks = config?.preProjectTasks ?? [];
-  const postProjectTasks = config?.postProjectTasks ?? [];
   const projectTask = async (proj: Project<T>) => ({
     ...proj,
     feeds: await Promise.all(proj.feeds.map((feed) => runAsyncTasks(feedTasks, feed))),
   });
   const projectTasks = [...preProjectTasks, projectTask, ...postProjectTasks];
 
-  const result = await runAsyncTasks(projectTasks, initProj);
-
-  return result;
+  return await runAsyncTasks(projectTasks, initProj);
 }
 
 async function runAsyncTasks<T>(tasks: ((value: T) => T | Promise<T>)[], initialValue: T): Promise<T> {
