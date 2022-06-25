@@ -4,66 +4,82 @@ import { build } from "../";
 describe("definePipe", () => {
   it("empty pipe", async () => {
     const result = await build();
-    expect(result).toEqual([]);
+    expect(result).toEqual({ feeds: [] });
   });
 
   it("preProjectTask", async () => {
-    const result = await build<number>({
-      preProjectTasks: [async () => [[1], [2]]],
+    const result = await build({
+      preProjectTasks: [
+        async (project) => ({
+          ...project,
+          hello: 42,
+        }),
+      ],
     });
 
-    expect(result).toEqual([[1], [2]]);
+    expect(result).toEqual({ hello: 42, feeds: [] });
   });
 
   it("preFeedTask", async () => {
-    const result = await build<number>({
-      preProjectTasks: [async (_feeds) => [[1], [2]]],
-      preFeedTasks: [async (items) => items.map((i) => i + 1)],
+    const result = await build({
+      preProjectTasks: [async (project) => ({ ...project, feeds: [{ items: [] }] })],
+      preFeedTasks: [async (_feed) => ({ items: [1] })],
     });
 
-    expect(result).toEqual([[2], [3]]);
+    expect(result).toEqual({ feeds: [{ items: [1] }] });
   });
 
   it("itemTask", async () => {
     const result = await build<number>({
-      preProjectTasks: [async (_feeds) => [[1], [2]]],
+      preProjectTasks: [async (project) => ({ ...project, feeds: [{ items: [1, 2] }] })],
       itemTasks: [async (item) => item * 2],
     });
 
-    expect(result).toEqual([[2], [4]]);
+    expect(result).toEqual({ feeds: [{ items: [2, 4] }] });
   });
 
   it("postFeedTask", async () => {
     const result = await build<number>({
-      preProjectTasks: [async (_feeds) => [[1], [2]]],
-      postFeedTasks: [async (items) => items.map((i) => i + 1)],
+      preProjectTasks: [async (project) => ({ ...project, feeds: [{ items: [1, 2] }] })],
+      postFeedTasks: [async (feed) => ({ items: [...feed.items, 3] })],
     });
 
-    expect(result).toEqual([[2], [3]]);
+    expect(result).toEqual({ feeds: [{ items: [1, 2, 3] }] });
   });
 
   it("postProjectTask", async () => {
     const result = await build<number>({
-      preProjectTasks: [async (_feeds) => [[1], [2]]],
-      postProjectTasks: [async (feeds) => [...feeds, [3]]],
+      preProjectTasks: [async (project) => ({ ...project, feeds: [{ items: [1, 2] }] })],
+      postProjectTasks: [async (project) => ({ ...project, foo: "bar" })],
     });
 
-    expect(result).toEqual([[1], [2], [3]]);
+    expect(result).toEqual({ feeds: [{ items: [1, 2] }], foo: "bar" });
   });
 
-  it("postProjectTask", async () => {
+  it("integration", async () => {
     const result = await build<number>({
-      preProjectTasks: [async (_feeds) => [[1], [2]]],
-      preFeedTasks: [(items) => [0, ...items]],
-      itemTasks: [async (item) => item + 1, async (item) => item * 2],
-      postFeedTasks: [async (items) => [...items, 8]],
-      postProjectTasks: [(feeds) => [...feeds, [1, 2, 3]]],
+      preProjectTasks: [async (project) => ({ ...project, preProj: true, feeds: [{ items: [1] }, { items: [2] }] })],
+      preFeedTasks: [(feed) => ({ ...feed, items: [...feed.items, 2, 3] }), (feed) => ({ ...feed, preFeed: true })], // [1,2,3], [2,2,3]
+      itemTasks: [async (item) => item + 1, (item) => item * 2], // [4,6,8], [6,6,8]
+      postFeedTasks: [async (feed) => ({ ...feed, postFeed: true })],
+      postProjectTasks: [(project) => ({ ...project, postProj: true })],
     });
 
-    expect(result).toEqual([
-      [2, 4, 8],
-      [2, 6, 8],
-      [1, 2, 3],
-    ]);
+    expect(result).toEqual({
+      preProj: true,
+      postProj: true,
+      feeds: [
+        {
+          preFeed: true,
+          postFeed: true,
+          items: [4, 6, 8],
+        },
+        {
+          preFeed: true,
+          postFeed: true,
+          items: [6, 6, 8],
+        },
+      ],
+    });
   });
 });
