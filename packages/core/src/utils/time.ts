@@ -8,6 +8,10 @@ export function getDateFromIsoString(isoTimeString: string): string {
   return isoTimeString.split("T")[0];
 }
 
+export function getIsoTimeZeroOffset(isoTimeString: string): string {
+  return new Date(isoTimeString).toISOString();
+}
+
 export function getIsoTimeWithOffset(utcIsoString: string, offsetInMinutes: number): string {
   const date = new Date(utcIsoString);
   const offsetTime = getTimeWithOffset(date.getTime(), offsetInMinutes);
