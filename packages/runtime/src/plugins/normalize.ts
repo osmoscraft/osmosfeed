@@ -1,5 +1,6 @@
-import { assert } from "console";
+import assert from "assert";
 import type { FeedTask } from "../runtime";
+import { resolveRelativeUrl } from "../utils/url";
 import type { JsonFeed, JsonFeedItem } from "./types";
 
 export interface NormalizeExt {
@@ -17,6 +18,8 @@ export function normalize(): FeedTask<JsonFeed> {
     const normalizedFeed: NormalizeExt = {
       items: feed.items.map((item) => ({
         ...item,
+        url: item?.url ? resolveRelativeUrl(item?.url, feed.feed_url!) ?? undefined : undefined,
+        image: item?.image ? resolveRelativeUrl(item?.image, feed.feed_url!) ?? undefined : undefined,
         date_published: item?.date_published ?? new Date().toISOString(),
       })),
     };
