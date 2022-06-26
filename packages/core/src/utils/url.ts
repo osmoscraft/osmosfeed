@@ -19,7 +19,7 @@ export function resolveRelativeUrl(targetUrl: string, baseUrl: string): string |
   }
 }
 
-export function urlToFilename(url: string): string {
+export function urlToFileString(url: string): string {
   const maxFilenameLength = 240; // excluding extention, e.g. `.json`
   const host = new URL(url).hostname.replace(/[^a-z0-9]/gi, "_").toLowerCase();
   const hash = sha1(url);

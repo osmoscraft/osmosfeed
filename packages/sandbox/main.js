@@ -21,8 +21,4 @@ build({
   preFeedTasks: [download(), parse()],
   postFeedTasks: [normalize(), merge(), cache()],
   postProjectTasks: [generate(), prune()],
-}).then((out) =>
-  console.log(
-    JSON.parse(JSON.stringify(out, (k, v) => (k === "content" ? v.slice(0, 100) + " | result truncated..." : v), 2))
-  )
-);
+});

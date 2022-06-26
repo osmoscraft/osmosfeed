@@ -3,7 +3,7 @@ import { mkdir, writeFile } from "fs/promises";
 import path, { dirname } from "path";
 import type { FeedTask } from "../engine/build";
 import { pkg } from "../utils/pkg";
-import { urlToFilename } from "../utils/url";
+import { urlToFileString } from "../utils/url";
 import type { JsonFeed } from "./types";
 
 export const CACHE_DIR = path.join(process.cwd(), "dist/cache");
@@ -28,7 +28,7 @@ export function cache(): FeedTask<JsonFeed> {
     assert(cachedFeed.feed_url, "feed_url missing");
     assert(cachedFeed.items[0].date_published, "date_publish missing, will skip cache");
 
-    const filename = `${urlToFilename(cachedFeed.feed_url)}.json`;
+    const filename = `${urlToFileString(cachedFeed.feed_url)}.json`;
     const cachePath = path.join(CACHE_DIR, filename);
     await mkdir(dirname(cachePath), { recursive: true });
     await writeFile(

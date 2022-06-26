@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { sha1 } from "../hash";
-import { escapeUnicodeUrl, urlToFilename } from "../url";
+import { escapeUnicodeUrl, urlToFileString } from "../url";
 
 describe("normalizeUrl", () => {
   it("handles url that doesn't need encoding", () => {
@@ -28,11 +28,11 @@ describe("normalizeUrl", () => {
 
 describe("urlToFilename", () => {
   it("throws on invalid URL", () => {
-    expect(() => urlToFilename("/\\/\\/")).toThrowError();
+    expect(() => urlToFileString("/\\/\\/")).toThrowError();
   });
 
   it("encodes", () => {
-    expect(urlToFilename("https://www.wikipedia.org/")).toBe(
+    expect(urlToFileString("https://www.wikipedia.org/")).toBe(
       "www_wikipedia_org_72e64cabc23f9bf1054cea2b8ad8712cd8ded32b"
     );
   });
@@ -41,7 +41,7 @@ describe("urlToFilename", () => {
     const expectedMaxLength = 240;
     const longUrl = `https://www.${Array(1000).fill("z").join("")}.org/`;
     const actualHash = sha1(longUrl);
-    const result = urlToFilename(longUrl);
+    const result = urlToFileString(longUrl);
 
     expect(result.length).toBe(expectedMaxLength);
     expect(result).toBe(

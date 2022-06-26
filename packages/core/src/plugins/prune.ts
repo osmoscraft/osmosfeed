@@ -1,21 +1,23 @@
 import { readdir, rm } from "fs/promises";
 import path from "path";
 import type { ProjectTask } from "../engine/build";
-import { urlToFilename } from "../utils/url";
+import { urlToFileString } from "../utils/url";
 import { CACHE_DIR } from "./cache";
 import type { Project } from "./types";
 
 export function prune(): ProjectTask<Project> {
   return async (project) => {
-    const keepFiles = project.feeds.filter((feed) => feed.feed_url).map((feed) => urlToFilename(feed.feed_url!));
+    const keepFiles = project.feeds
+      .filter((feed) => feed.feed_url)
+      .map((feed) => urlToFileString(feed.feed_url!) + ".json");
     const existingFiles = await readCacheDir();
-    const removeFiles = existingFiles.filter((existingFile) => keepFiles.includes(existingFile));
+    const removeFiles = existingFiles.filter((existingFile) => !keepFiles.includes(existingFile));
 
     if (removeFiles.length) {
-      console.log(`[prune] Removing ${removeFiles.length} unused cache files`);
+      console.log(`[prune] remove ${removeFiles.length} unused cache files`);
       await Promise.all(removeFiles.map((removeFile) => rm(path.join(CACHE_DIR, removeFile))));
     } else {
-      console.log(`[prune] Nothing to prune`);
+      console.log(`[prune] nothing to prune`);
     }
 
     return project;

@@ -2,7 +2,7 @@ import assert from "assert/strict";
 import { readFile } from "fs/promises";
 import path from "path";
 import type { FeedTask } from "../engine/build";
-import { urlToFilename } from "../utils/url";
+import { urlToFileString } from "../utils/url";
 import type { JsonFeed, JsonFeedItem } from "./types";
 
 export function merge(): FeedTask<JsonFeed> {
@@ -20,7 +20,11 @@ export function merge(): FeedTask<JsonFeed> {
     }
 
     const mergeSummary = mergeFeed(mergeItems.bind(null, 100), remoteFeed, cachedFeed);
-    // TODO report merge summary
+    console.log(
+      `[merge] ${mergeSummary.added - mergeSummary.removed} new | ${
+        mergeSummary.unchanged + mergeSummary.updated
+      } existing | ${feed.feed_url}`
+    );
 
     return {
       ...mergeSummary.feed,
@@ -29,7 +33,7 @@ export function merge(): FeedTask<JsonFeed> {
 }
 
 async function readCache(url: string): Promise<null | JsonFeed> {
-  const filename = `${urlToFilename(url)}.json`;
+  const filename = `${urlToFileString(url)}.json`;
   const cachePath = path.join(process.cwd(), "dist/cache", filename);
 
   try {
