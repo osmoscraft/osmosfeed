@@ -1,4 +1,4 @@
-import assert from "assert";
+import assert from "assert/strict";
 import { readFile } from "fs/promises";
 import path from "path";
 import type { FeedTask } from "../runtime";

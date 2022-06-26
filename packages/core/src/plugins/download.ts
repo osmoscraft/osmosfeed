@@ -1,4 +1,4 @@
-import assert from "assert";
+import assert from "assert/strict";
 import type { FeedTask } from "../runtime";
 import { getSmartFetch } from "../utils/fetch";
 import type { JsonFeed } from "./types";

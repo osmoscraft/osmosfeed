@@ -3,6 +3,7 @@ export interface Project {
   githubServerUrl: string | null;
   githubRepository: string | null;
   githubRunId: string | null;
+  githubPageUrl: string | null;
   siteTitle: string;
   timezoneOffset: number;
 }

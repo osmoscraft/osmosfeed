@@ -1,6 +1,6 @@
 import { pkg } from "../../utils/pkg";
 import { getDateFromIsoString, getIsoTimeWithOffset } from "../../utils/time";
-import { FEED_FILENAME } from "../generate";
+import { ATOM_FILENAME } from "../generate";
 import type { JsonFeed, JsonFeedItem, Project } from "../types";
 
 export interface GetTemplateDataOutput {
@@ -75,7 +75,7 @@ export function getTemplateData(project: Project): GetTemplateDataOutput {
     siteTitle: project.siteTitle,
     siteBuildTimestamp: new Date().toISOString(),
     projectUrl: `https://github.com/osmoscraft/osmosfeed`,
-    feedHref: FEED_FILENAME,
+    feedHref: ATOM_FILENAME,
   };
 }
 

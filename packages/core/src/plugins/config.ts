@@ -1,4 +1,4 @@
-import assert from "assert";
+import assert from "assert/strict";
 import { readdir, readFile } from "fs/promises";
 import yaml from "js-yaml";
 import { join } from "path";
@@ -10,6 +10,7 @@ import type { Project } from "./types";
 export interface UserConfig {
   siteTitle?: string;
   timezone?: string;
+  githubPageUrl?: string;
   feeds: {
     url: string;
   }[];
@@ -29,6 +30,7 @@ export function configInline(config: UserConfig): ProjectTask<Project> {
       githubServerUrl: process.env.GITHUB_SERVER_URL ?? null,
       githubRepository: process.env.GITHUB_REPOSITORY ?? null,
       githubRunId: process.env.GITHUB_RUN_ID ?? null,
+      githubPageUrl: config.githubPageUrl ?? null,
       siteTitle: config.siteTitle ?? "osmos::feed",
       timezoneOffset: config.timezone ? getOffsetFromTimezoneName(config.timezone) : 0,
     };

@@ -3,11 +3,13 @@ import Handlebars from "handlebars";
 import { basename, extname, join } from "path";
 import type { ProjectTask } from "../runtime";
 import { readdirDeep } from "./generate/fs-helper";
+import { getAtomXml } from "./generate/get-atom-xml";
 import { getTemplateData } from "./generate/get-template-data";
 import type { Project } from "./types";
 
 const ENTRY_TEMPLATE_NAME = "index";
-export const FEED_FILENAME = "feed.atom";
+export const ATOM_FILENAME = "feed.atom";
+export const INDEX_FILENAME = "index.html";
 
 export function generate(): ProjectTask<Project> {
   return async (project) => {
@@ -28,7 +30,13 @@ export function generate(): ProjectTask<Project> {
     const templateData = getTemplateData(project);
     const htmlString = execTemplate(templateData);
 
-    await writeFile(join(process.cwd(), "dist/index.html"), htmlString);
+    const atomString = getAtomXml(project);
+
+    await writeFile(join(process.cwd(), `dist/${INDEX_FILENAME}`), htmlString);
+
+    if (project.githubPageUrl) {
+      await writeFile(join(process.cwd(), `dist/${ATOM_FILENAME}`), atomString);
+    }
 
     return project;
   };
