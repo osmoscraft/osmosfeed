@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <title>{{siteTitle}}</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="alternate" type="application/rss+xml" title="{{siteTitle}}" href="{{feedHref}}" />
+    <link href="index.css?v2.0.0-alpha.0" rel="stylesheet" />
+    {{> beforeHeadEnd }}
+  </head>
+
+  <body>
+    {{> afterBodyBegin }}
+    {{> header }}
+    {{> main}}
+    {{> footer}}
+    <script src="index.js?v2.0.0-alpha.0"></script>
+    {{> beforeBodyEnd }}
+  </body>
+
+</html>

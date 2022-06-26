@@ -13,18 +13,13 @@ export const INDEX_FILENAME = "index.html";
 
 export function generate(): ProjectTask<Project> {
   return async (project) => {
-    const { templateFiles, staticFiles } = await discoverSystemAssets(join(__dirname, "generate/assets"));
-    console.log(
-      `[generate] System templates`,
-      templateFiles.map((file) => file.path)
+    const { templateFiles: sysTempaltes, staticFiles: sysStatics } = await discoverAssets(
+      join(__dirname, "generate/assets")
     );
-    console.log(
-      `[generate] System static`,
-      staticFiles.map((file) => file.path)
-    );
+    const { templateFiles: userTempaltes, staticFiles: userStatics } = await discoverAssets(process.cwd());
 
     await Promise.all(
-      templateFiles.map(async (templateFile) => {
+      sysTempaltes.map(async (templateFile) => {
         const template = await templateFile;
         const text = await template.readAsync();
         Handlebars.registerPartial(template.baseName, text);
@@ -48,14 +43,14 @@ export function generate(): ProjectTask<Project> {
   };
 }
 
-async function discoverSystemAssets(assetsDir: string) {
+async function discoverAssets(assetsDir: string) {
   const templateDir = join(assetsDir, "templates");
   const templatePaths = (await readdirDeep(templateDir)).filter((file) => extname(file) === ".hbs");
-  const templateFiles = Promise.all(templatePaths.map((file) => join(templateDir, file)).map(preloadFile));
+  const templateFiles = Promise.all(templatePaths.map((file) => join(templateDir, file)).map(preload));
 
   const staticDir = join(assetsDir, "static");
   const staticPaths = await readdirDeep(staticDir);
-  const staticFiles = Promise.all(staticPaths.map((file) => join(staticDir, file)).map(preloadFile));
+  const staticFiles = Promise.all(staticPaths.map((file) => join(staticDir, file)).map(preload));
 
   const [templatePreloads, staticPreloads] = await Promise.all([templateFiles, staticFiles]);
 
@@ -65,13 +60,26 @@ async function discoverSystemAssets(assetsDir: string) {
   };
 }
 
-async function preloadFile(path: string) {
+interface PreloadedFile {
+  path: string;
+  baseName: string;
+  extName: string;
+  name: string;
+  readAsync: () => Promise<string>;
+}
+
+async function preloadDir(dir: string, filter?: (file: PreloadedFile) => boolean): Promise<PreloadedFile[]> {
+  return (await readdirDeep(dir)).map(preload).filter(filter ?? (() => true));
+}
+
+function preload(path: string): PreloadedFile {
   const ext = extname(path);
 
   return {
     path,
+    name: basename(path),
     baseName: basename(path, ext),
-    extname: ext,
-    readAsync: async () => await readFile(path, "utf-8"),
+    extName: ext,
+    readAsync: () => readFile(path, "utf-8"),
   };
 }
