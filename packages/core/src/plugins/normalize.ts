@@ -1,5 +1,5 @@
 import assert from "assert/strict";
-import type { FeedTask } from "../runtime/build";
+import type { FeedTask } from "../engine/build";
 import { resolveRelativeUrl } from "../utils/url";
 import type { JsonFeed } from "./types";
 

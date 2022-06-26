@@ -1,7 +1,7 @@
 import assert from "assert/strict";
 import { mkdir, writeFile } from "fs/promises";
 import path, { dirname } from "path";
-import type { FeedTask } from "../runtime/build";
+import type { FeedTask } from "../engine/build";
 import { urlToFilename } from "../utils/url";
 import type { JsonFeed } from "./types";
 

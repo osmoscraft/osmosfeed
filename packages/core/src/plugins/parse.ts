@@ -1,5 +1,5 @@
 import assert from "assert/strict";
-import type { FeedTask } from "../runtime/build";
+import type { FeedTask } from "../engine/build";
 import type { DownloadExt } from "./download";
 import { parse as parseJsonFeed } from "./parse/json-feed-parser";
 import type { JsonFeed } from "./types";

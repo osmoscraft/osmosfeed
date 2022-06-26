@@ -1,3 +1,4 @@
+export * from "./engine/build";
 export * from "./plugins/cache";
 export * from "./plugins/config";
 export * from "./plugins/download";
@@ -6,4 +7,3 @@ export * from "./plugins/merge";
 export * from "./plugins/normalize";
 export * from "./plugins/parse";
 export * from "./plugins/prune";
-export * from "./runtime/build";

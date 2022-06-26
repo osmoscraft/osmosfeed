@@ -1,6 +1,6 @@
 import { readdir, rm } from "fs/promises";
 import path from "path";
-import type { ProjectTask } from "../runtime/build";
+import type { ProjectTask } from "../engine/build";
 import { urlToFilename } from "../utils/url";
 import { CACHE_DIR } from "./cache";
 import type { Project } from "./types";

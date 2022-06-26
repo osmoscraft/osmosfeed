@@ -1,7 +1,7 @@
 import { readFile, writeFile } from "fs/promises";
 import Handlebars from "handlebars";
 import { basename, extname, join } from "path";
-import type { ProjectTask } from "../runtime/build";
+import type { ProjectTask } from "../engine/build";
 import { readdirDeep } from "./generate/fs-helper";
 import { getAtomXml } from "./generate/get-atom-xml";
 import { getTemplateData } from "./generate/get-template-data";
