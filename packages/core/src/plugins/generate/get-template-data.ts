@@ -1,16 +1,15 @@
 import { pkg } from "../../utils/pkg";
 import { getDateFromIsoString, getIsoTimeWithOffset } from "../../utils/time";
 import { FEED_FILENAME } from "../generate";
-import type { NormalizeFeedExt, NormalizeItemExt } from "../normalize";
 import type { JsonFeed, JsonFeedItem, Project } from "../types";
 
 export interface GetTemplateDataOutput {
   /** Array of dates, each containing the content published on the date */
-  dates: TemplateDates[];
-  /** Array of source, each containing the content published from the source */
-  feeds: TemplateFeed[];
-  /** Array of articles, most recent first */
-  items: TemplateItem[];
+  dates: DateView[];
+  /** Array of feeds, each containing the content published from the source */
+  feeds: FeedView[];
+  /** Array of items, most recent first */
+  items: ItemView[];
 
   /** npm package version of the builder */
   cliVersion: string;
@@ -27,37 +26,30 @@ export interface GetTemplateDataOutput {
   siteTitle: string;
 }
 
-interface TemplateItem extends NormalizedItem {
-  feed: NormalizedFeed;
+interface ItemView extends JsonFeedItem {
+  feed: JsonFeed;
 }
 
-type NormalizedFeed = JsonFeed & NormalizeFeedExt;
-type NormalizedItem = JsonFeedItem & NormalizeItemExt;
-
-interface TemplateFeed extends TemplateFeedBase {
+interface FeedView extends TemplateFeedBase {
   dates: {
     isoUtcPublishTime: string;
     isoOffsetPublishDate: string;
-    items: TemplateItem[];
+    items: ItemView[];
   }[];
 }
 
-interface TemplateDates {
+interface DateView {
   isoUtcPublishTime: string;
   isoOffsetPublishDate: string;
-  items: TemplateItem[];
+  items: ItemView[];
   feeds: TemplateFeedBase[];
 }
 
-interface TemplateFeedBase extends NormalizedFeed {
-  items: TemplateItem[];
+interface TemplateFeedBase extends JsonFeed {
+  items: ItemView[];
 }
 
-interface NormalizedProject extends Project {
-  feeds: NormalizedFeed[];
-}
-
-export function getTemplateData(project: NormalizedProject): GetTemplateDataOutput {
+export function getTemplateData(project: Project): GetTemplateDataOutput {
   const { githubServerUrl, githubRepository, githubRunId } = project;
 
   const githubRunUrl =
@@ -75,7 +67,7 @@ export function getTemplateData(project: NormalizedProject): GetTemplateDataOutp
     },
 
     get items() {
-      return organizeByArticles(project);
+      return organizeByItems(project);
     },
 
     cliVersion: pkg.version,
@@ -95,14 +87,14 @@ function getTimestamps(isoUtcTimestamp: string, timezoneOffset: number) {
   };
 }
 
-function organizeByArticles(project: NormalizedProject): TemplateItem[] {
-  const items: TemplateItem[] = project.feeds
+function organizeByItems(project: Project): ItemView[] {
+  const items: ItemView[] = project.feeds
     .flatMap((feed) =>
       feed.items.map((item) => ({
         ...item,
-        source: feed,
+        feed,
         isoPublishDate: getDateFromIsoString(item.date_published!),
-        ...getTimestamps(item.publishedOn, project.timezoneOffset),
+        ...getTimestamps(item.date_published!, project.timezoneOffset),
         title: ensureDisplayString(item.title, "Untitled"),
         description: ensureDisplayString(item.description, "No content preview"),
         readingTimeInMin: Math.round((item.wordCount ?? 0) / 300),
@@ -112,46 +104,46 @@ function organizeByArticles(project: NormalizedProject): TemplateItem[] {
   return items;
 }
 
-function organizeBySources(input: GetTemplateDataInput): TemplateFeed[] {
-  const articles = organizeByArticles(input);
+function organizeBySources(project: Project): FeedView[] {
+  const items = organizeByItems(project);
 
-  const articlesBySource = groupBy(articles, (article) => article.feed);
-  const sortedArticlesBySource = [...articlesBySource.entries()].map(([source, articles]) => ({
-    ...source,
-    ...getTimestamps(articles[0].isoUtcPublishTime, input.config.timezoneOffset),
-    articles: articles.sort((a, b) => b.publishedOn.localeCompare(a.publishedOn)), // by date, most recent first
-    dates: [...groupBy(articles, (article) => article.isoOffsetPublishDate)]
+  const itemsByFeed = groupBy(items, (item) => item.feed);
+  const sortedItemsByFeed = [...itemsByFeed.entries()].map(([feed, items]) => ({
+    ...feed,
+    ...getTimestamps(items[0].isoUtcPublishTime, project.timezoneOffset),
+    items: items.sort((a, b) => b.date_published!.localeCompare(a.date_published!)), // by date, most recent first
+    dates: [...groupBy(items, (item) => item.isoOffsetPublishDate)]
       .sort((a, b) => b[0].localeCompare(a[0])) // by date, most recent first
-      .map(([date, articles]) => ({
+      .map(([date, items]) => ({
         isoPublishDate: date,
-        ...getTimestamps(articles[0].isoUtcPublishTime, input.config.timezoneOffset),
-        articles,
+        ...getTimestamps(items[0].isoUtcPublishTime, project.timezoneOffset),
+        items,
       })),
   }));
 
-  return sortedArticlesBySource;
+  return sortedItemsByFeed;
 }
 
-function organizeByDates(input: GetTemplateDataInput): TemplateDates[] {
-  const articles = organizeByArticles(input);
+function organizeByDates(project: Project): DateView[] {
+  const items = organizeByItems(project);
 
-  const articlesByDate = groupBy(articles, (article) => article.isoOffsetPublishDate);
-  const sortedArticlesByDate = [...articlesByDate.entries()]
+  const itemsByDate = groupBy(items, (item) => item.isoOffsetPublishDate);
+  const sortedItemsByDate = [...itemsByDate.entries()]
     .sort((a, b) => b[0].localeCompare(a[0])) // by date, most recent first
-    .map(([date, articles]) => ({
+    .map(([date, items]) => ({
       isoPublishDate: date,
-      ...getTimestamps(articles[0].isoUtcPublishTime, input.config.timezoneOffset),
-      articles,
-      sources: [...groupBy(articles, (articles) => articles.feed).entries()]
+      ...getTimestamps(items[0].isoUtcPublishTime, project.timezoneOffset),
+      items,
+      feeds: [...groupBy(items, (articles) => articles.feed).entries()]
         .sort((a, b) => b[1][0].isoUtcPublishTime.localeCompare(a[1][0].isoUtcPublishTime)) // by date, most recent first
-        .map(([source, articles]) => ({
-          ...source,
-          ...getTimestamps(articles[0].isoUtcPublishTime, input.config.timezoneOffset),
-          articles,
+        .map(([feed, items]) => ({
+          ...feed,
+          ...getTimestamps(items[0].isoUtcPublishTime, project.timezoneOffset),
+          items,
         })),
     }));
 
-  return sortedArticlesByDate;
+  return sortedItemsByDate;
 }
 
 function groupBy<T, K>(array: T[], selector: (item: T) => K) {

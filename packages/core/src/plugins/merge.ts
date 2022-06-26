@@ -3,18 +3,21 @@ import { readFile } from "fs/promises";
 import path from "path";
 import type { FeedTask } from "../runtime";
 import { urlToFilename } from "../utils/url";
-import type { NormalizeFeedExt, NormalizeItemExt } from "./normalize";
 import type { JsonFeed, JsonFeedItem } from "./types";
 
-type NormalizedFeed = JsonFeed & NormalizeFeedExt;
-type NormalizedItem = JsonFeedItem & NormalizeItemExt;
-
-export function merge(): FeedTask<JsonFeed & NormalizeFeedExt> {
+export function merge(): FeedTask<JsonFeed> {
   return async (feed) => {
     assert(feed.feed_url, "feed_url is missing");
+    if (feed.items.length) {
+      assert(feed.items[0].date_published, "data_published missing in downloaded feed, will skip merge");
+    }
 
     const remoteFeed = feed;
     const cachedFeed = await readCache(feed.feed_url);
+
+    if (cachedFeed?.items.length) {
+      assert(cachedFeed.items[0].date_published, "data_published missing in cache, will skip merge");
+    }
 
     const mergeSummary = mergeFeed(mergeItems.bind(null, 100), remoteFeed, cachedFeed);
     // TODO report merge summary
@@ -25,7 +28,7 @@ export function merge(): FeedTask<JsonFeed & NormalizeFeedExt> {
   };
 }
 
-async function readCache(url: string): Promise<null | NormalizedFeed> {
+async function readCache(url: string): Promise<null | JsonFeed> {
   const filename = `${urlToFilename(url)}.json`;
   const cachePath = path.join(process.cwd(), "dist/cache", filename);
 
@@ -39,15 +42,15 @@ async function readCache(url: string): Promise<null | NormalizedFeed> {
 }
 
 function mergeFeed(
-  mergeItems: (parsedItems: NormalizedItem[], cachedItems: NormalizedItem[]) => MergeItemsSummary,
-  remoteFeed: NormalizedFeed | null,
-  cachedFeed: NormalizedFeed | null
+  mergeItems: (parsedItems: JsonFeedItem[], cachedItems: JsonFeedItem[]) => MergeItemsSummary,
+  remoteFeed: JsonFeed | null,
+  cachedFeed: JsonFeed | null
 ): MergeFeedSummary {
   if (!remoteFeed && !cachedFeed) throw new Error("Cannot merge when both remote and cached feeds are missing");
 
   const mergeItemsSummary = mergeItems(remoteFeed?.items ?? [], cachedFeed?.items ?? []);
 
-  const mergedFeed: NormalizedFeed = {
+  const mergedFeed: JsonFeed = {
     ...(remoteFeed ?? cachedFeed!), // we have checked at least one of them exist
     items: mergeItemsSummary.items,
   };
@@ -60,17 +63,17 @@ function mergeFeed(
 
 function mergeItems(
   limit: number | undefined,
-  parsedItems: NormalizedItem[],
-  cachedItems: NormalizedItem[]
+  parsedItems: JsonFeedItem[],
+  cachedItems: JsonFeedItem[]
 ): MergeItemsSummary {
-  const parsedMap: Map<string, NormalizedItem> = new Map(parsedItems.map((item) => [item.id, item]));
-  const cachedMap: Map<string, NormalizedItem> = new Map(cachedItems.map((item) => [item.id, item]));
+  const parsedMap: Map<string, JsonFeedItem> = new Map(parsedItems.map((item) => [item.id, item]));
+  const cachedMap: Map<string, JsonFeedItem> = new Map(cachedItems.map((item) => [item.id, item]));
 
   const addedItems = parsedItems.filter((item) => !cachedMap.has(item.id));
   const updatedItems = parsedItems.filter((item) => cachedMap.has(item.id));
   const unchangedItems = cachedItems.filter((item) => !parsedMap.has(item.id));
   const allItems = [...unchangedItems, ...updatedItems, ...addedItems].sort((a, b) =>
-    b.date_published.localeCompare(a.date_published)
+    b.date_published!.localeCompare(a.date_published!)
   );
   const remainingItems = allItems.slice(0, limit);
 
@@ -84,11 +87,11 @@ function mergeItems(
 }
 
 interface MergeFeedSummary extends MergeItemsSummary {
-  feed: NormalizedFeed;
+  feed: JsonFeed;
 }
 
 interface MergeItemsSummary {
-  items: NormalizedItem[];
+  items: JsonFeedItem[];
   added: number;
   updated: number;
   unchanged: number;

@@ -1,52 +1,28 @@
 {{#each dates}}
-  <section class="daily-content js-toggle-accordions-scope">
-    <h2 class="daily-heading">
-      <button
-        class="daily-heading-toggle"
-        data-action="toggle-accordions"
-        title="Click to toggle the day, Ctrl + click to toggle all."
-      >
-        <time class="daily-heading-toggle__weekday js-offset-weekday" data-offset-date={{isoOffsetPublishDate}} datetime="{{isoUtcPublishTime}}">{{isoOffsetPublishDate}}</time>
-        <time class="daily-heading-toggle__date js-offset-date" data-offset-date={{isoOffsetPublishDate}} datetime="{{isoUtcPublishTime}}"></time>
-      </button>
+  <section class="">
+    <h2 class="">
+      <time class="" data-offset-date={{isoOffsetPublishDate}} datetime="{{isoUtcPublishTime}}">{{isoOffsetPublishDate}}</time>
     </h2>
-    <ul class="sources card">
-      {{#each sources}}
-        <li class="card__section">
-          <section class="js-toggle-accordions-scope">
-            <h3 class="source-heading">
-              <button
-                class="source-heading__name"
-                data-action="toggle-accordions"
-                title="Click to toggle the source, Ctrl + click to toggle all."
-              >{{title}}</button>
-              <a class="source-heading__link" href="{{siteUrl}}">Open</a>
-            </h3>
-            <section class="articles-per-source">
-              {{#each articles}}
+    <ul class="">
+      {{#each feeds}}
+        <li class="">
+          <section class="">
+            <h3 class="">{{title}} </h3>
+            <a class="" href="{{siteUrl}}">Open</a>
+            <section class="">
+              {{#each items}}
                 <article>
-                  <details
-                    class="article-expander"
-                    data-action="toggle-native-accordion"
-                    data-accordion-key="{{id}}"
-                    open
-                  >
-                    <summary class="article-expander__title">{{title}}</summary>
-                    <a class="article-summary-link article-summary-box-outer" href="{{link}}">
-                      <div class="article-summary-box-inner media-object">
-                        {{#if imageUrl}}
-                          <img src="{{imageUrl}}" loading="lazy" class="media-object__media article-image" />
-                        {{/if}}
-                        <span class="media-object__text">
-                          <span>{{description}}</span>
-                          {{#if readingTimeInMin}}
-                            &ensp;<span class="article-reading-time">(&hairsp;{{readingTimeInMin}}
-                              min&hairsp;)</span>
-                          {{/if}}
-                        </span>
-                      </div>
+                    <h4 class="">{{title}}</h4>
+                    <a class="" href="{{link}}">
+                      {{#if imageUrl}}
+                        <img src="{{imageUrl}}" loading="lazy" class="media-object__media article-image" />
+                      {{/if}}
+                      <span>{{description}}</span>
+                      {{#if readingTimeInMin}}
+                        &ensp;<span class="article-reading-time">(&hairsp;{{readingTimeInMin}}
+                          min&hairsp;)</span>
+                      {{/if}}
                     </a>
-                  </details>
                 </article>
               {{/each}}
             </section>

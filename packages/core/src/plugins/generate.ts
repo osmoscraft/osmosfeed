@@ -1,8 +1,9 @@
-import { readFile } from "fs/promises";
+import { readFile, writeFile } from "fs/promises";
 import Handlebars from "handlebars";
 import { basename, extname, join } from "path";
 import type { ProjectTask } from "../runtime";
 import { readdirDeep } from "./generate/fs-helper";
+import { getTemplateData } from "./generate/get-template-data";
 import type { Project } from "./types";
 
 const ENTRY_TEMPLATE_NAME = "index";
@@ -24,7 +25,10 @@ export function generate(): ProjectTask<Project> {
     );
 
     const execTemplate = Handlebars.compile(`{{> ${ENTRY_TEMPLATE_NAME}}}`);
-    console.log(execTemplate({}));
+    const templateData = getTemplateData(project);
+    const htmlString = execTemplate(templateData);
+
+    await writeFile(join(process.cwd(), "dist/index.html"), htmlString);
 
     return project;
   };
