@@ -1,0 +1,10 @@
+  <footer>
+    {{#if githubRunUrl}}
+    <a class="footer-link" href="{{githubRunUrl}}">
+      <time id="build-timestamp" datetime="{{siteBuildTimestamp}}">{{siteBuildTimestamp}}</time>
+    </a>
+    {{else}}
+    <time id="build-timestamp" datetime="{{siteBuildTimestamp}}">{{siteBuildTimestamp}}</time>
+    {{/if}}
+    <a class="footer-link" href="{{projectUrl}}">osmosfeed {{cliVersion}}</a>
+  </footer>

@@ -3,13 +3,13 @@ import { readFile } from "fs/promises";
 import path from "path";
 import type { FeedTask } from "../runtime";
 import { urlToFilename } from "../utils/url";
-import type { NormalizeExt, NormalizeItemExt } from "./normalize";
+import type { NormalizeFeedExt, NormalizeItemExt } from "./normalize";
 import type { JsonFeed, JsonFeedItem } from "./types";
 
-type NormalizedFeed = JsonFeed & NormalizeExt;
+type NormalizedFeed = JsonFeed & NormalizeFeedExt;
 type NormalizedItem = JsonFeedItem & NormalizeItemExt;
 
-export function merge(): FeedTask<JsonFeed & NormalizeExt> {
+export function merge(): FeedTask<JsonFeed & NormalizeFeedExt> {
   return async (feed) => {
     assert(feed.feed_url, "feed_url is missing");
 

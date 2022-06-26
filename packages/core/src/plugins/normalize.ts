@@ -3,7 +3,7 @@ import type { FeedTask } from "../runtime";
 import { resolveRelativeUrl } from "../utils/url";
 import type { JsonFeed, JsonFeedItem } from "./types";
 
-export interface NormalizeExt {
+export interface NormalizeFeedExt {
   items: (JsonFeedItem & NormalizeItemExt)[];
 }
 
@@ -15,7 +15,7 @@ export function normalize(): FeedTask<JsonFeed> {
   return async (feed) => {
     assert(feed.feed_url, "feed_url is missing");
 
-    const normalizedFeed: NormalizeExt = {
+    const normalizedFeed: NormalizeFeedExt = {
       items: feed.items.map((item) => ({
         ...item,
         url: item?.url ? resolveRelativeUrl(item?.url, feed.feed_url!) ?? undefined : undefined,

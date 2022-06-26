@@ -1,5 +1,10 @@
 export interface Project {
   feeds: JsonFeed[];
+  githubServerUrl: string | null;
+  githubRepository: string | null;
+  githubRunId: string | null;
+  siteTitle: string;
+  timezoneOffset: number;
 }
 
 export interface JsonFeed {

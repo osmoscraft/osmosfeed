@@ -5,6 +5,7 @@
     "esModuleInterop": true,
     "strict": true,
     "noEmit": true,
+    "resolveJsonModule": true,
     "importsNotUsedAsValues": "error"
   },
   "include": ["src/**/*.ts"]

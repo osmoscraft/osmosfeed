@@ -4,7 +4,6 @@
   "version": "0.0.1",
   "description": "",
   "scripts": {
-    "start": "tsx src/index.ts",
     "dev": "vitest watch",
     "test": "vitest run"
   },

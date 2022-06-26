@@ -3,10 +3,10 @@ import { mkdir, writeFile } from "fs/promises";
 import path, { dirname } from "path";
 import type { FeedTask } from "../runtime";
 import { urlToFilename } from "../utils/url";
-import type { NormalizeExt } from "./normalize";
+import type { NormalizeFeedExt } from "./normalize";
 import type { JsonFeed } from "./types";
 
-export function cache(): FeedTask<JsonFeed & NormalizeExt> {
+export function cache(): FeedTask<JsonFeed & NormalizeFeedExt> {
   return async (feed) => {
     if (!feed.items.length) return feed; // noop for empty feed
     assert(feed.feed_url, "feed_url missing");

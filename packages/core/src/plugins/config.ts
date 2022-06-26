@@ -3,10 +3,13 @@ import { readdir, readFile } from "fs/promises";
 import yaml from "js-yaml";
 import { join } from "path";
 import type { ProjectTask } from "../runtime";
+import { getOffsetFromTimezoneName } from "../utils/time";
 import { escapeUnicodeUrl } from "../utils/url";
 import type { Project } from "./types";
 
 export interface UserConfig {
+  siteTitle?: string;
+  timezone?: string;
   feeds: {
     url: string;
   }[];
@@ -23,6 +26,11 @@ export function configInline(config: UserConfig): ProjectTask<Project> {
         feed_url: escapeUnicodeUrl(feed.url),
         items: [],
       })),
+      githubServerUrl: process.env.GITHUB_SERVER_URL ?? null,
+      githubRepository: process.env.GITHUB_REPOSITORY ?? null,
+      githubRunId: process.env.GITHUB_RUN_ID ?? null,
+      siteTitle: config.siteTitle ?? "osmos::feed",
+      timezoneOffset: config.timezone ? getOffsetFromTimezoneName(config.timezone) : 0,
     };
   };
 }
