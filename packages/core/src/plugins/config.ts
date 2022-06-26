@@ -30,7 +30,7 @@ export function configInline(config: UserConfig): ProjectTask<Project> {
       githubServerUrl: process.env.GITHUB_SERVER_URL ?? null,
       githubRepository: process.env.GITHUB_REPOSITORY ?? null,
       githubRunId: process.env.GITHUB_RUN_ID ?? null,
-      githubPageUrl: config.githubPageUrl ?? null,
+      githubPageUrl: config.githubPageUrl ?? "http://localhost", // localhost is for testing only
       siteTitle: config.siteTitle ?? "osmos::feed",
       timezoneOffset: config.timezone ? getOffsetFromTimezoneName(config.timezone) : 0,
     };

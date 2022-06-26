@@ -4,13 +4,13 @@ import { basename, dirname, extname, join } from "path";
 import type { ProjectTask } from "../engine/build";
 import { md5 } from "../utils/hash";
 import { readdirDeep } from "./generate/fs-helper";
-import { getAtomXml } from "./generate/get-atom-xml";
 import { getTemplateData } from "./generate/get-template-data";
 import type { Project } from "./types";
 
-export const ATOM_FILENAME = "feed.atom";
+export const ATOM_FILENAME = "atom.xml";
 export const INDEX_FILENAME = "index.html";
-const ENTRY_BASENAME = "index";
+const HTML_TEMPLATE_NAME = "index";
+const ATOM_TEMPLATE_NAME = "atom";
 const TEMPLATE_EXT = [".hbs", ".html", ".htm"];
 
 export function generate(): ProjectTask<Project> {
@@ -53,20 +53,17 @@ export function generate(): ProjectTask<Project> {
       userTemplates.map((t) => t.path)
     );
 
-    const execTemplate = Handlebars.compile(`{{> ${ENTRY_BASENAME}}}`);
+    const atomTemplate = Handlebars.compile(` {{> ${ATOM_TEMPLATE_NAME}}}`);
+    const htmlTemplate = Handlebars.compile(`{{> ${HTML_TEMPLATE_NAME}}}`);
     const templateData = getTemplateData(project, staticDirHash);
-    const htmlString = execTemplate(templateData);
 
-    if (project.githubPageUrl) {
-      const atomString = getAtomXml(project);
-      await writeFile(join(process.cwd(), `dist/${ATOM_FILENAME}`), atomString);
-      console.log(`[generate] ${ATOM_FILENAME}`);
-    } else {
-      console.log(`[generate] githubPageUrl missing. Skip atom feed generation`);
-    }
+    const atomString = atomTemplate(templateData).trim();
+    await writeFile(join(process.cwd(), `dist/${ATOM_FILENAME}`), atomString);
+    console.log(`[generate] generated atom: ${ATOM_FILENAME}`);
 
+    const htmlString = htmlTemplate(templateData).trim();
     await writeFile(join(process.cwd(), `dist/${INDEX_FILENAME}`), htmlString);
-    console.log(`[generate] generated root: ${INDEX_FILENAME}`);
+    console.log(`[generate] generated html: ${INDEX_FILENAME}`);
 
     return project;
   };

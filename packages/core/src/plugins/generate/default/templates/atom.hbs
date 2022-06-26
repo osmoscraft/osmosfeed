@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <feed xmlns="http://www.w3.org/2005/Atom">
+
+
+  <title>{{siteTitle}}</title>
+  <link href="{{githubPageUrl}}"/>
+  <updated>{{sitePublishTime}}</updated>
+  <id>{{githubPageUrl}}</id>
+  <generator uri="{{fossProjectUrl}}" version="{{engineVersion}}">osmosfeed</generator>
+
+  {{#each items}}
+    <entry>
+      <title>{{title}}</title>
+      {{#if url}}
+        <link href="{{url}}"/>
+      {{/if}}
+      <updated>{{isoUtcPublishTime}}</updated>
+      <content type="text">{{content_text}}</content>
+      {{#if imageUrl}}
+        <media:thumbnail url="{{imageUrl}}" />
+      {{/if}}
+    </entry>
+  {{/each}}
+
+</feed>

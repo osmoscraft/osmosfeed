@@ -21,7 +21,6 @@
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.11",
-    "feed": "^4.2.2",
     "handlebars": "^4.7.7",
     "htmlparser2": "^8.0.1",
     "js-yaml": "^4.1.0",

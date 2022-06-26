@@ -11,17 +11,19 @@ export interface TemplateData {
   /** Array of items, most recent first */
   items: ItemView[];
 
-  /** npm package version of the builder */
-  cliVersion: string;
+  /** npm package version of the engine */
+  engineVersion: string;
   /** URL for the generated atom feed */
   feedHref: string;
   /** URL for the osmosfeed project */
-  projectUrl: string;
+  fossProjectUrl: string;
   /** ISO timestamp for the build */
-  siteBuildTimestamp: string;
+  sitePublishTime: string;
 
   /** URL to the GitHub Action run. Available only when using GitHub Action */
   githubRunUrl: string | null;
+  /** URL to the html home page of the generated site */
+  githubPageUrl: string;
 
   /** A hash string that changes when any file in the static dir changes */
   staticDirHash: string;
@@ -53,7 +55,7 @@ interface TemplateFeedBase extends JsonFeed {
 }
 
 export function getTemplateData(project: Project, staticDirHash: string): TemplateData {
-  const { githubServerUrl, githubRepository, githubRunId } = project;
+  const { githubServerUrl, githubRepository, githubRunId, githubPageUrl, siteTitle } = project;
 
   const githubRunUrl =
     githubServerUrl && githubRepository && githubRunId
@@ -73,11 +75,12 @@ export function getTemplateData(project: Project, staticDirHash: string): Templa
       return organizeByItems(project);
     },
 
-    cliVersion: pkg.version,
+    engineVersion: pkg.version,
     githubRunUrl,
-    siteTitle: project.siteTitle,
-    siteBuildTimestamp: new Date().toISOString(),
-    projectUrl: `https://github.com/osmoscraft/osmosfeed`,
+    githubPageUrl: githubPageUrl,
+    siteTitle: siteTitle,
+    sitePublishTime: new Date().toISOString(),
+    fossProjectUrl: `https://github.com/osmoscraft/osmosfeed`,
     feedHref: ATOM_FILENAME,
     staticDirHash,
   };
