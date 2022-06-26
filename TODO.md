@@ -19,3 +19,4 @@ Full list of tasks are tracked at https://github.com/osmoscraft/osmosfeed/projec
 - item og crawl for summary and image
 - clean up unused cache file
 - allow user template override
+- https://github.com/octokit/request-action/blob/master/index.js
