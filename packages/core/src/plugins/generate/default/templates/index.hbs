@@ -15,7 +15,37 @@
   <body>
     {{> afterBodyBegin }}
     {{> header }}
-    {{> main}}
+    {{#each dates}}
+      <section class="">
+        <h2 class="">
+          <time class="" data-offset-date={{isoOffsetPublishDate}} datetime="{{isoUtcPublishTime}}">{{isoOffsetPublishDate}}</time>
+        </h2>
+        <ul class="">
+          {{#each feeds}}
+            <li class="">
+              <section class="">
+                <h3 class="">{{title}}</h3>
+                <a class="" href="{{siteUrl}}">{{siteUrl}}</a>
+                <section class="">
+                  {{#each items}}
+                    <article>
+                        <h4 class="">
+                          <a class="" href="{{link}}">{{title}}</a>
+                        </h4>
+                        {{#if imageUrl}}
+                          <img src="{{imageUrl}}" loading="lazy" class="" />
+                        {{/if}}
+                        <span>{{content_text}}</span>
+                        </a>
+                    </article>
+                  {{/each}}
+                </section>
+              </section>
+            </li>
+          {{/each}}
+        </ul>
+      </section>
+    {{/each}}
     {{> footer}}
     {{> beforeBodyEnd }}
   </body>

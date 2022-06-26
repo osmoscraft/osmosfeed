@@ -103,7 +103,7 @@ function organizeByItems(project: Project): ItemView[] {
         isoPublishDate: getDateFromIsoString(item.date_published!),
         ...getTimestamps(item.date_published!, project.timezoneOffset),
         title: ensureDisplayString(item.title, "Untitled"),
-        description: ensureDisplayString(item.description, "No content preview"),
+        description: ensureDisplayString(item.description, ""),
         readingTimeInMin: Math.round((item.wordCount ?? 0) / 300),
       }))
     )
