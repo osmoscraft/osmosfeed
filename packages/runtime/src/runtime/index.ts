@@ -1,21 +1,22 @@
-export interface PipeConfig<T> {
-  preProjectTasks?: ProjectTask<T>[];
-  preFeedTasks?: FeedTask<T>[];
-  itemTasks?: ItemTask<T>[];
-  postFeedTasks?: FeedTask<T>[];
-  postProjectTasks?: ProjectTask<T>[];
+export interface PipeConfig<P extends BaseProject = any, F extends BaseFeed = any, I = any> {
+  preProjectTasks?: ProjectTask<P>[];
+  preFeedTasks?: FeedTask<F>[];
+  itemTasks?: ItemTask<I>[];
+  postFeedTasks?: FeedTask<F>[];
+  postProjectTasks?: ProjectTask<P>[];
 }
 
-export type ProjectTask<T> = (project: Project<T>) => Project<T> | Promise<Project<T>>;
-export type FeedTask<T> = (feed: Feed<T>) => Feed<T> | Promise<Feed<T>>;
-export type ItemTask<T> = (item: T) => T | Promise<T>;
+export type ProjectTask<T extends BaseProject = BaseProject> = (project: T) => T | Promise<T>;
+export type FeedTask<T extends BaseFeed = BaseFeed> = (feed: T) => T | Promise<T>;
+export type ItemTask<T = any> = (item: T) => T | Promise<T>;
 
-interface Project<T> {
-  feeds: Feed<T>[];
-}
-interface Feed<T> {
-  items: T[];
-}
+type BaseProject = {
+  feeds: BaseFeed[];
+};
+
+type BaseFeed = {
+  items: any[];
+};
 
 /**
  * Runtime responsibility
@@ -25,8 +26,8 @@ interface Feed<T> {
  * - Network API
  * - Storage API
  */
-export async function build<T>(config?: PipeConfig<T>) {
-  const initProj: Project<T> = {
+export async function build(config?: PipeConfig) {
+  const initProj: BaseProject = {
     feeds: [],
   };
 
@@ -38,13 +39,13 @@ export async function build<T>(config?: PipeConfig<T>) {
     postProjectTasks = [],
   } = config ?? {};
 
-  const feedTask = async (feed: Feed<T>) => ({
+  const feedTask = async (feed: BaseFeed) => ({
     ...feed,
     items: await Promise.all(feed.items.map((item) => runAsyncTasks(itemTasks, item))),
   });
   const feedTasks = [...preFeedTasks, feedTask, ...postFeedTasks];
 
-  const projectTask = async (proj: Project<T>) => ({
+  const projectTask = async (proj: BaseProject) => ({
     ...proj,
     feeds: await Promise.all(proj.feeds.map((feed) => runAsyncTasks(feedTasks, feed))),
   });
@@ -54,5 +55,13 @@ export async function build<T>(config?: PipeConfig<T>) {
 }
 
 async function runAsyncTasks<T>(tasks: ((value: T) => T | Promise<T>)[], initialValue: T): Promise<T> {
-  return tasks.reduce(async (proj, task) => task(await proj), Promise.resolve(initialValue));
+  return tasks.reduce(async (value, task) => {
+    try {
+      return await task(await value);
+    } catch (e) {
+      // TODO associate error with task
+      console.error(e);
+      return await value;
+    }
+  }, Promise.resolve(initialValue));
 }
