@@ -2,6 +2,7 @@ import { copyFile, readFile, writeFile } from "fs/promises";
 import Handlebars from "handlebars";
 import { basename, dirname, extname, join } from "path";
 import type { ProjectTask } from "../engine/build";
+import { md5 } from "../utils/hash";
 import { readdirDeep } from "./generate/fs-helper";
 import { getAtomXml } from "./generate/get-atom-xml";
 import { getTemplateData } from "./generate/get-template-data";
@@ -27,31 +28,34 @@ export function generate(): ProjectTask<Project> {
     const defaultTemplates = excludeFrom(sysTemplates, userTemplates, true);
     const defaultStatics = excludeFrom(sysStatic, userStatic);
 
-    await registerTemplates(defaultTemplates);
-    console.log(
-      `[generate] Default templates`,
-      defaultTemplates.map((t) => t.path)
-    );
-    await registerTemplates(userTemplates);
-    console.log(
-      `[generate] User templates`,
-      userTemplates.map((t) => t.path)
-    );
-
-    const execTemplate = Handlebars.compile(`{{> ${ENTRY_BASENAME}}}`);
-    const templateData = getTemplateData(project);
-    const htmlString = execTemplate(templateData);
-
     await Promise.all(defaultStatics.map((staticFile) => copyFile(staticFile.path, `dist/${staticFile.relPath}`)));
     console.log(
-      `[generate] Default static`,
+      `[generate] default static`,
       defaultStatics.map((t) => t.path)
     );
     await Promise.all(userStatic.map((staticFile) => copyFile(staticFile.path, `dist/${staticFile.relPath}`)));
     console.log(
-      `[generate] User static`,
+      `[generate] user static`,
       userStatic.map((t) => t.path)
     );
+
+    const staticDirHash = await getDirHash([...defaultStatics, ...userStatic]);
+    console.log(`[generate] static files hash: ${staticDirHash}`);
+
+    await registerTemplates(defaultTemplates);
+    console.log(
+      `[generate] default templates`,
+      defaultTemplates.map((t) => t.path)
+    );
+    await registerTemplates(userTemplates);
+    console.log(
+      `[generate] user templates`,
+      userTemplates.map((t) => t.path)
+    );
+
+    const execTemplate = Handlebars.compile(`{{> ${ENTRY_BASENAME}}}`);
+    const templateData = getTemplateData(project, staticDirHash);
+    const htmlString = execTemplate(templateData);
 
     if (project.githubPageUrl) {
       const atomString = getAtomXml(project);
@@ -62,10 +66,15 @@ export function generate(): ProjectTask<Project> {
     }
 
     await writeFile(join(process.cwd(), `dist/${INDEX_FILENAME}`), htmlString);
-    console.log(`[generate] Generated site root: ${INDEX_FILENAME}`);
+    console.log(`[generate] generated root: ${INDEX_FILENAME}`);
 
     return project;
   };
+}
+
+async function getDirHash(files: PreloadedFile[]) {
+  const md5List = await Promise.all(files.map(async (file) => md5(file.relPath + (await file.readAsync()))));
+  return md5(md5List.join(""));
 }
 
 async function registerTemplates(handlebarFiles: PreloadedFile[]) {

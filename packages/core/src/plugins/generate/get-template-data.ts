@@ -3,7 +3,7 @@ import { getDateFromIsoString, getIsoTimeWithOffset } from "../../utils/time";
 import { ATOM_FILENAME } from "../generate";
 import type { JsonFeed, JsonFeedItem, Project } from "../types";
 
-export interface GetTemplateDataOutput {
+export interface TemplateData {
   /** Array of dates, each containing the content published on the date */
   dates: DateView[];
   /** Array of feeds, each containing the content published from the source */
@@ -22,6 +22,9 @@ export interface GetTemplateDataOutput {
 
   /** URL to the GitHub Action run. Available only when using GitHub Action */
   githubRunUrl: string | null;
+
+  /** A hash string that changes when any file in the static dir changes */
+  staticDirHash: string;
 
   siteTitle: string;
 }
@@ -49,7 +52,7 @@ interface TemplateFeedBase extends JsonFeed {
   items: ItemView[];
 }
 
-export function getTemplateData(project: Project): GetTemplateDataOutput {
+export function getTemplateData(project: Project, staticDirHash: string): TemplateData {
   const { githubServerUrl, githubRepository, githubRunId } = project;
 
   const githubRunUrl =
@@ -76,6 +79,7 @@ export function getTemplateData(project: Project): GetTemplateDataOutput {
     siteBuildTimestamp: new Date().toISOString(),
     projectUrl: `https://github.com/osmoscraft/osmosfeed`,
     feedHref: ATOM_FILENAME,
+    staticDirHash,
   };
 }
 

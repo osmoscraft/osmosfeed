@@ -2,8 +2,13 @@
 <html lang="en">
 
   <head>
-    {{> head }}
-    {{> styles }}
+    <title>{{siteTitle}}</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="alternate" type="application/rss+xml" title="{{siteTitle}}" href="{{feedHref}}" />
+    <link rel="stylesheet" href="index.css?v={{staticDirHash}}" />
+    <script type="module" defer src="index.js?v={{staticDirHash}}"></script>
     {{> beforeHeadEnd }}
   </head>
 
@@ -12,7 +17,6 @@
     {{> header }}
     {{> main}}
     {{> footer}}
-    {{> scripts }}
     {{> beforeBodyEnd }}
   </body>
 
