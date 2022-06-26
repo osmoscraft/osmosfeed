@@ -820,6 +820,38 @@ describe("Parse items", () => {
     expect(result.items[0].image).toEqual("http://mock-domain.com/item-image-1.png");
   });
 
+  it("Image/RSS2/media:thumbnail", async () => {
+    const result = await parse(`
+      <?xml version="1.0"?>
+      <rss>
+        <channel>
+          <item>
+            <media:thumbnail url="http://mock-domain.com/item-image-1.png">
+          </item>
+        </channel>
+      </rss>
+    `);
+
+    expect(result.items[0].image).toEqual("http://mock-domain.com/item-image-1.png");
+  });
+
+  it("Image/RSS2/media:group", async () => {
+    const result = await parse(`
+      <?xml version="1.0"?>
+      <rss>
+        <channel>
+          <item>
+            <media:group>
+              <media:thumbnail url="http://mock-domain.com/item-image-1.png">
+            </media:group>
+          </item>
+        </channel>
+      </rss>
+    `);
+
+    expect(result.items[0].image).toEqual("http://mock-domain.com/item-image-1.png");
+  });
+
   it("Image/RDF", async () => {
     const result = await parse(`
       <?xml version="1.0"?>
@@ -838,12 +870,40 @@ describe("Parse items", () => {
     expect(result.items[0].image).toEqual("http://mock-domain.com/item-image-1.png");
   });
 
-  it("Image/Atom", async () => {
+  it("Image/Atom/enclosure", async () => {
     const result = await parse(`
       <?xml version="1.0"?>
       <feed xmlns="http://www.w3.org/2005/Atom">
         <entry>
           <link rel="enclosure" type="image/png" href="http://mock-domain.com/item-image-1.png" />
+        </entry>
+      </feed>
+    `);
+
+    expect(result.items[0].image).toEqual("http://mock-domain.com/item-image-1.png");
+  });
+
+  it("Image/Atom/media:thumbnail", async () => {
+    const result = await parse(`
+      <?xml version="1.0"?>
+      <feed xmlns="http://www.w3.org/2005/Atom">
+        <entry>
+          <media:thumbnail url="http://mock-domain.com/item-image-1.png">
+        </entry>
+      </feed>
+    `);
+
+    expect(result.items[0].image).toEqual("http://mock-domain.com/item-image-1.png");
+  });
+
+  it("Image/Atom/media:group", async () => {
+    const result = await parse(`
+      <?xml version="1.0"?>
+      <feed xmlns="http://www.w3.org/2005/Atom">
+        <entry>
+          <media:group>
+            <media:thumbnail url="http://mock-domain.com/item-image-1.png">
+          </media:group>
         </entry>
       </feed>
     `);

@@ -66,6 +66,7 @@ const rssParser: LanguageParser = {
       image:
         item.find(`> enclosure[type^="image"]`).attr("url") ??
         item.find(`> enc\\:enclosure[enc\\:type^="image"]`).attr("rdf:resource") ??
+        item.find("media\\:thumbnail").attr("url") ??
         undefined,
       date_published: coerceError(() => new Date(date ?? "").toISOString()),
     };
@@ -100,7 +101,8 @@ const atomParser: LanguageParser = {
       summary: coerceEmptyString(decodedSummary.text()) ?? coerceEmptyString(decodedContent.text()),
       content_html: coerceEmptyString(decodedContent.html()) ?? coerceEmptyString(decodedSummary.html(), ""),
       content_text: coerceEmptyString(decodedContent.text()) ?? coerceEmptyString(decodedSummary.text(), ""),
-      image: item.find(`> link[rel="enclosure"][type^="image"]`).attr("href"),
+      image:
+        item.find(`> link[rel="enclosure"][type^="image"]`).attr("href") ?? item.find("media\\:thumbnail").attr("url"),
       date_published: coerceError(() => new Date(publishedDate ?? "").toISOString()),
       date_modified: coerceError(() => new Date(modifedDate ?? "").toISOString()),
     };
