@@ -1,4 +1,4 @@
-export interface PipeConfig<P extends BaseProject = any, F extends BaseFeed = any, I = any> {
+export interface BuildConfig<P extends BaseProject = any, F extends BaseFeed = any, I = any> {
   preProjectTasks?: ProjectTask<P>[];
   preFeedTasks?: FeedTask<F>[];
   itemTasks?: ItemTask<I>[];
@@ -26,7 +26,7 @@ type BaseFeed = {
  * - Network API
  * - Storage API
  */
-export async function build(config?: PipeConfig) {
+export async function build(config?: BuildConfig) {
   const initProj: BaseProject = {
     feeds: [],
   };

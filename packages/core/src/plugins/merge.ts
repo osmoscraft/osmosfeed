@@ -1,7 +1,7 @@
 import assert from "assert/strict";
 import { readFile } from "fs/promises";
 import path from "path";
-import type { FeedTask } from "../runtime";
+import type { FeedTask } from "../runtime/build";
 import { urlToFilename } from "../utils/url";
 import type { JsonFeed, JsonFeedItem } from "./types";
 

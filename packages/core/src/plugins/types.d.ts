@@ -6,6 +6,7 @@ export interface Project {
   githubPageUrl: string | null;
   siteTitle: string;
   timezoneOffset: number;
+  [key: string]: any;
 }
 
 export interface JsonFeed {

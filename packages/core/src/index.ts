@@ -5,4 +5,5 @@ export * from "./plugins/generate";
 export * from "./plugins/merge";
 export * from "./plugins/normalize";
 export * from "./plugins/parse";
-export * from "./runtime/index";
+export * from "./plugins/prune";
+export * from "./runtime/build";

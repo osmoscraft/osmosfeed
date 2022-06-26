@@ -1,7 +1,7 @@
 import { readFile, writeFile } from "fs/promises";
 import Handlebars from "handlebars";
 import { basename, extname, join } from "path";
-import type { ProjectTask } from "../runtime";
+import type { ProjectTask } from "../runtime/build";
 import { readdirDeep } from "./generate/fs-helper";
 import { getAtomXml } from "./generate/get-atom-xml";
 import { getTemplateData } from "./generate/get-template-data";
@@ -14,15 +14,20 @@ export const INDEX_FILENAME = "index.html";
 export function generate(): ProjectTask<Project> {
   return async (project) => {
     const { templateFiles, staticFiles } = await discoverSystemAssets(join(__dirname, "generate/assets"));
-    console.log(`[generate] System templates: ${templateFiles.length} files`);
-    console.log(`[generate] System static: ${staticFiles.length} files`);
+    console.log(
+      `[generate] System templates`,
+      templateFiles.map((file) => file.path)
+    );
+    console.log(
+      `[generate] System static`,
+      staticFiles.map((file) => file.path)
+    );
 
     await Promise.all(
       templateFiles.map(async (templateFile) => {
         const template = await templateFile;
         const text = await template.readAsync();
         Handlebars.registerPartial(template.baseName, text);
-        console.log(`[generate] Template registered: ${template.baseName}`);
       })
     );
 
@@ -30,12 +35,13 @@ export function generate(): ProjectTask<Project> {
     const templateData = getTemplateData(project);
     const htmlString = execTemplate(templateData);
 
-    const atomString = getAtomXml(project);
-
     await writeFile(join(process.cwd(), `dist/${INDEX_FILENAME}`), htmlString);
 
     if (project.githubPageUrl) {
+      const atomString = getAtomXml(project);
       await writeFile(join(process.cwd(), `dist/${ATOM_FILENAME}`), atomString);
+    } else {
+      console.log(`[generate] githubPageUrl missing. Skip atom feed generation`);
     }
 
     return project;
@@ -45,15 +51,17 @@ export function generate(): ProjectTask<Project> {
 async function discoverSystemAssets(assetsDir: string) {
   const templateDir = join(assetsDir, "templates");
   const templatePaths = (await readdirDeep(templateDir)).filter((file) => extname(file) === ".hbs");
-  const templateFiles = templatePaths.map((file) => join(templateDir, file)).map(preloadFile);
+  const templateFiles = Promise.all(templatePaths.map((file) => join(templateDir, file)).map(preloadFile));
 
   const staticDir = join(assetsDir, "static");
   const staticPaths = await readdirDeep(staticDir);
-  const staticFiles = staticPaths.map((file) => join(staticDir, file)).map(preloadFile);
+  const staticFiles = Promise.all(staticPaths.map((file) => join(staticDir, file)).map(preloadFile));
+
+  const [templatePreloads, staticPreloads] = await Promise.all([templateFiles, staticFiles]);
 
   return {
-    templateFiles,
-    staticFiles,
+    templateFiles: templatePreloads,
+    staticFiles: staticPreloads,
   };
 }
 

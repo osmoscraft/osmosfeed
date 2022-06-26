@@ -2,7 +2,7 @@ import assert from "assert/strict";
 import { readdir, readFile } from "fs/promises";
 import yaml from "js-yaml";
 import { join } from "path";
-import type { ProjectTask } from "../runtime";
+import type { ProjectTask } from "../runtime/build";
 import { getOffsetFromTimezoneName } from "../utils/time";
 import { escapeUnicodeUrl } from "../utils/url";
 import type { Project } from "./types";

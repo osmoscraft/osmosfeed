@@ -1,9 +1,11 @@
 import assert from "assert/strict";
 import { mkdir, writeFile } from "fs/promises";
 import path, { dirname } from "path";
-import type { FeedTask } from "../runtime";
+import type { FeedTask } from "../runtime/build";
 import { urlToFilename } from "../utils/url";
 import type { JsonFeed } from "./types";
+
+export const CACHE_DIR = path.join(process.cwd(), "dist/cache");
 
 export function cache(): FeedTask<JsonFeed> {
   return async (feed) => {
@@ -12,7 +14,7 @@ export function cache(): FeedTask<JsonFeed> {
     assert(feed.items[0].date_published, "date_publish missing, will skip cache");
 
     const filename = `${urlToFilename(feed.feed_url)}.json`;
-    const cachePath = path.join(process.cwd(), "dist/cache", filename);
+    const cachePath = path.join(CACHE_DIR, filename);
     await mkdir(dirname(cachePath), { recursive: true });
     await writeFile(
       cachePath,
