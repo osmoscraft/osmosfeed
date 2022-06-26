@@ -4,7 +4,6 @@ Full list of tasks are tracked at https://github.com/osmoscraft/osmosfeed/projec
 
 ## Temp tassk
 
-- Stamp the cache with builder version
 - reading time or wc
 - normalization should guarantee iso zero timezone
 - atom feed home page url: fallback to gh page, but allow override from config
