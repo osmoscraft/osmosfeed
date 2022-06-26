@@ -1,5 +1,5 @@
 //@ts-check
-import { build, cache, configFileYaml, configInline, download, merge, normalize, parse } from "@osmosfeed/runtime";
+import { build, cache, configFileYaml, configInline, download, merge, normalize, parse } from "@osmosfeed/core";
 
 const _configResult = configInline({
   feeds: [{ url: "https://news.ycombinator.com/rss" }],

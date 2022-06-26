@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { build } from "../";
+import { build } from "..";
 
 describe("definePipe", () => {
   it("empty pipe", async () => {
@@ -30,7 +30,7 @@ describe("definePipe", () => {
   });
 
   it("itemTask", async () => {
-    const result = await build<number>({
+    const result = await build({
       preProjectTasks: [async (project) => ({ ...project, feeds: [{ items: [1, 2] }] })],
       itemTasks: [async (item) => item * 2],
     });
@@ -39,7 +39,7 @@ describe("definePipe", () => {
   });
 
   it("postFeedTask", async () => {
-    const result = await build<number>({
+    const result = await build({
       preProjectTasks: [async (project) => ({ ...project, feeds: [{ items: [1, 2] }] })],
       postFeedTasks: [async (feed) => ({ items: [...feed.items, 3] })],
     });
@@ -48,7 +48,7 @@ describe("definePipe", () => {
   });
 
   it("postProjectTask", async () => {
-    const result = await build<number>({
+    const result = await build({
       preProjectTasks: [async (project) => ({ ...project, feeds: [{ items: [1, 2] }] })],
       postProjectTasks: [async (project) => ({ ...project, foo: "bar" })],
     });
@@ -57,7 +57,7 @@ describe("definePipe", () => {
   });
 
   it("integration", async () => {
-    const result = await build<number>({
+    const result = await build({
       preProjectTasks: [async (project) => ({ ...project, preProj: true, feeds: [{ items: [1] }, { items: [2] }] })],
       preFeedTasks: [(feed) => ({ ...feed, items: [...feed.items, 2, 3] }), (feed) => ({ ...feed, preFeed: true })], // [1,2,3], [2,2,3]
       itemTasks: [async (item) => item + 1, (item) => item * 2], // [4,6,8], [6,6,8]

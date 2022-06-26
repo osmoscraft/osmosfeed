@@ -17,8 +17,8 @@
   "devDependencies": {
     "@types/js-yaml": "^4.0.5",
     "@types/node": "^18.0.0",
-    "tsx": "^3.4.3",
-    "vitest": "^0.15.1"
+    "tsx": "^3.6.0",
+    "vitest": "^0.16.0"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.11",
