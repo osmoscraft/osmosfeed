@@ -1,9 +1,9 @@
-import { copyFile, readFile, writeFile } from "fs/promises";
+import { readFile, writeFile } from "fs/promises";
 import Handlebars from "handlebars";
-import { basename, dirname, extname, join } from "path";
+import path, { basename, dirname, extname, join } from "path";
 import type { ProjectTask } from "../engine/build";
 import { md5 } from "../utils/hash";
-import { readdirDeep } from "./generate/fs-helper";
+import { copyFileDeep, readdirDeep } from "./generate/fs-helper";
 import { getTemplateData } from "./generate/get-template-data";
 import type { Project } from "./types";
 
@@ -28,12 +28,16 @@ export function generate(): ProjectTask<Project> {
     const defaultTemplates = excludeFrom(sysTemplates, userTemplates, true);
     const defaultStatics = excludeFrom(sysStatic, userStatic);
 
-    await Promise.all(defaultStatics.map((staticFile) => copyFile(staticFile.path, `dist/${staticFile.relPath}`)));
+    await Promise.all(
+      defaultStatics.map((staticFile) => copyFileDeep(staticFile.path, path.join(project.outDir, staticFile.relPath)))
+    );
     console.log(
       `[generate] default static`,
       defaultStatics.map((t) => t.path)
     );
-    await Promise.all(userStatic.map((staticFile) => copyFile(staticFile.path, `dist/${staticFile.relPath}`)));
+    await Promise.all(
+      userStatic.map((staticFile) => copyFileDeep(staticFile.path, path.join(project.outDir, staticFile.relPath)))
+    );
     console.log(
       `[generate] user static`,
       userStatic.map((t) => t.path)
@@ -58,11 +62,11 @@ export function generate(): ProjectTask<Project> {
     const templateData = getTemplateData(project, staticDirHash);
 
     const atomString = atomTemplate(templateData).trim();
-    await writeFile(join(process.cwd(), `dist/${ATOM_FILENAME}`), atomString);
+    await writeFile(join(process.cwd(), project.outDir, ATOM_FILENAME), atomString);
     console.log(`[generate] generated atom: ${ATOM_FILENAME}`);
 
     const htmlString = htmlTemplate(templateData).trim();
-    await writeFile(join(process.cwd(), `dist/${INDEX_FILENAME}`), htmlString);
+    await writeFile(join(process.cwd(), project.outDir, INDEX_FILENAME), htmlString);
     console.log(`[generate] generated html: ${INDEX_FILENAME}`);
 
     return project;

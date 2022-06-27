@@ -11,6 +11,7 @@ export interface UserConfig {
   siteTitle?: string;
   timezone?: string;
   githubPageUrl?: string;
+  outDir?: string;
   feeds: {
     url: string;
   }[];
@@ -21,6 +22,7 @@ export function configInline(config: UserConfig): ProjectTask<Project> {
     (config.feeds ?? []).every((feed) => assert(feed.url, "url is missing for one of the feeds"));
 
     return {
+      outDir: config.outDir ?? "dist",
       feeds: config.feeds.map((feed) => ({
         version: "",
         title: "",
@@ -37,7 +39,7 @@ export function configInline(config: UserConfig): ProjectTask<Project> {
   };
 }
 
-export function configFileYaml(): ProjectTask<Project> {
+export function configFileYaml(baseConfig?: Partial<UserConfig>): ProjectTask<Project> {
   return async (project) => {
     const files = await readdir(process.cwd());
     const configFileName = files.find((file) => file === "osmosfeed.yaml" || file === "osmosfeed.yml");
@@ -46,7 +48,7 @@ export function configFileYaml(): ProjectTask<Project> {
     const yamlString = await readFile(join(process.cwd(), configFileName), "utf-8");
     const userConfig = yaml.load(yamlString) as UserConfig;
 
-    const runConfigInline = configInline(userConfig);
+    const runConfigInline = configInline({ ...baseConfig, ...userConfig });
     return runConfigInline(project);
   };
 }

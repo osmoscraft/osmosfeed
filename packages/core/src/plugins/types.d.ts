@@ -1,4 +1,5 @@
 export interface Project {
+  outDir: string;
   feeds: JsonFeed[];
   githubServerUrl: string | null;
   githubRepository: string | null;
