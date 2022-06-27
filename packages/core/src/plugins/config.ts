@@ -68,11 +68,10 @@ export function configFileYaml(baseConfig?: Partial<UserConfig>): ProjectTask<Pr
 async function getGithubPageUrl(): Promise<string> {
   const fallbackUrl = "http://localhost";
   try {
-    const repoOwner = process.env.GITHUB_REPOSITORY_OWNER;
-    const repoName = process.env.GITHUB_REPOSITORY;
+    const repo = process.env.GITHUB_REPOSITORY;
     const token = process.env.GITHUB_TOKEN;
 
-    if (!repoOwner || !repoName) {
+    if (!repo) {
       console.log(`[config] github workflow environment not found, fallback to local environment`);
       return fallbackUrl;
     }
@@ -83,7 +82,7 @@ async function getGithubPageUrl(): Promise<string> {
       return fallbackUrl;
     }
 
-    const pagesResponse = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/pages`, {
+    const pagesResponse = await fetch(`https://api.github.com/repos/${repo}/pages`, {
       headers: {
         Authorization: `token ${token}`,
         "Content-Type": "application/json",
