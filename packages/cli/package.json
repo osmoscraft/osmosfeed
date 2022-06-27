@@ -1,6 +1,6 @@
 {
   "name": "@osmosfeed/cli",
-  "version": "2.0.0-alpha.1",
+  "version": "2.0.0-alpha.2",
   "description": "",
   "main": "main.ts",
   "bin": {
@@ -14,7 +14,7 @@
   "license": "MIT",
   "dependencies": {
     "tsx": "^3.6.0",
-    "@osmosfeed/core": "^0.0.1"
+    "@osmosfeed/core": "^0.0.x"
   },
   "devDependencies": {}
 }
