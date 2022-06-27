@@ -4,11 +4,11 @@
   "description": "For developement use only",
   "main": "main.js",
   "scripts": {
-    "start": "npx tsx main.js"
+    "start": "osmosfeed"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@osmosfeed/core": "../core"
+    "@osmosfeed/cli": "../cli"
   }
 }
