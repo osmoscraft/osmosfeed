@@ -83,7 +83,6 @@ async function getGithubPageUrl(): Promise<string> {
 
     const pagesResponse = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/pages`, {
       headers: {
-        Accept: "application/vnd/github.v3+json",
         Authorization: `token ${token}`,
         "Content-Type": "application/json",
       },
