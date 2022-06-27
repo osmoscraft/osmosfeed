@@ -56,6 +56,48 @@ describe("definePipe", () => {
     expect(result).toEqual({ feeds: [{ items: [1, 2] }], foo: "bar" });
   });
 
+  it("context r/w", async () => {
+    const records: any[] = [];
+
+    const result = await build({
+      preProjectTasks: [
+        async (project, context) => {
+          Object.assign(context, { foo: "preProject" });
+          return { ...project, feeds: [{ items: [1] }] };
+        },
+      ],
+      preFeedTasks: [
+        async (feed, context) => {
+          records.push(context.foo);
+          Object.assign(context, { foo: "preFeed" });
+          return feed;
+        },
+      ],
+      itemTasks: [
+        async (item, context) => {
+          records.push(context.foo);
+          Object.assign(context, { foo: "item" });
+          return item;
+        },
+      ],
+      postFeedTasks: [
+        async (feed, context) => {
+          records.push(context.foo);
+          Object.assign(context, { foo: "postFeed" });
+          return feed;
+        },
+      ],
+      postProjectTasks: [
+        async (project, context) => {
+          records.push(context.foo);
+          return { ...project, feeds: [{ tiems: [1] }] };
+        },
+      ],
+    });
+
+    expect(records).toEqual(["preProject", "preFeed", "item", "postFeed"]);
+  });
+
   it("integration", async () => {
     const result = await build({
       preProjectTasks: [async (project) => ({ ...project, preProj: true, feeds: [{ items: [1] }, { items: [2] }] })],

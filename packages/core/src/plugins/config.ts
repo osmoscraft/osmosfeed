@@ -5,7 +5,7 @@ import { join } from "path";
 import type { ProjectTask } from "../engine/build";
 import { getOffsetFromTimezoneName } from "../utils/time";
 import { escapeUnicodeUrl } from "../utils/url";
-import type { Project } from "./types";
+import type { Project, TaskContext } from "./types";
 
 export interface UserConfig {
   siteTitle?: string;
@@ -17,12 +17,12 @@ export interface UserConfig {
   }[];
 }
 
-export function configInline(config: UserConfig): ProjectTask<Project> {
-  return () => {
+export function configInline(config: UserConfig): ProjectTask<Project, TaskContext> {
+  return (_project, context) => {
     (config.feeds ?? []).every((feed) => assert(feed.url, "url is missing for one of the feeds"));
 
-    return {
-      outDir: config.outDir ?? "dist",
+    const project: Project = {
+      outDir: config.outDir ?? "./",
       feeds: config.feeds.map((feed) => ({
         version: "",
         title: "",
@@ -36,11 +36,15 @@ export function configInline(config: UserConfig): ProjectTask<Project> {
       siteTitle: config.siteTitle ?? "osmos::feed",
       timezoneOffset: config.timezone ? getOffsetFromTimezoneName(config.timezone) : 0,
     };
+
+    Object.assign(context, { project });
+
+    return project;
   };
 }
 
-export function configFileYaml(baseConfig?: Partial<UserConfig>): ProjectTask<Project> {
-  return async (project) => {
+export function configFileYaml(baseConfig?: Partial<UserConfig>): ProjectTask<Project, TaskContext> {
+  return async (project, context) => {
     const files = await readdir(process.cwd());
     const configFileName = files.find((file) => file === "osmosfeed.yaml" || file === "osmosfeed.yml");
     assert(configFileName, "Config file does not exist. Did you forget to add osmosfeed.yaml?");
@@ -49,6 +53,6 @@ export function configFileYaml(baseConfig?: Partial<UserConfig>): ProjectTask<Pr
     const userConfig = yaml.load(yamlString) as UserConfig;
 
     const runConfigInline = configInline({ ...baseConfig, ...userConfig });
-    return runConfigInline(project);
+    return runConfigInline(project, context);
   };
 }

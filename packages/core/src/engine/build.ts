@@ -6,9 +6,9 @@ export interface BuildConfig<P extends BaseProject = any, F extends BaseFeed = a
   postProjectTasks?: ProjectTask<P>[];
 }
 
-export type ProjectTask<T extends BaseProject = BaseProject> = (project: T) => T | Promise<T>;
-export type FeedTask<T extends BaseFeed = BaseFeed> = (feed: T) => T | Promise<T>;
-export type ItemTask<T = any> = (item: T) => T | Promise<T>;
+export type ProjectTask<T extends BaseProject = BaseProject, K = any> = (project: T, context: K) => T | Promise<T>;
+export type FeedTask<T extends BaseFeed = BaseFeed, K = any> = (feed: T, context: K) => T | Promise<T>;
+export type ItemTask<T = any, K = any> = (item: T, context: K) => T | Promise<T>;
 
 type BaseProject = {
   feeds: BaseFeed[];
@@ -39,25 +39,31 @@ export async function build(config?: BuildConfig) {
     postProjectTasks = [],
   } = config ?? {};
 
+  const context = {};
+
   const feedTask = async (feed: BaseFeed) => ({
     ...feed,
-    items: await Promise.all(feed.items.map((item) => runAsyncTasks(itemTasks, item))),
+    items: await Promise.all(feed.items.map((item) => runAsyncTasks(itemTasks, item, context))),
   });
   const feedTasks = [...preFeedTasks, feedTask, ...postFeedTasks];
 
   const projectTask = async (proj: BaseProject) => ({
     ...proj,
-    feeds: await Promise.all(proj.feeds.map((feed) => runAsyncTasks(feedTasks, feed))),
+    feeds: await Promise.all(proj.feeds.map((feed) => runAsyncTasks(feedTasks, feed, context))),
   });
   const projectTasks = [...preProjectTasks, projectTask, ...postProjectTasks];
 
-  return await runAsyncTasks(projectTasks, initProj);
+  return await runAsyncTasks(projectTasks, initProj, context);
 }
 
-async function runAsyncTasks<T>(tasks: ((value: T) => T | Promise<T>)[], initialValue: T): Promise<T> {
+async function runAsyncTasks<T>(
+  tasks: ((value: T, context: any) => T | Promise<T>)[],
+  initialValue: T,
+  context: any
+): Promise<T> {
   return tasks.reduce(async (value, task) => {
     try {
-      return await task(await value);
+      return await task(await value, context);
     } catch (e) {
       // TODO associate error with task
       console.error(e);

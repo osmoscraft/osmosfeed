@@ -4,9 +4,7 @@ import path, { dirname } from "path";
 import type { FeedTask } from "../engine/build";
 import { pkg } from "../utils/pkg";
 import { urlToFileString } from "../utils/url";
-import type { JsonFeed } from "./types";
-
-export const CACHE_DIR = path.join(process.cwd(), "dist/cache");
+import type { JsonFeed, TaskContext } from "./types";
 
 export interface CachedFeedExt {
   _extGeneratorVersion: string;
@@ -14,8 +12,10 @@ export interface CachedFeedExt {
 
 export const JSON_FEED_EXT_PREFIX = "_ext";
 
-export function cache(): FeedTask<JsonFeed> {
-  return async (feed) => {
+export function cache(): FeedTask<JsonFeed, TaskContext> {
+  return async (feed, context) => {
+    const cacheDir = path.join(process.cwd(), context.project.outDir, "cache");
+
     const ext: CachedFeedExt = {
       _extGeneratorVersion: pkg.version,
     };
@@ -29,7 +29,7 @@ export function cache(): FeedTask<JsonFeed> {
     assert(cachedFeed.items[0].date_published, "date_publish missing, will skip cache");
 
     const filename = `${urlToFileString(cachedFeed.feed_url)}.json`;
-    const cachePath = path.join(CACHE_DIR, filename);
+    const cachePath = path.join(cacheDir, filename);
     await mkdir(dirname(cachePath), { recursive: true });
     await writeFile(
       cachePath,

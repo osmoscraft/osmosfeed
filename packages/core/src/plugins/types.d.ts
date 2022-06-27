@@ -10,6 +10,10 @@ export interface Project {
   [key: string]: any;
 }
 
+export interface TaskContext {
+  project: Project;
+}
+
 export interface JsonFeed {
   version: string;
   title: string;
