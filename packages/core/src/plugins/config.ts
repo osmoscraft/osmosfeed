@@ -18,7 +18,7 @@ export interface UserConfig {
 }
 
 export function configInline(config: UserConfig): ProjectTask<Project, TaskContext> {
-  return (_project, context) => {
+  return async (_project, context) => {
     (config.feeds ?? []).every((feed) => assert(feed.url, "url is missing for one of the feeds"));
 
     const project: Project = {
@@ -32,7 +32,7 @@ export function configInline(config: UserConfig): ProjectTask<Project, TaskConte
       githubServerUrl: process.env.GITHUB_SERVER_URL ?? null,
       githubRepository: process.env.GITHUB_REPOSITORY ?? null,
       githubRunId: process.env.GITHUB_RUN_ID ?? null,
-      githubPageUrl: config.githubPageUrl ?? "http://localhost", // localhost is for testing only
+      githubPageUrl: config.githubPageUrl ?? (await getGithubPageUrl()),
       siteTitle: config.siteTitle ?? "osmos::feed",
       timezoneOffset: config.timezone ? getOffsetFromTimezoneName(config.timezone) : 0,
     };
@@ -55,4 +55,43 @@ export function configFileYaml(baseConfig?: Partial<UserConfig>): ProjectTask<Pr
     const runConfigInline = configInline({ ...baseConfig, ...userConfig });
     return runConfigInline(project, context);
   };
+}
+
+async function getGithubPageUrl(): Promise<string> {
+  const fallbackUrl = "http://localhost";
+  try {
+    const repoOwner = process.env.GITHUB_REPOSITORY_OWNER;
+    const repoName = process.env.GITHUB_REPOSITORY;
+    const token = process.env.GITHUB_TOKEN;
+
+    if (!repoOwner || !repoName) {
+      console.log(`[config] github workflow environment not found, fallback to local environment`);
+      return fallbackUrl;
+    }
+    if (!token) {
+      console.error(
+        `[config] github token is missing the workflow environment, did you forget to expose it in workflow config?`
+      );
+      return fallbackUrl;
+    }
+
+    const pagesResponse = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/pages`, {
+      headers: {
+        Accept: "application/vnd/github.v3+json",
+        Authorization: `token ${token}`,
+      },
+    });
+
+    const pagesData = await pagesResponse.json();
+    // ref: https://docs.github.com/en/rest/pages#get-a-github-pages-site
+    const githubPageUrl = pagesData.html_url;
+
+    assert(githubPageUrl, "html_url does not exist on github API response");
+
+    console.log(`[config] github page url: ${getGithubPageUrl}`);
+    return githubPageUrl;
+  } catch (e) {
+    console.error(`[config] something went wrong while fetching github page url`);
+    return fallbackUrl;
+  }
 }
