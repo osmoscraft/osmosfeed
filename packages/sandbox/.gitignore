@@ -1,8 +1,2 @@
 # Ignore all build output for development
-
-atom.xml
-favicon.ico
-index.css
-index.html
-index.js
-cache
+docs

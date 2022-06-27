@@ -28,7 +28,7 @@ export function configInline(config: UserConfig): ProjectTask<Project, TaskConte
 
     const project: Project & ConfigFeedExt = {
       _extGeneratorVersion: pkg.version,
-      outDir: config.outDir ?? "./",
+      outDir: config.outDir ?? "docs",
       feeds: config.feeds.map((feed) => ({
         version: "",
         title: "",
