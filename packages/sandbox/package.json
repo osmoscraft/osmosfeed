@@ -1,8 +1,8 @@
 {
   "name": "sandbox",
+  "private": true,
   "version": "1.0.0",
   "description": "For developement use only",
-  "main": "main.js",
   "scripts": {
     "start": "osmosfeed"
   },
