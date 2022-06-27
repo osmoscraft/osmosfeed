@@ -1,6 +1,6 @@
 {
   "name": "@osmosfeed/core",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "",
   "scripts": {
     "dev": "vitest watch",

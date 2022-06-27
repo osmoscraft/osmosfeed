@@ -98,7 +98,7 @@ async function getGithubPageUrl(): Promise<string> {
 
     assert(githubPageUrl, "html_url does not exist on github API response");
 
-    console.log(`[config] github page url: ${getGithubPageUrl}`);
+    console.log(`[config] github page url: ${githubPageUrl}`);
     return githubPageUrl;
   } catch (e) {
     console.error(`[config] something went wrong while fetching github page url`, e);
