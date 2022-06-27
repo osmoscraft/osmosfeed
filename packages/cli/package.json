@@ -13,8 +13,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "tsx": "^3.6.0",
-    "@osmosfeed/core": "^0.0.x"
-  },
-  "devDependencies": {}
+    "@osmosfeed/core": "^0.0.x",
+    "tsx": "^3.6.0"
+  }
 }
