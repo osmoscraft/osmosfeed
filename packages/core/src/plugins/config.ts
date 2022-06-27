@@ -88,6 +88,9 @@ async function getGithubPageUrl(): Promise<string> {
       },
     });
 
+    if (!pagesResponse.ok)
+      throw new Error(`github rest api call failed, status ${pagesResponse.status} ${pagesResponse.statusText}`);
+
     const pagesData = await pagesResponse.json();
     // ref: https://docs.github.com/en/rest/pages#get-a-github-pages-site
     const githubPageUrl = pagesData.html_url;
@@ -97,7 +100,7 @@ async function getGithubPageUrl(): Promise<string> {
     console.log(`[config] github page url: ${getGithubPageUrl}`);
     return githubPageUrl;
   } catch (e) {
-    console.error(`[config] something went wrong while fetching github page url`);
+    console.error(`[config] something went wrong while fetching github page url`, e);
     return fallbackUrl;
   }
 }
