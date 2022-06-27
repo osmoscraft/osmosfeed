@@ -45,6 +45,8 @@ export function configInline(config: UserConfig): ProjectTask<Project, TaskConte
 
     Object.assign(context, { project });
 
+    console.log(`[config] initial project`, project);
+
     return project;
   };
 }
