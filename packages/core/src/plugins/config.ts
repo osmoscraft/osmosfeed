@@ -85,6 +85,7 @@ async function getGithubPageUrl(): Promise<string> {
       headers: {
         Accept: "application/vnd/github.v3+json",
         Authorization: `token ${token}`,
+        "Content-Type": "application/json",
       },
     });
 
