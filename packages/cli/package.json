@@ -1,0 +1,20 @@
+{
+  "name": "@osmosfeed/cli",
+  "version": "2.0.0-alpha.0",
+  "description": "",
+  "main": "main.ts",
+  "bin": {
+    "osmosfeed": "main.ts"
+  },
+  "scripts": {
+    "start": "osmosfeed"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "tsx": "^3.6.0",
+    "@osmosfeed/core": "^0.0.1"
+  },
+  "devDependencies": {}
+}
