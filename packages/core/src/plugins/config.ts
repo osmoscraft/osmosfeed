@@ -3,6 +3,7 @@ import { readdir, readFile } from "fs/promises";
 import yaml from "js-yaml";
 import { join } from "path";
 import type { ProjectTask } from "../engine/build";
+import { pkg } from "../utils/pkg";
 import { getOffsetFromTimezoneName } from "../utils/time";
 import { escapeUnicodeUrl } from "../utils/url";
 import type { Project, TaskContext } from "./types";
@@ -17,11 +18,16 @@ export interface UserConfig {
   }[];
 }
 
+export interface ConfigFeedExt {
+  _extGeneratorVersion: string;
+}
+
 export function configInline(config: UserConfig): ProjectTask<Project, TaskContext> {
   return async (_project, context) => {
     (config.feeds ?? []).every((feed) => assert(feed.url, "url is missing for one of the feeds"));
 
-    const project: Project = {
+    const project: Project & ConfigFeedExt = {
+      _extGeneratorVersion: pkg.version,
       outDir: config.outDir ?? "./",
       feeds: config.feeds.map((feed) => ({
         version: "",
