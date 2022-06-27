@@ -1,6 +1,6 @@
 {
   "name": "@osmosfeed/core",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "scripts": {
     "dev": "vitest watch",
@@ -22,7 +22,6 @@
     "cheerio": "^1.0.0-rc.11",
     "handlebars": "^4.7.7",
     "htmlparser2": "^8.0.1",
-    "js-yaml": "^4.1.0",
-    "node-fetch": "^3.2.6"
+    "js-yaml": "^4.1.0"
   }
 }

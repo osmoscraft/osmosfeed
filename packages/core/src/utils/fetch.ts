@@ -1,6 +1,3 @@
-import http from "http";
-import https from "https";
-import fetch, { type RequestInit } from "node-fetch";
 import { withAsyncRetry, type RetryConfig } from "./retry";
 
 export interface RequestConfig {
@@ -23,8 +20,6 @@ export interface RequestConfig {
 }
 
 /** Limit socket count to prevent host blocking */
-const httpAgent = new http.Agent({ keepAlive: true, maxTotalSockets: 128, maxSockets: 8, maxFreeSockets: 128 });
-const httpsAgent = new https.Agent({ keepAlive: true, maxTotalSockets: 128, maxSockets: 8, maxFreeSockets: 128 });
 
 export function getSmartFetch(config?: RequestConfig) {
   const retryConfig: RetryConfig = {
@@ -37,22 +32,11 @@ export function getSmartFetch(config?: RequestConfig) {
   const timeoutFetch = withTimeout(fetch, timeout);
 
   const smartFetch = withAsyncRetry(
-    (url: string, requestInit?: RequestInit) => timeoutFetch(url, { agent: getAgent(url), ...requestInit }),
+    (url: string, requestInit?: RequestInit) => timeoutFetch(url, { ...requestInit }),
     retryConfig
   );
 
   return smartFetch;
-}
-
-function getAgent(url: string) {
-  try {
-    const protocol = new URL(url).protocol;
-    if (protocol === "https:") return httpsAgent;
-    if (protocol === "http:") return httpAgent;
-    return undefined;
-  } catch {
-    return undefined;
-  }
 }
 
 function withTimeout(baseFetch: typeof fetch, timeout = Infinity) {
