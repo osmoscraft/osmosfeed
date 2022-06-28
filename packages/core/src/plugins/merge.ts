@@ -3,17 +3,18 @@ import { readFile } from "fs/promises";
 import path from "path";
 import type { FeedTask } from "../engine/build";
 import { urlToFileString } from "../utils/url";
-import type { JsonFeed, JsonFeedItem } from "./types";
+import type { JsonFeed, JsonFeedItem, TaskContext } from "./types";
 
-export function merge(): FeedTask<JsonFeed> {
-  return async (feed) => {
+export function merge(): FeedTask<JsonFeed, TaskContext> {
+  return async (feed, context) => {
     assert(feed.feed_url, "feed_url is missing");
     if (feed.items.length) {
       assert(feed.items[0].date_published, "data_published missing in downloaded feed, will skip merge");
     }
 
     const remoteFeed = feed;
-    const cachedFeed = await readCache(feed.feed_url);
+    const cacheDir = path.join(process.cwd(), context.project.outDir, "cache");
+    const cachedFeed = await readCache(feed.feed_url, cacheDir);
 
     if (cachedFeed?.items.length) {
       assert(cachedFeed.items[0].date_published, "data_published missing in cache, will skip merge");
@@ -32,9 +33,9 @@ export function merge(): FeedTask<JsonFeed> {
   };
 }
 
-async function readCache(url: string): Promise<null | JsonFeed> {
+async function readCache(url: string, cacheDir: string): Promise<null | JsonFeed> {
   const filename = `${urlToFileString(url)}.json`;
-  const cachePath = path.join(process.cwd(), "dist/cache", filename);
+  const cachePath = path.join(cacheDir, filename);
 
   try {
     const cache = await readFile(cachePath, "utf-8");

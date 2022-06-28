@@ -1,6 +1,7 @@
 export * from "./engine/build";
 export * from "./plugins/cache";
 export * from "./plugins/config";
+export * from "./plugins/dev";
 export * from "./plugins/download";
 export * from "./plugins/generate";
 export * from "./plugins/merge";

@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "description": "For developement use only",
   "scripts": {
-    "start": "osmosfeed"
+    "build": "osmosfeed",
+    "dev": "osmosfeed --dev"
   },
   "author": "",
   "license": "MIT",

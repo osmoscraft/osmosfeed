@@ -8,8 +8,10 @@
   },
   "scripts": {
     "start": "npm start -w packages/sandbox",
-    "dev": "npm run dev -w packages/core",
-    "test": "npm run test -w packages/core",
+    "sandbox:build": "npm start -w packages/sandbox",
+    "sandbox:dev": "npm run dev -w packages/sandbox",
+    "core:dev:": "npm run dev -w packages/core",
+    "core:test": "npm run test -w packages/core",
     "clean": "npm run clean --workspaces=true"
   },
   "repository": {

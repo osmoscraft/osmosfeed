@@ -12,3 +12,4 @@ Full list of tasks are tracked at https://github.com/osmoscraft/osmosfeed/projec
 - align counter and show issue count, .e.g 10 + 8 items | 2 issues | https://...
 - Consider naming: templates vs layouts vs includes
   - Conflict with starter repo template
+- hot reload different steps based on changed path
