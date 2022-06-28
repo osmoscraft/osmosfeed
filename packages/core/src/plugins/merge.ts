@@ -1,11 +1,9 @@
 import assert from "assert/strict";
-import { readFile } from "fs/promises";
-import path from "path";
 import type { FeedTask } from "../engine/build";
-import { urlToFileString } from "../utils/url";
+import type { CacheExt } from "./cache";
 import type { JsonFeed, JsonFeedItem, TaskContext } from "./types";
 
-export function merge(): FeedTask<JsonFeed, TaskContext> {
+export function merge(): FeedTask<JsonFeed & Partial<CacheExt>, TaskContext> {
   return async (feed, context) => {
     assert(feed.feed_url, "feed_url is missing");
     if (feed.items.length) {
@@ -13,8 +11,7 @@ export function merge(): FeedTask<JsonFeed, TaskContext> {
     }
 
     const remoteFeed = feed;
-    const cacheDir = path.join(process.cwd(), context.project.outDir, "cache");
-    const cachedFeed = await readCache(feed.feed_url, cacheDir);
+    const cachedFeed = feed._cache ?? null;
 
     if (cachedFeed?.items.length) {
       assert(cachedFeed.items[0].date_published, "data_published missing in cache, will skip merge");
@@ -31,19 +28,6 @@ export function merge(): FeedTask<JsonFeed, TaskContext> {
       ...mergeSummary.feed,
     };
   };
-}
-
-async function readCache(url: string, cacheDir: string): Promise<null | JsonFeed> {
-  const filename = `${urlToFileString(url)}.json`;
-  const cachePath = path.join(cacheDir, filename);
-
-  try {
-    const cache = await readFile(cachePath, "utf-8");
-    const parsedCache = JSON.parse(cache);
-    return parsedCache;
-  } catch (e) {
-    return null;
-  }
 }
 
 function mergeFeed(

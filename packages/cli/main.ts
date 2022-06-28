@@ -2,7 +2,6 @@
 import {
   build,
   BuildConfig,
-  cache,
   configFileYaml,
   dev,
   download,
@@ -11,6 +10,8 @@ import {
   normalize,
   parse,
   prune,
+  readCache,
+  writeCache,
 } from "@osmosfeed/core";
 
 console.log(`[cli] starting build`);
@@ -23,15 +24,15 @@ async function main() {
   try {
     const partialBuild: BuildConfig = {
       preProjectTasks: [configFileYaml()],
-      preFeedTasks: [],
+      preFeedTasks: [readCache()],
       postFeedTasks: [merge()],
       postProjectTasks: [generate()],
     };
 
     const fullBuild: BuildConfig = {
       preProjectTasks: [configFileYaml()],
-      preFeedTasks: [download(), parse()],
-      postFeedTasks: [normalize(), merge(), cache()],
+      preFeedTasks: [download(), parse(), readCache()],
+      postFeedTasks: [normalize(), merge(), writeCache()],
       postProjectTasks: [generate(), prune()],
     };
 
