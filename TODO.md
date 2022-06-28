@@ -7,7 +7,7 @@ Full list of tasks are tracked at https://github.com/osmoscraft/osmosfeed/projec
 - crawl site
   - base64 favicon
 - crawl item
+  - base64 favicon
   - item og crawl for summary and image url
 - reading time or wc
-- align counter and show issue count, .e.g 10 + 8 items | 2 issues | https://...
-- split cache read and write
+- add a clean task to CLI

@@ -19,9 +19,11 @@ export function merge(): FeedTask<JsonFeed & Partial<CacheExt>, TaskContext> {
 
     const mergeSummary = mergeFeed(mergeItems.bind(null, 100), remoteFeed, cachedFeed);
     console.log(
-      `[merge] ${mergeSummary.added - mergeSummary.removed} new | ${
+      `[merge] ${(mergeSummary.added - mergeSummary.removed).toString().padStart(3)} new | ${(
         mergeSummary.unchanged + mergeSummary.updated
-      } existing | ${feed.feed_url}`
+      )
+        .toString()
+        .padStart(3)} existing | ${feed.feed_url}`
     );
 
     return {
