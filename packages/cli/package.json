@@ -6,9 +6,7 @@
   "bin": {
     "osmosfeed": "main.ts"
   },
-  "scripts": {
-    "start": "osmosfeed"
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "MIT",
