@@ -27,7 +27,7 @@ type BaseFeed = {
  * - Storage API
  */
 export async function build(config?: BuildConfig) {
-  const initProj: BaseProject = {
+  const initialProject: BaseProject = {
     feeds: [],
   };
 
@@ -53,7 +53,7 @@ export async function build(config?: BuildConfig) {
   });
   const projectTasks = [...preProjectTasks, projectTask, ...postProjectTasks];
 
-  return await runAsyncTasks(projectTasks, initProj, context);
+  return await runAsyncTasks(projectTasks, initialProject, context);
 }
 
 async function runAsyncTasks<T>(
