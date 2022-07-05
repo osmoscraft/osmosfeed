@@ -12,7 +12,6 @@ export interface CrawlData {
   title?: string;
   description?: string;
   image?: string;
-  icon?: string;
 }
 
 export function crawl(): ItemTask<JsonFeedItem, TaskContext> {
@@ -53,7 +52,6 @@ function mergeCrawlData(baseItem: JsonFeedItem & ParseItemExt, crawlData: CrawlD
     summary:
       (baseItem.summary?.length ?? 0) > (crawlData.description?.length ?? 0) ? baseItem.summary : crawlData.description,
     image: baseItem.image ?? crawlData.image,
-    _extIcon: baseItem._extIcon ?? crawlData.icon,
   };
 }
 
@@ -117,12 +115,10 @@ async function parseHtml(htmlString: string, pageUrl: string): Promise<CrawlData
 
   const maybeImageUrl = $(`head > meta[property="og:image"]`).attr("content");
   const absoluteImageUrl = maybeImageUrl ? resolveRelativeUrl(maybeImageUrl, pageUrl) ?? undefined : undefined;
-  const corsProxyIconUrl = pageUrl ? `https://icons.duckduckgo.com/ip2/${new URL(pageUrl).hostname}.ico` : undefined;
 
   return {
     title: $(`head > meta[property="og:title"]`).attr("content"),
     description: $(`head > meta[property="og:description"]`).attr("content"),
     image: absoluteImageUrl,
-    icon: corsProxyIconUrl,
   };
 }

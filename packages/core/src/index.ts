@@ -4,6 +4,7 @@ export * from "./plugins/config";
 export * from "./plugins/crawl";
 export * from "./plugins/dev";
 export * from "./plugins/download";
+export * from "./plugins/favicon";
 export * from "./plugins/generate";
 export * from "./plugins/merge";
 export * from "./plugins/normalize";

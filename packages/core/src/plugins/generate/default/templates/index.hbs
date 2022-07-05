@@ -24,6 +24,9 @@
           {{#each feeds}}
             <li class="">
               <section class="">
+                {{#if icon }}
+                  <img src="{{icon}}" loading="lazy" width="16" height="16" class="" />
+                {{/if}}
                 <h3 class="">{{title}}</h3>
                 <a class="" href="{{siteUrl}}">{{siteUrl}}</a>
                 <section class="">
