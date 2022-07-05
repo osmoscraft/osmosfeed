@@ -11,7 +11,10 @@ export interface Project {
 }
 
 export interface TaskContext {
-  project: Project;
+  /* Available to Feed and Item */
+  project?: Project;
+  /* Available to Item only */
+  feed?: JsonFeed;
 }
 
 export interface JsonFeed {

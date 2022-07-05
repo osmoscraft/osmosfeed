@@ -1,10 +1,9 @@
 import assert from "assert/strict";
-import { mkdir, readFile, writeFile } from "fs/promises";
+import { mkdir, readdir, readFile, rm, writeFile } from "fs/promises";
 import path, { dirname } from "path";
-import type { FeedTask } from "../engine/build";
+import type { FeedTask, ProjectTask } from "../engine/build";
 import { urlToFileString } from "../utils/url";
-import type { JsonFeed, TaskContext } from "./types";
-
+import type { JsonFeed, Project, TaskContext } from "./types";
 export const JSON_FEED_EXT_PREFIX = "_ext";
 
 export interface CacheExt {
@@ -14,6 +13,7 @@ export interface CacheExt {
 export function readCache(): FeedTask<JsonFeed, TaskContext> {
   return async (feed, context) => {
     assert(feed.feed_url, "feed_url is missing");
+    assert(context.project, "project is missing in context");
 
     const cacheDir = path.join(process.cwd(), context.project.outDir, "cache");
 
@@ -48,6 +48,8 @@ export function readCache(): FeedTask<JsonFeed, TaskContext> {
 
 export function writeCache(): FeedTask<JsonFeed, TaskContext> {
   return async (feed, context) => {
+    assert(context.project, "project is missing in context");
+
     const cacheDir = path.join(process.cwd(), context.project.outDir, "cache");
 
     if (!feed.items.length) return feed; // noop for empty feed
@@ -71,5 +73,22 @@ export function writeCache(): FeedTask<JsonFeed, TaskContext> {
     );
 
     return feed;
+  };
+}
+
+export function pruneCache(): ProjectTask<Project> {
+  return async (project) => {
+    const cacheDir = path.join(process.cwd(), project.outDir, "cache");
+
+    const keepFiles = project.feeds
+      .filter((feed) => feed.feed_url)
+      .map((feed) => urlToFileString(feed.feed_url!) + ".json");
+    const existingFiles = await readdir(cacheDir);
+    const removeFiles = existingFiles.filter((existingFile) => !keepFiles.includes(existingFile));
+
+    await Promise.all(removeFiles.map((removeFile) => rm(path.join(cacheDir, removeFile))));
+    console.log(`[cache] removed ${removeFiles.length} unused cache files`);
+
+    return project;
   };
 }

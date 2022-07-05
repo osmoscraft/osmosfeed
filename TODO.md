@@ -4,6 +4,8 @@ Full list of tasks are tracked at https://github.com/osmoscraft/osmosfeed/projec
 
 ## Temp tassk
 
+- Track crawl retry in a state file
+- Use gray output to dim existing crawl output
 - crawl site
   - base64 favicon
 - crawl item

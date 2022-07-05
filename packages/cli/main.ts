@@ -3,13 +3,15 @@ import {
   build,
   BuildConfig,
   configFileYaml,
+  crawl,
   dev,
   download,
   generate,
   merge,
-  normalize,
+  normalizeItem,
   parse,
-  prune,
+  pruneCache,
+  pruneCrawlData,
   readCache,
   writeCache,
 } from "@osmosfeed/core";
@@ -32,8 +34,9 @@ async function main() {
     const fullBuild: BuildConfig = {
       preProjectTasks: [configFileYaml()],
       preFeedTasks: [download(), parse(), readCache()],
-      postFeedTasks: [normalize(), merge(), writeCache()],
-      postProjectTasks: [generate(), prune()],
+      itemTasks: [normalizeItem(), crawl()],
+      postFeedTasks: [merge(), writeCache()],
+      postProjectTasks: [generate(), pruneCrawlData(), pruneCache()],
     };
 
     const devModeTasks = isDevMode
