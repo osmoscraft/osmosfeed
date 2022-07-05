@@ -4,7 +4,7 @@ import { mkdir, readdir, readFile, rm, writeFile } from "fs/promises";
 import path, { dirname } from "path";
 import type { ItemTask, ProjectTask } from "../engine/build";
 import { getSmartFetch } from "../utils/fetch";
-import { urlToFileString } from "../utils/url";
+import { resolveRelativeUrl, urlToFileString } from "../utils/url";
 import type { JsonFeedItem, Project, TaskContext } from "./types";
 
 export interface CrawlItemExt {
@@ -38,7 +38,7 @@ export function crawl(config?: CrawlConfig): ItemTask<JsonFeedItem & CrawlItemEx
 
       try {
         const crawlHtml = await readFile(crawlOutputPath, "utf-8");
-        const crawlData = await parseHtml(crawlHtml);
+        const crawlData = await parseHtml(crawlHtml, item.url);
         console.log(`[crawl] EXIST ${item.url}`);
 
         return {
@@ -56,7 +56,7 @@ export function crawl(config?: CrawlConfig): ItemTask<JsonFeedItem & CrawlItemEx
         }
 
         const crawlHtml = await response.text();
-        const crawlData = await parseHtml(crawlHtml);
+        const crawlData = await parseHtml(crawlHtml, item.url);
 
         await mkdir(dirname(crawlOutputPath), { recursive: true });
         await writeFile(crawlOutputPath, crawlHtml);
@@ -96,11 +96,14 @@ export function pruneCrawlData(): ProjectTask<Project> {
   };
 }
 
-async function parseHtml(htmlString: string): Promise<CrawlData> {
+async function parseHtml(htmlString: string, pageUrl: string): Promise<CrawlData> {
   const $ = load(htmlString);
+
+  const maybeImageUrl = $(`head > meta[property="og:image"]`).attr("content");
+  const absoluteImageUrl = maybeImageUrl ? resolveRelativeUrl(maybeImageUrl, pageUrl) ?? undefined : undefined;
   return {
     title: $(`head > meta[property="og:title"]`).attr("content"),
     description: $(`head > meta[property="og:description"]`).attr("content"),
-    image: $(`head > meta[property="og:image"]`).attr("content"),
+    image: absoluteImageUrl,
   };
 }
