@@ -5,13 +5,14 @@ import path, { dirname } from "path";
 import type { ItemTask, ProjectTask } from "../engine/build";
 import { getSmartFetch } from "../utils/fetch";
 import { resolveRelativeUrl, urlToFileString } from "../utils/url";
+import type { ParseItemExt } from "./parse";
 import type { JsonFeedItem, Project, TaskContext } from "./types";
 
 export interface CrawlData {
-  iconBase64?: string;
   title?: string;
   description?: string;
   image?: string;
+  icon?: string;
 }
 
 export function crawl(): ItemTask<JsonFeedItem, TaskContext> {
@@ -46,12 +47,13 @@ export function crawl(): ItemTask<JsonFeedItem, TaskContext> {
   };
 }
 
-function mergeCrawlData(baseItem: JsonFeedItem, crawlData: CrawlData): JsonFeedItem {
+function mergeCrawlData(baseItem: JsonFeedItem & ParseItemExt, crawlData: CrawlData): JsonFeedItem & ParseItemExt {
   return {
     ...baseItem,
     summary:
       (baseItem.summary?.length ?? 0) > (crawlData.description?.length ?? 0) ? baseItem.summary : crawlData.description,
     image: baseItem.image ?? crawlData.image,
+    _extIcon: baseItem._extIcon ?? crawlData.icon,
   };
 }
 
@@ -115,9 +117,12 @@ async function parseHtml(htmlString: string, pageUrl: string): Promise<CrawlData
 
   const maybeImageUrl = $(`head > meta[property="og:image"]`).attr("content");
   const absoluteImageUrl = maybeImageUrl ? resolveRelativeUrl(maybeImageUrl, pageUrl) ?? undefined : undefined;
+  const corsProxyIconUrl = pageUrl ? `https://icons.duckduckgo.com/ip2/${new URL(pageUrl).hostname}.ico` : undefined;
+
   return {
     title: $(`head > meta[property="og:title"]`).attr("content"),
     description: $(`head > meta[property="og:description"]`).attr("content"),
     image: absoluteImageUrl,
+    icon: corsProxyIconUrl,
   };
 }

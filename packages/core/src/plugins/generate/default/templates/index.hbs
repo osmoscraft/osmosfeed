@@ -32,8 +32,11 @@
                         <h4 class="">
                           <a class="" href="{{link}}">{{title}}</a>
                         </h4>
-                        {{#if imageUrl}}
-                          <img src="{{imageUrl}}" loading="lazy" class="" />
+                        {{#if _extIcon}}
+                          <img src="{{_extIcon}}" width="16" height="16" class="" />
+                        {{/if}}
+                        {{#if image }}
+                          <img src="{{image}}" loading="lazy" width="100" height="auto" class="" />
                         {{/if}}
                         <span>{{content_text}}</span>
                         </a>
