@@ -16,16 +16,10 @@ export function normalizeItem(): ItemTask<JsonFeedItem & CrawlItemExt, TaskConte
       ? getIsoTimeZeroOffset(item.date_modified)
       : normalizedDatePublished;
 
-    const isCrawlDescriptionBetter =
-      item._extCrawl?.description && item._extCrawl?.description?.length > 5 * (item.summary?.length ?? 0);
-
     return {
       ...item,
       url: item?.url ? resolveRelativeUrl(item?.url, context.feed.feed_url!) ?? undefined : undefined,
-      summary: isCrawlDescriptionBetter ? item._extCrawl?.description : item.summary,
-      image: item?.image
-        ? resolveRelativeUrl(item?.image, context.feed.feed_url!) ?? item._extCrawl?.image ?? undefined
-        : undefined,
+      image: item?.image ? resolveRelativeUrl(item?.image, context.feed.feed_url!) ?? undefined : undefined,
       date_published: normalizedDatePublished,
       date_modified: normalizedDateModified,
     };

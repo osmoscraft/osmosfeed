@@ -34,7 +34,7 @@ async function main() {
     const fullBuild: BuildConfig = {
       preProjectTasks: [configFileYaml()],
       preFeedTasks: [download(), parse(), readCache()],
-      itemTasks: [crawl(), normalizeItem()],
+      itemTasks: [normalizeItem(), crawl()],
       postFeedTasks: [merge(), writeCache()],
       postProjectTasks: [generate(), pruneCrawlData(), pruneCache()],
     };
