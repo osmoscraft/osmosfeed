@@ -832,7 +832,8 @@ describe("Parse items", () => {
       </rss>
     `);
 
-    expect(result.items[0].image).toEqual("http://mock-domain.com/item-image-1.png");
+    expect(result.items[0].image).not.toEqual("http://mock-domain.com/item-image-1.png");
+    expect(result.items[0]._extIcon).toEqual("http://mock-domain.com/item-image-1.png");
   });
 
   it("Image/RSS2/media:group", async () => {
@@ -849,7 +850,8 @@ describe("Parse items", () => {
       </rss>
     `);
 
-    expect(result.items[0].image).toEqual("http://mock-domain.com/item-image-1.png");
+    expect(result.items[0].image).not.toEqual("http://mock-domain.com/item-image-1.png");
+    expect(result.items[0]._extIcon).toEqual("http://mock-domain.com/item-image-1.png");
   });
 
   it("Image/RDF", async () => {

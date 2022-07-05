@@ -2,10 +2,10 @@ import assert from "assert/strict";
 import type { ItemTask } from "../engine/build";
 import { getIsoTimeZeroOffset } from "../utils/time";
 import { resolveRelativeUrl } from "../utils/url";
-import type { CrawlItemExt } from "./crawl";
+import type { ParseItemExt } from "./parse";
 import type { JsonFeedItem, TaskContext } from "./types";
 
-export function normalizeItem(): ItemTask<JsonFeedItem & CrawlItemExt, TaskContext> {
+export function normalizeItem(): ItemTask<JsonFeedItem & ParseItemExt, TaskContext> {
   return async (item, context) => {
     assert(context.feed?.feed_url, "feed_url is missing in context");
 
@@ -18,8 +18,9 @@ export function normalizeItem(): ItemTask<JsonFeedItem & CrawlItemExt, TaskConte
 
     return {
       ...item,
-      url: item?.url ? resolveRelativeUrl(item?.url, context.feed.feed_url!) ?? undefined : undefined,
-      image: item?.image ? resolveRelativeUrl(item?.image, context.feed.feed_url!) ?? undefined : undefined,
+      url: item?.url ? resolveRelativeUrl(item?.url, context.feed.feed_url) ?? undefined : undefined,
+      image: item?.image ? resolveRelativeUrl(item?.image, context.feed.feed_url) ?? undefined : undefined,
+      _extIcon: item?._extIcon ? resolveRelativeUrl(item?._extIcon, context.feed.feed_url) ?? undefined : undefined,
       date_published: normalizedDatePublished,
       date_modified: normalizedDateModified,
     };

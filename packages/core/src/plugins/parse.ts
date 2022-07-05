@@ -4,7 +4,11 @@ import type { DownloadExt } from "./download";
 import { parse as parseJsonFeed } from "./parse/json-feed-parser";
 import type { JsonFeed } from "./types";
 
-export function parse(): FeedTask<JsonFeed & DownloadExt> {
+export type ParseItemExt = {
+  _extIcon?: string;
+};
+
+export function parse(): FeedTask<JsonFeed & ParseItemExt & DownloadExt> {
   return async (feed) => {
     assert(feed._download?.content);
 
