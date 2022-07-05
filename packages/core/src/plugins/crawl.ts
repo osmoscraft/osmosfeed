@@ -18,13 +18,7 @@ export interface CrawlData {
   image?: string;
 }
 
-export interface CrawlConfig {
-  /** @default 0 */
-  retry?: number;
-}
-export function crawl(config?: CrawlConfig): ItemTask<JsonFeedItem & CrawlItemExt, TaskContext> {
-  const retryLimit = config?.retry ?? 0;
-
+export function crawl(): ItemTask<JsonFeedItem & CrawlItemExt, TaskContext> {
   return async (item, context) => {
     if (!item.url) return item;
 
@@ -48,12 +42,10 @@ export function crawl(config?: CrawlConfig): ItemTask<JsonFeedItem & CrawlItemEx
       } catch {
         const fetch = getSmartFetch();
         const response = await fetch(item.url);
+
         if (!response.ok) throw new Error(`Fetch failed with status ${response.status} ${response.statusText}`);
         const contentType = response.headers.get("Content-Type");
-        if (!contentType?.startsWith("text/html")) {
-          console.error(`[crawl] ERR ${item.url} Content type is not HTML`);
-          return item;
-        }
+        if (!contentType?.startsWith("text/html")) throw new Error(`Cannot crawl non HTML content`);
 
         const crawlHtml = await response.text();
         const crawlData = await parseHtml(crawlHtml, item.url);
