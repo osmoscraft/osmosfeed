@@ -53,7 +53,7 @@ async function main() {
 
     const dynamicBuild: BuildConfig = {
       ...fullBuild,
-      postProjectTasks: [...fullBuild.postProjectTasks, ...devModeTasks],
+      postProjectTasks: [...(fullBuild.postProjectTasks ?? []), ...devModeTasks],
     };
 
     await build(dynamicBuild);
