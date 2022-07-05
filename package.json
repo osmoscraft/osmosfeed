@@ -7,7 +7,8 @@
     "doc": "docs"
   },
   "scripts": {
-    "start": "npm run dev -w packages/sandbox",
+    "dev": "npm run sandbox:dev",
+    "test": "npm run core:test",
     "sandbox:build": "npm run build -w packages/sandbox",
     "sandbox:dev": "npm run dev -w packages/sandbox",
     "core:dev:": "npm run dev -w packages/core",
