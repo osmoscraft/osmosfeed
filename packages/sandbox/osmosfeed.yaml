@@ -1,5 +1,28 @@
 feeds:
-  - url: https://news.ycombinator.com/rss
+  # - url: https://alistapart.com/main/feed/
+  - url: https://blog.tubikstudio.com/feed/
+  - url: https://christianheilmann.com/feed/
   - url: https://css-tricks.com/feed
-  - url: https://www.osnabrueck.de/start?type=9818
+  - url: https://daverupert.com/atom.xml
+  # - url: https://developer.chrome.com/feeds/blog.xml
+  - url: https://feeds.feedburner.com/logodesignlove
+  - url: https://gomakethings.com/feed/index.xml
+  - url: https://hacks.mozilla.org/feed/
+  - url: https://increment.com/feed.xml
+  - url: https://ishadeed.com/feed.xml
   - url: https://lea.verou.me/feed/
+  - url: https://logicmag.io/rss.xml
+  - url: https://maggieappleton.com/rss.xml
+  - url: https://news.ycombinator.com/rss
+  - url: https://seirdy.one/posts/atom.xml
+  - url: https://stratechery.com/feed/
+  - url: https://subconscious.substack.com/feed
+  - url: https://tympanus.net/codrops/feed/
+  - url: https://wdrl.info/feed
+  - url: https://webkit.org/feed/atom/
+  - url: https://www.baldurbjarnason.com/index.xml
+  - url: https://www.loversmagazine.com/feed
+  - url: https://www.osnabrueck.de/start?type=9818
+  - url: https://www.smashingmagazine.com/feed/
+  - url: https://www.taniarascia.com/rss.xml
+  - url: https://www.thisiscolossal.com/feed/

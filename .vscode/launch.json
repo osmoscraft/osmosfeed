@@ -4,7 +4,7 @@
     {
       "name": "Debug with sandbox",
       "request": "launch",
-      "runtimeArgs": ["run-script", "start"],
+      "runtimeArgs": ["run-script", "dev"],
       "runtimeVersion": "18",
       "runtimeExecutable": "npm",
       "skipFiles": ["<node_internals>/**"],

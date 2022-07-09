@@ -24,20 +24,21 @@
           {{#each feeds}}
             <li class="">
               <section class="">
-                {{#if icon }}
-                  <img src="{{icon}}" loading="lazy" width="16" height="16" class="" />
-                {{/if}}
-                <h3 class="">{{title}}</h3>
-                <a class="" href="{{siteUrl}}">{{siteUrl}}</a>
-                <section class="">
+                <h3 class="">
+                  {{#if icon }}
+                    <img src="{{icon}}" loading="lazy" width="16" height="16" class="" />
+                  {{/if}}
+                  <a href="{{home_page_url}}">{{title}}</a>
+                </h3>
+                <section class="article-list">
                   {{#each items}}
                     <article>
                         <h4 class="">
-                          <a class="" href="{{link}}">{{title}}</a>
+                          {{#if _extIcon}}
+                            <img src="{{_extIcon}}" width="16" height="16" class="" />
+                          {{/if}}
+                          <a class="" href="{{url}}">{{title}}</a>
                         </h4>
-                        {{#if _extIcon}}
-                          <img src="{{_extIcon}}" width="16" height="16" class="" />
-                        {{/if}}
                         {{#if image }}
                           <img src="{{image}}" loading="lazy" width="100" height="auto" class="" />
                         {{/if}}

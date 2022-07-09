@@ -42,7 +42,12 @@ function mergeFeed(
   const mergeItemsSummary = mergeItems(remoteFeed?.items ?? [], cachedFeed?.items ?? []);
 
   const mergedFeed: JsonFeed = {
-    ...(remoteFeed ?? cachedFeed!), // we have checked at least one of them exist
+    // allow remote feed to override optional fields
+    ...cachedFeed,
+    ...remoteFeed,
+    // required fields must be manually merged below
+    title: remoteFeed?.title ? remoteFeed?.title : cachedFeed!.title,
+    version: remoteFeed?.version ? remoteFeed.version : cachedFeed!.version,
     items: mergeItemsSummary.items,
   };
 

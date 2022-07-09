@@ -1,0 +1,46 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.site-layout {
+  display: grid;
+  grid-template-columns: 1fr 200px;
+}
+
+.date-list {
+  display: grid;
+  gap: 4rem;
+}
+
+.date-item {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+}
+
+.feed-list {
+  list-style: none;
+}
+
+.article-list {
+  border: 1px solid gray;
+}
+
+.article-item {
+  break-inside: avoid;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  padding: 0.5rem;
+}
+
+.article-item__summary {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+details[open] .article-item__summary {
+  -webkit-line-clamp: 5;
+}

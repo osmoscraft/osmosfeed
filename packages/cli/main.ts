@@ -11,6 +11,7 @@ import {
   itemFavicon,
   merge,
   normalizeDates,
+  normalizeSummary,
   normalizeUrls,
   parse,
   pruneCache,
@@ -37,7 +38,7 @@ async function main() {
     const fullBuild: BuildConfig = {
       preProjectTasks: [configFileYaml()],
       preFeedTasks: [download(), parse(), readCache()],
-      itemTasks: [normalizeUrls(), normalizeDates(), crawl(), itemFavicon()],
+      itemTasks: [normalizeUrls(), normalizeDates(), crawl(), normalizeSummary(), itemFavicon()],
       postFeedTasks: [merge(), feedFavicon(), writeCache()],
       postProjectTasks: [generate(), pruneCrawlData(), pruneCache()],
     };

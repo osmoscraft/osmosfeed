@@ -18,6 +18,15 @@ export function normalizeUrls(): ItemTask<JsonFeedItem & ParseItemExt, TaskConte
   };
 }
 
+export function normalizeSummary(): ItemTask<JsonFeedItem, TaskContext> {
+  return async (item, context) => {
+    return {
+      ...item,
+      summary: item.summary?.slice(0, 600),
+    };
+  };
+}
+
 export function normalizeDates(): ItemTask<JsonFeedItem, TaskContext> {
   return async (item, context) => {
     const normalizedDatePublished = item?.date_published
