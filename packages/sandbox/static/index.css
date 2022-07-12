@@ -3,44 +3,50 @@
   box-sizing: border-box;
 }
 
-.site-layout {
-  display: grid;
-  grid-template-columns: 1fr 200px;
+img {
+  max-width: 100%;
+  display: block;
 }
 
-.date-list {
-  display: grid;
-  gap: 4rem;
-}
-
-.date-item {
-  display: grid;
-  grid-template-columns: 320px 1fr;
+.date-header {
+  height: 80px;
+  padding: 20px;
 }
 
 .feed-list {
-  list-style: none;
+  display: grid;
+  gap: 4rem 0;
+}
+
+.feed-layout {
+  gap: 0 2rem;
+  display: grid;
+  grid-template-columns: 400px 1fr;
+}
+
+.feed-outline {
+  position: sticky;
+  align-self: start;
+  top: 0px;
 }
 
 .article-list {
-  border: 1px solid gray;
+  display: grid;
+  gap: 2rem;
 }
 
 .article-item {
   break-inside: avoid;
   display: grid;
   grid-template-columns: auto 1fr auto;
-  padding: 0.5rem;
+  padding: 1rem;
+  border: 1px solid #ccc;
 }
 
-.article-item__summary {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  cursor: pointer;
+.article-title {
+  font-size: 1.25rem;
 }
-
-details[open] .article-item__summary {
-  -webkit-line-clamp: 5;
+.article-link {
+  color: #333;
+  text-decoration: none;
 }

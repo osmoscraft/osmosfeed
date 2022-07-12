@@ -15,73 +15,59 @@
   <body>
     {{> afterBodyBegin }}
     {{> header }}
-    <div class="site-layout">
-      <div class="date-list">
-      {{#each dates}}
-        <section class="date-item">
-          <ul class="date-item__summary">
-            <h2 class="">
-              <time class="" data-offset-date={{isoOffsetPublishDate}} datetime="{{isoUtcPublishTime}}">{{isoOffsetPublishDate}}</time>
-            </h2>
-            <ul>
-            {{#each feeds}}
-              <li class="">
-               <section class="">
-                 <div class="">
-                  <img src="{{icon}}" width="16" height="16" class="" />
-                  <a href="{{home_page_url}}">{{title}}</a>
-                </div>
-                </section>
-                <ul>
-                {{#each items}}
-                  <li>
-                    <article class="">
-                      {{#if _extIcon}}
-                        <img src="{{_extIcon}}" width="16" height="16" class="" />
-                      {{/if}}
-                      <a class="" href="{{url}}">{{title}}</a>
-                    </article>
-                  </li>
-                {{/each}}
-                </ul>
-              </li>
-            {{/each}}
-            </ul>
-          </ul>
-          <ul class="feed-list">
-            {{#each feeds}}
-              {{#each items}}
-                <article class="article-item">
-                    {{#if _extIcon}}
-                      <img src="{{_extIcon}}" width="16" height="16" class="" />
-                    {{/if}}
-                    <div>
-                      <h4 class="">
-                        <a class="" href="{{url}}">{{title}}</a>
-                      </h4>
-                      <details>
-                        <summary class="article-item__summary">{{summary}}</summary>
-                      </details>
-                    </div>
-                    {{#if image }}
-                      <img src="{{image}}" loading="lazy" width="120" height="auto" class="" />
-                    {{/if}}
-                </article>
-              {{/each}}
+    {{#each dates}}
+    <h2 class="date-header">
+      <time class="" data-offset-date={{isoOffsetPublishDate}} datetime="{{isoUtcPublishTime}}">{{isoOffsetPublishDate}}</time>
+    </h2>
+    <div class="feed-list">
+      {{#each feeds}}
+      <div class="feed-layout">
+        <aside class="feed-outline feed-layout__aside">
+         <section class="">
+           <div class="">
+              <img src="{{icon}}" width="16" height="16" class="" />
+              <a href="{{home_page_url}}">{{title}}</a>
+            </div>
+          </section>
+          <ul>
+            {{#each items}}
+            <li>
+              <article class="">
+                {{#if _extIcon}}
+                <img src="{{_extIcon}}" width="16" height="16" class="" />
+                {{/if}}
+                <a class="" href="{{url}}">{{title}}</a>
+              </article>
+            </li>
             {{/each}}
           </ul>
-        </section>
+        </aside>
+        <div class="feed-layout__main article-list">
+          {{#each items}}
+          <div class="article-list__item">
+            <div class="sticky_sentinel sticky_sentinel--top"></div>
+            <article class="article-item">
+              {{#if _extIcon}}
+              <img src="{{_extIcon}}" width="16" height="16" class="" />
+              {{/if}}
+              <div>
+                <h4 class="article-title">
+                  <a class="article-link" href="{{url}}">{{title}}</a>
+                </h4>
+                <p>{{summary}}</p>
+              </div>
+              {{#if image }}
+              <img src="{{image}}" loading="lazy" width="120" height="auto" class="" />
+              {{/if}}
+            </article>
+            <div class="sticky_sentinel sticky_sentinel--bottom"></div>
+          </div>
+          {{/each}}
+        </div>
+      </div>
       {{/each}}
-      </div>
-      <ul class="date-outline-list">
-        {{#each dates}}
-          <li class="date-item">
-            <time class="" data-offset-date={{isoOffsetPublishDate}} datetime="{{isoUtcPublishTime}}">{{isoOffsetPublishDate}}</time>
-          </li>
-        {{/each}}
-      </ul>
-      </div>
     </div>
+    {{/each}}
     {{> footer}}
     {{> beforeBodyEnd }}
   </body>
