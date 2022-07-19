@@ -17,7 +17,8 @@ export function merge(): FeedTask<JsonFeed & Partial<CacheExt>, TaskContext> {
       assert(cachedFeed.items[0].date_published, "data_published missing in cache, will skip merge");
     }
 
-    const mergeSummary = mergeFeed(mergeItems.bind(null, 100), remoteFeed, cachedFeed);
+    assert(context.feed?._maxArticleCount, "feed maxArticleCount is missing");
+    const mergeSummary = mergeFeed(mergeItems.bind(null, context.feed._maxArticleCount), remoteFeed, cachedFeed);
     console.log(
       `[merge] ${(mergeSummary.added - mergeSummary.removed).toString().padStart(3)} new | ${(
         mergeSummary.unchanged + mergeSummary.updated

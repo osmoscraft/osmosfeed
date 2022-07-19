@@ -7,7 +7,7 @@ import type { JsonFeed, Project, TaskContext } from "./types";
 export const JSON_FEED_EXT_PREFIX = "_ext";
 
 export interface CacheExt {
-  _cache: JsonFeed;
+  _cache?: JsonFeed;
 }
 
 export function readCache(): FeedTask<JsonFeed, TaskContext> {
@@ -34,11 +34,17 @@ export function readCache(): FeedTask<JsonFeed, TaskContext> {
         _cache: parsedCache,
       };
 
-      return {
+      const resultFeed = {
         ...feed,
         ...ext,
       };
+
+      context.feed = resultFeed;
+
+      return resultFeed;
     } catch {
+      context.feed = { ...feed };
+
       return {
         ...feed,
       };

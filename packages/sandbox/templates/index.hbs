@@ -21,50 +21,30 @@
     </h2>
     <div class="feed-list">
       {{#each feeds}}
-      <div class="feed-layout">
-        <aside class="feed-outline feed-layout__aside">
-         <section class="">
-           <div class="">
-              <img src="{{icon}}" width="16" height="16" class="" />
-              <a href="{{home_page_url}}">{{title}}</a>
-            </div>
-          </section>
-          <ul>
-            {{#each items}}
-            <li>
-              <article class="">
-                {{#if _extIcon}}
-                <img src="{{_extIcon}}" width="16" height="16" class="" />
-                {{/if}}
-                <a class="" href="{{url}}">{{title}}</a>
-              </article>
-            </li>
-            {{/each}}
-          </ul>
-        </aside>
-        <div class="feed-layout__main article-list">
-          {{#each items}}
-          <div class="article-list__item">
-            <div class="sticky_sentinel sticky_sentinel--top"></div>
-            <article class="article-item">
-              {{#if _extIcon}}
-              <img src="{{_extIcon}}" width="16" height="16" class="" />
-              {{/if}}
-              <div>
-                <h4 class="article-title">
-                  <a class="article-link" href="{{url}}">{{title}}</a>
-                </h4>
-                <p>{{summary}}</p>
-              </div>
-              {{#if image }}
-              <img src="{{image}}" loading="lazy" width="120" height="auto" class="" />
-              {{/if}}
-            </article>
-            <div class="sticky_sentinel sticky_sentinel--bottom"></div>
+      <main>
+       <section class="">
+         <div class="">
+            <img src="{{icon}}" width="16" height="16" class="" />
+            <a href="{{home_page_url}}">{{title}}</a>
           </div>
-          {{/each}}
-        </div>
-      </div>
+        </section>
+        {{#each items}}
+        <article class="article-item">
+          {{#if _extIcon}}
+          <img src="{{_extIcon}}" width="16" height="16" class="" />
+          {{/if}}
+          <div>
+            <h4 class="article-title">
+              <a class="article-link" href="{{url}}">{{title}}</a>
+            </h4>
+            <p>{{summary}}</p>
+          </div>
+          {{#if image }}
+          <img src="{{image}}" loading="lazy" width="120" height="auto" class="" />
+          {{/if}}
+        </article>
+        {{/each}}
+      </main>
       {{/each}}
     </div>
     {{/each}}

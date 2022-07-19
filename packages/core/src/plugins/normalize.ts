@@ -22,7 +22,7 @@ export function normalizeSummary(): ItemTask<JsonFeedItem, TaskContext> {
   return async (item, context) => {
     return {
       ...item,
-      summary: item.summary?.slice(0, 600),
+      summary: item.summary?.slice(0, 500) + ((item.summary?.length ?? 0) > 500 ? "…" : ""),
     };
   };
 }

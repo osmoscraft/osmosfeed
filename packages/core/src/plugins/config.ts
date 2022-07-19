@@ -13,6 +13,7 @@ export interface UserConfig {
   timezone?: string;
   githubPageUrl?: string;
   outDir?: string;
+  feedMaxArticle?: number;
   feeds: {
     url: string;
   }[];
@@ -34,6 +35,7 @@ export function configInline(config: UserConfig): ProjectTask<Project, TaskConte
         title: "",
         feed_url: escapeUnicodeUrl(feed.url),
         items: [],
+        _maxArticleCount: config.feedMaxArticle ?? 100,
       })),
       githubServerUrl: process.env.GITHUB_SERVER_URL ?? null,
       githubRepository: process.env.GITHUB_REPOSITORY ?? null,

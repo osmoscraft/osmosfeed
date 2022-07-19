@@ -15,19 +15,7 @@ img {
 
 .feed-list {
   display: grid;
-  gap: 4rem 0;
-}
-
-.feed-layout {
-  gap: 0 2rem;
-  display: grid;
-  grid-template-columns: 400px 1fr;
-}
-
-.feed-outline {
-  position: sticky;
-  align-self: start;
-  top: 0px;
+  gap: 1rem 0;
 }
 
 .article-list {

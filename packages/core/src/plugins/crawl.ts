@@ -1,3 +1,4 @@
+import Mercury from "@postlight/mercury-parser";
 import assert from "assert";
 import { load } from "cheerio";
 import { mkdir, readdir, readFile, rm, writeFile } from "fs/promises";
@@ -5,13 +6,15 @@ import path, { dirname } from "path";
 import type { ItemTask, ProjectTask } from "../engine/build";
 import { getSmartFetch } from "../utils/fetch";
 import { resolveRelativeUrl, urlToFileString } from "../utils/url";
+import type { CacheExt } from "./cache";
 import type { ParseItemExt } from "./parse";
-import type { JsonFeedItem, Project, TaskContext } from "./types";
+import type { JsonFeed, JsonFeedItem, Project, TaskContext } from "./types";
 
 export interface CrawlData {
   title?: string;
   description?: string;
   image?: string;
+  textContent?: string;
 }
 
 export function crawl(): ItemTask<JsonFeedItem, TaskContext> {
@@ -20,6 +23,15 @@ export function crawl(): ItemTask<JsonFeedItem, TaskContext> {
 
     try {
       assert(context.project, "project is missing in context");
+
+      const cachedItem = (context.feed as JsonFeed & CacheExt)._cache?.items.find(
+        (cachedItem) => cachedItem.id === item.id
+      );
+
+      if (cachedItem) {
+        console.log(`[crawl] CACHE HIT ${item.url}`);
+        return { ...cachedItem };
+      }
 
       const crawlOutputDir = path.join(process.cwd(), context.project.outDir, "crawl");
 
@@ -47,10 +59,26 @@ export function crawl(): ItemTask<JsonFeedItem, TaskContext> {
 }
 
 function mergeCrawlData(baseItem: JsonFeedItem & ParseItemExt, crawlData: CrawlData): JsonFeedItem & ParseItemExt {
+  const bestSummary = [
+    {
+      content: baseItem.summary,
+      score: (baseItem.summary?.length ?? 0) * 5,
+    },
+    {
+      content: crawlData.description,
+      score: (crawlData.description?.slice(0, 128).length ?? 0) * 3,
+    },
+    {
+      content: crawlData.textContent,
+      score: (crawlData.textContent?.slice(0, 128)?.length ?? 0) * 2,
+    },
+  ]
+    .sort((a, b) => a.score - b.score)
+    .pop()?.content;
+
   return {
     ...baseItem,
-    summary:
-      (baseItem.summary?.length ?? 0) > (crawlData.description?.length ?? 0) ? baseItem.summary : crawlData.description,
+    summary: bestSummary,
     image: baseItem.image ?? crawlData.image,
   };
 }
@@ -116,9 +144,15 @@ async function parseHtml(htmlString: string, pageUrl: string): Promise<CrawlData
   const maybeImageUrl = $(`head > meta[property="og:image"]`).attr("content");
   const absoluteImageUrl = maybeImageUrl ? resolveRelativeUrl(maybeImageUrl, pageUrl) ?? undefined : undefined;
 
+  const parsedDocument = await Mercury.parse(pageUrl, {
+    html: htmlString,
+    contentType: "text",
+  });
+
   return {
-    title: $(`head > meta[property="og:title"]`).attr("content"),
+    title: $(`head > meta[property="og:title"]`).attr("content") ?? parsedDocument.title ?? undefined,
     description: $(`head > meta[property="og:description"]`).attr("content"),
-    image: absoluteImageUrl,
+    image: absoluteImageUrl ?? parsedDocument.lead_image_url ?? undefined,
+    textContent: parsedDocument.content ?? undefined,
   };
 }

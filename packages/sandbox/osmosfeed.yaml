@@ -1,10 +1,10 @@
 feeds:
-  # - url: https://alistapart.com/main/feed/
+  - url: https://alistapart.com/main/feed/
   - url: https://blog.tubikstudio.com/feed/
   - url: https://christianheilmann.com/feed/
   - url: https://css-tricks.com/feed
   - url: https://daverupert.com/atom.xml
-  # - url: https://developer.chrome.com/feeds/blog.xml
+  - url: https://developer.chrome.com/feeds/blog.xml
   - url: https://feeds.feedburner.com/logodesignlove
   - url: https://gomakethings.com/feed/index.xml
   - url: https://hacks.mozilla.org/feed/
@@ -13,7 +13,7 @@ feeds:
   - url: https://lea.verou.me/feed/
   - url: https://logicmag.io/rss.xml
   - url: https://maggieappleton.com/rss.xml
-  - url: https://news.ycombinator.com/rss
+  # - url: https://news.ycombinator.com/rss
   - url: https://seirdy.one/posts/atom.xml
   - url: https://stratechery.com/feed/
   - url: https://subconscious.substack.com/feed
