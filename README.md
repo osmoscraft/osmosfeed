@@ -11,6 +11,8 @@ An RSS reader running entirely from your GitHub repo.
 - Customizable layouts and styles via templating and theming API. Just bring your HTML and CSS.
 - Free and open source. No ads. No third party tracking.
 
+Want to keep everything on the client? Check out the sister project: [fjord](https://github.com/osmoscraft/fjord).
+
 ## Demos
 
 [![screely-1644817299264](https://user-images.githubusercontent.com/1895289/153806639-4b40197e-4d78-484f-9f7d-39b78473d63c.png)](https://osmoscraft.github.io/osmosfeed-demo/)
