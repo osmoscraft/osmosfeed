@@ -104,7 +104,10 @@ Browse all [sources and more examples](https://github.com/osmoscraft/osmosfeed-e
 
 ## Ecosystem
 
-osmos::feed is part of the [osmos::craft](https://osmoscraft.org) ecosystem. If you enjoy this tool, you might also like:
+## Ecosystem
 
-- [osmos::memo](https://github.com/osmoscraft/osmosmemo): An in-browser bookmark manager optimized for tagging and retrieval speed.
-- [osmos::note](https://github.com/osmoscraft/osmosnote): A web-based text editor for networked note-taking, self-hostable on any Git repository.
+Browse other projects from the [osmos::craft](https://osmoscraft.org/) ecosystem. 
+
+- Read the web with [Fjord](https://github.com/osmoscraft/fjord)
+- Manage bookmarks with [Memo](https://github.com/osmoscraft/osmosmemo)
+- Take notes with [Tundra](https://github.com/osmoscraft/tundra)
