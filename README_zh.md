@@ -12,6 +12,8 @@
 - 使用Handlebars模板和CSS自定义变量实现主题自定义
 - 开源，免费，无第三方追踪
 
+不想依赖GitHub？请戳姊妹浏览器扩展程序[Fjord](https://github.com/osmoscraft/fjord)
+
 ## 展示
 
 [![screely-1644817912407](https://user-images.githubusercontent.com/1895289/153807593-59c78a63-3bf6-417d-a383-2362b1698dee.png)](https://osmoscraft.github.io/osmosfeed-demo/)
@@ -98,9 +100,10 @@
 
 ## 生态系统
 
-奥斯莫::源系统是[奥斯莫::工艺系统](https://osmoscraft.org)的一员。如果你觉得这个工具好用，不妨认识一下它的“朋友”？
+浏览[奥斯莫::工艺系统](https://osmoscraft.org)中的其他项目。
 
-- [奥斯莫::浏览器书签](https://github.com/osmoscraft/osmosmemo): 能够快速创建和搜索的浏览器书签。
-- [奥斯莫::知识笔记](https://github.com/osmoscraft/osmosnote): 以Git作为存储媒介，支持双向超链接的文本编辑器。
+- 阅读网页：[Fjord](https://github.com/osmoscraft/fjord)
+- 管理书签：[Memo](https://github.com/osmoscraft/memo)
+- 知识笔记：[Tundra](https://github.com/osmoscraft/tundra)
 
 （翻译若有不妥请多多见谅。欢迎提供修改意见。如有疑问或想贡献文档翻译，请在[Disucssion](https://github.com/osmoscraft/osmosfeed/discussions/categories/ideas)创建新话题。谢谢。）
